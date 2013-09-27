@@ -1,4 +1,4 @@
-package de.avalax.trainee;
+package de.avalax.fitbuddy;
 
 import android.app.Activity;
 import android.os.Bundle;
