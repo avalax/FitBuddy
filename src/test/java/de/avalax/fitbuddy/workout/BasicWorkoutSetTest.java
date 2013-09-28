@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.mock;
 
 public class BasicWorkoutSetTest {
 
@@ -18,7 +19,7 @@ public class BasicWorkoutSetTest {
     @Before
     public void setUp() throws Exception{
         sets = new ArrayList<Set>();
-        workoutSet = new BasicWorkoutSet("Bankdrücken",4,sets);
+        workoutSet = new BasicWorkoutSet("Bankdrücken",sets);
     }
 
     @Test
@@ -28,6 +29,11 @@ public class BasicWorkoutSetTest {
 
     @Test
     public void BasicWorkoutSet_ShouldReturnNumberOfSets() throws Exception {
+        sets.add(mock(Set.class));
+        sets.add(mock(Set.class));
+        sets.add(mock(Set.class));
+        sets.add(mock(Set.class));
+
         assertThat(workoutSet.getNumberOfSets(),equalTo(4));
     }
 
@@ -39,27 +45,64 @@ public class BasicWorkoutSetTest {
     }
 
     @Test
-    public void WorkoutSet_ShouldReturnFirstSet() throws Exception {
-        Set set = createBasicSet();
-
+    public void BasicWorkoutSet_ShouldReturnCurrentSetOnStartup() throws Exception {
+        Set set = mock(Set.class);
         sets.add(set);
 
-        assertThat(workoutSet.getSet(1),equalTo(set));
+        assertThat(workoutSet.getCurrentSet(), equalTo(set));
     }
 
     @Test
-    public void BasicWorkoutSet_ShouldReturnLastSet() throws Exception {
-        Set set = createBasicSet();
+    public void BasicWorkoutSet_ShouldReturnSecondSetAsCurrentSet() throws Exception {
+        Set set = mock(Set.class);
 
-        for (int i=0;i<workoutSet.getNumberOfSets()-1;i++) {
-            sets.add(createBasicSet());
-        }
+        sets.add(mock(Set.class));
         sets.add(set);
 
-        assertThat(workoutSet.getSet(workoutSet.getNumberOfSets()),equalTo(set));
+        workoutSet.setSetNumber(2);
+
+        assertThat(workoutSet.getCurrentSet(), equalTo(set));
     }
 
-    private BasicSet createBasicSet() {
-        return new BasicSet(12.5);
+    @Test
+    public void BasicWorkoutSet_ShouldReturnPreviousSet() throws Exception {
+        Set set = mock(Set.class);
+
+        sets.add(set);
+        sets.add(mock(Set.class));
+
+        workoutSet.setSetNumber(2);
+
+        assertThat(workoutSet.getPreviousSet(), equalTo(set));
+    }
+
+    @Test
+    public void BasicWorkoutSet_ShouldReturnNextSet() throws Exception {
+        Set set = mock(Set.class);
+
+        sets.add(mock(Set.class));
+        sets.add(set);
+
+        workoutSet.setSetNumber(1);
+
+        assertThat(workoutSet.getNextSet(), equalTo(set));
+    }
+
+    @Test(expected = SetNotAvailableException.class)
+    public void BasicWorkoutSet_ShouldThrowExceptionWithNoPreviousSetAvailable() throws Exception {
+        sets.add(mock(Set.class));
+
+        workoutSet.setSetNumber(1);
+
+        workoutSet.getPreviousSet();
+    }
+
+    @Test(expected = SetNotAvailableException.class)
+    public void BasicWorkoutSet_ShouldThrowExceptionWithNoNextSetAvailable() throws Exception {
+        sets.add(mock(Set.class));
+
+        workoutSet.setSetNumber(1);
+
+        workoutSet.getNextSet();
     }
 }
