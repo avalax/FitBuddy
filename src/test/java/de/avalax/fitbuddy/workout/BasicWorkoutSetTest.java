@@ -22,17 +22,17 @@ public class BasicWorkoutSetTest {
     }
 
     @Test
-    public void WorkoutSet_ShouldReturnNameBankdrücken() throws Exception {
+    public void BasicWorkoutSet_ShouldReturnNameBankdrücken() throws Exception {
         assertThat(workoutSet.getName(), equalTo("Bankdrücken"));
     }
 
     @Test
-    public void WorkoutSet_ShouldReturnNumberOfSets() throws Exception {
+    public void BasicWorkoutSet_ShouldReturnNumberOfSets() throws Exception {
         assertThat(workoutSet.getNumberOfSets(),equalTo(4));
     }
 
     @Test
-    public void WorkoutSet_ShouldReturnTendencyPlus() throws Exception {
+    public void BasicWorkoutSet_ShouldReturnTendencyPlus() throws Exception {
         workoutSet.setTendency(Tendency.PLUS);
 
         assertThat(workoutSet.getTendency(), equalTo(Tendency.PLUS));
@@ -40,7 +40,7 @@ public class BasicWorkoutSetTest {
 
     @Test
     public void WorkoutSet_ShouldReturnFirstSet() throws Exception {
-        Set set = new BasicSet();
+        Set set = createBasicSet();
 
         sets.add(set);
 
@@ -48,14 +48,18 @@ public class BasicWorkoutSetTest {
     }
 
     @Test
-    public void WorkoutSet_ShouldReturnLastSet() throws Exception {
-        Set set = new BasicSet();
+    public void BasicWorkoutSet_ShouldReturnLastSet() throws Exception {
+        Set set = createBasicSet();
 
         for (int i=0;i<workoutSet.getNumberOfSets()-1;i++) {
-            sets.add(new BasicSet());
+            sets.add(createBasicSet());
         }
         sets.add(set);
 
         assertThat(workoutSet.getSet(workoutSet.getNumberOfSets()),equalTo(set));
+    }
+
+    private BasicSet createBasicSet() {
+        return new BasicSet(12.5);
     }
 }

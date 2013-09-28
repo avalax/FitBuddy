@@ -1,18 +1,25 @@
 package de.avalax.fitbuddy.workout;
 
 public class BasicSet implements Set {
+    private double weight;
+    private int repetitions;
+
+    public BasicSet(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public double getWeight() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return weight;
     }
 
     @Override
     public void setRepetitions(int repetitions) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.repetitions = repetitions;
     }
 
     @Override
     public int getRepetitions() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return repetitions;
     }
 }
