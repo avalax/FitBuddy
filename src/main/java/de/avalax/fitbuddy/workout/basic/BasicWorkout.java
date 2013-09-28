@@ -1,8 +1,14 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.basic;
+
+import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Tendency;
+import de.avalax.fitbuddy.workout.Workout;
+import de.avalax.fitbuddy.workout.WorkoutSet;
+import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
 
 import java.util.List;
 
-public class BasicWorkout implements Workout{
+public class BasicWorkout implements Workout {
     private List<WorkoutSet> workoutSets;
     private int workoutSetNumber;
 
@@ -61,7 +67,7 @@ public class BasicWorkout implements Workout{
 
     @Override
     public int getRepetitions() {
-        return getCurrentSet().getRepetitions();
+        return getCurrentWorkoutSet().getRepetitions();
     }
 
     @Override

@@ -1,6 +1,7 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.basic;
 
 
+import de.avalax.fitbuddy.workout.Set;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,9 +24,5 @@ public class BasicSetTest {
     public void BasicSet_ShouldGetRepetitions() throws Exception {
         set.setRepetitions(15);
         assertThat(set.getRepetitions(), equalTo(15));
-    }
-
-    public void testGetRepetitions() throws Exception {
-
     }
 }

@@ -1,6 +1,10 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.basic;
 
 
+import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Tendency;
+import de.avalax.fitbuddy.workout.WorkoutSet;
+import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +14,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BasicWorkoutSetTest {
 
@@ -42,6 +47,15 @@ public class BasicWorkoutSetTest {
         workoutSet.setTendency(Tendency.PLUS);
 
         assertThat(workoutSet.getTendency(), equalTo(Tendency.PLUS));
+    }
+
+    @Test
+    public void BasicWorkout_ShouldReturnRepetitionsFromWorkoutSet() throws Exception {
+        Set set = mock(Set.class);
+        sets.add(set);
+        when(set.getRepetitions()).thenReturn(12);
+
+        assertThat(workoutSet.getRepetitions(),equalTo(12));
     }
 
     @Test

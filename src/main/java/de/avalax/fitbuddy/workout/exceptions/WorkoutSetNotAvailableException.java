@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.exceptions;
 
 public class WorkoutSetNotAvailableException extends RuntimeException{
 }

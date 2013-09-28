@@ -1,6 +1,6 @@
 package de.avalax.fitbuddy.workout;
 
-interface WorkoutSet {
+public interface WorkoutSet {
     Set getPreviousSet();
     Set getCurrentSet();
     Set getNextSet();
@@ -11,4 +11,5 @@ interface WorkoutSet {
     void setTendency(Tendency tendency);
     void setSetNumber(int setNumber);
     void setRepetitions(int repetitions);
+    int getRepetitions();
 }

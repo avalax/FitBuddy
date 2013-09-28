@@ -1,4 +1,6 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.basic;
+
+import de.avalax.fitbuddy.workout.Set;
 
 public class BasicSet implements Set {
     private double weight;

@@ -1,6 +1,11 @@
-package de.avalax.fitbuddy.workout;
+package de.avalax.fitbuddy.workout.basic;
 
 
+import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Tendency;
+import de.avalax.fitbuddy.workout.Workout;
+import de.avalax.fitbuddy.workout.WorkoutSet;
+import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,6 +108,15 @@ public class BasicWorkoutTest {
         workout.setRepetitions(12);
 
         verify(workoutSet).setRepetitions(12);
+    }
+
+    @Test
+    public void BasicWorkout_ShouldReturnRepetitionsFromWorkoutSet() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(workoutSet);
+        when(workoutSet.getRepetitions()).thenReturn(12);
+
+        assertThat(workout.getRepetitions(),equalTo(12));
     }
 
     @Test
