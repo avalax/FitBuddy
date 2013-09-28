@@ -45,6 +45,21 @@ public class BasicWorkout implements Workout{
     }
 
     @Override
+    public void setTendency(Tendency tendency) {
+        getCurrentWorkoutSet().setTendency(tendency);
+        incrementWorkoutSetNumber();
+    }
+
+    private void incrementWorkoutSetNumber() {
+        if(isValid(nextWorkoutSetIndex())){
+            workoutSetNumber++;
+        }
+        else{
+            throw new WorkoutSetNotAvailableException();
+        }
+    }
+
+    @Override
     public int getRepetitions() {
         return getCurrentSet().getRepetitions();
     }

@@ -8,8 +8,7 @@ interface WorkoutSet {
     Tendency getTendency();
     int getSetSize();
     int getSetNumber();
-    void setTendency(Tendency plus);
+    void setTendency(Tendency tendency);
     void setSetNumber(int setNumber);
-
     void setRepetitions(int repetitions);
 }

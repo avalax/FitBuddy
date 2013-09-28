@@ -9,4 +9,5 @@ public interface Workout {
     int getRepetitions();
     void setWorkoutSetNumber(int workoutSetNumber);
     void setRepetitions(int repetitions);
+    void setTendency(Tendency tendency);
 }

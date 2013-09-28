@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.workout;
 
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -104,5 +103,34 @@ public class BasicWorkoutTest {
         workout.setRepetitions(12);
 
         verify(workoutSet).setRepetitions(12);
+    }
+
+    @Test
+    public void BasicWorkout_ShouldSetTendencyInWorkoutSet() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(workoutSet);
+        workoutSets.add(mock(WorkoutSet.class));
+
+        workout.setTendency(Tendency.NEUTRAL);
+
+        verify(workoutSet).setTendency(Tendency.NEUTRAL);
+    }
+
+    @Test
+    public void BasicWorkout_ShouldSwitchToTheNextWorkoutSetWhenSettingTendency() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(mock(WorkoutSet.class));
+        workoutSets.add(workoutSet);
+
+        workout.setTendency(Tendency.MINUS);
+
+        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+    }
+
+    @Test(expected = WorkoutSetNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenSettingTendencyOfLastWorkoutSet() throws Exception {
+        workoutSets.add(mock(WorkoutSet.class));
+
+        workout.setTendency(Tendency.MINUS);
     }
 }
