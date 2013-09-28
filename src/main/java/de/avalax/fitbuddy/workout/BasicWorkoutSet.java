@@ -60,7 +60,7 @@ public class BasicWorkoutSet implements WorkoutSet {
             setNumber++;
         }
         else{
-            throw new WorkoutSetNotAvailableException();
+            throw new SetNotAvailableException();
         }
     }
 

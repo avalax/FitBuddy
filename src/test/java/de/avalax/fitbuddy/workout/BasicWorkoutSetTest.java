@@ -117,7 +117,7 @@ public class BasicWorkoutSetTest {
         assertThat(workoutSet.getCurrentSet(), equalTo(set));
         assertThat(workoutSet.getSetNumber(), equalTo(2));
     }
-    @Test(expected = WorkoutSetNotAvailableException.class)
+    @Test(expected = SetNotAvailableException.class)
     public void BasicWorkoutSet_ShouldThrowExceptionWhenSettingRepetitionsOnLastSet() throws Exception {
         sets.add(mock(Set.class));
 
