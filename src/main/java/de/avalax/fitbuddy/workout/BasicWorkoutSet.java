@@ -20,8 +20,13 @@ public class BasicWorkoutSet implements WorkoutSet {
     }
 
     @Override
-    public int getNumberOfSets() {
+    public int getSetSize() {
         return sets.size();
+    }
+
+    @Override
+    public int getSetNumber() {
+        return setNumber;
     }
 
     @Override
@@ -45,9 +50,24 @@ public class BasicWorkoutSet implements WorkoutSet {
     }
 
     @Override
+    public void setRepetitions(int repetitions) {
+        getCurrentSet().setRepetitions(repetitions);
+        incrementSetNumber();
+    }
+
+    private void incrementSetNumber() {
+        if(isValid(nextSetIndex())){
+            setNumber++;
+        }
+        else{
+            throw new WorkoutSetNotAvailableException();
+        }
+    }
+
+    @Override
     public Set getPreviousSet() {
         int index = previousSetIndex();
-        if (isValid(index)) {
+        if (!isValid(index)) {
             throw new SetNotAvailableException();
         }
         return sets.get(index);
@@ -56,7 +76,7 @@ public class BasicWorkoutSet implements WorkoutSet {
     @Override
     public Set getNextSet() {
         int index = nextSetIndex();
-        if (isValid(index)){
+        if (!isValid(index)){
             throw new SetNotAvailableException();
         }
         return sets.get(index);
@@ -75,6 +95,14 @@ public class BasicWorkoutSet implements WorkoutSet {
     }
 
     private boolean isValid(int index) {
-        return index < 0 || index > sets.size()-1;
+        return isIndexNotNegative(index) && isIndexInArray(index);
+    }
+
+    private boolean isIndexInArray(int index) {
+        return index <= sets.size()-1;
+    }
+
+    private boolean isIndexNotNegative(int index) {
+        return index >= 0;
     }
 }

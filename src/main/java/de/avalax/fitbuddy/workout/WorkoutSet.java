@@ -6,7 +6,10 @@ interface WorkoutSet {
     Set getNextSet();
     String getName();
     Tendency getTendency();
-    int getNumberOfSets();
+    int getSetSize();
+    int getSetNumber();
     void setTendency(Tendency plus);
     void setSetNumber(int setNumber);
+
+    void setRepetitions(int repetitions);
 }

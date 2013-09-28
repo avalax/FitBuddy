@@ -34,7 +34,7 @@ public class BasicWorkoutSetTest {
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
 
-        assertThat(workoutSet.getNumberOfSets(),equalTo(4));
+        assertThat(workoutSet.getSetSize(), equalTo(4));
     }
 
     @Test
@@ -104,5 +104,23 @@ public class BasicWorkoutSetTest {
         workoutSet.setSetNumber(1);
 
         workoutSet.getNextSet();
+    }
+
+    @Test
+    public void BasicWorkoutSet_ShouldReturnNextSetOnSettingRepetitionsForCurrentSet() throws Exception {
+        Set set = mock(Set.class);
+
+        sets.add(mock(Set.class));
+        sets.add(set);
+
+        workoutSet.setRepetitions(12);
+        assertThat(workoutSet.getCurrentSet(), equalTo(set));
+        assertThat(workoutSet.getSetNumber(), equalTo(2));
+    }
+    @Test(expected = WorkoutSetNotAvailableException.class)
+    public void BasicWorkoutSet_ShouldThrowExceptionWhenSettingRepetitionsOnLastSet() throws Exception {
+        sets.add(mock(Set.class));
+
+        workoutSet.setRepetitions(12);
     }
 }
