@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WorkoutSet"
+        android:id="@+id/textViewWorkoutSet"
+        android:textColor="#ffffff"
+        android:textSize="14px"
+        android:layout_gravity="center"
+        android:singleLine="true"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_rew"
+        android:id="@+id/imageButton"
+        android:layout_gravity="center_vertical|left"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_ff"
+        android:id="@+id/imageButton1"
+        android:layout_gravity="center_vertical|right"/>
+
+</FrameLayout>
