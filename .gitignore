@@ -18,5 +18,8 @@ local.properties
 # Eclipse project files
 .classpath
 .project
-/.idea/
 /target/
+
+# IntelliJ project files
+fitbuddy.iml
+/.idea/
