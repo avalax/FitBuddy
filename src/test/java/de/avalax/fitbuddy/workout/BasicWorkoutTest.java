@@ -97,18 +97,12 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    @Ignore
-    public void BasicWorkout_ShouldGetRepetitions12() throws Exception {
+    public void BasicWorkout_ShouldSetRepetitionsto12() throws Exception {
         WorkoutSet workoutSet = mock(WorkoutSet.class);
         workoutSets.add(workoutSet);
-        Set set = mock(Set.class);
-
-        when(workoutSet.getCurrentSet()).thenReturn(set);
-        when(set.getRepetitions()).thenReturn(12);
 
         workout.setRepetitions(12);
-        verify(set).setRepetitions(12);
-        assertThat(workout.getRepetitions(), equalTo(0));
-        //TODO: verify getSet
+
+        verify(workoutSet).setRepetitions(12);
     }
 }
