@@ -41,17 +41,17 @@ public class BasicWorkout implements Workout{
 
     @Override
     public void setRepetitions(int repetitions) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        getCurrentSet().setRepetitions(repetitions);
     }
 
     @Override
     public int getRepetitions() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return getCurrentSet().getRepetitions();
     }
 
     @Override
     public Set getCurrentSet() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getCurrentWorkoutSet().getCurrentSet();
     }
 
     private int previousWorkoutSetIndex() {

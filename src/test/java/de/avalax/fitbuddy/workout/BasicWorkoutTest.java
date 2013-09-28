@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.workout;
 
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,8 +9,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class BasicWorkoutTest {
 
@@ -87,24 +85,40 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    @Ignore
-    public void BasicWorkout_ShouldReturnPreviousSet() throws Exception {
+    public void BasicWorkout_ShouldReturnCurrentSetOnStartup() throws Exception {
         WorkoutSet workoutSet = mock(WorkoutSet.class);
         workoutSets.add(workoutSet);
         Set set = mock(Set.class);
+
+        when(workoutSet.getCurrentSet()).thenReturn(set);
 
         assertThat(workout.getCurrentSet(), equalTo(set));
     }
 
     @Test
-    @Ignore
-    public void BasicWorkout_IncrementSet() throws Exception {
+    public void BasicWorkout_SetRepetitionsTo0() throws Exception {
         WorkoutSet workoutSet = mock(WorkoutSet.class);
         workoutSets.add(workoutSet);
-        Set currentSet = mock(Set.class);
-        //when(workoutSet.getSet())
+        Set set = mock(Set.class);
+
+        when(workoutSet.getCurrentSet()).thenReturn(set);
+
         workout.setRepetitions(0);
+        verify(set).setRepetitions(0);
         assertThat(workout.getRepetitions(), equalTo(0));
-        verify(currentSet).setRepetitions(0);
+    }
+
+    @Test
+    public void BasicWorkout_SetRepetitionsTo12() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(workoutSet);
+        Set set = mock(Set.class);
+
+        when(workoutSet.getCurrentSet()).thenReturn(set);
+        when(set.getRepetitions()).thenReturn(12);
+
+        workout.setRepetitions(12);
+        verify(set).setRepetitions(12);
+        assertThat(workout.getRepetitions(), equalTo(12));
     }
 }
