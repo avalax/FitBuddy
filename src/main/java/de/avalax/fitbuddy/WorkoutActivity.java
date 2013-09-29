@@ -33,6 +33,11 @@ public class WorkoutActivity extends RoboActivity {
         getActionBar().setCustomView(R.layout.menu);
         getActionBar().setBackgroundDrawable(null);
         workout = createTestWorkout();
+	      FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
+	      repsProgressBar.setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
+	      FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBartSets);
+	      setsProgressBar.setProgressBar(workout.getCurrentWorkoutSet());
+
         setViews();
 
     }
