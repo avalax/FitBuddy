@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
 import de.avalax.fitbuddy.workout.WorkoutSet;
 import de.avalax.fitbuddy.workout.basic.BasicSet;
@@ -24,7 +25,7 @@ import java.util.List;
 @ContentView(R.layout.workout)
 public class WorkoutActivity extends RoboActivity implements View.OnClickListener{
 
-    private static final int DO_REFRESH_ON_RETURN = 1;
+    private static final int SET_TENDENCY_ON_RETURN = 1;
     private static final int DO_QUIT_ON_RESULT = 2;
     private Workout workout;
 
@@ -96,11 +97,36 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
             try {
                 workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
             } catch (SetNotAvailableException snae) {
-                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), DO_REFRESH_ON_RETURN);
+                if (workout.getCurrentWorkoutSet().getTendency() == null) {
+                    startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), SET_TENDENCY_ON_RETURN);
+                } else {
+                    try {
+                        workout.incrementWorkoutSetNumber();
+                    } catch (WorkoutSetNotAvailableException e) {
+                        startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
+                    }
+                }
             }
         }
         ((FitBuddyProgressBar) v).setProgressBar(currentSet);
         setViews();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode > 0) {
+            if (requestCode == DO_QUIT_ON_RESULT) {
+                //TODO: Zeige StartScreen
+            }
+
+            if (requestCode == SET_TENDENCY_ON_RETURN) {
+                Tendency tendency = (Tendency) data.getSerializableExtra("tendency");
+                try {
+                    workout.setTendency(tendency);
+                } catch (WorkoutSetNotAvailableException e) {
+                    startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
+                }
+            }
+        }
     }
 }
 
