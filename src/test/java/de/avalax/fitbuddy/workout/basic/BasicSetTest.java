@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.workout.basic;
 
 
 import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.exceptions.RepetitionsExceededException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ public class BasicSetTest {
     public void BasicSet_ShouldGetWeight() throws Exception {
         assertThat(set.getWeight(),equalTo(12.5));
     }
+
     @Test
     public void BasicSet_ShouldGetRepetitions() throws Exception {
         set.setRepetitions(15);
@@ -28,7 +30,11 @@ public class BasicSetTest {
 
 	@Test
 	public void BasicSet_ShouldGetMaxRepetitions() throws Exception {
-		set.setMaxRepetitions(15);
 		assertThat(set.getMaxRepetition(),equalTo(15));
 	}
+
+    @Test(expected = RepetitionsExceededException.class)
+    public void BasicSet_ShouldThrowExceptionWhenRepetitionsGreaterThenMaxRepetitions() throws Exception {
+        set.setRepetitions(16);
+    }
 }
