@@ -39,9 +39,8 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         workout = createTestWorkout();
         FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
         repsProgressBar.setOnClickListener(this);
-
-;
-
+        FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarSets);
+        setsProgressBar.setOnClickListener(this);
         setViews();
 
     }
@@ -51,7 +50,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         //TODO: IOC
         ((TextView) findViewById(R.id.textViewWorkoutSet)).setText(workout.getCurrentWorkoutSet().getName());
         ((FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions)).setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBartSets)).setProgressBar(workout.getCurrentWorkoutSet());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentWorkoutSet());
     }
 
     private Workout createTestWorkout() {
@@ -90,26 +89,35 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Set currentSet = workout.getCurrentWorkoutSet().getCurrentSet();
-        try {
-            currentSet.setRepetitions(currentSet.getRepetitions()+1); //TODO: make method incrementRepetitions
-        } catch (RepetitionsExceededException ree) {
+        if (v.getId() == R.id.progressBarRepetitions) {
+            Set currentSet = workout.getCurrentWorkoutSet().getCurrentSet();
             try {
-                workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
-            } catch (SetNotAvailableException snae) {
-                if (workout.getCurrentWorkoutSet().getTendency() == null) {
-                    startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), SET_TENDENCY_ON_RETURN);
-                } else {
-                    try {
-                        workout.incrementWorkoutSetNumber();
-                    } catch (WorkoutSetNotAvailableException e) {
-                        startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
-                    }
+                currentSet.setRepetitions(currentSet.getRepetitions()+1); //TODO: make method incrementRepetitions
+            } catch (RepetitionsExceededException ree) {
+                incrementSetNumber();
+            }
+            ((FitBuddyProgressBar) v).setProgressBar(currentSet);
+        }
+        if (v.getId() == R.id.progressBarSets) {
+            incrementSetNumber();
+        }
+        setViews();
+    }
+
+    private void incrementSetNumber() {
+        try {
+            workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
+        } catch (SetNotAvailableException snae) {
+            if (workout.getCurrentWorkoutSet().getTendency() == null) {
+                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), SET_TENDENCY_ON_RETURN);
+            } else {
+                try {
+                    workout.incrementWorkoutSetNumber();
+                } catch (WorkoutSetNotAvailableException e) {
+                    startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
                 }
             }
         }
-        ((FitBuddyProgressBar) v).setProgressBar(currentSet);
-        setViews();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,6 +130,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
                 Tendency tendency = (Tendency) data.getSerializableExtra("tendency");
                 try {
                     workout.setTendency(tendency);
+                    setViews();
                 } catch (WorkoutSetNotAvailableException e) {
                     startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
                 }
