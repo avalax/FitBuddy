@@ -85,11 +85,11 @@ public class FitBuddyProgressBar extends View{
 	}
 	public void setProgressBar(WorkoutSet workoutSet){
 		setCurrentValue(workoutSet.getSetNumber());
-		setMaxValue(4);
+		setMaxValue(workoutSet.getSetSize());
 	}
 	public void setProgressBar(Set set){
 		setCurrentValue(set.getRepetitions());
-		setMaxValue(15);
+		setMaxValue(set.getMaxRepetition());
 	}
 	public synchronized void setBarColor(int barColor) {
 		this.barColor = barColor;

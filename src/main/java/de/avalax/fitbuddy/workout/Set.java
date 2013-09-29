@@ -4,5 +4,8 @@ public interface Set {
     double getWeight();
     void setRepetitions(int repetitions);
     int getRepetitions();
-    //TODO: MaxRepetions
+
+		void setMaxRepetitions(int maxRepetitions);
+
+		int getMaxRepetition();
 }

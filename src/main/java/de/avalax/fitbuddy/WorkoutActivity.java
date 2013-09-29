@@ -56,9 +56,9 @@ public class WorkoutActivity extends RoboActivity {
 
     private List<Set> createSetWithThreeSets(int weight) {
         List<Set> sets = new ArrayList<Set>();
-        sets.add(new BasicSet(weight));
-        sets.add(new BasicSet(weight));
-        sets.add(new BasicSet(weight));
+        sets.add(new BasicSet(weight, 15));
+        sets.add(new BasicSet(weight, 15));
+        sets.add(new BasicSet(weight, 15));
         return sets;
     }
 

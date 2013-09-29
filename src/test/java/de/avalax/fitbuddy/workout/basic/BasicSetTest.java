@@ -13,7 +13,7 @@ public class BasicSetTest {
 
     @Before
     public void setUp() throws Exception {
-        set = new BasicSet(12.5);
+        set = new BasicSet(12.5, 15);
     }
 
     @Test
@@ -25,4 +25,10 @@ public class BasicSetTest {
         set.setRepetitions(15);
         assertThat(set.getRepetitions(), equalTo(15));
     }
+
+	@Test
+	public void BasicSet_ShouldGetMaxRepetitions() throws Exception {
+		set.setMaxRepetitions(15);
+		assertThat(set.getMaxRepetition(),equalTo(15));
+	}
 }
