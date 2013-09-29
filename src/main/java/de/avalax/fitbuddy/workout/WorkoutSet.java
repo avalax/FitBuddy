@@ -12,4 +12,5 @@ public interface WorkoutSet {
     void setSetNumber(int setNumber);
     void setRepetitions(int repetitions);
     int getRepetitions();
+    void incrementSetNumber();
 }
