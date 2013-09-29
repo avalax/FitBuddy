@@ -2,7 +2,9 @@
 <FrameLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,18 +16,24 @@
         android:layout_gravity="center"
         android:singleLine="true"/>
 
-    <ImageButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_media_rew"
-        android:id="@+id/imageButton"
-        android:layout_gravity="center_vertical|left"/>
+        android:text="‹"
+        android:id="@+id/textViewPrevious"
+        android:layout_gravity="left|center_vertical"
+        android:textColor="#ffffff"
+        android:textSize="14px"
+        android:textStyle="bold"/>
 
-    <ImageButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_media_ff"
-        android:id="@+id/imageButton1"
-        android:layout_gravity="center_vertical|right"/>
+        android:text="›"
+        android:id="@+id/textViewNext"
+        android:layout_gravity="right|center_vertical"
+        android:textColor="#ffffff"
+        android:textSize="14px"
+        android:textStyle="bold"/>
 
 </FrameLayout>
