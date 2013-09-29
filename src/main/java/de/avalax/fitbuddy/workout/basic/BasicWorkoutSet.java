@@ -65,7 +65,7 @@ public class BasicWorkoutSet implements WorkoutSet {
         return getCurrentSet().getRepetitions();
     }
 
-    private void incrementSetNumber() {
+    public void incrementSetNumber() {
         if(isValid(nextSetIndex())){
             setNumber++;
         }
