@@ -34,7 +34,6 @@ public class FitBuddyProgressBar extends View{
 			setBarColor(a.getColor(R.styleable.FitBuddyProgressBar_barColor, Color.parseColor("#CC0000")));
 			setCurrentValue(a.getInt(R.styleable.FitBuddyProgressBar_current_value,0));
 			setMaxValue(a.getInt(R.styleable.FitBuddyProgressBar_max_value,0));
-			setBackgroundColor(Color.parseColor("#ff4444"));
 			a.recycle();
 		}
 	}
