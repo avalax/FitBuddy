@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="FitBuddyProgressBar">
+		<attr name="textColor" format="color" />
+		<attr name="barColor" format="color" />
+		<attr name="current_value" format="integer" />
+		<attr name="max_value" format="integer" />
+		<attr name="textSize" format="dimension"></attr>
+	</declare-styleable>
+</resources>
