@@ -3,7 +3,6 @@ package de.avalax.fitbuddy;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import de.avalax.fitbuddy.workout.basic.BasicWorkoutSet;
 import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +23,7 @@ import java.util.List;
 public class WorkoutActivity extends RoboActivity {
 
     private static final int DO_REFRESH_ON_RETURN = 1;
+    private static final int DO_QUIT_ON_RESULT = 2;
     private Workout workout;
 
     @Override
@@ -70,7 +69,7 @@ public class WorkoutActivity extends RoboActivity {
                 workout.incrementWorkoutSetNumber();
                 setViews();
             } catch (WorkoutSetNotAvailableException e) {
-                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), DO_REFRESH_ON_RETURN);
+                startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
             }
         }
         if (v.getId() == R.id.imageButtonPrevious) {
