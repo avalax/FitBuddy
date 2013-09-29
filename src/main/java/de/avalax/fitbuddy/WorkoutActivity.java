@@ -12,6 +12,8 @@ import de.avalax.fitbuddy.workout.WorkoutSet;
 import de.avalax.fitbuddy.workout.basic.BasicSet;
 import de.avalax.fitbuddy.workout.basic.BasicWorkout;
 import de.avalax.fitbuddy.workout.basic.BasicWorkoutSet;
+import de.avalax.fitbuddy.workout.exceptions.RepetitionsExceededException;
+import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -19,8 +21,8 @@ import roboguice.inject.ContentView;
 import java.util.ArrayList;
 import java.util.List;
 
-@ContentView(R.layout.activity_main)
-public class WorkoutActivity extends RoboActivity {
+@ContentView(R.layout.workout)
+public class WorkoutActivity extends RoboActivity implements View.OnClickListener{
 
     private static final int DO_REFRESH_ON_RETURN = 1;
     private static final int DO_QUIT_ON_RESULT = 2;
@@ -35,9 +37,9 @@ public class WorkoutActivity extends RoboActivity {
         getActionBar().setBackgroundDrawable(null);
         workout = createTestWorkout();
         FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
-        repsProgressBar.setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
-        FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBartSets);
-        setsProgressBar.setProgressBar(workout.getCurrentWorkoutSet());
+        repsProgressBar.setOnClickListener(this);
+
+;
 
         setViews();
 
@@ -45,7 +47,10 @@ public class WorkoutActivity extends RoboActivity {
 
     private void setViews() {
         //TODO: Change to Workout getName()
+        //TODO: IOC
         ((TextView) findViewById(R.id.textViewWorkoutSet)).setText(workout.getCurrentWorkoutSet().getName());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions)).setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBartSets)).setProgressBar(workout.getCurrentWorkoutSet());
     }
 
     private Workout createTestWorkout() {
@@ -80,6 +85,22 @@ public class WorkoutActivity extends RoboActivity {
                 //TODO: Show next activity
             }
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        Set currentSet = workout.getCurrentWorkoutSet().getCurrentSet();
+        try {
+            currentSet.setRepetitions(currentSet.getRepetitions()+1); //TODO: make method incrementRepetitions
+        } catch (RepetitionsExceededException ree) {
+            try {
+                workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
+            } catch (SetNotAvailableException snae) {
+                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), DO_REFRESH_ON_RETURN);
+            }
+        }
+        ((FitBuddyProgressBar) v).setProgressBar(currentSet);
+        setViews();
     }
 }
 
