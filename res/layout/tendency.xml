@@ -1,0 +1,35 @@
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="60dp"
+    android:paddingBottom="60dp"
+    android:gravity="center_vertical|center_horizontal">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="+5kg = 20kg"
+        android:id="@+id/button"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/icon_positive"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="15kg"
+        android:id="@+id/button1"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/icon_neutral"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="-5kg = 10kg"
+        android:id="@+id/button2"
+        android:layout_gravity="right|center_vertical"
+        android:drawableLeft="@drawable/icon_negative"/>
+</LinearLayout>

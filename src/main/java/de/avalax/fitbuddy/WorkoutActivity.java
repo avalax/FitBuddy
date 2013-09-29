@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.List;
 @ContentView(R.layout.activity_main)
 public class WorkoutActivity extends RoboActivity {
 
+    private static final int DO_REFRESH_ON_RETURN = 1;
     private Workout workout;
 
     @Override
@@ -33,10 +35,10 @@ public class WorkoutActivity extends RoboActivity {
         getActionBar().setCustomView(R.layout.menu);
         getActionBar().setBackgroundDrawable(null);
         workout = createTestWorkout();
-	      FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
-	      repsProgressBar.setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
-	      FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBartSets);
-	      setsProgressBar.setProgressBar(workout.getCurrentWorkoutSet());
+        FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
+        repsProgressBar.setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
+        FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBartSets);
+        setsProgressBar.setProgressBar(workout.getCurrentWorkoutSet());
 
         setViews();
 
@@ -44,7 +46,7 @@ public class WorkoutActivity extends RoboActivity {
 
     private void setViews() {
         //TODO: Change to Workout getName()
-        ((TextView)findViewById(R.id.textViewWorkoutSet)).setText(workout.getCurrentWorkoutSet().getName());
+        ((TextView) findViewById(R.id.textViewWorkoutSet)).setText(workout.getCurrentWorkoutSet().getName());
     }
 
     private Workout createTestWorkout() {
@@ -68,7 +70,7 @@ public class WorkoutActivity extends RoboActivity {
                 workout.incrementWorkoutSetNumber();
                 setViews();
             } catch (WorkoutSetNotAvailableException e) {
-                //TODO: Show next activity
+                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), DO_REFRESH_ON_RETURN);
             }
         }
         if (v.getId() == R.id.imageButtonPrevious) {
