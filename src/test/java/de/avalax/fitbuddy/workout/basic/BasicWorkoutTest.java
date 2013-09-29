@@ -131,6 +131,44 @@ public class BasicWorkoutTest {
     }
 
     @Test
+    public void BasicWorkout_ShouldSwitchToTheNextWorkout() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(mock(WorkoutSet.class));
+        workoutSets.add(workoutSet);
+
+        workout.incrementWorkoutSetNumber();
+
+        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+    }
+
+    @Test(expected = WorkoutSetNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingToTheNextWorkoutWhenLastWorkoutSet() throws Exception {
+        workoutSets.add(mock(WorkoutSet.class));
+
+        workout.incrementWorkoutSetNumber();
+    }
+
+    @Test
+    public void BasicWorkout_ShouldSwitchToThePreviousWorkout() throws Exception {
+        WorkoutSet workoutSet = mock(WorkoutSet.class);
+        workoutSets.add(workoutSet);
+        workoutSets.add(mock(WorkoutSet.class));
+
+        workout.setWorkoutSetNumber(2);
+
+        workout.decrementWorkoutSetNumber();
+
+        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+    }
+
+    @Test(expected = WorkoutSetNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingToThePreviousWorkoutWhenFirstWorkoutSet() throws Exception {
+        workoutSets.add(mock(WorkoutSet.class));
+
+        workout.decrementWorkoutSetNumber();
+    }
+
+    @Test
     public void BasicWorkout_ShouldSwitchToTheNextWorkoutSetWhenSettingTendency() throws Exception {
         WorkoutSet workoutSet = mock(WorkoutSet.class);
         workoutSets.add(mock(WorkoutSet.class));
@@ -139,12 +177,5 @@ public class BasicWorkoutTest {
         workout.setTendency(Tendency.MINUS);
 
         assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
-    }
-
-    @Test(expected = WorkoutSetNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSettingTendencyOfLastWorkoutSet() throws Exception {
-        workoutSets.add(mock(WorkoutSet.class));
-
-        workout.setTendency(Tendency.MINUS);
     }
 }

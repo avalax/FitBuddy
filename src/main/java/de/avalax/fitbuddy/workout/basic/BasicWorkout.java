@@ -56,9 +56,19 @@ public class BasicWorkout implements Workout {
         incrementWorkoutSetNumber();
     }
 
-    private void incrementWorkoutSetNumber() {
+    public void incrementWorkoutSetNumber() {
         if(isValid(nextWorkoutSetIndex())){
             workoutSetNumber++;
+        }
+        else{
+            throw new WorkoutSetNotAvailableException();
+        }
+    }
+
+    @Override
+    public void decrementWorkoutSetNumber() {
+        if(isValid(previousWorkoutSetIndex())){
+            workoutSetNumber--;
         }
         else{
             throw new WorkoutSetNotAvailableException();
