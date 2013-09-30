@@ -152,4 +152,14 @@ public class BasicWorkoutSetTest {
 
         workoutSet.setRepetitions(12);
     }
+
+    @Test
+    public void BasicWorkoutSet_ShouldReturnWeightOfCurrentSet() throws Exception {
+        Set set = mock(Set.class);
+        sets.add(set);
+
+        when(set.getWeight()).thenReturn(50.0);
+
+        assertThat(workoutSet.getWeight(), equalTo(50.0));
+    }
 }

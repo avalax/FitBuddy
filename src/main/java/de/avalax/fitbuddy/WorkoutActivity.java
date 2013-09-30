@@ -109,7 +109,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
             workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
         } catch (SetNotAvailableException snae) {
             if (workout.getCurrentWorkoutSet().getTendency() == null) {
-                startActivityForResult(new Intent(getApplicationContext(), TendencyActivity.class), SET_TENDENCY_ON_RETURN);
+                startTendencyActivity();
             } else {
                 try {
                     workout.incrementWorkoutSetNumber();
@@ -118,6 +118,12 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
                 }
             }
         }
+    }
+
+    private void startTendencyActivity() {
+        Intent intent = new Intent(getApplicationContext(), TendencyActivity.class);
+        intent.putExtra("workoutSet", workout.getCurrentWorkoutSet());
+        startActivityForResult(intent, SET_TENDENCY_ON_RETURN);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

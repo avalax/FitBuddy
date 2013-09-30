@@ -75,6 +75,11 @@ public class BasicWorkoutSet implements WorkoutSet {
     }
 
     @Override
+    public double getWeight() {
+        return getCurrentSet().getWeight();
+    }
+
+    @Override
     public Set getPreviousSet() {
         int index = previousSetIndex();
         if (!isValid(index)) {

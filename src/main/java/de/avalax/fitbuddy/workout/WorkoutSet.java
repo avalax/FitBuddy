@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.workout;
 
-public interface WorkoutSet {
+import java.io.Serializable;
+
+public interface WorkoutSet extends Serializable {
     Set getPreviousSet();
     Set getCurrentSet();
     Set getNextSet();
@@ -13,4 +15,5 @@ public interface WorkoutSet {
     void setRepetitions(int repetitions);
     int getRepetitions();
     void incrementSetNumber();
+    double getWeight();
 }

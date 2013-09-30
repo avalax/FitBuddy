@@ -4,6 +4,8 @@
     <string name="app_name">FitBuddy</string>
     <string name="hello">bremen.stadthack</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="negativeLabel">-xx = %1$s kg</string>
+    <string name="neutralLabel">%1$s kg</string>
+    <string name="positiveLabel">+xx = %1$s kg</string>
 
 </resources>
