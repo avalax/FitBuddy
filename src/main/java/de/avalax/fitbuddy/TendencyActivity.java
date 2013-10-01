@@ -1,12 +1,9 @@
 package de.avalax.fitbuddy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.WorkoutSet;
 import roboguice.activity.RoboActivity;
@@ -17,36 +14,46 @@ import roboguice.inject.InjectView;
 @ContentView(R.layout.tendency)
 public class TendencyActivity extends RoboActivity {
     private Tendency tendency = null;
-
     @InjectView(R.id.buttonNegative)
     private Button buttonNegative;
-
     @InjectView(R.id.buttonNeutral)
     private Button buttonNeutral;
-
     @InjectView(R.id.buttonPositive)
     private Button buttonPositive;
-
     @InjectResource(R.string.negativeLabel)
     private String negativeLabel;
-
     @InjectResource(R.string.neutralLabel)
     private String neutralLabel;
-
     @InjectResource(R.string.positiveLabel)
     private String positiveLabel;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WorkoutSet workoutSet = (WorkoutSet) getIntent().getSerializableExtra("workoutSet");
-        buttonNegative.setText(String.format(negativeLabel,workoutSet.getWeight()));
-        buttonNeutral.setText(String.format(neutralLabel,workoutSet.getWeight()));
-        buttonPositive.setText(String.format(positiveLabel,workoutSet.getWeight()));
+        buttonNegative.setText(getNegativeLabel(workoutSet));
+        buttonNeutral.setText(getNeutralLabel(workoutSet));
+        buttonPositive.setText(getPositiveLabel(workoutSet));
+    }
+
+    private String getPositiveLabel(WorkoutSet workoutSet) {
+        double weightRaise = workoutSet.getWeightRaise();
+        double newWeight = workoutSet.getWeight() + weightRaise;
+        return String.format(positiveLabel, newWeight, weightRaise);
+    }
+
+    private String getNeutralLabel(WorkoutSet workoutSet) {
+        return String.format(neutralLabel, workoutSet.getWeight());
+    }
+
+    private String getNegativeLabel(WorkoutSet workoutSet) {
+        double weightRaise = workoutSet.getWeightRaise();
+        double newWeight = workoutSet.getWeight() - weightRaise;
+        return String.format(negativeLabel, newWeight, weightRaise);
     }
 
     protected void finishActivity() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("tendency",tendency);
+        returnIntent.putExtra("tendency", tendency);
         setResult(RESULT_OK, returnIntent);
         finish();
     }

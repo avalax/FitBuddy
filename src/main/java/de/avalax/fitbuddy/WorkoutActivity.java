@@ -136,6 +136,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
                 Tendency tendency = (Tendency) data.getSerializableExtra("tendency");
                 try {
                     workout.setTendency(tendency);
+                    //TODO: set weight based on tendency and weight step
                     setViews();
                 } catch (WorkoutSetNotAvailableException e) {
                     startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
