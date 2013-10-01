@@ -16,4 +16,5 @@ public interface WorkoutSet extends Serializable {
     int getRepetitions();
     void incrementSetNumber();
     double getWeight();
+    double getWeightRaise();
 }

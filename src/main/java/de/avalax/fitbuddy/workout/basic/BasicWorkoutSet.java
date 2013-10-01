@@ -10,12 +10,14 @@ import java.util.List;
 public class BasicWorkoutSet implements WorkoutSet {
     private final String name;
     private final List<Set> sets;
+    private double weightRaise;
     private Tendency tendency;
     private int setNumber;
 
-    public BasicWorkoutSet(String name, List<Set> sets) {
+    public BasicWorkoutSet(String name, List<Set> sets, double weightRaise) {
         this.name = name;
         this.sets = sets;
+        this.weightRaise = weightRaise;
         this.setNumber = 1;
     }
 
@@ -77,6 +79,11 @@ public class BasicWorkoutSet implements WorkoutSet {
     @Override
     public double getWeight() {
         return getCurrentSet().getWeight();
+    }
+
+    @Override
+    public double getWeightRaise() {
+        return weightRaise;
     }
 
     @Override

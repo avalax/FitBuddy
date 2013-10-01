@@ -24,7 +24,7 @@ public class BasicWorkoutSetTest {
     @Before
     public void setUp() throws Exception{
         sets = new ArrayList<Set>();
-        workoutSet = new BasicWorkoutSet("Bankdrücken",sets);
+        workoutSet = new BasicWorkoutSet("Bankdrücken",sets, 2.5);
     }
 
     @Test
@@ -161,5 +161,10 @@ public class BasicWorkoutSetTest {
         when(set.getWeight()).thenReturn(50.0);
 
         assertThat(workoutSet.getWeight(), equalTo(50.0));
+    }
+
+    @Test
+    public void BasicSet_ShouldGetWeightRaise() throws Exception {
+        assertThat(workoutSet.getWeightRaise(),equalTo(2.5));
     }
 }
