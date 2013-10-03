@@ -82,8 +82,11 @@ public class BasicWorkoutSet implements WorkoutSet {
     }
 
     @Override
-    public double getWeightRaise() {
-        return weightRaise;
+    public double getWeightRaise(Tendency tendency) {
+        if (tendency==Tendency.PLUS) {
+            return weightRaise + getCurrentSet().getWeight();
+        }
+        return getCurrentSet().getWeight();
     }
 
     @Override
