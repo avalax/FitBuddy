@@ -165,7 +165,7 @@ public class BasicWorkoutSetTest {
 
     @Test
     public void BasicWorkoutSet_ShouldGetWeightRaiseForNeutralTendency() throws Exception {
-        workoutSet = new BasicWorkoutSet("PositiveTendency",sets,2.5);
+        workoutSet = new BasicWorkoutSet("NeutralTendency",sets,5.0);
         Set set = mock(Set.class);
         sets.add(set);
 
@@ -176,12 +176,23 @@ public class BasicWorkoutSetTest {
 
     @Test
     public void BasicWorkoutSet_ShouldGetwWeightRaiseForPositiveTendency() {
-        workoutSet = new BasicWorkoutSet("PositiveTendency",sets,2.5);
+        workoutSet = new BasicWorkoutSet("PositiveTendency",sets,5.0);
         Set set = mock(Set.class);
         sets.add(set);
 
         when(set.getWeight()).thenReturn(2.5);
 
-        assertThat(workoutSet.getWeightRaise(Tendency.PLUS),equalTo(5.0));
+        assertThat(workoutSet.getWeightRaise(Tendency.PLUS),equalTo(7.5));
+    }
+
+    @Test
+    public void BasicWorkoutSet_ShouldGetwWeightRaiseForMinusTendency() {
+        workoutSet = new BasicWorkoutSet("MinusTendency",sets,5.0);
+        Set set = mock(Set.class);
+        sets.add(set);
+
+        when(set.getWeight()).thenReturn(15.0);
+
+        assertThat(workoutSet.getWeightRaise(Tendency.MINUS),equalTo(10.0));
     }
 }
