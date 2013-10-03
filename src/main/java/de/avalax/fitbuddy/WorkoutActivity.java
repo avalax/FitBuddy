@@ -56,11 +56,11 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     private Workout createTestWorkout() {
         List<WorkoutSet> workoutSets = new ArrayList<WorkoutSet>();
         workoutSets.add(new BasicWorkoutSet("Bankdrücken", createSetWithThreeSets(70), 5));
-        workoutSets.add(new BasicWorkoutSet("Situps", createSetWithThreeSets(0), 2.5));
+        workoutSets.add(new BasicWorkoutSet("Situps", createSetWithThreeSets(1.5), 2.5));
         return new BasicWorkout(workoutSets);
     }
 
-    private List<Set> createSetWithThreeSets(int weight) {
+    private List<Set> createSetWithThreeSets(double weight) {
         List<Set> sets = new ArrayList<Set>();
         sets.add(new BasicSet(weight, 15));
         sets.add(new BasicSet(weight, 15));

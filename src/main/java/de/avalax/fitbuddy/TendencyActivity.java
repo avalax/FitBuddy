@@ -36,9 +36,9 @@ public class TendencyActivity extends RoboActivity {
     }
 
     private String getPositiveLabel(WorkoutSet workoutSet) {
-        double weightRaise = workoutSet.getWeightRaise(Tendency.NEUTRAL);
-        double newWeight = workoutSet.getWeight() + weightRaise;
-        return String.format(positiveLabel, newWeight, weightRaise);
+        double newWeight = workoutSet.getWeightRaise(Tendency.PLUS);
+        double weight = workoutSet.getWeight();
+        return String.format(positiveLabel, newWeight, getWeightRaise(newWeight, weight));
     }
 
     private String getNeutralLabel(WorkoutSet workoutSet) {
@@ -46,13 +46,13 @@ public class TendencyActivity extends RoboActivity {
     }
 
     private String getNegativeLabel(WorkoutSet workoutSet) {
-        double weightRaise = workoutSet.getWeightRaise(Tendency.NEUTRAL);
-        double newWeight = workoutSet.getWeight() - weightRaise;
-        if (newWeight < 0) {
-            weightRaise = weightRaise + newWeight;
-            newWeight = 0;
-        } //TODO: extreat logic to workoutSet
-        return String.format(negativeLabel, newWeight, weightRaise);
+        double newWeight = workoutSet.getWeightRaise(Tendency.MINUS);
+        double weight = workoutSet.getWeight();
+        return String.format(negativeLabel, newWeight, getWeightRaise(newWeight, weight));
+    }
+
+    private double getWeightRaise(double newWeight, double weight) {
+        return Math.abs(newWeight-weight);
     }
 
     protected void finishActivity() {

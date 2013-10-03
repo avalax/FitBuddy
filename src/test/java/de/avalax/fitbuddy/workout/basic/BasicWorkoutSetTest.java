@@ -175,24 +175,33 @@ public class BasicWorkoutSetTest {
     }
 
     @Test
-    public void BasicWorkoutSet_ShouldGetwWeightRaiseForPositiveTendency() {
-        workoutSet = new BasicWorkoutSet("PositiveTendency",sets,5.0);
-        Set set = mock(Set.class);
-        sets.add(set);
-
-        when(set.getWeight()).thenReturn(2.5);
+    public void BasicWorkoutSet_ShouldGetWeightRaiseForPositiveTendency() {
+        workoutSet = createWorkoutSet(2.5,5.0);
 
         assertThat(workoutSet.getWeightRaise(Tendency.PLUS),equalTo(7.5));
     }
 
     @Test
-    public void BasicWorkoutSet_ShouldGetwWeightRaiseForMinusTendency() {
-        workoutSet = new BasicWorkoutSet("MinusTendency",sets,5.0);
+    public void BasicWorkoutSet_ShouldGetWeightRaiseForMinusTendency() {
+        workoutSet = createWorkoutSet(15.0,5.0);
+
+        assertThat(workoutSet.getWeightRaise(Tendency.MINUS),equalTo(10.0));
+    }
+
+    @Test
+    public void BasicWorkoutSet_ShouldGetWeightRaiseForMinusTendencyWhenRaiseWhouldBeNegative() {
+        workoutSet = createWorkoutSet(2.5,5.0);
+
+        assertThat(workoutSet.getWeightRaise(Tendency.MINUS),equalTo(0.0));
+    }
+
+    private WorkoutSet createWorkoutSet(double weight, double weightRaise) {
+        WorkoutSet workoutSet = new BasicWorkoutSet("MinusTendency",sets,weightRaise);
         Set set = mock(Set.class);
         sets.add(set);
 
-        when(set.getWeight()).thenReturn(15.0);
+        when(set.getWeight()).thenReturn(weight);
 
-        assertThat(workoutSet.getWeightRaise(Tendency.MINUS),equalTo(10.0));
+        return workoutSet;
     }
 }

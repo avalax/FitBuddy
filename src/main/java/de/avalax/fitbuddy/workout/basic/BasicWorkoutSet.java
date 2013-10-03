@@ -83,13 +83,15 @@ public class BasicWorkoutSet implements WorkoutSet {
 
     @Override
     public double getWeightRaise(Tendency tendency) {
-        if (tendency==Tendency.PLUS) {
-            return getCurrentSet().getWeight() + weightRaise;
+        double weight = getCurrentSet().getWeight();
+        switch (tendency) {
+            case MINUS:
+                return getMinusTendencyWeight(weight);
+            case PLUS:
+                return getPlusTendencyWeight(weight);
+            default:
+                return weight;
         }
-        if (tendency==Tendency.MINUS) {
-            return getCurrentSet().getWeight() - weightRaise;
-        }
-        return getCurrentSet().getWeight();
     }
 
     @Override
@@ -132,5 +134,17 @@ public class BasicWorkoutSet implements WorkoutSet {
 
     private boolean isIndexNotNegative(int index) {
         return index >= 0;
+    }
+
+    private double getPlusTendencyWeight(double weight) {
+        return weight + weightRaise;
+    }
+
+    private double getMinusTendencyWeight(double weight) {
+        if (weight - weightRaise < 0)
+        {
+            return 0;
+        }
+        return weight - weightRaise;
     }
 }
