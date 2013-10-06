@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.workout;
 
 import java.io.Serializable;
 
-public interface WorkoutSet extends Serializable {
+public interface Exercise extends Serializable {
     Set getPreviousSet();
     Set getCurrentSet();
     Set getNextSet();

@@ -1,11 +1,11 @@
 package de.avalax.fitbuddy.workout.basic;
 
 
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
-import de.avalax.fitbuddy.workout.WorkoutSet;
-import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
+import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,163 +19,163 @@ import static org.mockito.Mockito.*;
 public class BasicWorkoutTest {
 
     private Workout workout;
-    private List<WorkoutSet> workoutSets;
+    private List<Exercise> exercises;
 
     @Before
     public void setUp() throws Exception {
-        workoutSets = new ArrayList<WorkoutSet>();
-        workout = new BasicWorkout(workoutSets);
+        exercises = new ArrayList<>();
+        workout = new BasicWorkout(exercises);
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnCurrentWorkoutSetOnStartup() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
+    public void BasicWorkout_ShouldReturnCurrentExerciseOnStartup() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
 
-        assertThat(workout.getCurrentWorkoutSet(), equalTo(workoutSet));
+        assertThat(workout.getCurrentExercise(), equalTo(exercise));
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnSecondWorkoutSetAsCurrentWorkoutSet() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
+    public void BasicWorkout_ShouldReturnSecondExerciseAsCurrentExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
 
-        workoutSets.add(mock(WorkoutSet.class));
-        workoutSets.add(workoutSet);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
 
-        workout.setWorkoutSetNumber(2);
+        workout.setExerciseNumber(2);
 
-        assertThat(workout.getCurrentWorkoutSet(), equalTo(workoutSet));
+        assertThat(workout.getCurrentExercise(), equalTo(exercise));
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnPreviousWorkoutSet() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
+    public void BasicWorkout_ShouldReturnPreviousExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
 
-        workoutSets.add(workoutSet);
-        workoutSets.add(mock(WorkoutSet.class));
+        exercises.add(exercise);
+        exercises.add(mock(Exercise.class));
 
-        workout.setWorkoutSetNumber(2);
+        workout.setExerciseNumber(2);
 
-        assertThat(workout.getPreviousWorkoutSet(), equalTo(workoutSet));
+        assertThat(workout.getPreviousExercise(), equalTo(exercise));
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnNextWorkoutSet() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(mock(WorkoutSet.class));
+    public void BasicWorkout_ShouldReturnNextExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
 
-        workoutSets.add(workoutSet);
+        exercises.add(exercise);
 
-        workout.setWorkoutSetNumber(1);
+        workout.setExerciseNumber(1);
 
-        assertThat(workout.getNextWorkoutSet(), equalTo(workoutSet));
+        assertThat(workout.getNextExercise(), equalTo(exercise));
     }
 
-    @Test(expected = WorkoutSetNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWithNoPreviousWorkoutSetAvailable() throws Exception {
-        workoutSets.add(mock(WorkoutSet.class));
+    @Test(expected = ExerciseNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenNoPreviousExerciseAvailable() throws Exception {
+        exercises.add(mock(Exercise.class));
 
-        workout.setWorkoutSetNumber(1);
+        workout.setExerciseNumber(1);
 
-        workout.getPreviousWorkoutSet();
+        workout.getPreviousExercise();
     }
 
-    @Test(expected = WorkoutSetNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWithNoNextWorkoutSetAvailable() throws Exception {
-        workoutSets.add(mock(WorkoutSet.class));
+    @Test(expected = ExerciseNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenNoNextExerciseAvailable() throws Exception {
+        exercises.add(mock(Exercise.class));
 
-        workout.setWorkoutSetNumber(1);
+        workout.setExerciseNumber(1);
 
-        workout.getNextWorkoutSet();
+        workout.getNextExercise();
     }
 
     @Test
     public void BasicWorkout_ShouldReturnCurrentSetOnStartup() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
         Set set = mock(Set.class);
 
-        when(workoutSet.getCurrentSet()).thenReturn(set);
+        when(exercise.getCurrentSet()).thenReturn(set);
 
         assertThat(workout.getCurrentSet(), equalTo(set));
     }
 
     @Test
     public void BasicWorkout_ShouldSetRepetitionsto12() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
 
         workout.setRepetitions(12);
 
-        verify(workoutSet).setRepetitions(12);
+        verify(exercise).setRepetitions(12);
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnRepetitionsFromWorkoutSet() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
-        when(workoutSet.getRepetitions()).thenReturn(12);
+    public void BasicWorkout_ShouldReturnRepetitionsFromExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        when(exercise.getRepetitions()).thenReturn(12);
 
         assertThat(workout.getRepetitions(),equalTo(12));
     }
 
     @Test
-    public void BasicWorkout_ShouldSetTendencyInWorkoutSet() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
-        workoutSets.add(mock(WorkoutSet.class));
+    public void BasicWorkout_ShouldSetTendencyInExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        exercises.add(mock(Exercise.class));
 
         workout.setTendency(Tendency.NEUTRAL);
 
-        verify(workoutSet).setTendency(Tendency.NEUTRAL);
+        verify(exercise).setTendency(Tendency.NEUTRAL);
     }
 
     @Test
     public void BasicWorkout_ShouldSwitchToTheNextWorkout() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(mock(WorkoutSet.class));
-        workoutSets.add(workoutSet);
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
 
-        workout.incrementWorkoutSetNumber();
+        workout.switchToNextExercise();
 
-        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+        assertThat(workout.getCurrentExercise(),equalTo(exercise));
     }
 
-    @Test(expected = WorkoutSetNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingToTheNextWorkoutWhenLastWorkoutSet() throws Exception {
-        workoutSets.add(mock(WorkoutSet.class));
+    @Test(expected = ExerciseNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingFromTheLastExercise() throws Exception {
+        exercises.add(mock(Exercise.class));
 
-        workout.incrementWorkoutSetNumber();
+        workout.switchToNextExercise();
     }
 
     @Test
     public void BasicWorkout_ShouldSwitchToThePreviousWorkout() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(workoutSet);
-        workoutSets.add(mock(WorkoutSet.class));
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        exercises.add(mock(Exercise.class));
 
-        workout.setWorkoutSetNumber(2);
+        workout.setExerciseNumber(2);
 
-        workout.decrementWorkoutSetNumber();
+        workout.switchToPreviousExercise();
 
-        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+        assertThat(workout.getCurrentExercise(),equalTo(exercise));
     }
 
-    @Test(expected = WorkoutSetNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingToThePreviousWorkoutWhenFirstWorkoutSet() throws Exception {
-        workoutSets.add(mock(WorkoutSet.class));
+    @Test(expected = ExerciseNotAvailableException.class)
+    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingFromTheFirstExercise() throws Exception {
+        exercises.add(mock(Exercise.class));
 
-        workout.decrementWorkoutSetNumber();
+        workout.switchToPreviousExercise();
     }
 
     @Test
-    public void BasicWorkout_ShouldSwitchToTheNextWorkoutSetWhenSettingTendency() throws Exception {
-        WorkoutSet workoutSet = mock(WorkoutSet.class);
-        workoutSets.add(mock(WorkoutSet.class));
-        workoutSets.add(workoutSet);
+    public void BasicWorkout_ShouldSwitchToTheNextExerciseWhenSettingTendency() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
 
         workout.setTendency(Tendency.MINUS);
 
-        assertThat(workout.getCurrentWorkoutSet(),equalTo(workoutSet));
+        assertThat(workout.getCurrentExercise(),equalTo(exercise));
     }
 }

@@ -1,20 +1,20 @@
 package de.avalax.fitbuddy.workout.basic;
 
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
-import de.avalax.fitbuddy.workout.WorkoutSet;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 
 import java.util.List;
 
-public class BasicWorkoutSet implements WorkoutSet {
+public class BasicExercise implements Exercise {
     private final String name;
     private final List<Set> sets;
     private double weightRaise;
     private Tendency tendency;
     private int setNumber;
 
-    public BasicWorkoutSet(String name, List<Set> sets, double weightRaise) {
+    public BasicExercise(String name, List<Set> sets, double weightRaise) {
         this.name = name;
         this.sets = sets;
         this.weightRaise = weightRaise;

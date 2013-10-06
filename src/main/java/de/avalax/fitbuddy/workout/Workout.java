@@ -2,14 +2,14 @@ package de.avalax.fitbuddy.workout;
 
 
 public interface Workout {
-    WorkoutSet getPreviousWorkoutSet();
-    WorkoutSet getCurrentWorkoutSet();
-    WorkoutSet getNextWorkoutSet();
+    Exercise getPreviousExercise();
+    Exercise getCurrentExercise();
+    Exercise getNextExercise();
     Set getCurrentSet();
     int getRepetitions();
-    void setWorkoutSetNumber(int workoutSetNumber);
+    void setExerciseNumber(int exerciseNumber);
     void setRepetitions(int repetitions);
     void setTendency(Tendency tendency);
-    void incrementWorkoutSetNumber();
-    void decrementWorkoutSetNumber();
+    void switchToNextExercise();
+    void switchToPreviousExercise();
 }

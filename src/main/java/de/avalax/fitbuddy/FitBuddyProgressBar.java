@@ -9,8 +9,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
-import de.avalax.fitbuddy.workout.WorkoutSet;
 
 public class FitBuddyProgressBar extends View{
 	private Typeface mTypeface  = Typeface.create("sans", Typeface.BOLD);
@@ -19,7 +19,7 @@ public class FitBuddyProgressBar extends View{
 	private float textSize;
 	private int currentValue;
 	private int maxValue;
-	private WorkoutSet workoutSet = null;
+	private Exercise exercise = null;
 
 	public FitBuddyProgressBar(Context context) {
 		super(context);
@@ -83,9 +83,9 @@ public class FitBuddyProgressBar extends View{
 		this.textColor = textColor;
 		postInvalidate();
 	}
-	public void setProgressBar(WorkoutSet workoutSet){
-		setCurrentValue(workoutSet.getSetNumber());
-		setMaxValue(workoutSet.getSetSize());
+	public void setProgressBar(Exercise exercise){
+		setCurrentValue(exercise.getSetNumber());
+		setMaxValue(exercise.getSetSize());
 	}
 	public void setProgressBar(Set set){
 		setCurrentValue(set.getRepetitions());

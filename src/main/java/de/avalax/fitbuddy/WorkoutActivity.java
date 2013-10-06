@@ -6,16 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
-import de.avalax.fitbuddy.workout.WorkoutSet;
+import de.avalax.fitbuddy.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.workout.basic.BasicSet;
 import de.avalax.fitbuddy.workout.basic.BasicWorkout;
-import de.avalax.fitbuddy.workout.basic.BasicWorkoutSet;
+import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 import de.avalax.fitbuddy.workout.exceptions.RepetitionsExceededException;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
-import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 
@@ -48,16 +48,16 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     private void setViews() {
         //TODO: Change to Workout getName()
         //TODO: IOC
-        ((TextView) findViewById(R.id.textViewWorkoutSet)).setText(workout.getCurrentWorkoutSet().getName());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions)).setProgressBar(workout.getCurrentWorkoutSet().getCurrentSet());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentWorkoutSet());
+        ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getCurrentExercise().getName());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions)).setProgressBar(workout.getCurrentExercise().getCurrentSet());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentExercise());
     }
 
     private Workout createTestWorkout() {
-        List<WorkoutSet> workoutSets = new ArrayList<WorkoutSet>();
-        workoutSets.add(new BasicWorkoutSet("Bankdrücken", createSetWithThreeSets(70), 5));
-        workoutSets.add(new BasicWorkoutSet("Situps", createSetWithThreeSets(1.5), 2.5));
-        return new BasicWorkout(workoutSets);
+        List<Exercise> exercises = new ArrayList<Exercise>();
+        exercises.add(new BasicExercise("Bankdrücken", createSetWithThreeSets(70), 5));
+        exercises.add(new BasicExercise("Situps", createSetWithThreeSets(1.5), 2.5));
+        return new BasicWorkout(exercises);
     }
 
     private List<Set> createSetWithThreeSets(double weight) {
@@ -71,17 +71,17 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     public void clickEvent(View v) {
         if (v.getId() == R.id.imageButtonNext) {
             try {
-                workout.incrementWorkoutSetNumber();
+                workout.switchToNextExercise();
                 setViews();
-            } catch (WorkoutSetNotAvailableException e) {
+            } catch (ExerciseNotAvailableException e) {
                 startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
             }
         }
         if (v.getId() == R.id.imageButtonPrevious) {
             try {
-                workout.decrementWorkoutSetNumber();
+                workout.switchToPreviousExercise();
                 setViews();
-            } catch (WorkoutSetNotAvailableException e) {
+            } catch (ExerciseNotAvailableException e) {
                 //TODO: Show next activity
             }
         }
@@ -90,7 +90,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.progressBarRepetitions) {
-            Set currentSet = workout.getCurrentWorkoutSet().getCurrentSet();
+            Set currentSet = workout.getCurrentExercise().getCurrentSet();
             try {
                 currentSet.setRepetitions(currentSet.getRepetitions()+1); //TODO: make method incrementRepetitions
             } catch (RepetitionsExceededException ree) {
@@ -106,14 +106,14 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
 
     private void incrementSetNumber() {
         try {
-            workout.getCurrentWorkoutSet().incrementSetNumber(); //TODO:workout.incrementSetNumber
+            workout.getCurrentExercise().incrementSetNumber(); //TODO:workout.incrementSetNumber
         } catch (SetNotAvailableException snae) {
-            if (workout.getCurrentWorkoutSet().getTendency() == null) {
+            if (workout.getCurrentExercise().getTendency() == null) {
                 startTendencyActivity();
             } else {
                 try {
-                    workout.incrementWorkoutSetNumber();
-                } catch (WorkoutSetNotAvailableException e) {
+                    workout.switchToNextExercise();
+                } catch (ExerciseNotAvailableException e) {
                     startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
                 }
             }
@@ -122,7 +122,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
 
     private void startTendencyActivity() {
         Intent intent = new Intent(getApplicationContext(), TendencyActivity.class);
-        intent.putExtra("workoutSet", workout.getCurrentWorkoutSet());
+        intent.putExtra("exercise", workout.getCurrentExercise());
         startActivityForResult(intent, SET_TENDENCY_ON_RETURN);
     }
 
@@ -138,7 +138,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
                     workout.setTendency(tendency);
                     //TODO: set weight based on tendency and weight step
                     setViews();
-                } catch (WorkoutSetNotAvailableException e) {
+                } catch (ExerciseNotAvailableException e) {
                     startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
                 }
             }

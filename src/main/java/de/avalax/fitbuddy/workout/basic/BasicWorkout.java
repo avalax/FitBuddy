@@ -1,100 +1,100 @@
 package de.avalax.fitbuddy.workout.basic;
 
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
-import de.avalax.fitbuddy.workout.WorkoutSet;
-import de.avalax.fitbuddy.workout.exceptions.WorkoutSetNotAvailableException;
+import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 
 import java.util.List;
 
 public class BasicWorkout implements Workout {
-    private List<WorkoutSet> workoutSets;
-    private int workoutSetNumber;
+    private List<Exercise> exercises;
+    private int exerciseNumber;
 
-    public BasicWorkout(List<WorkoutSet> workoutSets) {
-        this.workoutSets = workoutSets;
-        this.workoutSetNumber = 1;
+    public BasicWorkout(List<Exercise> exercises) {
+        this.exercises = exercises;
+        this.exerciseNumber = 1;
     }
 
     @Override
-    public WorkoutSet getPreviousWorkoutSet() {
-        int index = previousWorkoutSetIndex();
+    public Exercise getPreviousExercise() {
+        int index = previousExerciseIndex();
         if (!isValid(index)) {
-            throw new WorkoutSetNotAvailableException();
+            throw new ExerciseNotAvailableException();
         }
-        return workoutSets.get(index);
+        return exercises.get(index);
     }
 
     @Override
-    public WorkoutSet getCurrentWorkoutSet() {
-        return workoutSets.get(currentWorkoutSetIndex());
+    public Exercise getCurrentExercise() {
+        return exercises.get(currentExerciseIndex());
     }
 
     @Override
-    public WorkoutSet getNextWorkoutSet() {
-        int index = nextWorkoutSetIndex();
+    public Exercise getNextExercise() {
+        int index = nextExerciseIndex();
         if (!isValid(index)){
-            throw new WorkoutSetNotAvailableException();
+            throw new ExerciseNotAvailableException();
         }
-        return workoutSets.get(index);
+        return exercises.get(index);
     }
 
     @Override
-    public void setWorkoutSetNumber(int workoutSetNumber) {
-        this.workoutSetNumber = workoutSetNumber;
+    public void setExerciseNumber(int exerciseNumber) {
+        this.exerciseNumber = exerciseNumber;
     }
 
     @Override
     public void setRepetitions(int repetitions) {
-        getCurrentWorkoutSet().setRepetitions(repetitions);
+        getCurrentExercise().setRepetitions(repetitions);
     }
 
     @Override
     public void setTendency(Tendency tendency) {
-        getCurrentWorkoutSet().setTendency(tendency);
-        incrementWorkoutSetNumber();
+        getCurrentExercise().setTendency(tendency);
+        switchToNextExercise();
     }
 
-    public void incrementWorkoutSetNumber() {
-        if(isValid(nextWorkoutSetIndex())){
-            workoutSetNumber++;
+    public void switchToNextExercise() {
+        if(isValid(nextExerciseIndex())){
+            exerciseNumber++;
         }
         else{
-            throw new WorkoutSetNotAvailableException();
+            throw new ExerciseNotAvailableException();
         }
     }
 
     @Override
-    public void decrementWorkoutSetNumber() {
-        if(isValid(previousWorkoutSetIndex())){
-            workoutSetNumber--;
+    public void switchToPreviousExercise() {
+        if(isValid(previousExerciseIndex())){
+            exerciseNumber--;
         }
         else{
-            throw new WorkoutSetNotAvailableException();
+            throw new ExerciseNotAvailableException();
         }
     }
 
     @Override
     public int getRepetitions() {
-        return getCurrentWorkoutSet().getRepetitions();
+        return getCurrentExercise().getRepetitions();
     }
 
     @Override
     public Set getCurrentSet() {
-        return getCurrentWorkoutSet().getCurrentSet();
+        return getCurrentExercise().getCurrentSet();
     }
 
-    private int previousWorkoutSetIndex() {
-        return currentWorkoutSetIndex() - 1;
+    private int previousExerciseIndex() {
+        return currentExerciseIndex() - 1;
     }
 
-    private int currentWorkoutSetIndex() {
-        return workoutSetNumber - 1;
+    private int currentExerciseIndex() {
+        return exerciseNumber - 1;
     }
 
-    private int nextWorkoutSetIndex() {
-        return currentWorkoutSetIndex()+1;
+    private int nextExerciseIndex() {
+        return currentExerciseIndex()+1;
     }
 
     private boolean isValid(int index) {
@@ -102,7 +102,7 @@ public class BasicWorkout implements Workout {
     }
 
     private boolean isIndexInArray(int index) {
-        return index <= workoutSets.size()-1;
+        return index <= exercises.size()-1;
     }
 
     private boolean isIndexNotNegative(int index) {
