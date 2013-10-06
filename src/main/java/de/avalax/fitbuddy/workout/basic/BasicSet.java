@@ -1,16 +1,16 @@
 package de.avalax.fitbuddy.workout.basic;
 
 import de.avalax.fitbuddy.workout.Set;
-import de.avalax.fitbuddy.workout.exceptions.RepetitionsExceededException;
+import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 
 public class BasicSet implements Set {
     private double weight;
-    private int repetitions;
-		private int maxRepetitions;
+    private int reps;
+		private int maxReps;
 
-	public BasicSet(double weight, int maxRepetitions) {
+	public BasicSet(double weight, int maxReps) {
         this.weight = weight;
-				this.maxRepetitions = maxRepetitions;
+				this.maxReps = maxReps;
     }
 
     @Override
@@ -19,20 +19,20 @@ public class BasicSet implements Set {
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
-        if (repetitions > maxRepetitions) {
-            throw new RepetitionsExceededException();
+    public void setReps(int reps) {
+        if (reps > maxReps) {
+            throw new RepsExceededException();
         }
-        this.repetitions = repetitions;
+        this.reps = reps;
     }
 
     @Override
-    public int getRepetitions() {
-        return repetitions;
+    public int getReps() {
+        return reps;
     }
 
 	@Override
-	public int getMaxRepetition(){
-		return this.maxRepetitions;
+	public int getMaxReps(){
+		return this.maxReps;
 	}
 }

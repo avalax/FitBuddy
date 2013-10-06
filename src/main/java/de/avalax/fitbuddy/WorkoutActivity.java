@@ -14,7 +14,7 @@ import de.avalax.fitbuddy.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.workout.basic.BasicSet;
 import de.avalax.fitbuddy.workout.basic.BasicWorkout;
 import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
-import de.avalax.fitbuddy.workout.exceptions.RepetitionsExceededException;
+import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -37,7 +37,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         getActionBar().setCustomView(R.layout.menu);
         getActionBar().setBackgroundDrawable(null);
         workout = createTestWorkout();
-        FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions);
+        FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarReps);
         repsProgressBar.setOnClickListener(this);
         FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarSets);
         setsProgressBar.setOnClickListener(this);
@@ -49,7 +49,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         //TODO: Change to Workout getName()
         //TODO: IOC
         ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getCurrentExercise().getName());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBarRepetitions)).setProgressBar(workout.getCurrentExercise().getCurrentSet());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarReps)).setProgressBar(workout.getCurrentExercise().getCurrentSet());
         ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentExercise());
     }
 
@@ -89,11 +89,11 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.progressBarRepetitions) {
+        if (v.getId() == R.id.progressBarReps) {
             Set currentSet = workout.getCurrentExercise().getCurrentSet();
             try {
-                currentSet.setRepetitions(currentSet.getRepetitions()+1); //TODO: make method incrementRepetitions
-            } catch (RepetitionsExceededException ree) {
+                currentSet.setReps(currentSet.getReps() + 1); //TODO: make method incrementReps
+            } catch (RepsExceededException ree) {
                 incrementSetNumber();
             }
             ((FitBuddyProgressBar) v).setProgressBar(currentSet);

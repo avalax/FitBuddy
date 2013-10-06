@@ -50,12 +50,12 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnRepetitionsFromSet() throws Exception {
+    public void BasicExercise_ShouldReturnRepsFromSet() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
-        when(set.getRepetitions()).thenReturn(12);
+        when(set.getReps()).thenReturn(12);
 
-        assertThat(exercise.getRepetitions(),equalTo(12));
+        assertThat(exercise.getReps(),equalTo(12));
     }
 
     @Test
@@ -134,23 +134,23 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnNextSetOnSettingRepetitionsForCurrentSet() throws Exception {
+    public void BasicExercise_ShouldReturnNextSetOnSettingRepsForCurrentSet() throws Exception {
         Set set = mock(Set.class);
 
         sets.add(mock(Set.class));
         sets.add(set);
 
-        exercise.setRepetitions(12);
+        exercise.setReps(12);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
         assertThat(exercise.getSetNumber(), equalTo(2));
     }
 
     @Test(expected = SetNotAvailableException.class)
-    public void BasicExercise_ShouldThrowExceptionWhenSettingRepetitionsOnLastSet() throws Exception {
+    public void BasicExercise_ShouldThrowExceptionWhenSettingRepsOnLastSet() throws Exception {
         sets.add(mock(Set.class));
 
-        exercise.setRepetitions(12);
+        exercise.setReps(12);
     }
 
     @Test

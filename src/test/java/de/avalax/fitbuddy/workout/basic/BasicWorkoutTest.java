@@ -101,22 +101,22 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void BasicWorkout_ShouldSetRepetitionsto12() throws Exception {
+    public void BasicWorkout_ShouldSetRepsTo12() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
-        workout.setRepetitions(12);
+        workout.setReps(12);
 
-        verify(exercise).setRepetitions(12);
+        verify(exercise).setReps(12);
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnRepetitionsFromExercise() throws Exception {
+    public void BasicWorkout_ShouldReturnRepsFromExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
-        when(exercise.getRepetitions()).thenReturn(12);
+        when(exercise.getReps()).thenReturn(12);
 
-        assertThat(workout.getRepetitions(),equalTo(12));
+        assertThat(workout.getReps(),equalTo(12));
     }
 
     @Test

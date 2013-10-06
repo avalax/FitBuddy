@@ -6,9 +6,9 @@ public interface Workout {
     Exercise getCurrentExercise();
     Exercise getNextExercise();
     Set getCurrentSet();
-    int getRepetitions();
+    int getReps();
+    void setReps(int reps);
     void setExerciseNumber(int exerciseNumber);
-    void setRepetitions(int repetitions);
     void setTendency(Tendency tendency);
     void switchToNextExercise();
     void switchToPreviousExercise();

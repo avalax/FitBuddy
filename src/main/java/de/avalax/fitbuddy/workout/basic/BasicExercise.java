@@ -57,14 +57,14 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
-        getCurrentSet().setRepetitions(repetitions);
+    public void setReps(int reps) {
+        getCurrentSet().setReps(reps);
         incrementSetNumber();
     }
 
     @Override
-    public int getRepetitions() {
-        return getCurrentSet().getRepetitions();
+    public int getReps() {
+        return getCurrentSet().getReps();
     }
 
     public void incrementSetNumber() {

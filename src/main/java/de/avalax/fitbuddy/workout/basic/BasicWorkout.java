@@ -46,8 +46,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
-        getCurrentExercise().setRepetitions(repetitions);
+    public void setReps(int reps) {
+        getCurrentExercise().setReps(reps);
     }
 
     @Override
@@ -76,8 +76,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public int getRepetitions() {
-        return getCurrentExercise().getRepetitions();
+    public int getReps() {
+        return getCurrentExercise().getReps();
     }
 
     @Override
