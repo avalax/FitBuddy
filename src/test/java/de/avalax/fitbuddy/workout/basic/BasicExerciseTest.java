@@ -79,48 +79,6 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnPreviousSet() throws Exception {
-        Set set = mock(Set.class);
-
-        sets.add(set);
-        sets.add(mock(Set.class));
-
-        exercise.setSetNumber(2);
-
-        assertThat(exercise.getPreviousSet(), equalTo(set));
-    }
-
-    @Test
-    public void BasicExercise_ShouldReturnNextSet() throws Exception {
-        Set set = mock(Set.class);
-
-        sets.add(mock(Set.class));
-        sets.add(set);
-
-        exercise.setSetNumber(1);
-
-        assertThat(exercise.getNextSet(), equalTo(set));
-    }
-
-    @Test(expected = SetNotAvailableException.class)
-    public void BasicExercise_ShouldThrowExceptionWithNoPreviousSetAvailable() throws Exception {
-        sets.add(mock(Set.class));
-
-        exercise.setSetNumber(1);
-
-        exercise.getPreviousSet();
-    }
-
-    @Test(expected = SetNotAvailableException.class)
-    public void BasicExercise_ShouldThrowExceptionWithNoNextSetAvailable() throws Exception {
-        sets.add(mock(Set.class));
-
-        exercise.setSetNumber(1);
-
-        exercise.getNextSet();
-    }
-
-    @Test
     public void BasicExercise_ShouldReturnNextSetOnIncrementSet() throws Exception {
         Set set = mock(Set.class);
 

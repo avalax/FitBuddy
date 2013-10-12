@@ -3,9 +3,7 @@ package de.avalax.fitbuddy.workout;
 import java.io.Serializable;
 
 public interface Exercise extends Serializable {
-    Set getPreviousSet();
     Set getCurrentSet();
-    Set getNextSet();
     String getName();
     Tendency getTendency();
     int getSetSize();

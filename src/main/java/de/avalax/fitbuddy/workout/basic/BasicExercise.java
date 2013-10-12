@@ -94,28 +94,6 @@ public class BasicExercise implements Exercise {
         }
     }
 
-    @Override
-    public Set getPreviousSet() {
-        int index = previousSetIndex();
-        if (!isValid(index)) {
-            throw new SetNotAvailableException();
-        }
-        return sets.get(index);
-    }
-
-    @Override
-    public Set getNextSet() {
-        int index = nextSetIndex();
-        if (!isValid(index)){
-            throw new SetNotAvailableException();
-        }
-        return sets.get(index);
-    }
-
-    private int previousSetIndex() {
-        return currentSetIndex() - 1;
-    }
-
     private int currentSetIndex() {
         return setNumber - 1;
     }
