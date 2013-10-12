@@ -1,9 +1,7 @@
 package de.avalax.fitbuddy;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Workout;
 import roboguice.fragment.RoboFragment;
