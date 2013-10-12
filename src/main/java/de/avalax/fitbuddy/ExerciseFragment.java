@@ -4,21 +4,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.inject.Inject;
+import de.avalax.fitbuddy.workout.Workout;
 import roboguice.fragment.RoboFragment;
 
-public class ExerciseFragment extends RoboFragment{
-	public static final String MAX_REPS = "max_reps";
-	public static final String MAX_SETS = "max_sets";
+public class ExerciseFragment extends RoboFragment {
+
+    @Inject
+    private Workout workout;
+
+    private int exerciseIndex;
+
+    public ExerciseFragment(int exerciseIndex) {
+        this.exerciseIndex = exerciseIndex;
+    }
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_exercise_object, container, false);
-		Bundle args = getArguments();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_exercise_object, container, false);
+        Bundle args = getArguments();
 
-		int maxReps = args.getInt(MAX_REPS);
-		int maxSets = args.getInt(MAX_SETS);
+        int maxReps = workout.getCurrentSet(exerciseIndex).getRepsSize();
+        int maxSets = workout.getExercise(exerciseIndex).getSetSize();
 
         FitBuddyProgressBar fitBuddyProgressBarReps = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarReps);
         fitBuddyProgressBarReps.setMaxValue(maxReps);
@@ -27,6 +36,6 @@ public class ExerciseFragment extends RoboFragment{
         fitBuddyProgressBarSets.setCurrentValue(1);
 
 
-		return rootView;
-	}
+        return rootView;
+    }
 }

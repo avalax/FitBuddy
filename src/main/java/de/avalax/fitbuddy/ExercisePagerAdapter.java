@@ -1,11 +1,8 @@
 package de.avalax.fitbuddy;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
-
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
 
@@ -19,14 +16,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter{
 
 	@Override
 	public Fragment getItem(int exerciseIndex){
-		Fragment fragment = new ExerciseFragment();
-		Bundle args = new Bundle();
-
-		Exercise currentExercise = workout.getExercise(exerciseIndex);
-		args.putInt(ExerciseFragment.MAX_REPS, currentExercise.getCurrentSet().getRepsSize());//TODO:CurrentExercise getRepsSize
-		args.putInt(ExerciseFragment.MAX_SETS, currentExercise.getSetSize());
-		fragment.setArguments(args);
-		return fragment;
+		return new ExerciseFragment(exerciseIndex);
 	}
 
 	@Override
