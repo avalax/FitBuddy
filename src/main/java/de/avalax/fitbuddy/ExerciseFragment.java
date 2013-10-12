@@ -26,10 +26,10 @@ public class ExerciseFragment extends RoboFragment {
 
         FitBuddyProgressBar fitBuddyProgressBarReps = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarReps);
         fitBuddyProgressBarReps.setMaxValue(maxReps);
+        fitBuddyProgressBarReps.setCurrentValue(workout.getCurrentSet(exerciseIndex).getReps());
         FitBuddyProgressBar fitBuddyProgressBarSets = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarSets);
         fitBuddyProgressBarSets.setMaxValue(maxSets);
-        fitBuddyProgressBarSets.setCurrentValue(1);
-
+        fitBuddyProgressBarSets.setCurrentValue(workout.getExercise(exerciseIndex).getSetNumber());
 
         return rootView;
     }
