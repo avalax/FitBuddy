@@ -28,11 +28,20 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnCurrentExerciseOnStartup() throws Exception {
+    public void getExerciseCount_ShouldReturnCountOfExercises() throws Exception {
+        exercises.add(mock(Exercise.class));
+        exercises.add(mock(Exercise.class));
+        exercises.add(mock(Exercise.class));
+
+        assertThat(workout.getExerciseCount(), equalTo(exercises.size()));
+    }
+
+    @Test
+    public void BasicWorkout_ShouldReturnFistExerciseOnStartup() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
-        assertThat(workout.getCurrentExercise(), equalTo(exercise));
+        assertThat(workout.getExercise(0), equalTo(exercise));
     }
 
     @Test

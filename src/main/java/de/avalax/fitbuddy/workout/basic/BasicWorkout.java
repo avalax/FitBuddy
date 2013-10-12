@@ -23,6 +23,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public Exercise getExercise(int position) {
+        return exercises.get(position);
+    }
+
+    @Override
     public void setExerciseNumber(int exerciseNumber) {
         this.exerciseNumber = exerciseNumber;
     }
@@ -55,6 +60,11 @@ public class BasicWorkout implements Workout {
         else{
             throw new ExerciseNotAvailableException();
         }
+    }
+
+    @Override
+    public int getExerciseCount() {
+        return exercises.size();
     }
 
     @Override

@@ -36,6 +36,20 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
+    public void getExerciseCount_shouldCallGetExerciseCountFromWorkout() throws Exception {
+        persistenceWorkout.getExerciseCount();
+
+        verify(workout).getExerciseCount();
+    }
+
+    @Test
+    public void getExercise_shouldCallGetExerciseFromWorkout() throws Exception {
+        persistenceWorkout.getExercise(1);
+
+        verify(workout).getExercise(1);
+    }
+
+    @Test
     public void getCurrentSet_shouldCallGetCurrentSetFromWorkout() throws Exception {
         persistenceWorkout.getCurrentSet();
 

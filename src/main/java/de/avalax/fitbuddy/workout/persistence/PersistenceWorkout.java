@@ -22,6 +22,11 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public Exercise getExercise(int position) {
+        return workout.getExercise(position);
+    }
+
+    @Override
     public Set getCurrentSet() {
         return workout.getCurrentSet();
     }
@@ -54,5 +59,10 @@ public class PersistenceWorkout implements Workout{
     @Override
     public void switchToPreviousExercise() {
         workout.switchToPreviousExercise();
+    }
+
+    @Override
+    public int getExerciseCount() {
+        return workout.getExerciseCount();
     }
 }
