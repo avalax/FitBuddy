@@ -34,8 +34,13 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Set getCurrentSet(int exercisePosition) {
-        return getExercise(exercisePosition).getCurrentSet();
+    public Set getCurrentSet(int position) {
+        return getExercise(position).getCurrentSet();
+    }
+
+    @Override
+    public String getName(int position) {
+        return getExercise(position).getName();
     }
 
     @Override

@@ -88,6 +88,16 @@ public class BasicWorkoutTest {
         assertThat(workout.getReps(exercisePosition),equalTo(12));
     }
 
+
+    @Test
+    public void getName_ShouldReturnNameFromExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        when(exercise.getName()).thenReturn("NameOfExercise");
+
+        assertThat(workout.getName(exercisePosition),equalTo("NameOfExercise"));
+    }
+
     @Test
     public void setTendency_ShouldSetTendencyInExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
@@ -106,7 +116,6 @@ public class BasicWorkoutTest {
 
         workout.getExercise(nextExercisePosition);
     }
-
 
     @Test(expected = ExerciseNotAvailableException.class)
     public void BasicWorkout_ShouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {

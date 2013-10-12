@@ -43,9 +43,8 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     }
 
     private void setViews(int exercisePosition) {
-        //TODO: Change to Workout getName()
         //TODO: IOC
-        ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getExercise(exercisePosition).getName());
+        ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getName(exercisePosition));
         ((FitBuddyProgressBar) findViewById(R.id.progressBarReps)).setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
         ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getExercise(exercisePosition));
     }

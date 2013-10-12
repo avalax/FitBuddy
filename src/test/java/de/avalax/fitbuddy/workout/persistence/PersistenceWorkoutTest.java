@@ -59,6 +59,13 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
+    public void getName_shouldCallGetNameFromWorkout() throws Exception {
+        persistenceWorkout.getName(exercisePosition);
+
+        verify(workout).getName(exercisePosition);
+    }
+
+    @Test
     public void setReps_shouldCallSetRepsFromWorkout() throws Exception {
         int repsCount = 12;
         persistenceWorkout.setReps(exercisePosition, repsCount);

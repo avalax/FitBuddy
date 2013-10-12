@@ -11,4 +11,5 @@ public interface Workout {
     void setReps(int position, int reps);
     void setTendency(int position, Tendency tendency);
     Set getCurrentSet(int exercisePosition);
+    String getName(int position);
 }

@@ -27,6 +27,11 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public String getName(int position) {
+        return workout.getName(position);
+    }
+
+    @Override
     public int getReps(int position) {
         return workout.getReps(position);
     }
