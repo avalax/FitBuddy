@@ -13,18 +13,13 @@ public class ExerciseFragment extends RoboFragment {
     @Inject
     private Workout workout;
 
-    private int exerciseIndex;
-
-    public ExerciseFragment(int exerciseIndex) {
-        this.exerciseIndex = exerciseIndex;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_exercise_object, container, false);
         Bundle args = getArguments();
+
+        int exerciseIndex = args.getInt("exerciseIndex");
 
         int maxReps = workout.getCurrentSet(exerciseIndex).getRepsSize();
         int maxSets = workout.getExercise(exerciseIndex).getSetSize();
