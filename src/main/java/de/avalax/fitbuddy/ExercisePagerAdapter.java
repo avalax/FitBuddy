@@ -17,23 +17,31 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int exerciseIndex) {
-        Fragment fragment = new ExerciseFragment();
-        Bundle args = new Bundle();
-        args.putInt("exerciseIndex", exerciseIndex);
-        fragment.setArguments(args);
+        if (exerciseIndex < workout.getExerciseCount()) {
+            Fragment fragment = new ExerciseFragment();
+            Bundle args = new Bundle();
+            args.putInt("exerciseIndex", exerciseIndex);
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } else {
+            return new WorkoutResultFragment();
+        }
     }
 
     @Override
     public int getCount() {
-        return workout.getExerciseCount();
+        return workout.getExerciseCount() + 1;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Exercise currentExercise = workout.getExercise(position);
+        if (position < workout.getExerciseCount()) {
+            Exercise currentExercise = workout.getExercise(position);
 
-        return currentExercise.getName();
+            return currentExercise.getName();
+        } else {
+            return "Ergebnis"; //TODO: move to strings.xml
+        }
     }
 }

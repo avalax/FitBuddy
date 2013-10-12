@@ -1,18 +1,16 @@
 package de.avalax.fitbuddy;
+
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.graphics.*;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
-
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 
-public class FitBuddyProgressBar extends View{
+public class FitBuddyProgressBar extends View {
 	private Typeface mTypeface  = Typeface.create("sans", Typeface.BOLD);
 	private int textColor;
 	private int barColor;
@@ -20,15 +18,18 @@ public class FitBuddyProgressBar extends View{
 	private int currentValue;
 	private int maxValue;
 	private Exercise exercise = null;
-
-	public FitBuddyProgressBar(Context context) {
-		super(context);
-	}
+    private GestureDetector gestureDetector;
 
 	public FitBuddyProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setAttrs(attrs);
+        gestureDetector = new GestureDetector(new ProgressBarGestureListener());
 	}
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
 
 	private void setAttrs(AttributeSet attrs) {
 		if (attrs != null) {
