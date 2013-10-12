@@ -14,7 +14,7 @@ public interface Exercise extends Serializable {
     void setSetNumber(int setNumber);
     void setReps(int reps);
     int getReps();
-    void incrementSetNumber();
+    void incrementSet();
     double getWeight();
     double getWeightRaise(Tendency plus);
 }

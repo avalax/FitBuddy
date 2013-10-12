@@ -127,7 +127,7 @@ public class BasicExerciseTest {
         sets.add(mock(Set.class));
         sets.add(set);
 
-        exercise.incrementSetNumber();
+        exercise.incrementSet();
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
         assertThat(exercise.getSetNumber(), equalTo(2));

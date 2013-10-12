@@ -62,9 +62,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
             try {
                 exercisePosition--;
                 setViews(exercisePosition);
-            } catch (ExerciseNotAvailableException e) {
-                //TODO: Show next activity
-            }
+            } catch (ExerciseNotAvailableException e) {}
         }
     }
 
@@ -80,7 +78,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         if (v.getId() == R.id.progressBarReps) {
             Set currentSet = workout.getExercise(exercisePosition).getCurrentSet();
             try {
-                currentSet.setReps(currentSet.getReps() + 1); //TODO: make method incrementReps
+                currentSet.setReps(currentSet.getReps() + 1);
             } catch (RepsExceededException ree) {
                 incrementSetNumber();
             }
@@ -98,7 +96,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
 
     private void incrementSetNumber() {
         try {
-            workout.getExercise(exercisePosition).incrementSetNumber(); //TODO:workout.incrementSetNumber
+            workout.incrementSet(exercisePosition);
         } catch (SetNotAvailableException snae) {
             if (workout.getExercise(exercisePosition).getTendency() == null) {
                 startTendencyActivity();

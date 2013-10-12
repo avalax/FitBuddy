@@ -10,6 +10,7 @@ public interface Workout {
     int getReps(int position);
     void setReps(int position, int reps);
     void setTendency(int position, Tendency tendency);
-    Set getCurrentSet(int exercisePosition);
+    void incrementSet(int position);
+    Set getCurrentSet(int position);
     String getName(int position);
 }

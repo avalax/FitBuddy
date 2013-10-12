@@ -30,7 +30,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getExerciseCount_ShouldReturnCountOfExercises() throws Exception {
+    public void getExerciseCount_shouldReturnCountOfExercises() throws Exception {
         exercises.add(mock(Exercise.class));
         exercises.add(mock(Exercise.class));
         exercises.add(mock(Exercise.class));
@@ -39,7 +39,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getExercise_ShouldReturnFistExercise() throws Exception {
+    public void getExercise_shouldReturnFistExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
@@ -47,7 +47,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getExercise_ShouldReturnSecondExercise() throws Exception {
+    public void getExercise_shouldReturnSecondExercise() throws Exception {
         int exercisePosition = 1;
         Exercise exercise = mock(Exercise.class);
 
@@ -58,7 +58,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getCurrentSet_ShouldReturnCurrentSet() throws Exception {
+    public void getCurrentSet_shouldReturnCurrentSet() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         Set set = mock(Set.class);
@@ -69,7 +69,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void setReps_ShouldSetRepsTo12() throws Exception {
+    public void setReps_shouldSetRepsTo12() throws Exception {
 
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
@@ -80,7 +80,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getReps_ShouldReturnRepsFromExercise() throws Exception {
+    public void getReps_shouldReturnRepsFromExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         when(exercise.getReps()).thenReturn(12);
@@ -90,7 +90,7 @@ public class BasicWorkoutTest {
 
 
     @Test
-    public void getName_ShouldReturnNameFromExercise() throws Exception {
+    public void getName_shouldReturnNameFromExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         when(exercise.getName()).thenReturn("NameOfExercise");
@@ -99,7 +99,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void setTendency_ShouldSetTendencyInExercise() throws Exception {
+    public void setTendency_shouldSetTendencyInExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         exercises.add(mock(Exercise.class));
@@ -109,8 +109,20 @@ public class BasicWorkoutTest {
         verify(exercise).setTendency(Tendency.NEUTRAL);
     }
 
+    @Test
+    public void incrementSet_shouldIncrementSetFromExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        exercises.add(mock(Exercise.class));
+
+        workout.incrementSet(exercisePosition);
+
+        verify(exercise).incrementSet();
+
+    }
+
     @Test(expected = ExerciseNotAvailableException.class)
-    public void getExercise_ShouldThrowExerciseNotAvailableExceptionWhenPositionIsGreaterThanExerciseCount() throws Exception {
+    public void getExercise_shouldThrowExerciseNotAvailableExceptionWhenPositionIsGreaterThanExerciseCount() throws Exception {
         int nextExercisePosition = 1;
         exercises.add(mock(Exercise.class));
 
@@ -118,7 +130,7 @@ public class BasicWorkoutTest {
     }
 
     @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
+    public void BasicWorkout_shouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
         int previousExercise = -1;
         exercises.add(mock(Exercise.class));
 

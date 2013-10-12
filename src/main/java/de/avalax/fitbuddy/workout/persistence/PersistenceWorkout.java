@@ -47,6 +47,11 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public void incrementSet(int position) {
+        workout.incrementSet(position);
+    }
+
+    @Override
     public int getExerciseCount() {
         return workout.getExerciseCount();
     }

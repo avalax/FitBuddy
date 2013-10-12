@@ -59,7 +59,7 @@ public class BasicExercise implements Exercise {
     @Override
     public void setReps(int reps) {
         getCurrentSet().setReps(reps);
-        incrementSetNumber();
+        incrementSet();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BasicExercise implements Exercise {
         return getCurrentSet().getReps();
     }
 
-    public void incrementSetNumber() {
+    public void incrementSet() {
         if(isValid(nextSetIndex())){
             setNumber++;
         }

@@ -66,6 +66,13 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
+    public void incrementSet_shouldCallIncrementSetFromWorkout() throws Exception {
+        persistenceWorkout.incrementSet(exercisePosition);
+
+        verify(workout).incrementSet(exercisePosition);
+    }
+
+    @Test
     public void setReps_shouldCallSetRepsFromWorkout() throws Exception {
         int repsCount = 12;
         persistenceWorkout.setReps(exercisePosition, repsCount);
