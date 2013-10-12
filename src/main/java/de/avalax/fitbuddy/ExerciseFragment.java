@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Workout;
@@ -28,6 +29,30 @@ public class ExerciseFragment extends RoboFragment {
         FitBuddyProgressBar fitBuddyProgressBarSets = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarSets);
         fitBuddyProgressBarSets.setMaxValue(maxSets);
         fitBuddyProgressBarSets.setCurrentValue(workout.getExercise(exerciseIndex).getSetNumber());
+
+        fitBuddyProgressBarReps.setOnTouchListener(new ProgressBarGestureListener() {
+            @Override
+            public void onBottomToTop() {
+                Log.d(null,"fitBuddyProgressBarReps: onBottomToTop");
+            }
+
+            @Override
+            public void onTopToBottom() {
+                Log.d(null,"fitBuddyProgressBarReps: onTopToBottom");
+            }
+        });
+
+        fitBuddyProgressBarSets.setOnTouchListener(new ProgressBarGestureListener() {
+            @Override
+            public void onBottomToTop() {
+                Log.d(null,"fitBuddyProgressBarSets: onBottomToTop");
+            }
+
+            @Override
+            public void onTopToBottom() {
+                Log.d(null,"fitBuddyProgressBarSets: onTopToBottom");
+            }
+        });
 
         return rootView;
     }

@@ -14,7 +14,7 @@ import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 
-@ContentView(R.layout.workout)
+@ContentView(R.layout.exercise)
 public class WorkoutActivity extends RoboFragmentActivity {
 
     private static final int SET_TENDENCY_ON_RETURN = 1;
