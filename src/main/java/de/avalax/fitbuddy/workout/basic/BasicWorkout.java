@@ -35,7 +35,7 @@ public class BasicWorkout implements Workout {
 
     @Override
     public void incrementSet(int position) {
-        getExercise(position).incrementSet();
+        getExercise(position).incrementCurrentSet();
     }
 
     @Override

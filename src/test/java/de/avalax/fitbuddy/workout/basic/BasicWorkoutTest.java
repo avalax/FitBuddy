@@ -117,7 +117,7 @@ public class BasicWorkoutTest {
 
         workout.incrementSet(exercisePosition);
 
-        verify(exercise).incrementSet();
+        verify(exercise).incrementCurrentSet();
 
     }
 
