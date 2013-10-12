@@ -1,6 +1,9 @@
 package de.avalax.fitbuddy.workout;
 
+import com.google.inject.ImplementedBy;
+import de.avalax.fitbuddy.workout.persistence.PersistenceWorkout;
 
+@ImplementedBy(PersistenceWorkout.class)
 public interface Workout {
     Exercise getPreviousExercise();
     Exercise getCurrentExercise();

@@ -6,27 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import de.avalax.fitbuddy.workout.Exercise;
+import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
-import de.avalax.fitbuddy.workout.basic.BasicExercise;
-import de.avalax.fitbuddy.workout.basic.BasicSet;
-import de.avalax.fitbuddy.workout.basic.BasicWorkout;
 import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @ContentView(R.layout.workout)
 public class WorkoutActivity extends RoboActivity implements View.OnClickListener{
 
     private static final int SET_TENDENCY_ON_RETURN = 1;
     private static final int DO_QUIT_ON_RESULT = 2;
+
+    @Inject
     private Workout workout;
 
     @Override
@@ -36,7 +32,6 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.menu);
         getActionBar().setBackgroundDrawable(null);
-        workout = createTestWorkout();
         FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarReps);
         repsProgressBar.setOnClickListener(this);
         FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarSets);
@@ -51,21 +46,6 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getCurrentExercise().getName());
         ((FitBuddyProgressBar) findViewById(R.id.progressBarReps)).setProgressBar(workout.getCurrentExercise().getCurrentSet());
         ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentExercise());
-    }
-
-    private Workout createTestWorkout() {
-        List<Exercise> exercises = new ArrayList<Exercise>();
-        exercises.add(new BasicExercise("Bankdrücken", createSetWithThreeSets(70), 5));
-        exercises.add(new BasicExercise("Situps", createSetWithThreeSets(1.5), 2.5));
-        return new BasicWorkout(exercises);
-    }
-
-    private List<Set> createSetWithThreeSets(double weight) {
-        List<Set> sets = new ArrayList<Set>();
-        sets.add(new BasicSet(weight, 15));
-        sets.add(new BasicSet(weight, 15));
-        sets.add(new BasicSet(weight, 15));
-        return sets;
     }
 
     public void clickEvent(View v) {
