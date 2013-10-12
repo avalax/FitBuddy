@@ -20,9 +20,11 @@ public class BasicWorkoutTest {
 
     private Workout workout;
     private List<Exercise> exercises;
+    private int exercisePosition;
 
     @Before
     public void setUp() throws Exception {
+        exercisePosition = 0;
         exercises = new ArrayList<>();
         workout = new BasicWorkout(exercises);
     }
@@ -37,7 +39,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnFistExerciseOnStartup() throws Exception {
+    public void getExercise_ShouldReturnFistExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
@@ -45,104 +47,72 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnSecondExerciseAsCurrentExercise() throws Exception {
+    public void getExercise_ShouldReturnSecondExercise() throws Exception {
+        int exercisePosition = 1;
         Exercise exercise = mock(Exercise.class);
 
         exercises.add(mock(Exercise.class));
         exercises.add(exercise);
 
-        workout.setExerciseNumber(2);
-
-        assertThat(workout.getCurrentExercise(), equalTo(exercise));
+        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnCurrentSetOnStartup() throws Exception {
+    public void getCurrentSet_ShouldReturnCurrentSet() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         Set set = mock(Set.class);
 
         when(exercise.getCurrentSet()).thenReturn(set);
 
-        assertThat(workout.getCurrentSet(), equalTo(set));
+        assertThat(workout.getCurrentSet(exercisePosition), equalTo(set));
     }
 
     @Test
-    public void BasicWorkout_ShouldSetRepsTo12() throws Exception {
+    public void setReps_ShouldSetRepsTo12() throws Exception {
+
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
-        workout.setReps(12);
+        workout.setReps(exercisePosition,12);
 
         verify(exercise).setReps(12);
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnRepsFromExercise() throws Exception {
+    public void getReps_ShouldReturnRepsFromExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         when(exercise.getReps()).thenReturn(12);
 
-        assertThat(workout.getReps(),equalTo(12));
+        assertThat(workout.getReps(exercisePosition),equalTo(12));
     }
 
     @Test
-    public void BasicWorkout_ShouldSetTendencyInExercise() throws Exception {
+    public void setTendency_ShouldSetTendencyInExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         exercises.add(mock(Exercise.class));
 
-        workout.setTendency(Tendency.NEUTRAL);
+        workout.setTendency(exercisePosition,Tendency.NEUTRAL);
 
         verify(exercise).setTendency(Tendency.NEUTRAL);
     }
 
-    @Test
-    public void BasicWorkout_ShouldSwitchToTheNextWorkout() throws Exception {
-        Exercise exercise = mock(Exercise.class);
+    @Test(expected = ExerciseNotAvailableException.class)
+    public void getExercise_ShouldThrowExerciseNotAvailableExceptionWhenPositionIsGreaterThanExerciseCount() throws Exception {
+        int nextExercisePosition = 1;
         exercises.add(mock(Exercise.class));
-        exercises.add(exercise);
 
-        workout.switchToNextExercise();
-
-        assertThat(workout.getCurrentExercise(),equalTo(exercise));
+        workout.getExercise(nextExercisePosition);
     }
+
 
     @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingFromTheLastExercise() throws Exception {
+    public void BasicWorkout_ShouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
+        int previousExercise = -1;
         exercises.add(mock(Exercise.class));
 
-        workout.switchToNextExercise();
-    }
-
-    @Test
-    public void BasicWorkout_ShouldSwitchToThePreviousWorkout() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        exercises.add(mock(Exercise.class));
-
-        workout.setExerciseNumber(2);
-
-        workout.switchToPreviousExercise();
-
-        assertThat(workout.getCurrentExercise(),equalTo(exercise));
-    }
-
-    @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenSwitchingFromTheFirstExercise() throws Exception {
-        exercises.add(mock(Exercise.class));
-
-        workout.switchToPreviousExercise();
-    }
-
-    @Test
-    public void BasicWorkout_ShouldSwitchToTheNextExerciseWhenSettingTendency() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(mock(Exercise.class));
-        exercises.add(exercise);
-
-        workout.setTendency(Tendency.MINUS);
-
-        assertThat(workout.getCurrentExercise(),equalTo(exercise));
+        workout.getExercise(previousExercise);
     }
 }

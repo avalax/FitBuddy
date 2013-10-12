@@ -10,56 +10,32 @@ import java.util.List;
 
 public class BasicWorkout implements Workout {
     private List<Exercise> exercises;
-    private int exerciseNumber;
 
     public BasicWorkout(List<Exercise> exercises) {
         this.exercises = exercises;
-        this.exerciseNumber = 1;
-    }
-
-    @Override
-    public Exercise getCurrentExercise() {
-        return exercises.get(currentExerciseIndex());
     }
 
     @Override
     public Exercise getExercise(int position) {
+        if (!isValid(position)) {
+            throw new ExerciseNotAvailableException();
+        }
         return exercises.get(position);
     }
 
     @Override
-    public void setExerciseNumber(int exerciseNumber) {
-        this.exerciseNumber = exerciseNumber;
+    public void setReps(int position,int reps) {
+        getExercise(position).setReps(reps);
     }
 
     @Override
-    public void setReps(int reps) {
-        getCurrentExercise().setReps(reps);
+    public void setTendency(int position, Tendency tendency) {
+        getExercise(position).setTendency(tendency);
     }
 
     @Override
-    public void setTendency(Tendency tendency) {
-        getCurrentExercise().setTendency(tendency);
-        switchToNextExercise();
-    }
-
-    public void switchToNextExercise() {
-        if(isValid(nextExerciseIndex())){
-            exerciseNumber++;
-        }
-        else{
-            throw new ExerciseNotAvailableException();
-        }
-    }
-
-    @Override
-    public void switchToPreviousExercise() {
-        if(isValid(previousExerciseIndex())){
-            exerciseNumber--;
-        }
-        else{
-            throw new ExerciseNotAvailableException();
-        }
+    public Set getCurrentSet(int exercisePosition) {
+        return getExercise(exercisePosition).getCurrentSet();
     }
 
     @Override
@@ -68,25 +44,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public int getReps() {
-        return getCurrentExercise().getReps();
-    }
-
-    @Override
-    public Set getCurrentSet() {
-        return getCurrentExercise().getCurrentSet();
-    }
-
-    private int previousExerciseIndex() {
-        return currentExerciseIndex() - 1;
-    }
-
-    private int currentExerciseIndex() {
-        return exerciseNumber - 1;
-    }
-
-    private int nextExerciseIndex() {
-        return currentExerciseIndex()+1;
+    public int getReps(int position) {
+        return getExercise(position).getReps();
     }
 
     private boolean isValid(int index) {

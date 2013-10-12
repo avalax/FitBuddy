@@ -17,13 +17,15 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.workout)
-public class WorkoutActivity extends RoboActivity implements View.OnClickListener{
+public class WorkoutActivity extends RoboActivity implements View.OnClickListener {
 
     private static final int SET_TENDENCY_ON_RETURN = 1;
     private static final int DO_QUIT_ON_RESULT = 2;
 
     @Inject
     private Workout workout;
+
+    private int exercisePosition = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,41 +38,48 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         repsProgressBar.setOnClickListener(this);
         FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarSets);
         setsProgressBar.setOnClickListener(this);
-        setViews();
+        setViews(exercisePosition);
 
     }
 
-    private void setViews() {
+    private void setViews(int exercisePosition) {
         //TODO: Change to Workout getName()
         //TODO: IOC
-        ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getCurrentExercise().getName());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBarReps)).setProgressBar(workout.getCurrentExercise().getCurrentSet());
-        ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getCurrentExercise());
+        ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getExercise(exercisePosition).getName());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarReps)).setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
+        ((FitBuddyProgressBar) findViewById(R.id.progressBarSets)).setProgressBar(workout.getExercise(exercisePosition));
     }
 
     public void clickEvent(View v) {
         if (v.getId() == R.id.imageButtonNext) {
             try {
-                workout.switchToNextExercise();
-                setViews();
+                exercisePosition++;
+                setViews(exercisePosition);
             } catch (ExerciseNotAvailableException e) {
-                startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
+                startWorkoutResultActivity();
             }
         }
         if (v.getId() == R.id.imageButtonPrevious) {
             try {
-                workout.switchToPreviousExercise();
-                setViews();
+                exercisePosition--;
+                setViews(exercisePosition);
             } catch (ExerciseNotAvailableException e) {
                 //TODO: Show next activity
             }
         }
     }
 
+    private void startWorkoutResultActivity() {
+        if (exercisePosition == workout.getExerciseCount()) {
+            exercisePosition--;
+        }
+        startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.progressBarReps) {
-            Set currentSet = workout.getCurrentExercise().getCurrentSet();
+            Set currentSet = workout.getExercise(exercisePosition).getCurrentSet();
             try {
                 currentSet.setReps(currentSet.getReps() + 1); //TODO: make method incrementReps
             } catch (RepsExceededException ree) {
@@ -81,28 +90,28 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         if (v.getId() == R.id.progressBarSets) {
             incrementSetNumber();
         }
-        setViews();
+        try {
+            setViews(exercisePosition);
+        } catch (ExerciseNotAvailableException e) {
+            startWorkoutResultActivity();
+        }
     }
 
     private void incrementSetNumber() {
         try {
-            workout.getCurrentExercise().incrementSetNumber(); //TODO:workout.incrementSetNumber
+            workout.getExercise(exercisePosition).incrementSetNumber(); //TODO:workout.incrementSetNumber
         } catch (SetNotAvailableException snae) {
-            if (workout.getCurrentExercise().getTendency() == null) {
+            if (workout.getExercise(exercisePosition).getTendency() == null) {
                 startTendencyActivity();
             } else {
-                try {
-                    workout.switchToNextExercise();
-                } catch (ExerciseNotAvailableException e) {
-                    startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
-                }
+                exercisePosition++;
             }
         }
     }
 
     private void startTendencyActivity() {
         Intent intent = new Intent(getApplicationContext(), TendencyActivity.class);
-        intent.putExtra("exercise", workout.getCurrentExercise());
+        intent.putExtra("exercise", workout.getExercise(exercisePosition));
         startActivityForResult(intent, SET_TENDENCY_ON_RETURN);
     }
 
@@ -115,11 +124,11 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
             if (requestCode == SET_TENDENCY_ON_RETURN) {
                 Tendency tendency = (Tendency) data.getSerializableExtra("tendency");
                 try {
-                    workout.setTendency(tendency);
-                    //TODO: set weight based on tendency and weight step
-                    setViews();
+                    workout.setTendency(exercisePosition, tendency);
+                    exercisePosition++;
+                    setViews(exercisePosition);
                 } catch (ExerciseNotAvailableException e) {
-                    startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
+                    startWorkoutResultActivity();
                 }
             }
         }

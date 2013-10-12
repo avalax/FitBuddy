@@ -17,48 +17,28 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
-    public Exercise getCurrentExercise() {
-        return workout.getCurrentExercise();
-    }
-
-    @Override
     public Exercise getExercise(int position) {
         return workout.getExercise(position);
     }
 
     @Override
-    public Set getCurrentSet() {
-        return workout.getCurrentSet();
+    public Set getCurrentSet(int position) {
+        return workout.getCurrentSet(position);
     }
 
     @Override
-    public int getReps() {
-        return workout.getReps();
+    public int getReps(int position) {
+        return workout.getReps(position);
     }
 
     @Override
-    public void setReps(int reps) {
-        workout.setReps(reps);
+    public void setReps(int position, int reps) {
+        workout.setReps(position, reps);
     }
 
     @Override
-    public void setExerciseNumber(int exerciseNumber) {
-        workout.setExerciseNumber(exerciseNumber);
-    }
-
-    @Override
-    public void setTendency(Tendency tendency) {
-        workout.setTendency(tendency);
-    }
-
-    @Override
-    public void switchToNextExercise() {
-        workout.switchToNextExercise();
-    }
-
-    @Override
-    public void switchToPreviousExercise() {
-        workout.switchToPreviousExercise();
+    public void setTendency(int position, Tendency tendency) {
+        workout.setTendency(position, tendency);
     }
 
     @Override

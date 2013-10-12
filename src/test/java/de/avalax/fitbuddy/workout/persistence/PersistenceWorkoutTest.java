@@ -14,9 +14,11 @@ public class PersistenceWorkoutTest {
     private DataLayer dataLayer;
     private Workout persistenceWorkout;
     private Workout workout;
+    private int exercisePosition;
 
     @Before
     public void setUp() {
+        exercisePosition = 0;
         dataLayer = mock(DataLayer.class);
         workout = mock(Workout.class);
         when(dataLayer.load()).thenReturn(workout);
@@ -29,13 +31,6 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
-    public void getCurrentExercise_shouldCallGetCurrentExerciseFromWorkout() throws Exception {
-        persistenceWorkout.getCurrentExercise();
-
-        verify(workout).getCurrentExercise();
-    }
-
-    @Test
     public void getExerciseCount_shouldCallGetExerciseCountFromWorkout() throws Exception {
         persistenceWorkout.getExerciseCount();
 
@@ -44,57 +39,37 @@ public class PersistenceWorkoutTest {
 
     @Test
     public void getExercise_shouldCallGetExerciseFromWorkout() throws Exception {
-        persistenceWorkout.getExercise(1);
+        persistenceWorkout.getExercise(exercisePosition);
 
-        verify(workout).getExercise(1);
+        verify(workout).getExercise(exercisePosition);
     }
 
     @Test
     public void getCurrentSet_shouldCallGetCurrentSetFromWorkout() throws Exception {
-        persistenceWorkout.getCurrentSet();
+        persistenceWorkout.getCurrentSet(exercisePosition);
 
-        verify(workout).getCurrentSet();
+        verify(workout).getCurrentSet(exercisePosition);
     }
 
     @Test
     public void getReps_shouldCallGetRepsFromWorkout() throws Exception {
-        persistenceWorkout.getReps();
+        persistenceWorkout.getReps(exercisePosition);
 
-        verify(workout).getReps();
+        verify(workout).getReps(exercisePosition);
     }
 
     @Test
     public void setReps_shouldCallSetRepsFromWorkout() throws Exception {
-        persistenceWorkout.setReps(2);
+        int repsCount = 12;
+        persistenceWorkout.setReps(exercisePosition, repsCount);
 
-        verify(workout).setReps(2);
-    }
-
-    @Test
-    public void setExerciseNumber_shouldCallSetExerciseNumberFromWorkout() throws Exception {
-        persistenceWorkout.setExerciseNumber(2);
-
-        verify(workout).setExerciseNumber(2);
+        verify(workout).setReps(exercisePosition, repsCount);
     }
 
     @Test
     public void setTendency_shouldCallSetTendencyFromWorkout() throws Exception {
-        persistenceWorkout.setTendency(Tendency.MINUS);
+        persistenceWorkout.setTendency(exercisePosition, Tendency.MINUS);
 
-        verify(workout).setTendency(Tendency.MINUS);
-    }
-
-    @Test
-    public void switchToNextExercise_shouldCallSwitchToNextExerciseFromWorkout() throws Exception {
-        persistenceWorkout.switchToNextExercise();
-
-        verify(workout).switchToNextExercise();
-    }
-
-    @Test
-    public void switchToPreviousExercise_shouldCallSwitchToPreviousExerciseFromWorkout() throws Exception {
-        persistenceWorkout.switchToPreviousExercise();
-
-        verify(workout).switchToPreviousExercise();
+        verify(workout).setTendency(exercisePosition, Tendency.MINUS);
     }
 }
