@@ -3,6 +3,10 @@ package de.avalax.fitbuddy;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -14,13 +18,17 @@ import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.workout)
-public class WorkoutActivity extends RoboActivity implements View.OnClickListener {
+public class WorkoutActivity extends RoboFragmentActivity {
 
     private static final int SET_TENDENCY_ON_RETURN = 1;
     private static final int DO_QUIT_ON_RESULT = 2;
+
+		private ExcercisePagerAdapter excercisePagerAdapter;
+		private ViewPager viewPager;
 
     @Inject
     private Workout workout;
@@ -30,18 +38,34 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	      excercisePagerAdapter = new ExcercisePagerAdapter(getSupportFragmentManager(), workout);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.menu);
         getActionBar().setBackgroundDrawable(null);
-        FitBuddyProgressBar repsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarReps);
-        repsProgressBar.setOnClickListener(this);
-        FitBuddyProgressBar setsProgressBar = (FitBuddyProgressBar) findViewById(R.id.progressBarSets);
-        setsProgressBar.setOnClickListener(this);
-        setViews(exercisePosition);
 
+	      viewPager = (ViewPager) findViewById(R.id.pager);
+	      viewPager.setAdapter(excercisePagerAdapter);
     }
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				Intent upIntent = new Intent(this, WorkoutActivity.class);
+				if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+					TaskStackBuilder.from(this)
+							.addNextIntent(upIntent)
+							.startActivities();
+					finish();
+				} else {
+					NavUtils.navigateUpTo(this, upIntent);
+				}
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
     private void setViews(int exercisePosition) {
         //TODO: IOC
         ((TextView) findViewById(R.id.textViewExercise)).setText(workout.getName(exercisePosition));
@@ -73,26 +97,7 @@ public class WorkoutActivity extends RoboActivity implements View.OnClickListene
         startActivityForResult(new Intent(getApplicationContext(), WorkoutResultActivity.class), DO_QUIT_ON_RESULT);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.progressBarReps) {
-            Set currentSet = workout.getExercise(exercisePosition).getCurrentSet();
-            try {
-                currentSet.setReps(currentSet.getReps() + 1);
-            } catch (RepsExceededException ree) {
-                incrementSetNumber();
-            }
-            ((FitBuddyProgressBar) v).setProgressBar(currentSet);
-        }
-        if (v.getId() == R.id.progressBarSets) {
-            incrementSetNumber();
-        }
-        try {
-            setViews(exercisePosition);
-        } catch (ExerciseNotAvailableException e) {
-            startWorkoutResultActivity();
-        }
-    }
+
 
     private void incrementSetNumber() {
         try {

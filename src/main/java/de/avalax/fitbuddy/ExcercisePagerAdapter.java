@@ -5,15 +5,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.sun.xml.internal.bind.v2.TODO;
 
 import de.avalax.fitbuddy.workout.Exercise;
+import de.avalax.fitbuddy.workout.Workout;
 import de.avalax.fitbuddy.workout.basic.BasicWorkout;
 
 public class ExcercisePagerAdapter extends FragmentStatePagerAdapter{
-	private BasicWorkout workout;
+	private Workout workout;
 
-	public ExcercisePagerAdapter(FragmentManager fm , BasicWorkout workout){
+	public ExcercisePagerAdapter(FragmentManager fm , Workout workout){
 		super(fm);
 		this.workout = workout;
 	}
@@ -24,7 +24,7 @@ public class ExcercisePagerAdapter extends FragmentStatePagerAdapter{
 		Bundle args = new Bundle();
 
 		Exercise currentExercise = workout.getExercise(exerciseIndex);
-		args.putInt(ExcerciseFragment.MAX_REPS, currentExercise.getReps());
+		args.putInt(ExcerciseFragment.MAX_REPS, currentExercise.getCurrentSet().getMaxReps());//TODO:CurrentExersice getMaxReps
 		args.putInt(ExcerciseFragment.MAX_SETS, currentExercise.getSetNumber());
 		fragment.setArguments(args);
 		return fragment;
