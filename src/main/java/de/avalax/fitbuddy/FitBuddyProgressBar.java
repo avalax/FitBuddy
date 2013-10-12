@@ -89,7 +89,7 @@ public class FitBuddyProgressBar extends View{
 	}
 	public void setProgressBar(Set set){
 		setCurrentValue(set.getReps());
-		setMaxValue(set.getMaxReps());
+		setMaxValue(set.getRepsSize());
 	}
 	public synchronized void setBarColor(int barColor) {
 		this.barColor = barColor;

@@ -30,7 +30,7 @@ public class BasicSetTest {
 
 	@Test
 	public void BasicSet_ShouldGetMaxReps() throws Exception {
-		assertThat(set.getMaxReps(),equalTo(15));
+		assertThat(set.getRepsSize(),equalTo(15));
 	}
 
     @Test(expected = RepsExceededException.class)

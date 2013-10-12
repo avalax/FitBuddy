@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import roboguice.fragment.RoboFragment;
 
-public class ExcerciseFragment extends RoboFragment{
+public class ExerciseFragment extends RoboFragment{
 	public static final String MAX_REPS = "max_reps";
 	public static final String MAX_SETS = "max_sets";
 
@@ -20,8 +20,11 @@ public class ExcerciseFragment extends RoboFragment{
 		int maxReps = args.getInt(MAX_REPS);
 		int maxSets = args.getInt(MAX_SETS);
 
-		((FitBuddyProgressBar) rootView.findViewById(R.id.progressBarReps)).setMaxValue(maxReps);
-		((FitBuddyProgressBar) rootView.findViewById(R.id.progressBarSets)).setMaxValue(maxSets);
+        FitBuddyProgressBar fitBuddyProgressBarReps = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarReps);
+        fitBuddyProgressBarReps.setMaxValue(maxReps);
+        FitBuddyProgressBar fitBuddyProgressBarSets = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarSets);
+        fitBuddyProgressBarSets.setMaxValue(maxSets);
+        fitBuddyProgressBarSets.setCurrentValue(1);
 
 
 		return rootView;
