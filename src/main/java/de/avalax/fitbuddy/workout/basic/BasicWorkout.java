@@ -18,26 +18,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise getPreviousExercise() {
-        int index = previousExerciseIndex();
-        if (!isValid(index)) {
-            throw new ExerciseNotAvailableException();
-        }
-        return exercises.get(index);
-    }
-
-    @Override
     public Exercise getCurrentExercise() {
         return exercises.get(currentExerciseIndex());
-    }
-
-    @Override
-    public Exercise getNextExercise() {
-        int index = nextExerciseIndex();
-        if (!isValid(index)){
-            throw new ExerciseNotAvailableException();
-        }
-        return exercises.get(index);
     }
 
     @Override

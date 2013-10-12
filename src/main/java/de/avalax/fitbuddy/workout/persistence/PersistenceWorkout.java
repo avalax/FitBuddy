@@ -17,18 +17,8 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
-    public Exercise getPreviousExercise() {
-        return workout.getPreviousExercise();
-    }
-
-    @Override
     public Exercise getCurrentExercise() {
         return workout.getCurrentExercise();
-    }
-
-    @Override
-    public Exercise getNextExercise() {
-        return workout.getNextExercise();
     }
 
     @Override

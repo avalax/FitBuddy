@@ -48,48 +48,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void BasicWorkout_ShouldReturnPreviousExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-
-        exercises.add(exercise);
-        exercises.add(mock(Exercise.class));
-
-        workout.setExerciseNumber(2);
-
-        assertThat(workout.getPreviousExercise(), equalTo(exercise));
-    }
-
-    @Test
-    public void BasicWorkout_ShouldReturnNextExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(mock(Exercise.class));
-
-        exercises.add(exercise);
-
-        workout.setExerciseNumber(1);
-
-        assertThat(workout.getNextExercise(), equalTo(exercise));
-    }
-
-    @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenNoPreviousExerciseAvailable() throws Exception {
-        exercises.add(mock(Exercise.class));
-
-        workout.setExerciseNumber(1);
-
-        workout.getPreviousExercise();
-    }
-
-    @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_ShouldThrowExceptionWhenNoNextExerciseAvailable() throws Exception {
-        exercises.add(mock(Exercise.class));
-
-        workout.setExerciseNumber(1);
-
-        workout.getNextExercise();
-    }
-
-    @Test
     public void BasicWorkout_ShouldReturnCurrentSetOnStartup() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);

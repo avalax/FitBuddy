@@ -5,9 +5,7 @@ import de.avalax.fitbuddy.workout.persistence.PersistenceWorkout;
 
 @ImplementedBy(PersistenceWorkout.class)
 public interface Workout {
-    Exercise getPreviousExercise();
     Exercise getCurrentExercise();
-    Exercise getNextExercise();
     Set getCurrentSet();
     int getReps();
     void setReps(int reps);

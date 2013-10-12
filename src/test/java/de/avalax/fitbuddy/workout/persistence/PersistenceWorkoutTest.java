@@ -29,24 +29,10 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
-    public void getPreviousExercise_shouldCallGetPreviousExerciseFromWorkout() throws Exception {
-        persistenceWorkout.getPreviousExercise();
-
-        verify(workout).getPreviousExercise();
-    }
-
-    @Test
     public void getCurrentExercise_shouldCallGetCurrentExerciseFromWorkout() throws Exception {
         persistenceWorkout.getCurrentExercise();
 
         verify(workout).getCurrentExercise();
-    }
-
-    @Test
-    public void getNextExercise_shouldCallGetNextExerciseFromWorkout() throws Exception {
-        persistenceWorkout.getNextExercise();
-
-        verify(workout).getNextExercise();
     }
 
     @Test
