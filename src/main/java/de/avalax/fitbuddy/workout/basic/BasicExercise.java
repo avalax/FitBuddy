@@ -52,7 +52,7 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setSetNumber(int setNumber) {
+    public void setSet(int setNumber) {
         if (isValid(nextSetIndex())) {
             this.setNumber = setNumber;
         } else {
@@ -72,7 +72,7 @@ public class BasicExercise implements Exercise {
     }
 
     public void incrementSet() {
-        setSetNumber(setNumber + 1);
+        setSet(setNumber + 1);
     }
 
     @Override
