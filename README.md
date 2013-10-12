@@ -10,7 +10,7 @@ Documentation
 =============
 * [Interaction diagramm png](https://raw.github.com/avalax/FitBuddy/master/doc/FitBuddy-Interaction-Diagramm.jpg)
 * [Styleguide pdf](https://raw.github.com/avalax/FitBuddy/master/doc/FitBuddy-Styleguide.pdf)
-* [Interaction workout management draft](https://raw.github.com/avalax/FitBuddy/master/doc/fitbuddy_add_edit_delete.png)
+* [Interaction workout management draft png](https://raw.github.com/avalax/FitBuddy/master/doc/fitbuddy_add_edit_delete.png)
 
 License
 =======
