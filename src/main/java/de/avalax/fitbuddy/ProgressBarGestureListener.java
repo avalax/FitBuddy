@@ -21,10 +21,10 @@ public abstract class ProgressBarGestureListener implements View.OnTouchListener
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                onBottomToTop();
+                onFlingEvent(1);
                 return true;
             } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                onTopToBottom();
+                onFlingEvent(-1);
                 return true;
             }
             return false;
@@ -33,7 +33,5 @@ public abstract class ProgressBarGestureListener implements View.OnTouchListener
 
     }
 
-    public abstract void onBottomToTop();
-
-    public abstract void onTopToBottom();
+    public abstract void onFlingEvent(int moved);
 }
