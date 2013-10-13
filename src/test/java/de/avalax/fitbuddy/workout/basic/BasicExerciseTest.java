@@ -28,12 +28,12 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnNameBankdrücken() throws Exception {
+    public void getName_shouldReturnNameBankdrücken() throws Exception {
         assertThat(exercise.getName(), equalTo("Bankdrücken"));
     }
 
     @Test
-    public void BasicExercise_ShouldReturnNumberOfSets() throws Exception {
+    public void getSetSize_shouldReturnNumberOfSets() throws Exception {
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
@@ -43,14 +43,14 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnTendencyPlus() throws Exception {
+    public void getTendency_shouldReturnTendencyPlus() throws Exception {
         exercise.setTendency(Tendency.PLUS);
 
         assertThat(exercise.getTendency(), equalTo(Tendency.PLUS));
     }
 
     @Test
-    public void BasicExercise_ShouldReturnRepsFromSet() throws Exception {
+    public void getReps_shouldReturnRepsFromSet() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
         when(set.getReps()).thenReturn(12);
@@ -59,7 +59,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnCurrentSetOnStartup() throws Exception {
+    public void getCurrentSet_shouldReturnCurrentSetOnStartup() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
 
@@ -67,7 +67,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnSecondSetAsCurrentSet() throws Exception {
+    public void getCurrentSet_shouldReturnSecondSetAsCurrentSet() throws Exception {
         Set set = mock(Set.class);
 
         sets.add(mock(Set.class));
@@ -79,7 +79,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnNextSetOnIncrementSet() throws Exception {
+    public void incrementCurrentSet_shouldIncrementToTheNextSet() throws Exception {
         Set set = mock(Set.class);
 
         sets.add(mock(Set.class));
@@ -92,7 +92,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldReturnNextSetOnSettingRepsForCurrentSet() throws Exception {
+    public void setReps_shouldSetRepsForCurrentSetAndIncrementToTheNextSet() throws Exception {
         Set set = mock(Set.class);
 
         sets.add(mock(Set.class));
@@ -105,14 +105,14 @@ public class BasicExerciseTest {
     }
 
     @Test(expected = SetNotAvailableException.class)
-    public void BasicExercise_ShouldThrowExceptionWhenSettingRepsOnLastSet() throws Exception {
+    public void setReps_shouldThrowExceptionWhenSettingRepsOnLastSet() throws Exception {
         sets.add(mock(Set.class));
 
         exercise.setReps(12);
     }
 
     @Test
-    public void BasicExercise_ShouldReturnWeightOfCurrentSet() throws Exception {
+    public void getWeight_shouldReturnWeightOfCurrentSet() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
 
@@ -122,7 +122,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldGetWeightRaiseForNeutralTendency() throws Exception {
+    public void getWeightRaise_shouldGetWeightRaiseForNeutralTendency() throws Exception {
         exercise = new BasicExercise("NeutralTendency",sets,5.0);
         Set set = mock(Set.class);
         sets.add(set);
@@ -133,21 +133,21 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void BasicExercise_ShouldGetWeightRaiseForPositiveTendency() {
+    public void getWeightRaise_shouldGetWeightRaiseForPositiveTendency() {
         exercise = createExercise(2.5, 5.0);
 
         assertThat(exercise.getWeightRaise(Tendency.PLUS),equalTo(7.5));
     }
 
     @Test
-    public void BasicExercise_ShouldGetWeightRaiseForMinusTendency() {
+    public void getWeightRaise_shouldGetWeightRaiseForMinusTendency() {
         exercise = createExercise(15.0, 5.0);
 
         assertThat(exercise.getWeightRaise(Tendency.MINUS),equalTo(10.0));
     }
 
     @Test
-    public void BasicExercise_ShouldGetWeightRaiseForMinusTendencyWhenRaiseWhouldBeNegative() {
+    public void getWeightRaise_shouldGetWeightRaiseForMinusTendencyWhenRaiseWouldBeNegative() {
         exercise = createExercise(2.5, 5.0);
 
         assertThat(exercise.getWeightRaise(Tendency.MINUS),equalTo(0.0));
