@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
 import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
@@ -54,16 +54,20 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private void changeReps(int moved) {
-        Set currentSet = workout.getExercise(exercisePosition).getCurrentSet();
-            currentSet.setReps(currentSet.getReps() + moved);
-            setViews(exercisePosition);
+        setReps(moved);
+        setViews(exercisePosition);
     }
 
     private void changeSets(int moved) {
-        setSetNumber(workout.getExercise(exercisePosition).getSetNumber() + 1);
+        setSet(workout.getExercise(exercisePosition).getSetNumber() + 1);
     }
 
-    private void setSetNumber(int setNumber) {
+    private void setReps(int moved) {
+        Exercise exercise = workout.getExercise(exercisePosition);
+        exercise.setReps(exercise.getReps() + moved);
+    }
+
+    private void setSet(int setNumber) {
         try {
             workout.getExercise(exercisePosition).setCurrentSet(setNumber);
             setViews(exercisePosition);

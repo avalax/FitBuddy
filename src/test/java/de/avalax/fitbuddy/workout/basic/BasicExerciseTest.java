@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.workout.basic;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
-import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +13,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class BasicExerciseTest {
@@ -92,23 +92,13 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void setReps_shouldSetRepsForCurrentSetAndIncrementToTheNextSet() throws Exception {
+    public void setReps_shouldCallSetRepsForCurrentSet() throws Exception {
         Set set = mock(Set.class);
-
-        sets.add(mock(Set.class));
         sets.add(set);
 
         exercise.setReps(12);
 
-        assertThat(exercise.getCurrentSet(), equalTo(set));
-        assertThat(exercise.getSetNumber(), equalTo(2));
-    }
-
-    @Test(expected = SetNotAvailableException.class)
-    public void setReps_shouldThrowExceptionWhenSettingRepsOnLastSet() throws Exception {
-        sets.add(mock(Set.class));
-
-        exercise.setReps(12);
+        verify(set).setReps(12);
     }
 
     @Test
