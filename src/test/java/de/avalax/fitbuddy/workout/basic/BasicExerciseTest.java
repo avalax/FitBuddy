@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.workout.basic;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
+import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,9 +13,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class BasicExerciseTest {
 
@@ -67,7 +66,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void getCurrentSet_shouldReturnSecondSetAsCurrentSet() throws Exception {
+    public void getCurrentSet_shouldReturnSecondSet() throws Exception {
         Set set = mock(Set.class);
 
         sets.add(mock(Set.class));
@@ -76,6 +75,22 @@ public class BasicExerciseTest {
         exercise.setCurrentSet(2);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
+    }
+
+    @Test
+    public void setSetNumber_shouldSetSetNumberToZero() throws Exception {
+        sets.add(mock(Set.class));
+
+        exercise.setCurrentSet(-1);
+
+        assertThat(exercise.getSetNumber(),equalTo(1));
+    }
+
+    @Test(expected = SetNotAvailableException.class)
+    public void BasicExercise_ShouldThrowExceptionWithNoNextSetAvailable() throws Exception {
+        sets.add(mock(Set.class));
+
+        exercise.setCurrentSet(2);
     }
 
     @Test

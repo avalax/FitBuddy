@@ -59,7 +59,7 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private void changeSets(int moved) {
-        setSet(workout.getExercise(exercisePosition).getSetNumber() + 1);
+        setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
     }
 
     private void setReps(int moved) {

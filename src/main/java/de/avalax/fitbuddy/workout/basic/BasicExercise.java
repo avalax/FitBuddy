@@ -53,10 +53,12 @@ public class BasicExercise implements Exercise {
 
     @Override
     public void setCurrentSet(int setNumber) {
-        if (isValid(nextSetIndex())) {
-            this.setNumber = setNumber;
-        } else {
+        if (isIndexNotInArray(setNumber - 1)) {
             throw new SetNotAvailableException();
+        } else if (isIndexNegative(setNumber - 1)) {
+            this.setNumber = 1;
+        } else {
+            this.setNumber = setNumber;
         }
     }
 
@@ -96,20 +98,12 @@ public class BasicExercise implements Exercise {
         return setNumber - 1;
     }
 
-    private int nextSetIndex() {
-        return currentSetIndex() + 1;
+    private boolean isIndexNotInArray(int index) {
+        return index >= sets.size();
     }
 
-    private boolean isValid(int index) {
-        return isIndexNotNegative(index) && isIndexInArray(index);
-    }
-
-    private boolean isIndexInArray(int index) {
-        return index <= sets.size() - 1;
-    }
-
-    private boolean isIndexNotNegative(int index) {
-        return index >= 0;
+    private boolean isIndexNegative(int index) {
+        return index < 0;
     }
 
     private double getPlusTendencyWeight(double weight) {
