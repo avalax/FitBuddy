@@ -33,16 +33,16 @@ public class BasicSetTest {
 	}
 
     @Test
-    public void setReps_shouldThrowExceptionOnRepsSmallerThenZero() throws Exception {
+    public void setReps_shouldShouldSetToMaxReps() throws Exception {
         set.setReps(-1);
 
-        assertThat(set.getReps(),equalTo(0));
+        assertThat(set.getReps(),equalTo(set.getRepsSize()));
     }
 
     @Test
     public void setReps_shouldAllowRepsGreaterThenMaxReps() throws Exception {
         set.setReps(16);
 
-        assertThat(set.getReps(),equalTo(16));
+        assertThat(set.getReps(),equalTo(0));
     }
 }
