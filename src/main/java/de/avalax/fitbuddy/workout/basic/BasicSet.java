@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.workout.basic;
 
 import de.avalax.fitbuddy.workout.Set;
-import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 
 public class BasicSet implements Set {
     private double weight;
@@ -20,10 +19,11 @@ public class BasicSet implements Set {
 
     @Override
     public void setReps(int reps) {
-        if (reps > maxReps) {
-            throw new RepsExceededException();
+        if (reps < 0) {
+            this.reps = 0;
+        } else {
+            this.reps = reps;
         }
-        this.reps = reps;
     }
 
     @Override

@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.workout.basic;
 
 
 import de.avalax.fitbuddy.workout.Set;
-import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,23 +17,32 @@ public class BasicSetTest {
     }
 
     @Test
-    public void BasicSet_ShouldGetWeight() throws Exception {
+    public void getWeight_shouldGetWeight() throws Exception {
         assertThat(set.getWeight(),equalTo(12.5));
     }
 
     @Test
-    public void BasicSet_ShouldGetReps() throws Exception {
+    public void getReps_ShouldGetReps() throws Exception {
         set.setReps(15);
         assertThat(set.getReps(), equalTo(15));
     }
 
 	@Test
-	public void BasicSet_ShouldGetMaxReps() throws Exception {
+	public void getRepsSize_shouldGetMaxReps() throws Exception {
 		assertThat(set.getRepsSize(),equalTo(15));
 	}
 
-    @Test(expected = RepsExceededException.class)
-    public void BasicSet_ShouldThrowExceptionOnRepsGreaterThenMaxReps() throws Exception {
+    @Test
+    public void setReps_shouldThrowExceptionOnRepsSmallerThenZero() throws Exception {
+        set.setReps(-1);
+
+        assertThat(set.getReps(),equalTo(0));
+    }
+
+    @Test
+    public void setReps_shouldAllowRepsGreaterThenMaxReps() throws Exception {
         set.setReps(16);
+
+        assertThat(set.getReps(),equalTo(16));
     }
 }

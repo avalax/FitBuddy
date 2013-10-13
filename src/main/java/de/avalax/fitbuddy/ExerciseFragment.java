@@ -11,7 +11,6 @@ import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
 import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
-import de.avalax.fitbuddy.workout.exceptions.RepsExceededException;
 import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import roboguice.fragment.RoboFragment;
 
@@ -56,13 +55,8 @@ public class ExerciseFragment extends RoboFragment {
 
     private void changeReps(int moved) {
         Set currentSet = workout.getExercise(exercisePosition).getCurrentSet();
-        try {
-            currentSet.setReps(currentSet.getReps() + 1);
+            currentSet.setReps(currentSet.getReps() + moved);
             setViews(exercisePosition);
-        } catch (RepsExceededException ree) {
-            changeSets(NEXT_SET);
-        }
-
     }
 
     private void changeSets(int moved) {
