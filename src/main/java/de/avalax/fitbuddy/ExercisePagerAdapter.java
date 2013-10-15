@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,10 +9,12 @@ import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
 
 public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
+    private Context context;
     private Workout workout;
 
-    public ExercisePagerAdapter(FragmentManager fm, Workout workout) {
+    public ExercisePagerAdapter(FragmentManager fm, Context context, Workout workout) {
         super(fm);
+        this.context = context;
         this.workout = workout;
     }
 
@@ -41,7 +44,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
 
             return currentExercise.getName();
         } else {
-            return "Ergebnis"; //TODO: move to strings.xml
+            return context.getString(R.string.result_title);
         }
     }
 }

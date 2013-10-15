@@ -7,5 +7,6 @@
     <string name="negativeLabel">-%2$s = %1$s kg</string>
     <string name="neutralLabel">%1$s kg</string>
     <string name="positiveLabel">+%2$s = %1$s kg</string>
+    <string name="result_title">Ergebnis</string>
 
 </resources>

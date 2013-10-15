@@ -21,13 +21,10 @@ public class WorkoutActivity extends RoboFragmentActivity {
     @Inject
     private Workout workout;
 
-    private int exercisePosition = 0;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workout));
+        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(),getApplicationContext(), workout));
     }
 
     @Override
