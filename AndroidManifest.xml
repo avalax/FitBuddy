@@ -13,9 +13,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TendencyActivity" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
-        <activity android:name=".WorkoutResultActivity" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
-
     </application>
 
 </manifest>
