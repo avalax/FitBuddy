@@ -3,4 +3,14 @@
     <style name="AppTheme" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:typeface">sans</item>
     </style>
+
+    <style name="PagerTitleStrip">
+        <item name="android:textAppearance">@style/PagerTitleStripTextAppearance</item>
+    </style>
+
+    <style name="PagerTitleStripTextAppearance">
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:typeface">sans</item>
+    </style>
 </resources>
