@@ -86,11 +86,11 @@ public class BasicExerciseTest {
         assertThat(exercise.getSetNumber(),equalTo(1));
     }
 
-    @Test(expected = SetNotAvailableException.class)
-    public void BasicExercise_ShouldThrowExceptionWithNoNextSetAvailable() throws Exception {
+    @Test
+    public void setCurrentSet_ShouldSetToLastSetWhenSizeExceeded() throws Exception {
         sets.add(mock(Set.class));
 
-        exercise.setCurrentSet(2);
+        exercise.setCurrentSet(sets.size() + 1);
     }
 
     @Test

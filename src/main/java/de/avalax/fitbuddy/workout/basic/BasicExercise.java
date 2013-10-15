@@ -3,7 +3,6 @@ package de.avalax.fitbuddy.workout.basic;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
-import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class BasicExercise implements Exercise {
     @Override
     public void setCurrentSet(int setNumber) {
         if (isIndexNotInArray(setNumber - 1)) {
-            throw new SetNotAvailableException();
+            this.setNumber = getSetSize();
         } else if (isIndexNegative(setNumber - 1)) {
             this.setNumber = 1;
         } else {

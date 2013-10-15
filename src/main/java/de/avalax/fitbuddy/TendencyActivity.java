@@ -12,6 +12,7 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.tendency)
+@Deprecated
 public class TendencyActivity extends RoboActivity {
     private Tendency tendency = null;
     @InjectView(R.id.buttonNegative)
