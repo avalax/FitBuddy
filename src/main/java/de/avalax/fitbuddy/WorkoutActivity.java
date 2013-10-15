@@ -6,8 +6,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
-import com.google.inject.Inject;
-import de.avalax.fitbuddy.workout.Workout;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -17,13 +15,11 @@ public class WorkoutActivity extends RoboFragmentActivity {
 
     @InjectView(R.id.pager)
     private ViewPager viewPager;
-    @Inject
-    private Workout workout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), workout));
+        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext()));
     }
 
     @Override

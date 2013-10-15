@@ -8,25 +8,29 @@ import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
 import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectView;
 
 public class ExerciseFragment extends RoboFragment {
 
     @Inject
     private Workout workout;
-    private int exercisePosition;
+    @InjectView(R.id.progressBarReps)
     private FitBuddyProgressBar fitBuddyProgressBarReps;
+    @InjectView(R.id.progressBarSets)
     private FitBuddyProgressBar fitBuddyProgressBarSets;
+    private int exercisePosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final int exerciseIndex = getArguments().getInt("exerciseIndex");
-        View rootView = inflater.inflate(R.layout.fragment_exercise_object, container, false);
-        fitBuddyProgressBarReps = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarReps);
-        fitBuddyProgressBarSets = (FitBuddyProgressBar) rootView.findViewById(R.id.progressBarSets);
-        exercisePosition = exerciseIndex;
+        super.onCreateView(inflater, container, savedInstanceState);
+        exercisePosition = getArguments().getInt("exerciseIndex");
+        return inflater.inflate(R.layout.fragment_exercise_object, container, false);
+    }
 
-        setViews(exercisePosition);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         fitBuddyProgressBarReps.setOnTouchListener(new ProgressBarGestureListener() {
             @Override
@@ -42,7 +46,7 @@ public class ExerciseFragment extends RoboFragment {
             }
         });
 
-        return rootView;
+        setViews(exercisePosition);
     }
 
     private void changeReps(int moved) {

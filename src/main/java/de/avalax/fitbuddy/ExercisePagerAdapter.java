@@ -5,17 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
+import roboguice.RoboGuice;
+import roboguice.inject.InjectResource;
 
 public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
-    private Context context;
+    @Inject
     private Workout workout;
+    @InjectResource(R.string.result_title)
+    private String resultTitle;
 
-    public ExercisePagerAdapter(FragmentManager fm, Context context, Workout workout) {
+    public ExercisePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.context = context;
-        this.workout = workout;
+        RoboGuice.getInjector(context).injectMembersWithoutViews(this);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
 
             return currentExercise.getName();
         } else {
-            return context.getString(R.string.result_title);
+            return resultTitle;
         }
     }
 }
