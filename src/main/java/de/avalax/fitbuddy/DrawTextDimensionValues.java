@@ -3,33 +3,32 @@ package de.avalax.fitbuddy;
 import android.graphics.Paint;
 
 public class DrawTextDimensionValues{
-	private Paint mTextPaint;
-	private String mTextValue;
-	private float mFontTextValueWidth;
-	private int mWindowWidth;
-	private int mWindowHeight;
-	private int mX;
-	private int mY;
+	private Paint paint;
+	private String text;
+    private int width;
+	private int height;
+	private double x;
+	private double y;
 
-	public DrawTextDimensionValues(Paint textPaint, String textValue,int windowWidth,int windowHeight){
-		mTextPaint = textPaint;
-		mTextValue = textValue;
-		mWindowWidth = windowWidth;
-		mWindowHeight = windowHeight;
+	public DrawTextDimensionValues(Paint paint, String text,int width,int height){
+		this.paint = paint;
+		this.text = text;
+		this.width = width;
+		this.height = height;
 	}
 
-	public int getX(){
-		return mX;
+	public long getX(){
+		return Math.round(x);
 	}
 
-	public int getY(){
-		return mY;
+	public long getY(){
+		return Math.round(y);
 	}
 
 	public DrawTextDimensionValues invoke(){
-		mFontTextValueWidth = mTextPaint.measureText(mTextValue, 0, mTextValue.length());
-		mX = (int)((mWindowWidth / 2) - (mFontTextValueWidth /2));
-		mY = mWindowHeight / 2;
+        double fontWidth = paint.measureText(text, 0, text.length());
+		x = (width / 2) - (fontWidth /2);
+		y = height / 2;
 		return this;
 	}
 }
