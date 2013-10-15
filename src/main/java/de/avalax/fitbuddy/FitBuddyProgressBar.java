@@ -15,7 +15,6 @@ public class FitBuddyProgressBar extends View {
 	private float textSize;
 	private int currentValue;
 	private int maxValue;
-	private Exercise exercise = null;
 
 	public FitBuddyProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
