@@ -25,7 +25,7 @@ public class ExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         exercisePosition = getArguments().getInt("exerciseIndex");
-        return inflater.inflate(R.layout.fragment_exercise_object, container, false);
+        return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
     @Override

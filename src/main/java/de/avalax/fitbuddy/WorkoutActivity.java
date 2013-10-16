@@ -10,7 +10,7 @@ import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.exercise)
+@ContentView(R.layout.view_pager)
 public class WorkoutActivity extends RoboFragmentActivity {
 
     @InjectView(R.id.pager)

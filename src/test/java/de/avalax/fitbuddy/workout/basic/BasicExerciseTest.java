@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.workout.basic;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Tendency;
-import de.avalax.fitbuddy.workout.exceptions.SetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
