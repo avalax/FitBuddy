@@ -1,28 +1,26 @@
 package de.avalax.fitbuddy.progressBar;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
 public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener{
-    private static final int SWIPE_MIN_DISTANCE = 60;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private final WindowManager windowManager;
+    private int swipeMinDistance;
+    private int swipeThresholdVelocity;
 
-    public ProgressBarOnGestureListener(WindowManager windowManager) {
+    public ProgressBarOnGestureListener(WindowManager windowManager,int swipeMinDistance, int swipeThresholdVelocity) {
         this.windowManager = windowManager;
+        this.swipeMinDistance = swipeMinDistance;
+        this.swipeThresholdVelocity = swipeThresholdVelocity;
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        float swipeDistance = e1.getY() - e2.getY();
-        Log.d("e1 size", String.valueOf(windowManager.getDefaultDisplay().getHeight()));
-        Log.d("swipeDistance", String.valueOf(swipeDistance));
-        if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+    public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
+        if (startMotionEvent.getY() - endMotionEvent.getY() > swipeMinDistance && Math.abs(velocityY) > swipeThresholdVelocity) {
             onFlingEvent(1);
             return true;
-        } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+        } else if (endMotionEvent.getY() - startMotionEvent.getY() > swipeMinDistance && Math.abs(velocityY) > swipeMinDistance) {
             onFlingEvent(-1);
             return true;
         }
