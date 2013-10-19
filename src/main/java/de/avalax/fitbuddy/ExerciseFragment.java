@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.progressBar.FitBuddyProgressBar;
+import de.avalax.fitbuddy.progressBar.HorizontalProgressBar;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
@@ -17,10 +17,10 @@ public class ExerciseFragment extends RoboFragment {
 
     @Inject
     private Workout workout;
-    @InjectView(R.id.progressBarReps)
-    private FitBuddyProgressBar fitBuddyProgressBarReps;
-    @InjectView(R.id.progressBarSets)
-    private FitBuddyProgressBar fitBuddyProgressBarSets;
+    @InjectView(R.id.repsProgressBar)
+    private HorizontalProgressBar repsProgressBar;
+    @InjectView(R.id.setsProgressBar)
+    private HorizontalProgressBar setsProgressBar;
     @Inject
     private WindowManager windowManager;
     private int exercisePosition;
@@ -37,16 +37,16 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fitBuddyProgressBarReps.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
+        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
             @Override
-            public void onFlingEvent(int moved) {
+            public void onGestureFlingEvent(int moved) {
                 changeReps(moved);
             }
         });
 
-        fitBuddyProgressBarSets.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
+        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
             @Override
-            public void onFlingEvent(int moved) {
+            public void onGestureFlingEvent(int moved) {
                 changeSets(moved);
             }
         });
@@ -74,7 +74,7 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private void setViews(int exercisePosition) {
-        fitBuddyProgressBarReps.setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
-        fitBuddyProgressBarSets.setProgressBar(workout.getExercise(exercisePosition));
+        repsProgressBar.setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
+        setsProgressBar.setProgressBar(workout.getExercise(exercisePosition));
     }
 }

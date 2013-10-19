@@ -9,7 +9,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 
-public class FitBuddyProgressBar extends View {
+public class HorizontalProgressBar extends View {
 	private Typeface mTypeface  = Typeface.create("sans", Typeface.BOLD);
 	private int textColor;
 	private int barColor;
@@ -17,19 +17,19 @@ public class FitBuddyProgressBar extends View {
 	private int currentValue;
 	private int maxValue;
 
-	public FitBuddyProgressBar(Context context, AttributeSet attrs) {
+	public HorizontalProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setAttrs(attrs);
 	}
 
 	private void setAttrs(AttributeSet attrs) {
 		if (attrs != null) {
-			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.FitBuddyProgressBar);
-			setTextColor(a.getColor(R.styleable.FitBuddyProgressBar_textColor, Color.parseColor("#ffffff")));
-			setTextSize(a.getDimension(R.styleable.FitBuddyProgressBar_textSize, 50));
-			setBarColor(a.getColor(R.styleable.FitBuddyProgressBar_barColor, Color.parseColor("#CC0000")));
-			setCurrentValue(a.getInt(R.styleable.FitBuddyProgressBar_current_value, 0));
-			setMaxValue(a.getInt(R.styleable.FitBuddyProgressBar_max_value,0));
+			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.HorizontalProgressBar);
+			setTextColor(a.getColor(R.styleable.HorizontalProgressBar_textColor, Color.parseColor("#ffffff")));
+			setTextSize(a.getDimension(R.styleable.HorizontalProgressBar_textSize, 50));
+			setBarColor(a.getColor(R.styleable.HorizontalProgressBar_barColor, Color.parseColor("#CC0000")));
+			setCurrentValue(a.getInt(R.styleable.HorizontalProgressBar_current_value, 0));
+			setMaxValue(a.getInt(R.styleable.HorizontalProgressBar_max_value,0));
 			a.recycle();
 		}
 	}
