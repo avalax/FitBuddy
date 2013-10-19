@@ -5,7 +5,7 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-	<de.avalax.fitbuddy.FitBuddyProgressBar
+	<de.avalax.fitbuddy.progressBar.FitBuddyProgressBar
 			android:id="@+id/progressBarReps"
 			style="@android:style/Widget.ProgressBar.Horizontal"
 			android:layout_width="fill_parent"
@@ -17,7 +17,7 @@
 			components:barColor="#0099CC"
 			/>
 
-	<de.avalax.fitbuddy.FitBuddyProgressBar
+	<de.avalax.fitbuddy.progressBar.FitBuddyProgressBar
 			android:id="@+id/progressBarSets"
 			style="@android:style/Widget.ProgressBar.Horizontal"
 			android:layout_width="fill_parent"

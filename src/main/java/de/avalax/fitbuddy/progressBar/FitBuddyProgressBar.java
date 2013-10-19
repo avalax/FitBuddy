@@ -1,10 +1,11 @@
-package de.avalax.fitbuddy;
+package de.avalax.fitbuddy.progressBar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 
