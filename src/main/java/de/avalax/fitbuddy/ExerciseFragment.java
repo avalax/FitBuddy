@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
@@ -18,6 +19,8 @@ public class ExerciseFragment extends RoboFragment {
     private FitBuddyProgressBar fitBuddyProgressBarReps;
     @InjectView(R.id.progressBarSets)
     private FitBuddyProgressBar fitBuddyProgressBarSets;
+    @Inject
+    private WindowManager windowManager;
     private int exercisePosition;
 
     @Override
@@ -32,14 +35,14 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fitBuddyProgressBarReps.setOnTouchListener(new ProgressBarGestureListener() {
+        fitBuddyProgressBarReps.setOnTouchListener(new ProgressBarGestureListener(windowManager) {
             @Override
             public void onFlingEvent(int moved) {
                 changeReps(moved);
             }
         });
 
-        fitBuddyProgressBarSets.setOnTouchListener(new ProgressBarGestureListener() {
+        fitBuddyProgressBarSets.setOnTouchListener(new ProgressBarGestureListener(windowManager) {
             @Override
             public void onFlingEvent(int moved) {
                 changeSets(moved);

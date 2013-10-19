@@ -63,9 +63,9 @@ public class FitBuddyProgressBar extends View {
 		textPaint.setTypeface(mTypeface);
 		String textCurrentValue = currentValue+"";
 		String textMaxValue = maxValue+"";
-		DrawTextDimensionValues drawTextDimensionValuesCurrnetValue = new DrawTextDimensionValues(textPaint, textCurrentValue, getWidth(), getHeight()).invoke();
+		DrawTextDimensionValues drawTextDimensionValuesCurrentValue = new DrawTextDimensionValues(textPaint, textCurrentValue, getWidth(), getHeight()).invoke();
 		DrawTextDimensionValues drawTextDimensionValuesMaxValue = new DrawTextDimensionValues(textPaint,  textMaxValue, getWidth(), getHeight()).invoke();
-		canvas.drawText(textCurrentValue, drawTextDimensionValuesCurrnetValue.getX(), drawTextDimensionValuesCurrnetValue.getY(), textPaint);
+		canvas.drawText(textCurrentValue, drawTextDimensionValuesCurrentValue.getX(), drawTextDimensionValuesCurrentValue.getY(), textPaint);
 		canvas.drawText(textMaxValue, drawTextDimensionValuesMaxValue.getX(), drawTextDimensionValuesMaxValue.getY()+textSize, textPaint);
 
 	}
