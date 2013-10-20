@@ -9,7 +9,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 
-public class HorizontalProgressBar extends View {
+public class VerticalProgressBar extends View {
     private Typeface mTypeface = Typeface.create("sans", Typeface.BOLD);
     private int textColor;
     private int barColor;
@@ -17,7 +17,7 @@ public class HorizontalProgressBar extends View {
     private int currentValue;
     private int maxValue;
 
-    public HorizontalProgressBar(Context context, AttributeSet attributeSet) {
+    public VerticalProgressBar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setAttributeSet(attributeSet);
     }
@@ -26,12 +26,12 @@ public class HorizontalProgressBar extends View {
         if (attributeSet == null) {
             return;
         }
-        TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.HorizontalProgressBar);
-        setTextColor(a.getColor(R.styleable.HorizontalProgressBar_textColor, Color.parseColor("#ffffff")));
-        setTextSize(a.getDimension(R.styleable.HorizontalProgressBar_textSize, 50));
-        setBarColor(a.getColor(R.styleable.HorizontalProgressBar_barColor, Color.parseColor("#CC0000")));
-        setCurrentValue(a.getInt(R.styleable.HorizontalProgressBar_current_value, 0));
-        setMaxValue(a.getInt(R.styleable.HorizontalProgressBar_max_value, 0));
+        TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.ProgressBar);
+        setTextColor(a.getColor(R.styleable.ProgressBar_textColor, Color.parseColor("#ffffff")));
+        setTextSize(a.getDimension(R.styleable.ProgressBar_textSize, 50));
+        setBarColor(a.getColor(R.styleable.ProgressBar_barColor, Color.parseColor("#CC0000")));
+        setCurrentValue(a.getInt(R.styleable.ProgressBar_current_value, 0));
+        setMaxValue(a.getInt(R.styleable.ProgressBar_max_value, 0));
         a.recycle();
     }
 

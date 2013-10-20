@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.progressBar.HorizontalProgressBar;
+import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
@@ -18,9 +18,9 @@ public class ExerciseFragment extends RoboFragment {
     @Inject
     private Workout workout;
     @InjectView(R.id.repsProgressBar)
-    private HorizontalProgressBar repsProgressBar;
+    private VerticalProgressBar repsProgressBar;
     @InjectView(R.id.setsProgressBar)
-    private HorizontalProgressBar setsProgressBar;
+    private VerticalProgressBar setsProgressBar;
     @Inject
     private WindowManager windowManager;
     private int exercisePosition;
