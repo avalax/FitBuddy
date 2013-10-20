@@ -47,6 +47,16 @@ public class ProgressBarOnGestureListenerTest {
     }
 
     @Test
+    public void testOnFling_shouldReturnFalseWhenMinDistanceNotReachedOnSwipingUp() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE);
+        MotionEvent endMotionEvent = getMotionEvent(0);
+
+        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(hasFling, equalTo(false));
+    }
+
+    @Test
     public void testOnFling_shouldReturnTrueWhenSwipingDown() throws Exception {
         MotionEvent startMotionEvent = getMotionEvent(0);
         MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
@@ -56,7 +66,27 @@ public class ProgressBarOnGestureListenerTest {
         assertThat(hasFling, equalTo(true));
     }
 
-    //TODO: false tests and issue #16
+    @Test
+    public void testOnFling_shouldReturnFalseWhenMinDistanceNotReachedOnSwipingDown() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(0);
+        MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE);
+
+        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(hasFling, equalTo(false));
+    }
+
+    @Test
+    public void testOnFling_shouldReturnFalseWhenMinVelocityNotReachedOnSwiping() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
+        MotionEvent endMotionEvent = getMotionEvent(0);
+
+        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY);
+
+        assertThat(hasFling, equalTo(false));
+    }
+
+    //TODO: issue #16
 
     private MotionEvent getMotionEvent(float y) {
         MotionEvent e1 = mock(MotionEvent.class);
