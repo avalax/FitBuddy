@@ -4,6 +4,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class ProgressBarOnGestureListenerTest {
+    private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private int onFlingEventMoved;
@@ -28,7 +30,7 @@ public class ProgressBarOnGestureListenerTest {
         windowManager = mock(WindowManager.class);
         defaultDisplay = mock(Display.class);
         when(windowManager.getDefaultDisplay()).thenReturn(defaultDisplay);
-        progressBarOnGestureListener = new ProgressBarOnGestureListener(windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX,windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 onFlingEventMoved = moved;
@@ -104,6 +106,17 @@ public class ProgressBarOnGestureListenerTest {
         progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(-1));
+    }
+
+    @Test
+    @Ignore
+    public void testOnFling_shouldSetMovedToMaxOnSwipingUp() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
+        MotionEvent endMotionEvent = getMotionEvent(0);
+
+        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(onFlingEventMoved, equalTo(SWIPE_MOVE_MAX));
     }
 
     //TODO: issue #16

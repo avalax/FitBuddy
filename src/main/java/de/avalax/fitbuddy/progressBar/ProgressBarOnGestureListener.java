@@ -5,11 +5,13 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 
 public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener{
+    private int swipeMoveMax;
     private final WindowManager windowManager;
     private int swipeMinDistance;
     private int swipeThresholdVelocity;
 
-    public ProgressBarOnGestureListener(WindowManager windowManager,int swipeMinDistance, int swipeThresholdVelocity) {
+    public ProgressBarOnGestureListener(int swipeMoveMax, WindowManager windowManager, int swipeMinDistance, int swipeThresholdVelocity) {
+        this.swipeMoveMax = swipeMoveMax;
         this.windowManager = windowManager;
         this.swipeMinDistance = swipeMinDistance;
         this.swipeThresholdVelocity = swipeThresholdVelocity;

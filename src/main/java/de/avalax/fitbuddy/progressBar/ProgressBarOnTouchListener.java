@@ -11,8 +11,8 @@ public abstract class ProgressBarOnTouchListener implements View.OnTouchListener
 
     private final GestureDetector gdt;
 
-    public ProgressBarOnTouchListener(WindowManager windowManager) {
-        gdt = new GestureDetector(new ProgressBarOnGestureListener(windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+    public ProgressBarOnTouchListener(int swipeMoveMax, WindowManager windowManager) {
+        gdt = new GestureDetector(new ProgressBarOnGestureListener(swipeMoveMax, windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 onGestureFlingEvent(moved);

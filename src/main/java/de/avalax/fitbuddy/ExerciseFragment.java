@@ -37,14 +37,14 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
+        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(getMaxMoveForReps(workout), windowManager) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeReps(moved);
             }
         });
 
-        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(windowManager) {
+        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(getMaxMoveForSets(workout), windowManager) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeSets(moved);
@@ -52,6 +52,14 @@ public class ExerciseFragment extends RoboFragment {
         });
 
         setViews(exercisePosition);
+    }
+
+    private int getMaxMoveForSets(Workout workout) {
+        return workout.getExercise(exercisePosition).getSetSize();
+    }
+
+    private int getMaxMoveForReps(Workout workout) {
+        return workout.getCurrentSet(exercisePosition).getRepsSize();
     }
 
     private void changeReps(int moved) {
