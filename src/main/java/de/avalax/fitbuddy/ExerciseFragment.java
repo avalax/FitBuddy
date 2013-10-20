@@ -4,10 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
+import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
 import roboguice.fragment.RoboFragment;
@@ -21,8 +20,6 @@ public class ExerciseFragment extends RoboFragment {
     private VerticalProgressBar repsProgressBar;
     @InjectView(R.id.setsProgressBar)
     private VerticalProgressBar setsProgressBar;
-    @Inject
-    private WindowManager windowManager;
     private int exercisePosition;
 
     @Override
@@ -37,14 +34,14 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(getMaxMoveForReps(workout), windowManager) {
+        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeReps(moved);
             }
         });
 
-        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(getMaxMoveForSets(workout), windowManager) {
+        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(setsProgressBar, getMaxMoveForSets(workout)) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeSets(moved);

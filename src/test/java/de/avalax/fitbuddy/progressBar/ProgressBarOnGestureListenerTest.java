@@ -1,8 +1,6 @@
 package de.avalax.fitbuddy.progressBar;
 
-import android.view.Display;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,20 +16,16 @@ public class ProgressBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
-    private static final Integer DISPLAY_HEIGHT = 240;
+    private static final Integer PROGRESS_BAR_HEIGHT = 240;
     private int onFlingEventMoved;
-    private WindowManager windowManager;
     private ProgressBarOnGestureListener progressBarOnGestureListener;
-    private Display defaultDisplay;
 
 
     @Before
     public void setUp() {
-        windowManager = mock(WindowManager.class);
-        defaultDisplay = mock(Display.class);
-        when(windowManager.getDefaultDisplay()).thenReturn(defaultDisplay);
-        when(defaultDisplay.getHeight()).thenReturn(DISPLAY_HEIGHT);
-        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX,windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+        VerticalProgressBar verticalProgressBar = mock(VerticalProgressBar.class);
+        when(verticalProgressBar.getHeight()).thenReturn(PROGRESS_BAR_HEIGHT);
+        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX,verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 onFlingEventMoved = moved;
@@ -111,7 +105,7 @@ public class ProgressBarOnGestureListenerTest {
 
     @Test
     public void testOnFling_shouldSetMovedToMaxOnSwipingUp() throws Exception {
-        MotionEvent startMotionEvent = getMotionEvent(DISPLAY_HEIGHT);
+        MotionEvent startMotionEvent = getMotionEvent(PROGRESS_BAR_HEIGHT);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
         progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
@@ -122,7 +116,7 @@ public class ProgressBarOnGestureListenerTest {
     @Test
     public void testOnFling_shouldSetMovedToMaxOnSwipingDown() throws Exception {
         MotionEvent startMotionEvent = getMotionEvent(0);
-        MotionEvent endMotionEvent = getMotionEvent(DISPLAY_HEIGHT);
+        MotionEvent endMotionEvent = getMotionEvent(PROGRESS_BAR_HEIGHT);
 
         progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 

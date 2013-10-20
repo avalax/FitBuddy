@@ -3,17 +3,16 @@ package de.avalax.fitbuddy.progressBar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 
 public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener{
     private int swipeMoveMax;
-    private final WindowManager windowManager;
+    private VerticalProgressBar verticalProgressBar;
     private int swipeMinDistance;
     private int swipeThresholdVelocity;
 
-    public ProgressBarOnGestureListener(int swipeMoveMax, WindowManager windowManager, int swipeMinDistance, int swipeThresholdVelocity) {
+    public ProgressBarOnGestureListener(int swipeMoveMax, VerticalProgressBar verticalProgressBar, int swipeMinDistance, int swipeThresholdVelocity) {
         this.swipeMoveMax = swipeMoveMax;
-        this.windowManager = windowManager;
+        this.verticalProgressBar = verticalProgressBar;
         this.swipeMinDistance = swipeMinDistance;
         this.swipeThresholdVelocity = swipeThresholdVelocity;
     }
@@ -22,12 +21,13 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
-        Log.d("onFLing",String.valueOf(moved));
+        Log.d("onFLing [moved]",String.valueOf(moved));
+        Log.d("onFLing [velocity]",String.valueOf(absVelocityY));
         if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
-            onFlingEvent(calculateMoved(moved, windowManager.getDefaultDisplay().getHeight()));
+            onFlingEvent(calculateMoved(moved, verticalProgressBar.getHeight()));
             return true;
         } else if (-moved > swipeMinDistance && absVelocityY > swipeMinDistance) {
-            onFlingEvent(-calculateMoved(moved, windowManager.getDefaultDisplay().getHeight()));
+            onFlingEvent(-calculateMoved(moved, verticalProgressBar.getHeight()));
             return true;
         }
         return false;
