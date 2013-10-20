@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.progressBar;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.WindowManager;
@@ -19,14 +20,24 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
 
     @Override
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
-        if (startMotionEvent.getY() - endMotionEvent.getY() > swipeMinDistance && Math.abs(velocityY) > swipeThresholdVelocity) {
-            onFlingEvent(1);
+        float absVelocityY = Math.abs(velocityY);
+        float moved = startMotionEvent.getY() - endMotionEvent.getY();
+        Log.d("onFLing",String.valueOf(moved));
+        if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
+            onFlingEvent(calculateMoved(moved, windowManager.getDefaultDisplay().getHeight()));
             return true;
-        } else if (endMotionEvent.getY() - startMotionEvent.getY() > swipeMinDistance && Math.abs(velocityY) > swipeMinDistance) {
-            onFlingEvent(-1);
+        } else if (-moved > swipeMinDistance && absVelocityY > swipeMinDistance) {
+            onFlingEvent(-calculateMoved(moved, windowManager.getDefaultDisplay().getHeight()));
             return true;
         }
         return false;
+    }
+
+    private int calculateMoved(float moved, int height) {
+        if (Math.abs(moved) + swipeMinDistance >= height) {
+            return swipeMoveMax;
+        }
+        return 1;
     }
 
     public abstract void onFlingEvent(int moved);

@@ -4,7 +4,6 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -19,6 +18,7 @@ public class ProgressBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
+    private static final Integer DISPLAY_HEIGHT = 240;
     private int onFlingEventMoved;
     private WindowManager windowManager;
     private ProgressBarOnGestureListener progressBarOnGestureListener;
@@ -30,6 +30,7 @@ public class ProgressBarOnGestureListenerTest {
         windowManager = mock(WindowManager.class);
         defaultDisplay = mock(Display.class);
         when(windowManager.getDefaultDisplay()).thenReturn(defaultDisplay);
+        when(defaultDisplay.getHeight()).thenReturn(DISPLAY_HEIGHT);
         progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX,windowManager, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
@@ -109,9 +110,8 @@ public class ProgressBarOnGestureListenerTest {
     }
 
     @Test
-    @Ignore
     public void testOnFling_shouldSetMovedToMaxOnSwipingUp() throws Exception {
-        MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
+        MotionEvent startMotionEvent = getMotionEvent(DISPLAY_HEIGHT);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
         progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
@@ -119,7 +119,15 @@ public class ProgressBarOnGestureListenerTest {
         assertThat(onFlingEventMoved, equalTo(SWIPE_MOVE_MAX));
     }
 
-    //TODO: issue #16
+    @Test
+    public void testOnFling_shouldSetMovedToMaxOnSwipingDown() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(0);
+        MotionEvent endMotionEvent = getMotionEvent(DISPLAY_HEIGHT);
+
+        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(onFlingEventMoved, equalTo(-SWIPE_MOVE_MAX));
+    }
 
     private MotionEvent getMotionEvent(float y) {
         MotionEvent e1 = mock(MotionEvent.class);
