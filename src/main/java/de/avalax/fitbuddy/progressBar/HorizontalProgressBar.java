@@ -79,12 +79,12 @@ public class HorizontalProgressBar extends View {
 
     public void setProgressBar(Exercise exercise) {
         setCurrentValue(exercise.getSetNumber());
-        setMaxValue(exercise.getSetSize());
+        setMaxValue(exercise.getMaxSets());
     }
 
     public void setProgressBar(Set set) {
         setCurrentValue(set.getReps());
-        setMaxValue(set.getRepsSize());
+        setMaxValue(set.getMaxReps());
     }
 
     public synchronized void setBarColor(int barColor) {

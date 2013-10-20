@@ -28,15 +28,15 @@ public class BasicSetTest {
     }
 
 	@Test
-	public void getRepsSize_shouldGetMaxReps() throws Exception {
-		assertThat(set.getRepsSize(),equalTo(15));
+	public void getMaxReps_shouldGetMaxReps() throws Exception {
+		assertThat(set.getMaxReps(),equalTo(15));
 	}
 
     @Test
     public void setReps_shouldShouldSetToMaxReps() throws Exception {
         set.setReps(-1);
 
-        assertThat(set.getReps(),equalTo(set.getRepsSize()));
+        assertThat(set.getReps(),equalTo(set.getMaxReps()));
     }
 
     @Test

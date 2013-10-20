@@ -31,13 +31,13 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void getSetSize_shouldReturnNumberOfSets() throws Exception {
+    public void getMaxSets_shouldReturnNumberOfSets() throws Exception {
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));
 
-        assertThat(exercise.getSetSize(), equalTo(4));
+        assertThat(exercise.getMaxSets(), equalTo(4));
     }
 
     @Test

@@ -55,11 +55,11 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private int getMaxMoveForSets(Workout workout) {
-        return workout.getExercise(exercisePosition).getSetSize();
+        return workout.getExercise(exercisePosition).getMaxSets();
     }
 
     private int getMaxMoveForReps(Workout workout) {
-        return workout.getCurrentSet(exercisePosition).getRepsSize();
+        return workout.getCurrentSet(exercisePosition).getMaxReps();
     }
 
     private void changeReps(int moved) {

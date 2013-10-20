@@ -35,7 +35,7 @@ public class BasicSet implements Set {
     }
 
 	@Override
-	public int getRepsSize(){
+	public int getMaxReps(){
 		return this.maxReps;
 	}
 }

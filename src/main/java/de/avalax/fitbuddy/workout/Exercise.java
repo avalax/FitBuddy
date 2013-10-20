@@ -6,7 +6,7 @@ public interface Exercise extends Serializable {
     String getName();
     double getWeight();
     double getWeightRaise(Tendency plus);
-    int getSetSize();
+    int getMaxSets();
     int getSetNumber();
     void setReps(int reps);
     int getReps();

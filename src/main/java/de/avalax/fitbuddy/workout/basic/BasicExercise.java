@@ -26,7 +26,7 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public int getSetSize() {
+    public int getMaxSets() {
         return sets.size();
     }
 
@@ -53,7 +53,7 @@ public class BasicExercise implements Exercise {
     @Override
     public void setCurrentSet(int setNumber) {
         if (isIndexNotInArray(setNumber - 1)) {
-            this.setNumber = getSetSize();
+            this.setNumber = getMaxSets();
         } else if (isIndexNegative(setNumber - 1)) {
             this.setNumber = 1;
         } else {

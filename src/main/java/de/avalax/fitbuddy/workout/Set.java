@@ -6,5 +6,5 @@ public interface Set extends Serializable {
     double getWeight();
     int getReps();
     void setReps(int reps);
-    int getRepsSize();
+    int getMaxReps();
 }
