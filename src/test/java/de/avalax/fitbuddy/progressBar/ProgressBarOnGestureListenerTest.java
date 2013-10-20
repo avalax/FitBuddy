@@ -86,6 +86,26 @@ public class ProgressBarOnGestureListenerTest {
         assertThat(hasFling, equalTo(false));
     }
 
+    @Test
+    public void testOnFling_shouldSetMovedTo1OnSwipingUp() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
+        MotionEvent endMotionEvent = getMotionEvent(0);
+
+        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(onFlingEventMoved, equalTo(1));
+    }
+
+    @Test
+    public void testOnFling_shouldSetMovedToMinus1OnSwipingDown() throws Exception {
+        MotionEvent startMotionEvent = getMotionEvent(0);
+        MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
+
+        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+
+        assertThat(onFlingEventMoved, equalTo(-1));
+    }
+
     //TODO: issue #16
 
     private MotionEvent getMotionEvent(float y) {
