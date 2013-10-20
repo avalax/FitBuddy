@@ -20,9 +20,9 @@ public class BasicSet implements Set {
     @Override
     public void setReps(int reps) {
         if (reps < 0) {
-            this.reps = maxReps;
-        } else if (reps > maxReps) {
             this.reps = 0;
+        } else if (reps > maxReps) {
+            this.reps = maxReps;
         }
         else {
             this.reps = reps;
