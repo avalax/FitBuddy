@@ -21,8 +21,6 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
-        Log.d("onFLing [moved]",String.valueOf(moved));
-        Log.d("onFLing [velocity]",String.valueOf(absVelocityY));
         if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
             onFlingEvent(calculateMoved(moved, verticalProgressBar.getHeight()));
             return true;

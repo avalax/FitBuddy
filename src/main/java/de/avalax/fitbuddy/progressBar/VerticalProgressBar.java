@@ -4,18 +4,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.Workout;
 
 public class VerticalProgressBar extends View {
     private Typeface typeface = Typeface.create("sans", Typeface.BOLD);
     private int textColor;
     private int barColor;
     private float textSize;
-    private int currentValue;
-    private int maxValue;
+    private float currentValue;
+    private float maxValue;
     private String currentTextValue;
     private String maxTextValue;
 
@@ -37,10 +39,17 @@ public class VerticalProgressBar extends View {
         a.recycle();
     }
 
-    public void setProgressBar(Exercise exercise) {
-        setCurrentValue(exercise.getSetNumber());
-        setMaxValue(exercise.getMaxSets());
+    public void setProgressBar(Workout workout, int exercisePosition) {
+        Exercise exercise = workout.getExercise(exercisePosition);
+        this.currentValue = currentValue(exercisePosition, exercise.getSetNumber(),exercise.getMaxSets());
+        this.currentTextValue = String.valueOf(exercise.getSetNumber());
+        this.maxValue = workout.getExerciseCount();
+        this.maxTextValue = String.valueOf(exercise.getMaxSets());
         postInvalidate();
+    }
+
+    private float currentValue(float exercisePosition, float setNumber, float maxSets) {
+        return exercisePosition + (setNumber / maxSets);
     }
 
     public void setProgressBar(Set set) {
@@ -67,8 +76,8 @@ public class VerticalProgressBar extends View {
     }
 
     private int calculateProgressBarHeight() {
-        float scale = (float) currentValue / (float) maxValue;
-        return (int) (scale * this.getHeight());
+        float scale = currentValue / maxValue;
+        return Math.round(scale * this.getHeight());
     }
 
     private void drawTextInProgressBar(Canvas canvas) {
