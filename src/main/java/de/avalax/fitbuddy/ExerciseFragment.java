@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import roboguice.inject.InjectView;
 
 public class ExerciseFragment extends RoboFragment {
 
+    @Inject
+    Context context;
     @Inject
     private Workout workout;
     @InjectView(R.id.repsProgressBar)
@@ -34,14 +37,14 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(repsProgressBar, getMaxMoveForReps(workout)) {
+        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context,repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeReps(moved);
             }
         });
 
-        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(setsProgressBar, getMaxMoveForSets(workout)) {
+        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(workout)) {
             @Override
             public void onGestureFlingEvent(int moved) {
                 changeSets(moved);
