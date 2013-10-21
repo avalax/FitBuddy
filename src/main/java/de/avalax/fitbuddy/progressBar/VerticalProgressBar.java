@@ -16,6 +16,8 @@ public class VerticalProgressBar extends View {
     private float textSize;
     private int currentValue;
     private int maxValue;
+    private String currentTextValue;
+    private String maxTextValue;
 
     public VerticalProgressBar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -73,8 +75,8 @@ public class VerticalProgressBar extends View {
         textPaint.setColor(textColor);
         textPaint.setTextSize(textSize);
         textPaint.setTypeface(typeface);
-        String textCurrentValue = currentValue + "";
-        String textMaxValue = maxValue + "";
+        String textCurrentValue = currentTextValue;
+        String textMaxValue = maxTextValue;
         DrawTextDimensionValues drawTextDimensionValuesCurrentValue = new DrawTextDimensionValues(textPaint, textCurrentValue, getWidth(), getHeight()).invoke();
         DrawTextDimensionValues drawTextDimensionValuesMaxValue = new DrawTextDimensionValues(textPaint, textMaxValue, getWidth(), getHeight()).invoke();
         canvas.drawText(textCurrentValue, drawTextDimensionValuesCurrentValue.getX(), drawTextDimensionValuesCurrentValue.getY(), textPaint);
@@ -91,13 +93,15 @@ public class VerticalProgressBar extends View {
         postInvalidate();
     }
 
-    private synchronized void setMaxValue(int reps) {
-        this.maxValue = reps;
+    private synchronized void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+        this.maxTextValue = String.valueOf(maxValue);
         postInvalidate();
     }
 
-    private synchronized void setCurrentValue(int reps) {
-        this.currentValue = reps;
+    private synchronized void setCurrentValue(int currentValue) {
+        this.currentValue = currentValue;
+        this.currentTextValue = String.valueOf(currentValue);
         postInvalidate();
     }
 
