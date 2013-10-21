@@ -49,6 +49,7 @@ public class VerticalProgressBar extends View {
     }
 
     private float currentValue(float exercisePosition, float setNumber, float maxSets) {
+        //TODO: extract to workout, make sets depend on this,too
         return exercisePosition + (setNumber / maxSets);
     }
 
