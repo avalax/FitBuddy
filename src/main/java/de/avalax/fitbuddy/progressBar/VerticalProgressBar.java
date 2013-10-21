@@ -40,11 +40,13 @@ public class VerticalProgressBar extends View {
     public void setProgressBar(Exercise exercise) {
         setCurrentValue(exercise.getSetNumber());
         setMaxValue(exercise.getMaxSets());
+        postInvalidate();
     }
 
     public void setProgressBar(Set set) {
         setCurrentValue(set.getReps());
         setMaxValue(set.getMaxReps());
+        postInvalidate();
     }
 
     @Override
@@ -85,28 +87,23 @@ public class VerticalProgressBar extends View {
 
     private synchronized void setTextColor(int textColor) {
         this.textColor = textColor;
-        postInvalidate();
     }
 
     private synchronized void setBarColor(int barColor) {
         this.barColor = barColor;
-        postInvalidate();
     }
 
     private synchronized void setMaxValue(int maxValue) {
         this.maxValue = maxValue;
         this.maxTextValue = String.valueOf(maxValue);
-        postInvalidate();
     }
 
     private synchronized void setCurrentValue(int currentValue) {
         this.currentValue = currentValue;
         this.currentTextValue = String.valueOf(currentValue);
-        postInvalidate();
     }
 
     private synchronized void setTextSize(float textSize) {
         this.textSize = textSize;
-        postInvalidate();
     }
 }
