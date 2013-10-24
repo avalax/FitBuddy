@@ -74,7 +74,7 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
-        workout.setReps(exercisePosition,12);
+        workout.setReps(exercisePosition, 12);
 
         verify(exercise).setReps(12);
     }
@@ -85,9 +85,8 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         when(exercise.getReps()).thenReturn(12);
 
-        assertThat(workout.getReps(exercisePosition),equalTo(12));
+        assertThat(workout.getReps(exercisePosition), equalTo(12));
     }
-
 
     @Test
     public void getName_shouldReturnNameFromExercise() throws Exception {
@@ -95,7 +94,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         when(exercise.getName()).thenReturn("NameOfExercise");
 
-        assertThat(workout.getName(exercisePosition),equalTo("NameOfExercise"));
+        assertThat(workout.getName(exercisePosition), equalTo("NameOfExercise"));
     }
 
     @Test
@@ -104,7 +103,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         exercises.add(mock(Exercise.class));
 
-        workout.setTendency(exercisePosition,Tendency.NEUTRAL);
+        workout.setTendency(exercisePosition, Tendency.NEUTRAL);
 
         verify(exercise).setTendency(Tendency.NEUTRAL);
     }
@@ -130,10 +129,46 @@ public class BasicWorkoutTest {
     }
 
     @Test(expected = ExerciseNotAvailableException.class)
-    public void BasicWorkout_shouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
+    public void getExercise_shouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
         int previousExercise = -1;
         exercises.add(mock(Exercise.class));
 
         workout.getExercise(previousExercise);
+    }
+
+    @Test
+    public void getProgress_shouldReturnZeroProgress() {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        when(exercise.getMaxSets()).thenReturn(3);
+        when(exercise.getSetNumber()).thenReturn(1);
+        when(exercise.getReps()).thenReturn(0);
+
+        assertThat(workout.getProgress(exercisePosition), equalTo(0.0f));
+    }
+
+    @Test
+    public void getProgress_shouldReturnExerciseCount() {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
+        when(exercise.getMaxSets()).thenReturn(3);
+        when(exercise.getSetNumber()).thenReturn(3);
+        when(exercise.getReps()).thenReturn(1);
+
+        assertThat(workout.getProgress(1), equalTo((float) workout.getExerciseCount()));
+    }
+
+    @Test
+    public void getProgress_shouldReturn1point5() {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
+        when(exercise.getMaxSets()).thenReturn(3);
+        when(exercise.getSetNumber()).thenReturn(2);
+        when(exercise.getReps()).thenReturn(1);
+
+        float countAndProgress = workout.getExerciseCount()-1 + (2 / 3.0f);
+        assertThat(workout.getProgress(1), equalTo(countAndProgress));
     }
 }

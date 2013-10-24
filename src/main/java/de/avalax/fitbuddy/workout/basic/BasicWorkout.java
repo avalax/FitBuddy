@@ -49,6 +49,17 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public float getProgress(int position) {
+        Exercise exercise = getExercise(position);
+        float maxSets = (float) exercise.getMaxSets();
+        float setNumber = (float) exercise.getSetNumber();
+        if (getReps(position) == 0) {
+            setNumber--;
+        }
+        return position + (setNumber / maxSets);
+    }
+
+    @Override
     public int getExerciseCount() {
         return exercises.size();
     }

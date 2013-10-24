@@ -32,6 +32,11 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public float getProgress(int position) {
+        return workout.getProgress(position);
+    }
+
+    @Override
     public int getReps(int position) {
         return workout.getReps(position);
     }

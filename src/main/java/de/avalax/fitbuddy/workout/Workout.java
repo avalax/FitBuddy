@@ -13,4 +13,5 @@ public interface Workout {
     void incrementSet(int position);
     Set getCurrentSet(int position);
     String getName(int position);
+    float getProgress(int position);
 }

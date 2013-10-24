@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.workout.Exercise;
@@ -41,16 +40,11 @@ public class VerticalProgressBar extends View {
 
     public void setProgressBar(Workout workout, int exercisePosition) {
         Exercise exercise = workout.getExercise(exercisePosition);
-        this.currentValue = currentValue(exercisePosition, exercise.getSetNumber(),exercise.getMaxSets());
+        this.currentValue = workout.getProgress(exercisePosition);
         this.currentTextValue = String.valueOf(exercise.getSetNumber());
         this.maxValue = workout.getExerciseCount();
         this.maxTextValue = String.valueOf(exercise.getMaxSets());
         postInvalidate();
-    }
-
-    private float currentValue(float exercisePosition, float setNumber, float maxSets) {
-        //TODO: extract to workout, make sets depend on this,too
-        return exercisePosition + (setNumber / maxSets);
     }
 
     public void setProgressBar(Set set) {

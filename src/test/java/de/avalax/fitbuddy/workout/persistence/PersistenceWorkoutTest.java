@@ -66,6 +66,13 @@ public class PersistenceWorkoutTest {
     }
 
     @Test
+    public void getProgress_shouldCallGetProgressFromWorkout() throws Exception {
+        persistenceWorkout.getProgress(exercisePosition);
+
+        verify(workout).getProgress(exercisePosition);
+    }
+
+    @Test
     public void incrementSet_shouldCallIncrementSetFromWorkout() throws Exception {
         persistenceWorkout.incrementSet(exercisePosition);
 
