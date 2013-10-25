@@ -2,6 +2,7 @@ package de.avalax.fitbuddy;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,19 +40,54 @@ public class ExerciseFragment extends RoboFragment {
 
         repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context,repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
-            public void onGestureFlingEvent(int moved) {
+            public void onFlingEvent(int moved) {
                 changeReps(moved);
+            }
+
+            @Override
+            protected void onLongPressedLeftEvent() {
+                addExerciseBeforeCurrentExercise();
+            }
+
+            @Override
+            protected void onLongPressedRightEvent() {
+                editCurrentExercise();
             }
         });
 
         setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(workout)) {
             @Override
-            public void onGestureFlingEvent(int moved) {
+            public void onFlingEvent(int moved) {
                 changeSets(moved);
+            }
+
+            @Override
+            protected void onLongPressedLeftEvent() {
+                editCurrentExercise();
+            }
+
+            @Override
+            protected void onLongPressedRightEvent() {
+                addExerciseAfterCurrentExercise();
             }
         });
 
         setViews(exercisePosition);
+    }
+
+    private void addExerciseBeforeCurrentExercise() {
+        //TODO: addExerciseBeforeCurrentExercise
+        Log.d("LongClick", "addExerciseBeforeCurrentExercise()");
+    }
+
+    private void addExerciseAfterCurrentExercise() {
+        //TODO: addExerciseAfterCurrentExercise
+        Log.d("LongClick", "addExerciseAfterCurrentExercise()");
+    }
+
+    private void editCurrentExercise() {
+        //TODO: editCurrentExercise
+        Log.d("LongClick", "editCurrentExercise()");
     }
 
     private int getMaxMoveForSets(Workout workout) {

@@ -1,10 +1,9 @@
 package de.avalax.fitbuddy.progressBar;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener{
+public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
     private int swipeMoveMax;
     private VerticalProgressBar verticalProgressBar;
     private int swipeMinDistance;
@@ -15,6 +14,15 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
         this.verticalProgressBar = verticalProgressBar;
         this.swipeMinDistance = swipeMinDistance;
         this.swipeThresholdVelocity = swipeThresholdVelocity;
+    }
+
+    @Override
+    public void onLongPress(android.view.MotionEvent e) {
+        if (e.getX() > verticalProgressBar.getWidth()/2) {
+            onLongPressedRightEvent();
+        }  else {
+            onLongPressedLeftEvent();
+        }
     }
 
     @Override
@@ -39,4 +47,8 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
     }
 
     public abstract void onFlingEvent(int moved);
+
+    public abstract void onLongPressedLeftEvent();
+
+    public abstract void onLongPressedRightEvent();
 }

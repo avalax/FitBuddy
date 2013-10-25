@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -17,18 +18,32 @@ public class ProgressBarOnGestureListenerTest {
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final Integer PROGRESS_BAR_HEIGHT = 240;
+    private static final Integer PROGRESS_BAR_WIDTH = 300;
     private int onFlingEventMoved;
-    private ProgressBarOnGestureListener progressBarOnGestureListener;
+    private boolean hasLongPressedLeft;
+    private boolean hasLongPressedRight;
 
+    private ProgressBarOnGestureListener progressBarOnGestureListener;
 
     @Before
     public void setUp() {
         VerticalProgressBar verticalProgressBar = mock(VerticalProgressBar.class);
         when(verticalProgressBar.getHeight()).thenReturn(PROGRESS_BAR_HEIGHT);
-        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX,verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+        when(verticalProgressBar.getWidth()).thenReturn(PROGRESS_BAR_WIDTH);
+        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX, verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 onFlingEventMoved = moved;
+            }
+
+            @Override
+            public void onLongPressedLeftEvent() {
+                hasLongPressedLeft = true;
+            }
+
+            @Override
+            public void onLongPressedRightEvent() {
+                hasLongPressedRight = true;
             }
         };
     }
@@ -121,6 +136,40 @@ public class ProgressBarOnGestureListenerTest {
         progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(-SWIPE_MOVE_MAX));
+    }
+
+    @Test
+         public void testOnLongPress_shouldPressOnTheLeft() throws Exception {
+        progressBarOnGestureListener.onLongPress(getMotionEvent(0, 0));
+
+        assertThat(hasLongPressedLeft, is(Boolean.TRUE));
+    }
+
+    @Test
+    public void testOnLongPress_shouldPressOnTheLeftNearRight() throws Exception {
+        progressBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH/2, 0));
+
+        assertThat(hasLongPressedLeft, is(Boolean.TRUE));
+    }
+
+    @Test
+    public void testOnLongPress_shouldPressOnTheRightNearLeft() throws Exception {
+        progressBarOnGestureListener.onLongPress(getMotionEvent((PROGRESS_BAR_WIDTH/2)+1, 0));
+
+        assertThat(hasLongPressedRight, is(Boolean.TRUE));
+    }
+
+    @Test
+    public void testOnLongPress_shouldPressOnTheRight() throws Exception {
+        progressBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH, 0));
+
+        assertThat(hasLongPressedRight, is(Boolean.TRUE));
+    }
+
+    private MotionEvent getMotionEvent(float x, float y) {
+        MotionEvent e1 = getMotionEvent(y);
+        when(e1.getX()).thenReturn(x);
+        return e1;
     }
 
     private MotionEvent getMotionEvent(float y) {
