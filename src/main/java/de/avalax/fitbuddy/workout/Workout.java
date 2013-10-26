@@ -14,4 +14,8 @@ public interface Workout {
     Set getCurrentSet(int position);
     String getName(int position);
     float getProgress(int position);
+    //TODO: interface segregation
+    void addExerciseBefore(int position, Exercise exercise);
+    void addExerciseAfter(int position, Exercise exercise);
+    void setExercise(int position, Exercise exercise);
 }

@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.workout.persistence;
 
+import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
 import org.junit.Before;
@@ -85,6 +86,30 @@ public class PersistenceWorkoutTest {
         persistenceWorkout.setReps(exercisePosition, repsCount);
 
         verify(workout).setReps(exercisePosition, repsCount);
+    }
+
+    @Test
+    public void addExerciseBefore_shouldCallAddExerciseBeforeFromWorkout() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        persistenceWorkout.addExerciseBefore(exercisePosition, exercise);
+
+        verify(workout).addExerciseBefore(exercisePosition, exercise);
+    }
+
+    @Test
+    public void addExerciseAfter_shouldCallAddExerciseAfterFromWorkout() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        persistenceWorkout.addExerciseAfter(exercisePosition, exercise);
+
+        verify(workout).addExerciseAfter(exercisePosition, exercise);
+    }
+
+    @Test
+    public void setExercise_shouldCallSetExerciseFromWorkout() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        persistenceWorkout.setExercise(exercisePosition, exercise);
+
+        verify(workout).setExercise(exercisePosition, exercise);
     }
 
     @Test

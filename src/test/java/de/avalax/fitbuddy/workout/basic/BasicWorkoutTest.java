@@ -9,9 +9,9 @@ import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
@@ -19,13 +19,13 @@ import static org.mockito.Mockito.*;
 public class BasicWorkoutTest {
 
     private Workout workout;
-    private List<Exercise> exercises;
+    private LinkedList<Exercise> exercises;
     private int exercisePosition;
 
     @Before
     public void setUp() throws Exception {
         exercisePosition = 0;
-        exercises = new ArrayList<>();
+        exercises = new LinkedList<>();
         workout = new BasicWorkout(exercises);
     }
 
@@ -137,7 +137,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getProgress_shouldReturnZeroProgress() {
+    public void getProgress_shouldReturnZeroProgress() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         when(exercise.getMaxSets()).thenReturn(3);
@@ -148,7 +148,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getProgress_shouldReturnExerciseCount() {
+    public void getProgress_shouldReturnExerciseCount() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
         exercises.add(exercise);
@@ -160,7 +160,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getProgress_shouldReturn1point5() {
+    public void getProgress_shouldReturn1point5() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
         exercises.add(exercise);
@@ -168,7 +168,50 @@ public class BasicWorkoutTest {
         when(exercise.getSetNumber()).thenReturn(2);
         when(exercise.getReps()).thenReturn(1);
 
-        float countAndProgress = workout.getExerciseCount()-1 + (2 / 3.0f);
+        float countAndProgress = workout.getExerciseCount() - 1 + (2 / 3.0f);
         assertThat(workout.getProgress(1), equalTo(countAndProgress));
+    }
+
+    @Test
+    public void addExerciseBefore_shouldAddExerciseBeforePosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+
+        workout.addExerciseBefore(exercisePosition,exercise);
+
+        assertThat(exercises.size(),is(2));
+        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
+    }
+
+    @Test
+    public void addExerciseBefore_shouldAddExerciseAfterPosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+
+        workout.addExerciseAfter(exercisePosition,exercise);
+
+        assertThat(exercises.size(),is(2));
+        assertThat(workout.getExercise(exercisePosition+1), equalTo(exercise));
+    }
+
+    @Test
+    public void setExercise_shouldAddExerciseAtPosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+
+        workout.setExercise(exercisePosition, exercise);
+
+        assertThat(exercises.size(),is(1));
+        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
+    }
+
+    @Test
+    public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+
+        workout.setExercise(exercisePosition, exercise);
+
+        assertThat(exercises.size(),is(1));
+        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
     }
 }

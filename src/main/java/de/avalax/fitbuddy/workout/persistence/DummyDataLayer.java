@@ -8,12 +8,13 @@ import de.avalax.fitbuddy.workout.basic.BasicSet;
 import de.avalax.fitbuddy.workout.basic.BasicWorkout;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DummyDataLayer implements DataLayer {
     @Override
     public Workout load() {
-        List<Exercise> exercises = new ArrayList<>();
+        LinkedList<Exercise> exercises = new LinkedList<>();
         exercises.add(new BasicExercise("Bankdrücken", createSetWithThreeSets(70,12), 5));
         exercises.add(new BasicExercise("Schrägbankdrücken", createSetWithThreeSets(40,10), 5));
         exercises.add(new BasicExercise("Butterfly", createSetWithThreeSets(60,15), 5));

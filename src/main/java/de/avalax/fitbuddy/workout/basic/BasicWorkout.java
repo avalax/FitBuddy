@@ -6,12 +6,12 @@ import de.avalax.fitbuddy.workout.Tendency;
 import de.avalax.fitbuddy.workout.Workout;
 import de.avalax.fitbuddy.workout.exceptions.ExerciseNotAvailableException;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public class BasicWorkout implements Workout {
-    private List<Exercise> exercises;
+    private LinkedList<Exercise> exercises;
 
-    public BasicWorkout(List<Exercise> exercises) {
+    public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
     }
 
@@ -24,7 +24,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setReps(int position,int reps) {
+    public void setReps(int position, int reps) {
         getExercise(position).setReps(reps);
     }
 
@@ -60,6 +60,25 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public void addExerciseBefore(int position, Exercise exercise) {
+        exercises.add(position, exercise);
+    }
+
+    @Override
+    public void addExerciseAfter(int position, Exercise exercise) {
+        exercises.add(position + 1, exercise);
+    }
+
+    @Override
+    public void setExercise(int position, Exercise exercise) {
+        if (exercises.size() > position) {
+            exercises.set(position, exercise);
+        } else {
+            exercises.add(exercise);
+        }
+    }
+
+    @Override
     public int getExerciseCount() {
         return exercises.size();
     }
@@ -74,7 +93,7 @@ public class BasicWorkout implements Workout {
     }
 
     private boolean isIndexInArray(int index) {
-        return index <= exercises.size()-1;
+        return index <= exercises.size() - 1;
     }
 
     private boolean isIndexNotNegative(int index) {

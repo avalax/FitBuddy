@@ -37,6 +37,24 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public void addExerciseBefore(int position, Exercise exercise) {
+        //TODO: delegate to datalayer
+        workout.addExerciseBefore(position, exercise);
+    }
+
+    @Override
+    public void addExerciseAfter(int position, Exercise exercise) {
+        //TODO: delegate to dataLayer
+        workout.addExerciseAfter(position, exercise);
+    }
+
+    @Override
+    public void setExercise(int position, Exercise exercise) {
+        //TODO: delegate to dataLayer
+        workout.setExercise(position,exercise);
+    }
+
+    @Override
     public int getReps(int position) {
         return workout.getReps(position);
     }
