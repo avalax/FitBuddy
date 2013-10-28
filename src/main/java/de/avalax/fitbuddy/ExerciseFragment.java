@@ -1,12 +1,15 @@
 package de.avalax.fitbuddy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
+import de.avalax.fitbuddy.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
 import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.workout.Exercise;
@@ -77,16 +80,22 @@ public class ExerciseFragment extends RoboFragment {
 
     private void addExerciseBeforeCurrentExercise() {
         //TODO: addExerciseBeforeCurrentExercise
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        startActivity(intent);
         Log.d("LongClick", "addExerciseBeforeCurrentExercise()");
     }
 
     private void addExerciseAfterCurrentExercise() {
         //TODO: addExerciseAfterCurrentExercise
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        startActivity(intent);
         Log.d("LongClick", "addExerciseAfterCurrentExercise()");
     }
 
     private void editCurrentExercise() {
         //TODO: editCurrentExercise
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        startActivity(intent);
         Log.d("LongClick", "editCurrentExercise()");
     }
 
