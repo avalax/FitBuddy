@@ -3,7 +3,6 @@ package de.avalax.fitbuddy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +22,9 @@ public class ExerciseFragment extends RoboFragment {
     Context context;
     @Inject
     private Workout workout;
-    @InjectView(R.id.repsProgressBar)
+    @InjectView(R.id.leftProgressBar)
     private VerticalProgressBar repsProgressBar;
-    @InjectView(R.id.setsProgressBar)
+    @InjectView(R.id.rightProgressBar)
     private VerticalProgressBar setsProgressBar;
     private int exercisePosition;
 
@@ -95,6 +94,7 @@ public class ExerciseFragment extends RoboFragment {
     private void editCurrentExercise() {
         //TODO: editCurrentExercise
         Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        intent.putExtra("exercise", workout.getExercise(exercisePosition));
         startActivity(intent);
         Log.d("LongClick", "editCurrentExercise()");
     }

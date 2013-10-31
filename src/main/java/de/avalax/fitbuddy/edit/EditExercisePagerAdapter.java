@@ -1,25 +1,24 @@
 package de.avalax.fitbuddy.edit;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.google.inject.Inject;
-import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.edit.EditConfirmationExerciseFragment;
-import de.avalax.fitbuddy.edit.EditEffortExerciseFragment;
-import de.avalax.fitbuddy.edit.EditWeightExerciseFragment;
 import de.avalax.fitbuddy.workout.Exercise;
-import de.avalax.fitbuddy.workout.Workout;
 import roboguice.RoboGuice;
-import roboguice.inject.InjectResource;
 
 public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
+
+    private Exercise exercise;
 
     public EditExercisePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         RoboGuice.getInjector(context).injectMembersWithoutViews(this);
+    }
+
+    public EditExercisePagerAdapter(FragmentManager fm, Context context, Exercise exercise) {
+        this(fm, context);
+        this.exercise = exercise;
     }
 
     @Override
@@ -29,7 +28,7 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
         } else if (position == 1) {
             return new EditEffortExerciseFragment();
         } else {
-           return new EditConfirmationExerciseFragment();
+            return new EditConfirmationExerciseFragment();
         }
     }
 
@@ -40,12 +39,20 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        //TODO: resources
+        if (exercise == null) {
+            return getTitleFor(position, "new exercise");
+        }
+        return getTitleFor(position, exercise.getName());
+    }
+
+    private CharSequence getTitleFor(int position, String name) {
         if (position == 0) {
-            return "edit";
+            return String.format("weight - %1s", name);
         } else if (position == 1) {
-            return "edit2";
+            return String.format("effort - %1s", name);
         } else {
-            return "edit3";
+            return String.format("save - %1s", name);
         }
     }
 }

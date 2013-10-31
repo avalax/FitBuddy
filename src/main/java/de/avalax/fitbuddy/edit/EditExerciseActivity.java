@@ -7,6 +7,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.workout.Exercise;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -19,7 +20,19 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager.setAdapter(new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext()));
+        Exercise exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        EditExercisePagerAdapter editExercisePagerAdapter = getEditExercisePagerAdapter(exercise);
+        viewPager.setAdapter(editExercisePagerAdapter);
+    }
+
+    private EditExercisePagerAdapter getEditExercisePagerAdapter(Exercise exercise) {
+        EditExercisePagerAdapter editExercisePagerAdapter;
+        if (exercise != null) {
+            editExercisePagerAdapter = new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), exercise);
+        } else {
+            editExercisePagerAdapter = new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext());
+        }
+        return editExercisePagerAdapter;
     }
 
     @Override

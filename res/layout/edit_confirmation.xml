@@ -1,14 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="60dp"
+    android:paddingBottom="60dp"
+    android:gravity="center_vertical|center_horizontal">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="edit confirmation"
-        android:id="@+id/textView"
-        android:layout_gravity="center"/>
+        android:id="@+id/exerciseNameEditText"
+        android:layout_gravity="center"
+        android:inputType="textAutoComplete"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="exercise name"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="positive"
+        android:id="@+id/buttonSave"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/icon_positive"
+        android:onClick="clickEvent"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="negative"
+        android:id="@+id/buttonCancel"
+        android:layout_gravity="right|center_vertical"
+        android:drawableLeft="@drawable/icon_negative"
+        android:onClick="clickEvent"/>
 </LinearLayout>
