@@ -24,11 +24,11 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new EditWeightExerciseFragment();
+            return new WeightExerciseFragment();
         } else if (position == 1) {
-            return new EditEffortExerciseFragment();
+            return new EffortExerciseFragment();
         } else {
-            return new EditConfirmationExerciseFragment();
+            return new ConfirmationExerciseFragment();
         }
     }
 

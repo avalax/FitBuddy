@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import de.avalax.fitbuddy.R;
 import roboguice.fragment.RoboFragment;
 
-public class EditWeightExerciseFragment extends RoboFragment {
+public class EffortExerciseFragment extends RoboFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_edit, container, false);
+        return inflater.inflate(R.layout.edit_effort, container, false);
     }
 }

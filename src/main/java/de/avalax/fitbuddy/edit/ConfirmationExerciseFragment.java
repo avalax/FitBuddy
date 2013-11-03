@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import de.avalax.fitbuddy.R;
 import roboguice.fragment.RoboFragment;
 
-public class EditConfirmationExerciseFragment extends RoboFragment {
+public class ConfirmationExerciseFragment extends RoboFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
