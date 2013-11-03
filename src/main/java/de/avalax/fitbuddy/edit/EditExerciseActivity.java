@@ -16,7 +16,7 @@ import roboguice.inject.InjectView;
 public class EditExerciseActivity extends RoboFragmentActivity {
     @InjectView(R.id.pager)
     private ViewPager viewPager;
-    private EditExercise exercise;
+    private EditableExercise exercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class EditExerciseActivity extends RoboFragmentActivity {
         finish();
     }
 
-    private EditExercise getExercise() {
-        return (EditExercise) getIntent().getSerializableExtra("exercise");
+    private EditableExercise getExercise() {
+        return (EditableExercise) getIntent().getSerializableExtra("exercise");
     }
 
     private EditExercisePagerAdapter getEditExercisePagerAdapter() {

@@ -8,11 +8,11 @@ import de.avalax.fitbuddy.R;
 import roboguice.fragment.RoboFragment;
 
 public class ConfirmationExerciseFragment extends RoboFragment {
-    private EditExercise editExercise;
+    private EditableExercise editableExercise;
 
-    public ConfirmationExerciseFragment(EditExercise editExercise) {
+    public ConfirmationExerciseFragment(EditableExercise editableExercise) {
         super();
-        this.editExercise = editExercise;
+        this.editableExercise = editableExercise;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package de.avalax.fitbuddy.edit;
 
-public class NewEditExercise implements EditExercise {
+public class NewEditalbeExercise implements EditableExercise {
     private int reps;
     private int sets;
     private double weight;

@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.edit;
 
 import java.io.Serializable;
 
-public interface EditExercise extends Serializable {
+public interface EditableExercise extends Serializable {
     String getName();
 
     void setName(String name);

@@ -10,7 +10,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class EffortExerciseFragment extends RoboFragment {
-    private EditExercise editExercise;
+    private EditableExercise editableExercise;
 
     @InjectView(R.id.leftEnterValueBar)
     EnterValueBar leftEnterValueBar;
@@ -18,9 +18,9 @@ public class EffortExerciseFragment extends RoboFragment {
     @InjectView(R.id.rightEnterValueBar)
     EnterValueBar rightEnterValueBar;
 
-    public EffortExerciseFragment(EditExercise editExercise) {
+    public EffortExerciseFragment(EditableExercise editableExercise) {
         super();
-        this.editExercise = editExercise;
+        this.editableExercise = editableExercise;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class EffortExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        leftEnterValueBar.setValue(String.valueOf(editExercise.getReps()));
-        rightEnterValueBar.setValue(String.valueOf(editExercise.getSets()));
+        leftEnterValueBar.setValue(String.valueOf(editableExercise.getReps()));
+        rightEnterValueBar.setValue(String.valueOf(editableExercise.getSets()));
     }
 }

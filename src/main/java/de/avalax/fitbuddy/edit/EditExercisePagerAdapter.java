@@ -8,22 +8,22 @@ import roboguice.RoboGuice;
 
 public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
-    private EditExercise editExercise;
+    private EditableExercise editableExercise;
 
-    public EditExercisePagerAdapter(FragmentManager fm, Context context, EditExercise editExercise) {
+    public EditExercisePagerAdapter(FragmentManager fm, Context context, EditableExercise editableExercise) {
         super(fm);
         RoboGuice.getInjector(context).injectMembersWithoutViews(this);
-        this.editExercise = editExercise;
+        this.editableExercise = editableExercise;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new WeightExerciseFragment(editExercise);
+            return new WeightExerciseFragment(editableExercise);
         } else if (position == 1) {
-            return new EffortExerciseFragment(editExercise);
+            return new EffortExerciseFragment(editableExercise);
         } else {
-            return new ConfirmationExerciseFragment(editExercise);
+            return new ConfirmationExerciseFragment(editableExercise);
         }
     }
 
@@ -34,7 +34,7 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return getTitleFor(position, editExercise.getName());
+        return getTitleFor(position, editableExercise.getName());
     }
 
     private CharSequence getTitleFor(int position, String name) {
