@@ -99,7 +99,13 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private NewEditableExercise createNewEditableExercise() {
-        return new NewEditableExercise();
+        NewEditableExercise newEditableExercise = new NewEditableExercise();
+        //TODO: extract to resources
+        newEditableExercise.setWeight(2.5);
+        newEditableExercise.setWeightRaise(1.25);
+        newEditableExercise.setReps(12);
+        newEditableExercise.setSets(3);
+        return newEditableExercise;
     }
 
     private EditableExercise createExistingEditableExercise() {

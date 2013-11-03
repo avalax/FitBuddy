@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import de.avalax.fitbuddy.R;
 import roboguice.fragment.RoboFragment;
@@ -14,6 +15,9 @@ public class ConfirmationExerciseFragment extends RoboFragment {
 
     @InjectView(R.id.exerciseNameEditText)
     EditText exerciseNameEditText;
+
+    @InjectView(R.id.buttonCancel)
+    Button buttonCancel;
 
     public ConfirmationExerciseFragment(EditableExercise editableExercise) {
         super();
@@ -31,5 +35,9 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         exerciseNameEditText.setText(editableExercise.getName());
+        if (editableExercise instanceof ExistingEditableExercise) {
+            //TODO: extract to resources
+            buttonCancel.setText("delete");
+        }
     }
 }

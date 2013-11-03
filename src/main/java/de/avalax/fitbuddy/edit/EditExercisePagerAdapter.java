@@ -34,7 +34,12 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return getTitleFor(position, editableExercise.getName());
+        String title = editableExercise.getName();
+        if (title == null) {
+            //TODO: extract to resources
+            title = "new exercise";
+        }
+        return getTitleFor(position, title);
     }
 
     private CharSequence getTitleFor(int position, String name) {
