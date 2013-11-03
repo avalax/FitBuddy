@@ -13,6 +13,7 @@ public class EnterValueBar extends View {
     private float textSize;
     private float labelTextSize;
     private String currentTextValue;
+    private String label;
 
     public EnterValueBar(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -23,10 +24,11 @@ public class EnterValueBar extends View {
         if (attributeSet == null) {
             return;
         }
-        TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.ProgressBar);
-        this.textColor = a.getColor(R.styleable.ProgressBar_textColor, Color.parseColor("#ffffff"));
-        this.textSize = a.getDimension(R.styleable.ProgressBar_textSize, 50);
-        this.labelTextSize = 14;
+        TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.EnterValueBar);
+        this.textColor = a.getColor(R.styleable.EnterValueBar_textColor, Color.parseColor("#ffffff"));
+        this.textSize = a.getDimension(R.styleable.EnterValueBar_textSize, 50);
+        setLabel(a.getString(R.styleable.EnterValueBar_label));
+        this.labelTextSize = a.getDimension(R.styleable.EnterValueBar_labelTextSize, 14);
         setCurrentValue(a.getInt(R.styleable.ProgressBar_currentValue, 0));
         a.recycle();
     }
@@ -38,10 +40,8 @@ public class EnterValueBar extends View {
     }
 
     private void drawTextInProgressBar(Canvas canvas) {
-        String textCurrentValue = currentTextValue;
-        String textMaxValue = "label";
-        drawCurrentValue(canvas, textCurrentValue);
-        drawLabel(canvas, textMaxValue);
+        drawCurrentValue(canvas, currentTextValue);
+        drawLabel(canvas, label);
     }
 
     private void drawLabel(Canvas canvas, String label) {
@@ -56,5 +56,9 @@ public class EnterValueBar extends View {
 
     private synchronized void setCurrentValue(int currentValue) {
         this.currentTextValue = String.valueOf(currentValue);
+    }
+
+    private synchronized void setLabel(String label) {
+        this.label = label;
     }
 }

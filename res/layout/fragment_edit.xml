@@ -7,25 +7,25 @@
 
 	<de.avalax.fitbuddy.enterValueBar.EnterValueBar
 			android:id="@+id/leftEnterValueBar"
-			style="@android:style/Widget.ProgressBar.Horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:layout_weight="1"
 			android:background="#33B5E5"
 			components:textSize="50px"
 			components:textColor="#ffffff"
-			components:barColor="#0099CC"
+            components:labelTextSize="14px"
+            components:label="weight"
 			/>
 
 	<de.avalax.fitbuddy.enterValueBar.EnterValueBar
 			android:id="@+id/rightEnterValueBar"
-			style="@android:style/Widget.ProgressBar.Horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:background="#ff4444"
 			android:layout_weight="1"
 			components:textSize="50px"
 			components:textColor="#ffffff"
-			components:barColor="#CC0000"
+            components:labelTextSize="14px"
+            components:label="raise"
 			/>
 </LinearLayout>
