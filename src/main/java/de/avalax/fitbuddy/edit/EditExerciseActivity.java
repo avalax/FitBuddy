@@ -16,12 +16,12 @@ import roboguice.inject.InjectView;
 public class EditExerciseActivity extends RoboFragmentActivity {
     @InjectView(R.id.pager)
     private ViewPager viewPager;
-    private EditableExercise exercise;
+    private EditableExercise editableExercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.exercise = getExercise();
+        this.editableExercise = getEditableExercise();
         viewPager.setAdapter(getEditExercisePagerAdapter());
     }
 
@@ -45,7 +45,7 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     public void clickEvent(View v) {
         Intent returnIntent = new Intent();
         if (v.getId() == R.id.buttonSave) {
-            returnIntent.putExtra("exercise", exercise);
+            returnIntent.putExtra("editableExercise", editableExercise);
             setResult(RESULT_OK, returnIntent);
         }
         if (v.getId() == R.id.buttonCancel) {
@@ -54,11 +54,11 @@ public class EditExerciseActivity extends RoboFragmentActivity {
         finish();
     }
 
-    private EditableExercise getExercise() {
-        return (EditableExercise) getIntent().getSerializableExtra("exercise");
+    private EditableExercise getEditableExercise() {
+        return (EditableExercise) getIntent().getSerializableExtra("editableExercise");
     }
 
     private EditExercisePagerAdapter getEditExercisePagerAdapter() {
-        return new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), exercise);
+        return new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), editableExercise);
     }
 }

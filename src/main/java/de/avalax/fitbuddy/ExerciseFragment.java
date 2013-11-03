@@ -115,7 +115,7 @@ public class ExerciseFragment extends RoboFragment {
 
     private Intent getIntent(EditableExercise editableExercise) {
         Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
-        intent.putExtra("exercise", editableExercise);
+        intent.putExtra("editableExercise", editableExercise);
         return intent;
     }
 
