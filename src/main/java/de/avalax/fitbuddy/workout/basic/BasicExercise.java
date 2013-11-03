@@ -71,6 +71,11 @@ public class BasicExercise implements Exercise {
         return getCurrentSet().getReps();
     }
 
+    @Override
+    public int getMaxReps() {
+        return getCurrentSet().getMaxReps();
+    }
+
     public void incrementCurrentSet() {
         setCurrentSet(setNumber + 1);
     }

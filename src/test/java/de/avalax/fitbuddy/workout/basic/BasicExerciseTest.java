@@ -41,6 +41,16 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getMaxReps_shouldReturnMaxRepsFromCurrentSet() throws Exception {
+        Set set = mock(Set.class);
+        int maxReps = 12;
+        when(set.getMaxReps()).thenReturn(maxReps);
+        sets.add(set);
+
+        assertThat(exercise.getMaxReps(), equalTo(maxReps));
+    }
+
+    @Test
     public void getTendency_shouldReturnTendencyPlus() throws Exception {
         exercise.setTendency(Tendency.PLUS);
 

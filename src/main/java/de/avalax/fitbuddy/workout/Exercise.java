@@ -11,9 +11,11 @@ public interface Exercise extends Serializable {
     int getSetNumber();
     void setReps(int reps);
     int getReps();
+    int getMaxReps();
     void setTendency(Tendency tendency);
     Tendency getTendency();
     void setCurrentSet(int setNumber);
+
     Set getCurrentSet();
 
     void incrementCurrentSet();

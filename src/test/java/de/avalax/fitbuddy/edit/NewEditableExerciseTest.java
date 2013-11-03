@@ -7,12 +7,12 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
-public class NewEditalbeExerciseTest {
+public class NewEditableExerciseTest {
     private EditableExercise editableExercise;
 
     @Before
     public void setUp() throws Exception {
-        editableExercise = new NewEditalbeExercise();
+        editableExercise = new NewEditableExercise();
     }
 
     @Test

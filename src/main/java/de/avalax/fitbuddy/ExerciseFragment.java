@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.edit.EditableExercise;
 import de.avalax.fitbuddy.edit.EditExerciseActivity;
-import de.avalax.fitbuddy.edit.NewEditalbeExercise;
+import de.avalax.fitbuddy.edit.ExistingEditableExercise;
+import de.avalax.fitbuddy.edit.NewEditableExercise;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
 import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.workout.Exercise;
@@ -81,21 +82,29 @@ public class ExerciseFragment extends RoboFragment {
 
     private void addExerciseBeforeCurrentExercise() {
         //TODO: addExerciseBeforeCurrentExercise
-        startActivity(getIntent(new NewEditalbeExercise()));
+        startActivity(getIntent(createNewEditableExercise()));
         Log.d("LongClick", "addExerciseBeforeCurrentExercise()");
     }
 
     private void addExerciseAfterCurrentExercise() {
-        startActivity(getIntent(new NewEditalbeExercise()));
+        //TODO: addExerciseAfterCurrentExercise
+        startActivity(getIntent(createNewEditableExercise()));
         Log.d("LongClick", "addExerciseAfterCurrentExercise()");
     }
 
     private void editCurrentExercise() {
         //TODO: editCurrentExercise
-        Intent intent = getIntent(new NewEditalbeExercise());
-
-        startActivity(intent);
+        startActivity(getIntent(createExistingEditableExercise()));
         Log.d("LongClick", "editCurrentExercise()");
+    }
+
+    private NewEditableExercise createNewEditableExercise() {
+        return new NewEditableExercise();
+    }
+
+    private EditableExercise createExistingEditableExercise() {
+        Exercise exercise = workout.getExercise(exercisePosition);
+        return new ExistingEditableExercise(exercise);
     }
 
     private Intent getIntent(EditableExercise editableExercise) {
@@ -109,7 +118,7 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private int getMaxMoveForReps(Workout workout) {
-        return workout.getCurrentSet(exercisePosition).getMaxReps();
+        return workout.getExercise(exercisePosition).getMaxReps();
     }
 
     private void changeReps(int moved) {

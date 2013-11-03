@@ -42,7 +42,7 @@ public class ExistingEditableExerciseTest {
     @Test
     public void testGetReps() throws Exception {
         int reps = 42;
-        when(exercise.getReps()).thenReturn(reps);
+        when(exercise.getMaxReps()).thenReturn(reps);
         editableExercise = new ExistingEditableExercise(exercise);
 
         assertThat(editableExercise.getReps(), equalTo(reps));

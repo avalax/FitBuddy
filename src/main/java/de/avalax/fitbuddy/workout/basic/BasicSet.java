@@ -5,11 +5,11 @@ import de.avalax.fitbuddy.workout.Set;
 public class BasicSet implements Set {
     private double weight;
     private int reps;
-		private int maxReps;
+    private int maxReps;
 
-	public BasicSet(double weight, int maxReps) {
+    public BasicSet(double weight, int maxReps) {
         this.weight = weight;
-				this.maxReps = maxReps;
+        this.maxReps = maxReps;
     }
 
     @Override
@@ -23,8 +23,7 @@ public class BasicSet implements Set {
             this.reps = 0;
         } else if (reps > maxReps) {
             this.reps = maxReps;
-        }
-        else {
+        } else {
             this.reps = reps;
         }
     }
@@ -34,8 +33,8 @@ public class BasicSet implements Set {
         return reps;
     }
 
-	@Override
-	public int getMaxReps(){
-		return this.maxReps;
-	}
+    @Override
+    public int getMaxReps() {
+        return this.maxReps;
+    }
 }

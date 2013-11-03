@@ -11,7 +11,7 @@ public class ExistingEditableExercise implements EditableExercise {
 
     public ExistingEditableExercise(Exercise exercise) {
         name = exercise.getName();
-        reps = exercise.getReps();
+        reps = exercise.getMaxReps();
         sets = exercise.getMaxSets();
         weight = exercise.getWeight();
         weightRaise = exercise.getWeightRaise();
