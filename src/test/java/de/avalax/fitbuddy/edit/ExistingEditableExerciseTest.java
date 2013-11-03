@@ -114,4 +114,22 @@ public class ExistingEditableExerciseTest {
 
         assertThat(editableExercise.getWeightRaise(), equalTo(weightRaise));
     }
+
+    @Test
+    public void testCreateExercise() throws Exception {
+        editableExercise = new ExistingEditableExercise(exercise);
+        editableExercise.setName("existing exercise");
+        editableExercise.setWeight(5.0);
+        editableExercise.setWeightRaise(2.5);
+        editableExercise.setSets(3);
+        editableExercise.setReps(12);
+
+        Exercise exercise = editableExercise.createExercise();
+
+        assertThat(exercise.getName(), equalTo(editableExercise.getName()));
+        assertThat(exercise.getWeight(), equalTo(editableExercise.getWeight()));
+        assertThat(exercise.getWeightRaise(), equalTo(editableExercise.getWeightRaise()));
+        assertThat(exercise.getMaxSets(), equalTo(editableExercise.getSets()));
+        assertThat(exercise.getMaxReps(), equalTo(editableExercise.getReps()));
+    }
 }

@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.edit.EditableExercise;
 import de.avalax.fitbuddy.edit.EditExerciseActivity;
+import de.avalax.fitbuddy.edit.EditableExercise;
 import de.avalax.fitbuddy.edit.ExistingEditableExercise;
 import de.avalax.fitbuddy.edit.NewEditableExercise;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
@@ -21,6 +22,9 @@ import roboguice.inject.InjectView;
 
 public class ExerciseFragment extends RoboFragment {
 
+    private static final int ADD_EXERCISE_BEFORE = 1;
+    private static final int EDIT_EXERCISE = 2;
+    private static final int ADD_EXERCISE_AFTER = 3;
     @Inject
     Context context;
     @Inject
@@ -43,7 +47,7 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context,repsProgressBar, getMaxMoveForReps(workout)) {
+        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onFlingEvent(int moved) {
                 changeReps(moved);
@@ -80,22 +84,38 @@ public class ExerciseFragment extends RoboFragment {
         setViews(exercisePosition);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (resultCode == Activity.RESULT_OK) {
+            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
+            Exercise exercise = editableExercise.createExercise();
+            switch (requestCode) {
+                case ADD_EXERCISE_BEFORE:
+                    workout.addExerciseBefore(exercisePosition, exercise);
+                    break;
+                case ADD_EXERCISE_AFTER:
+                    workout.addExerciseAfter(exercisePosition, exercise);
+                    break;
+                case EDIT_EXERCISE:
+                    workout.setExercise(exercisePosition, exercise);
+                    break;
+            }
+        } else if(resultCode == Activity.RESULT_CANCELED && requestCode == EDIT_EXERCISE) {
+            //TODO: delete exercise, show anythingelse, when last exercise is deleted
+            Log.d("DeleteExercise", "onActivityResult()");
+        }
+    }
+
     private void addExerciseBeforeCurrentExercise() {
-        //TODO: addExerciseBeforeCurrentExercise
-        startActivity(getIntent(createNewEditableExercise()));
-        Log.d("LongClick", "addExerciseBeforeCurrentExercise()");
+        startActivityForResult(getIntent(createNewEditableExercise()), ADD_EXERCISE_BEFORE);
     }
 
     private void addExerciseAfterCurrentExercise() {
-        //TODO: addExerciseAfterCurrentExercise
-        startActivity(getIntent(createNewEditableExercise()));
-        Log.d("LongClick", "addExerciseAfterCurrentExercise()");
+        startActivityForResult(getIntent(createNewEditableExercise()), ADD_EXERCISE_AFTER);
     }
 
     private void editCurrentExercise() {
-        //TODO: editCurrentExercise
-        startActivity(getIntent(createExistingEditableExercise()));
-        Log.d("LongClick", "editCurrentExercise()");
+        startActivityForResult(getIntent(createExistingEditableExercise()), EDIT_EXERCISE);
     }
 
     private NewEditableExercise createNewEditableExercise() {
@@ -148,6 +168,6 @@ public class ExerciseFragment extends RoboFragment {
 
     private void setViews(int exercisePosition) {
         repsProgressBar.setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
-        setsProgressBar.setProgressBar(workout,exercisePosition);
+        setsProgressBar.setProgressBar(workout, exercisePosition);
     }
 }

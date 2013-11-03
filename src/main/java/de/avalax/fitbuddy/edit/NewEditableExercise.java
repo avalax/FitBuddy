@@ -1,5 +1,13 @@
 package de.avalax.fitbuddy.edit;
 
+import de.avalax.fitbuddy.workout.Exercise;
+import de.avalax.fitbuddy.workout.Set;
+import de.avalax.fitbuddy.workout.basic.BasicExercise;
+import de.avalax.fitbuddy.workout.basic.BasicSet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class NewEditableExercise implements EditableExercise {
     private int reps;
     private int sets;
@@ -56,5 +64,15 @@ public class NewEditableExercise implements EditableExercise {
     @Override
     public void setWeightRaise(double weightRaise) {
         this.weightRaise = weightRaise;
+    }
+
+    @Override
+    public Exercise createExercise() {
+        //TODO: extract to ExerciseFragment
+        List<Set> sets = new ArrayList<>();
+        for (int i=0;i<this.sets;i++) {
+            sets.add(new BasicSet(weight,reps));
+        }
+        return new BasicExercise(name,sets,weightRaise);
     }
 }

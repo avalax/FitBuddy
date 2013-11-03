@@ -1,5 +1,7 @@
 package de.avalax.fitbuddy.edit;
 
+import de.avalax.fitbuddy.workout.Exercise;
+
 import java.io.Serializable;
 
 public interface EditableExercise extends Serializable {
@@ -22,4 +24,6 @@ public interface EditableExercise extends Serializable {
     double getWeightRaise();
 
     void setWeightRaise(double weightRaise);
+
+    Exercise createExercise();
 }

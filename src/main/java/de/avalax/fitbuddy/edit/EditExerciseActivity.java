@@ -14,6 +14,7 @@ import roboguice.inject.InjectView;
 
 @ContentView(R.layout.view_pager)
 public class EditExerciseActivity extends RoboFragmentActivity {
+
     @InjectView(R.id.pager)
     private ViewPager viewPager;
     private EditableExercise editableExercise;
