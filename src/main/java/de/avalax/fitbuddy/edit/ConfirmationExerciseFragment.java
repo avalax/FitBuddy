@@ -8,6 +8,13 @@ import de.avalax.fitbuddy.R;
 import roboguice.fragment.RoboFragment;
 
 public class ConfirmationExerciseFragment extends RoboFragment {
+    private EditExercise editExercise;
+
+    public ConfirmationExerciseFragment(EditExercise editExercise) {
+        super();
+        this.editExercise = editExercise;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

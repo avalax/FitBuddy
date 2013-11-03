@@ -12,9 +12,9 @@
         <attr name="barColor" format="color"/>
     </declare-styleable>
     <declare-styleable name="EnterValueBar">
-        <attr name="textSize"/>
         <attr name="textColor"/>
-        <attr name="currentValue"/>
+        <attr name="value" format="string"/>
+        <attr name="valueTextSize" format="dimension"/>
         <attr name="label" format="string"/>
         <attr name="labelTextSize" format="dimension"/>
     </declare-styleable>

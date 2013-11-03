@@ -6,8 +6,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.view.View;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.workout.Exercise;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -16,23 +16,13 @@ import roboguice.inject.InjectView;
 public class EditExerciseActivity extends RoboFragmentActivity {
     @InjectView(R.id.pager)
     private ViewPager viewPager;
+    private EditExercise exercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Exercise exercise = (Exercise) getIntent().getSerializableExtra("exercise");
-        EditExercisePagerAdapter editExercisePagerAdapter = getEditExercisePagerAdapter(exercise);
-        viewPager.setAdapter(editExercisePagerAdapter);
-    }
-
-    private EditExercisePagerAdapter getEditExercisePagerAdapter(Exercise exercise) {
-        EditExercisePagerAdapter editExercisePagerAdapter;
-        if (exercise != null) {
-            editExercisePagerAdapter = new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), exercise);
-        } else {
-            editExercisePagerAdapter = new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext());
-        }
-        return editExercisePagerAdapter;
+        this.exercise = getExercise();
+        viewPager.setAdapter(getEditExercisePagerAdapter());
     }
 
     @Override
@@ -50,5 +40,25 @@ public class EditExerciseActivity extends RoboFragmentActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void clickEvent(View v) {
+        Intent returnIntent = new Intent();
+        if (v.getId() == R.id.buttonSave) {
+            returnIntent.putExtra("exercise", exercise);
+            setResult(RESULT_OK, returnIntent);
+        }
+        if (v.getId() == R.id.buttonCancel) {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
+    }
+
+    private EditExercise getExercise() {
+        return (EditExercise) getIntent().getSerializableExtra("exercise");
+    }
+
+    private EditExercisePagerAdapter getEditExercisePagerAdapter() {
+        return new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), exercise);
     }
 }

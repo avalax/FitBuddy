@@ -4,31 +4,26 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import de.avalax.fitbuddy.workout.Exercise;
 import roboguice.RoboGuice;
 
 public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
-    private Exercise exercise;
+    private EditExercise editExercise;
 
-    public EditExercisePagerAdapter(FragmentManager fm, Context context) {
+    public EditExercisePagerAdapter(FragmentManager fm, Context context, EditExercise editExercise) {
         super(fm);
         RoboGuice.getInjector(context).injectMembersWithoutViews(this);
-    }
-
-    public EditExercisePagerAdapter(FragmentManager fm, Context context, Exercise exercise) {
-        this(fm, context);
-        this.exercise = exercise;
+        this.editExercise = editExercise;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new WeightExerciseFragment();
+            return new WeightExerciseFragment(editExercise);
         } else if (position == 1) {
-            return new EffortExerciseFragment();
+            return new EffortExerciseFragment(editExercise);
         } else {
-            return new ConfirmationExerciseFragment();
+            return new ConfirmationExerciseFragment(editExercise);
         }
     }
 
@@ -39,11 +34,7 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        //TODO: resources
-        if (exercise == null) {
-            return getTitleFor(position, "new exercise");
-        }
-        return getTitleFor(position, exercise.getName());
+        return getTitleFor(position, editExercise.getName());
     }
 
     private CharSequence getTitleFor(int position, String name) {

@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
+import de.avalax.fitbuddy.edit.EditExercise;
 import de.avalax.fitbuddy.edit.EditExerciseActivity;
+import de.avalax.fitbuddy.edit.NewEditExercise;
 import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
 import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.workout.Exercise;
@@ -79,24 +81,27 @@ public class ExerciseFragment extends RoboFragment {
 
     private void addExerciseBeforeCurrentExercise() {
         //TODO: addExerciseBeforeCurrentExercise
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
-        startActivity(intent);
+        startActivity(getIntent(new NewEditExercise()));
         Log.d("LongClick", "addExerciseBeforeCurrentExercise()");
     }
 
     private void addExerciseAfterCurrentExercise() {
-        //TODO: addExerciseAfterCurrentExercise
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
-        startActivity(intent);
+        startActivity(getIntent(new NewEditExercise()));
         Log.d("LongClick", "addExerciseAfterCurrentExercise()");
     }
 
     private void editCurrentExercise() {
         //TODO: editCurrentExercise
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
-        intent.putExtra("exercise", workout.getExercise(exercisePosition));
+        Intent intent = getIntent(new NewEditExercise());
+
         startActivity(intent);
         Log.d("LongClick", "editCurrentExercise()");
+    }
+
+    private Intent getIntent(EditExercise editExercise) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        intent.putExtra("exercise", editExercise);
+        return intent;
     }
 
     private int getMaxMoveForSets(Workout workout) {

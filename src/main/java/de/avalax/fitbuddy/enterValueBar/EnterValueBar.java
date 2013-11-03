@@ -10,9 +10,9 @@ import de.avalax.fitbuddy.R;
 public class EnterValueBar extends View {
     private Typeface typeface = Typeface.create("sans", Typeface.BOLD);
     private int textColor;
-    private float textSize;
+    private float valueTextSize;
     private float labelTextSize;
-    private String currentTextValue;
+    private String value;
     private String label;
 
     public EnterValueBar(Context context, AttributeSet attributeSet) {
@@ -26,10 +26,10 @@ public class EnterValueBar extends View {
         }
         TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.EnterValueBar);
         this.textColor = a.getColor(R.styleable.EnterValueBar_textColor, Color.parseColor("#ffffff"));
-        this.textSize = a.getDimension(R.styleable.EnterValueBar_textSize, 50);
+        this.valueTextSize = a.getDimension(R.styleable.EnterValueBar_valueTextSize, 50);
         setLabel(a.getString(R.styleable.EnterValueBar_label));
         this.labelTextSize = a.getDimension(R.styleable.EnterValueBar_labelTextSize, 14);
-        setCurrentValue(a.getInt(R.styleable.ProgressBar_currentValue, 0));
+        setValue(a.getString(R.styleable.EnterValueBar_value));
         a.recycle();
     }
 
@@ -40,7 +40,7 @@ public class EnterValueBar extends View {
     }
 
     private void drawTextInProgressBar(Canvas canvas) {
-        drawCurrentValue(canvas, currentTextValue);
+        drawCurrentValue(canvas, value);
         drawLabel(canvas, label);
     }
 
@@ -50,12 +50,12 @@ public class EnterValueBar extends View {
     }
 
     private void drawCurrentValue(Canvas canvas, String textCurrentValue) {
-        DrawTextDimensionValues drawTextDimensionValues = new DrawTextDimensionValues(textColor, textSize, typeface, textCurrentValue, getWidth(), getHeight()).invoke();
-        canvas.drawText(textCurrentValue, drawTextDimensionValues.getX(), drawTextDimensionValues.getY() + (textSize / 2), drawTextDimensionValues.getPaint());
+        DrawTextDimensionValues drawTextDimensionValues = new DrawTextDimensionValues(textColor, valueTextSize, typeface, textCurrentValue, getWidth(), getHeight()).invoke();
+        canvas.drawText(textCurrentValue, drawTextDimensionValues.getX(), drawTextDimensionValues.getY() + (valueTextSize / 2), drawTextDimensionValues.getPaint());
     }
 
-    private synchronized void setCurrentValue(int currentValue) {
-        this.currentTextValue = String.valueOf(currentValue);
+    public synchronized void setValue(String value) {
+        this.value = value;
     }
 
     private synchronized void setLabel(String label) {

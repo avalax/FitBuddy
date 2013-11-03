@@ -15,6 +15,7 @@
 			components:textColor="#ffffff"
             components:labelTextSize="14px"
             components:label="reps"
+            components:value="12"
 			/>
 
 	<de.avalax.fitbuddy.enterValueBar.EnterValueBar
@@ -27,5 +28,6 @@
 			components:textColor="#ffffff"
             components:labelTextSize="14px"
             components:label="sets"
+            components:value="3"
 			/>
 </LinearLayout>
