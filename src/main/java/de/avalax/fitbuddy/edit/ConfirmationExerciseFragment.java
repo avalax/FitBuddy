@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.edit;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,5 +41,19 @@ public class ConfirmationExerciseFragment extends RoboFragment {
             //TODO: extract to resources
             buttonCancel.setText("delete");
         }
+        exerciseNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                editableExercise.setName(exerciseNameEditText.getText().toString());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }
