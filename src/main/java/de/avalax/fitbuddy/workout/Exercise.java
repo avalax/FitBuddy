@@ -5,6 +5,7 @@ import java.io.Serializable;
 public interface Exercise extends Serializable {
     String getName();
     double getWeight();
+    double getWeightRaise();
     double getWeightRaise(Tendency plus);
     int getMaxSets();
     int getSetNumber();
@@ -14,5 +15,6 @@ public interface Exercise extends Serializable {
     Tendency getTendency();
     void setCurrentSet(int setNumber);
     Set getCurrentSet();
+
     void incrementCurrentSet();
 }

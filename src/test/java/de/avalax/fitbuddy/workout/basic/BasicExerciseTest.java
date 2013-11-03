@@ -126,6 +126,13 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getWeightRaise_shouldGetWeightRaise() throws Exception {
+        exercise = new BasicExercise("NeutralTendency",sets,5.0);
+
+        assertThat(exercise.getWeightRaise(),equalTo(5.0));
+    }
+
+    @Test
     public void getWeightRaise_shouldGetWeightRaiseForNeutralTendency() throws Exception {
         exercise = new BasicExercise("NeutralTendency",sets,5.0);
         Set set = mock(Set.class);

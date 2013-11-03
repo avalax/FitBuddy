@@ -81,6 +81,11 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
+    public double getWeightRaise() {
+        return weightRaise;
+    }
+
+    @Override
     public double getWeightRaise(Tendency tendency) {
         double weight = getCurrentSet().getWeight();
         switch (tendency) {
