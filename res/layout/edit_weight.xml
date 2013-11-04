@@ -5,7 +5,7 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-	<de.avalax.fitbuddy.enterValueBar.EnterValueBar
+	<de.avalax.fitbuddy.swipeBar.enterValueBar.EnterValueBar
 			android:id="@+id/leftEnterValueBar"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
@@ -18,7 +18,7 @@
             components:value="2.5"
 			/>
 
-	<de.avalax.fitbuddy.enterValueBar.EnterValueBar
+	<de.avalax.fitbuddy.swipeBar.enterValueBar.EnterValueBar
 			android:id="@+id/rightEnterValueBar"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"

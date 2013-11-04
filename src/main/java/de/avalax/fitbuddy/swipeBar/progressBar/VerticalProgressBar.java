@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.progressBar;
+package de.avalax.fitbuddy.swipeBar.progressBar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,11 +6,12 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.swipeBar.SwipeableBar;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Set;
 import de.avalax.fitbuddy.workout.Workout;
 
-public class VerticalProgressBar extends View {
+public class VerticalProgressBar extends View implements SwipeableBar {
     private Typeface typeface = Typeface.create("sans", Typeface.BOLD);
     private int textColor;
     private int barColor;

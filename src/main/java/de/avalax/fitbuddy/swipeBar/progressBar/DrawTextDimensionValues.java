@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.progressBar;
+package de.avalax.fitbuddy.swipeBar.progressBar;
 
 import android.graphics.Paint;
 

@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.enterValueBar;
+package de.avalax.fitbuddy.swipeBar.enterValueBar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,8 +6,9 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.swipeBar.SwipeableBar;
 
-public class EnterValueBar extends View {
+public class EnterValueBar extends View implements SwipeableBar {
     private Typeface typeface = Typeface.create("sans", Typeface.BOLD);
     private int textColor;
     private float valueTextSize;

@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.enterValueBar.EnterValueBar;
+import de.avalax.fitbuddy.swipeBar.enterValueBar.EnterValueBar;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 

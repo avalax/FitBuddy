@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.progressBar;
+package de.avalax.fitbuddy.swipeBar;
 
 import android.view.MotionEvent;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-public class ProgressBarOnGestureListenerTest {
+public class SwipeBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
@@ -23,14 +23,14 @@ public class ProgressBarOnGestureListenerTest {
     private boolean hasLongPressedLeft;
     private boolean hasLongPressedRight;
 
-    private ProgressBarOnGestureListener progressBarOnGestureListener;
+    private SwipeBarOnGestureListener swipeBarOnGestureListener;
 
     @Before
     public void setUp() {
-        VerticalProgressBar verticalProgressBar = mock(VerticalProgressBar.class);
+        SwipeableBar verticalProgressBar = mock(SwipeableBar.class);
         when(verticalProgressBar.getHeight()).thenReturn(PROGRESS_BAR_HEIGHT);
         when(verticalProgressBar.getWidth()).thenReturn(PROGRESS_BAR_WIDTH);
-        progressBarOnGestureListener = new ProgressBarOnGestureListener(SWIPE_MOVE_MAX, verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+        swipeBarOnGestureListener = new SwipeBarOnGestureListener(SWIPE_MOVE_MAX, verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 onFlingEventMoved = moved;
@@ -53,7 +53,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
-        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        boolean hasFling = swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(hasFling, equalTo(true));
     }
@@ -63,7 +63,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
-        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        boolean hasFling = swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(hasFling, equalTo(false));
     }
@@ -73,7 +73,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(0);
         MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
 
-        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        boolean hasFling = swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(hasFling, equalTo(true));
     }
@@ -83,7 +83,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(0);
         MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE);
 
-        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        boolean hasFling = swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(hasFling, equalTo(false));
     }
@@ -93,7 +93,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
-        boolean hasFling = progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY);
+        boolean hasFling = swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY);
 
         assertThat(hasFling, equalTo(false));
     }
@@ -103,7 +103,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
-        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(1));
     }
@@ -113,7 +113,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(0);
         MotionEvent endMotionEvent = getMotionEvent(SWIPE_MIN_DISTANCE + 1);
 
-        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(-1));
     }
@@ -123,7 +123,7 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(PROGRESS_BAR_HEIGHT);
         MotionEvent endMotionEvent = getMotionEvent(0);
 
-        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(SWIPE_MOVE_MAX));
     }
@@ -133,35 +133,35 @@ public class ProgressBarOnGestureListenerTest {
         MotionEvent startMotionEvent = getMotionEvent(0);
         MotionEvent endMotionEvent = getMotionEvent(PROGRESS_BAR_HEIGHT);
 
-        progressBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
+        swipeBarOnGestureListener.onFling(startMotionEvent, endMotionEvent, 0, SWIPE_THRESHOLD_VELOCITY + 1);
 
         assertThat(onFlingEventMoved, equalTo(-SWIPE_MOVE_MAX));
     }
 
     @Test
          public void testOnLongPress_shouldPressOnTheLeft() throws Exception {
-        progressBarOnGestureListener.onLongPress(getMotionEvent(0, 0));
+        swipeBarOnGestureListener.onLongPress(getMotionEvent(0, 0));
 
         assertThat(hasLongPressedLeft, is(Boolean.TRUE));
     }
 
     @Test
     public void testOnLongPress_shouldPressOnTheLeftNearRight() throws Exception {
-        progressBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH/2, 0));
+        swipeBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH/2, 0));
 
         assertThat(hasLongPressedLeft, is(Boolean.TRUE));
     }
 
     @Test
     public void testOnLongPress_shouldPressOnTheRightNearLeft() throws Exception {
-        progressBarOnGestureListener.onLongPress(getMotionEvent((PROGRESS_BAR_WIDTH/2)+1, 0));
+        swipeBarOnGestureListener.onLongPress(getMotionEvent((PROGRESS_BAR_WIDTH/2)+1, 0));
 
         assertThat(hasLongPressedRight, is(Boolean.TRUE));
     }
 
     @Test
     public void testOnLongPress_shouldPressOnTheRight() throws Exception {
-        progressBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH, 0));
+        swipeBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH, 0));
 
         assertThat(hasLongPressedRight, is(Boolean.TRUE));
     }

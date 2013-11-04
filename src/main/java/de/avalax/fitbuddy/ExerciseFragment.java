@@ -13,8 +13,8 @@ import de.avalax.fitbuddy.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.edit.EditableExercise;
 import de.avalax.fitbuddy.edit.ExistingEditableExercise;
 import de.avalax.fitbuddy.edit.NewEditableExercise;
-import de.avalax.fitbuddy.progressBar.ProgressBarOnTouchListener;
-import de.avalax.fitbuddy.progressBar.VerticalProgressBar;
+import de.avalax.fitbuddy.swipeBar.SwipeBarOnTouchListener;
+import de.avalax.fitbuddy.swipeBar.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.workout.Exercise;
 import de.avalax.fitbuddy.workout.Workout;
 import roboguice.fragment.RoboFragment;
@@ -47,7 +47,7 @@ public class ExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(workout)) {
+        repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onFlingEvent(int moved) {
                 changeReps(moved);
@@ -64,7 +64,7 @@ public class ExerciseFragment extends RoboFragment {
             }
         });
 
-        setsProgressBar.setOnTouchListener(new ProgressBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(workout)) {
+        setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(workout)) {
             @Override
             public void onFlingEvent(int moved) {
                 changeSets(moved);

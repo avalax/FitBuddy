@@ -1,19 +1,19 @@
-package de.avalax.fitbuddy.progressBar;
+package de.avalax.fitbuddy.swipeBar;
 
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public abstract class ProgressBarOnTouchListener implements View.OnTouchListener {
+public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
 
     private final GestureDetector gdt;
 
-    public ProgressBarOnTouchListener(Context context, VerticalProgressBar verticalProgressBar, int swipeMoveMax) {
-        final ProgressBarOnTouchListener touchListener = this;
-        gdt = new GestureDetector(context,new ProgressBarOnGestureListener(swipeMoveMax, verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+    public SwipeBarOnTouchListener(Context context, SwipeableBar swipeableBar, int swipeMoveMax) {
+        final SwipeBarOnTouchListener touchListener = this;
+        gdt = new GestureDetector(context,new SwipeBarOnGestureListener(swipeMoveMax, swipeableBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
             @Override
             public void onFlingEvent(int moved) {
                 touchListener.onFlingEvent(moved);

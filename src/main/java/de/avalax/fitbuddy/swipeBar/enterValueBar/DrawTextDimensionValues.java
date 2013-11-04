@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.enterValueBar;
+package de.avalax.fitbuddy.swipeBar.enterValueBar;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;

@@ -1,24 +1,24 @@
-package de.avalax.fitbuddy.progressBar;
+package de.avalax.fitbuddy.swipeBar;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-public abstract class ProgressBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private SwipeableBar swipeableBar;
     private int swipeMoveMax;
-    private VerticalProgressBar verticalProgressBar;
     private int swipeMinDistance;
     private int swipeThresholdVelocity;
 
-    public ProgressBarOnGestureListener(int swipeMoveMax, VerticalProgressBar verticalProgressBar, int swipeMinDistance, int swipeThresholdVelocity) {
+    public SwipeBarOnGestureListener(int swipeMoveMax, SwipeableBar swipeableBar, int swipeMinDistance, int swipeThresholdVelocity) {
         this.swipeMoveMax = swipeMoveMax;
-        this.verticalProgressBar = verticalProgressBar;
+        this.swipeableBar = swipeableBar;
         this.swipeMinDistance = swipeMinDistance;
         this.swipeThresholdVelocity = swipeThresholdVelocity;
     }
 
     @Override
     public void onLongPress(android.view.MotionEvent e) {
-        if (e.getX() > verticalProgressBar.getWidth()/2) {
+        if (e.getX() > swipeableBar.getWidth()/2) {
             onLongPressedRightEvent();
         }  else {
             onLongPressedLeftEvent();
@@ -30,10 +30,10 @@ public abstract class ProgressBarOnGestureListener extends GestureDetector.Simpl
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
         if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
-            onFlingEvent(calculateMoved(moved, verticalProgressBar.getHeight()));
+            onFlingEvent(calculateMoved(moved, swipeableBar.getHeight()));
             return true;
         } else if (-moved > swipeMinDistance && absVelocityY > swipeMinDistance) {
-            onFlingEvent(-calculateMoved(moved, verticalProgressBar.getHeight()));
+            onFlingEvent(-calculateMoved(moved, swipeableBar.getHeight()));
             return true;
         }
         return false;
