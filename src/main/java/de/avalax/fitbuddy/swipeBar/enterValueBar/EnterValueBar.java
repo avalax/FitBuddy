@@ -28,7 +28,7 @@ public class EnterValueBar extends View implements SwipeableBar {
         TypedArray a = getContext().obtainStyledAttributes(attributeSet, R.styleable.EnterValueBar);
         this.textColor = a.getColor(R.styleable.EnterValueBar_textColor, Color.parseColor("#ffffff"));
         this.valueTextSize = a.getDimension(R.styleable.EnterValueBar_valueTextSize, 50);
-        setLabel(a.getString(R.styleable.EnterValueBar_label));
+        this.label = a.getString(R.styleable.EnterValueBar_label);
         this.labelTextSize = a.getDimension(R.styleable.EnterValueBar_labelTextSize, 14);
         setValue(a.getString(R.styleable.EnterValueBar_value));
         a.recycle();
@@ -57,9 +57,6 @@ public class EnterValueBar extends View implements SwipeableBar {
 
     public synchronized void setValue(String value) {
         this.value = value;
-    }
-
-    private synchronized void setLabel(String label) {
-        this.label = label;
+        postInvalidate();
     }
 }
