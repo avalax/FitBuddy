@@ -25,7 +25,7 @@ public class BasicWorkoutTest {
     @Before
     public void setUp() throws Exception {
         exercisePosition = 0;
-        exercises = new LinkedList<>();
+        exercises = new LinkedList<Exercise>();
         workout = new BasicWorkout(exercises);
     }
 

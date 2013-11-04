@@ -21,7 +21,7 @@ public class BasicExerciseTest {
 
     @Before
     public void setUp() throws Exception{
-        sets = new ArrayList<>();
+        sets = new ArrayList<Set>();
         exercise = new BasicExercise("Bankdrücken",sets, 2.5);
     }
 

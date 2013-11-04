@@ -14,7 +14,7 @@ import java.util.List;
 public class DummyDataLayer implements DataLayer {
     @Override
     public Workout load() {
-        LinkedList<Exercise> exercises = new LinkedList<>();
+        LinkedList<Exercise> exercises = new LinkedList<Exercise>();
         exercises.add(new BasicExercise("Bankdrücken", createSetWithThreeSets(70,12), 5));
         exercises.add(new BasicExercise("Schrägbankdrücken", createSetWithThreeSets(40,10), 5));
         exercises.add(new BasicExercise("Butterfly", createSetWithThreeSets(60,15), 5));
@@ -29,7 +29,7 @@ public class DummyDataLayer implements DataLayer {
     }
 
     private List<Set> createSetWithThreeSets(double weight,int reps) {
-        List<Set> sets = new ArrayList<>();
+        List<Set> sets = new ArrayList<Set>();
         sets.add(new BasicSet(weight, reps));
         sets.add(new BasicSet(weight, reps));
         sets.add(new BasicSet(weight, reps));
