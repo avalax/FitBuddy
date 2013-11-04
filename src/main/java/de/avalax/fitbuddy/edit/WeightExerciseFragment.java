@@ -2,18 +2,20 @@ package de.avalax.fitbuddy.edit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.swipeBar.SwipeBarOnTouchListener;
+import de.avalax.fitbuddy.swipeBar.WeightRaiseCalculator;
 import de.avalax.fitbuddy.swipeBar.enterValueBar.EnterValueBar;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class WeightExerciseFragment extends RoboFragment {
+    @Inject
+    WeightRaiseCalculator weightRaiseCalculator;
     @Inject
     Context context;
     @InjectView(R.id.leftEnterValueBar)
@@ -39,11 +41,10 @@ public class WeightExerciseFragment extends RoboFragment {
         super.onViewCreated(view, savedInstanceState);
         setBars(editableExercise.getWeight(), editableExercise.getWeightRaise());
 
-        leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 3) {
+        leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeWeight(moved);
-                Log.d("leftEnterValueBar", String.valueOf(editableExercise.getWeight()));
             }
 
             @Override
@@ -55,7 +56,7 @@ public class WeightExerciseFragment extends RoboFragment {
             }
         });
 
-        rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, rightEnterValueBar, 3) {
+        rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, rightEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeWeightRaise(moved);
@@ -72,18 +73,31 @@ public class WeightExerciseFragment extends RoboFragment {
     }
 
     private void changeWeightRaise(int moved) {
-        //TODO: stack weight raise 0.75, 1.25, 2.5, 5, 7.5, 10, 15, 20
-        editableExercise.setWeightRaise(editableExercise.getWeightRaise() + (moved * 1.25));
-        setBars(editableExercise.getWeight(), editableExercise.getWeightRaise());
+        double weightRaise = weightRaiseCalculator.calculate(editableExercise.getWeightRaise(),moved);
+        editableExercise.setWeightRaise(weightRaise);
+        setBars(editableExercise.getWeight(), weightRaise);
     }
 
     private void changeWeight(int moved) {
-        editableExercise.setWeight(editableExercise.getWeight() + (moved * editableExercise.getWeightRaise()));
+        double weight = editableExercise.getWeight() + (moved * editableExercise.getWeightRaise());
+        if (weight < 0) {
+            weight = 0;
+        }
+        editableExercise.setWeight(weight);
         setBars(editableExercise.getWeight(), editableExercise.getWeightRaise());
     }
 
     private void setBars(double weight, double weightRaise) {
-        leftEnterValueBar.setValue(String.valueOf(weight));
-        rightEnterValueBar.setValue(String.valueOf(weightRaise));
+
+        leftEnterValueBar.setValue(getShortenDouble(weight));
+        rightEnterValueBar.setValue(getShortenDouble(weightRaise));
+    }
+
+    private String getShortenDouble(double weight) {
+       if (weight == (int) weight) {
+              return String.valueOf((int)weight);
+        } else {
+           return String.valueOf(weight);
+       }
     }
 }
