@@ -39,7 +39,7 @@ public class WeightExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setBars(editableExercise.getWeight(), editableExercise.getWeightRaise());
+        setBars();
 
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
             @Override
@@ -75,7 +75,7 @@ public class WeightExerciseFragment extends RoboFragment {
     private void changeWeightRaise(int moved) {
         double weightRaise = weightRaiseCalculator.calculate(editableExercise.getWeightRaise(),moved);
         editableExercise.setWeightRaise(weightRaise);
-        setBars(editableExercise.getWeight(), weightRaise);
+        setBars();
     }
 
     private void changeWeight(int moved) {
@@ -84,13 +84,12 @@ public class WeightExerciseFragment extends RoboFragment {
             weight = 0;
         }
         editableExercise.setWeight(weight);
-        setBars(editableExercise.getWeight(), editableExercise.getWeightRaise());
+        setBars();
     }
 
-    private void setBars(double weight, double weightRaise) {
-
-        leftEnterValueBar.setValue(getShortenDouble(weight));
-        rightEnterValueBar.setValue(getShortenDouble(weightRaise));
+    private void setBars() {
+        leftEnterValueBar.setValue(getShortenDouble(editableExercise.getWeight()));
+        rightEnterValueBar.setValue(getShortenDouble(editableExercise.getWeightRaise()));
     }
 
     private String getShortenDouble(double weight) {
