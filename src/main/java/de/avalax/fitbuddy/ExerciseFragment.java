@@ -25,7 +25,6 @@ public class ExerciseFragment extends RoboFragment {
     private static final int ADD_EXERCISE_BEFORE = 1;
     private static final int EDIT_EXERCISE = 2;
     private static final int ADD_EXERCISE_AFTER = 3;
-    private final ExercisePagerAdapter exercisePagerAdapter;
     @Inject
     Context context;
     @Inject
@@ -35,16 +34,14 @@ public class ExerciseFragment extends RoboFragment {
     @InjectView(R.id.rightProgressBar)
     private VerticalProgressBar setsProgressBar;
     private int exercisePosition;
-
-    public ExerciseFragment(ExercisePagerAdapter exercisePagerAdapter) {
-        this.exercisePagerAdapter = exercisePagerAdapter;
-    }
+    private WorkoutActivity workoutActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         exercisePosition = getArguments().getInt("exerciseIndex");
+        workoutActivity = (WorkoutActivity)getActivity();
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
@@ -106,7 +103,7 @@ public class ExerciseFragment extends RoboFragment {
                     break;
             }
             setViews(exercisePosition);
-            exercisePagerAdapter.notifyDataSetChanged();
+            workoutActivity.notifyDataSetChanged();
         } else if(resultCode == Activity.RESULT_CANCELED && requestCode == EDIT_EXERCISE) {
             //TODO: delete exercise, show anythingelse, when last exercise is deleted
             Log.d("DeleteExercise", "onActivityResult()");

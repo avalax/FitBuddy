@@ -25,7 +25,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int exerciseIndex) {
         if (exerciseIndex < workout.getExerciseCount()) {
-            Fragment fragment = new ExerciseFragment(this);
+            Fragment fragment = new ExerciseFragment();
             Bundle args = new Bundle();
             args.putInt("exerciseIndex", exerciseIndex);
             fragment.setArguments(args);

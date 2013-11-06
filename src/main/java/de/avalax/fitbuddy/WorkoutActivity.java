@@ -38,4 +38,8 @@ public class WorkoutActivity extends RoboFragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void notifyDataSetChanged() {
+        viewPager.getAdapter().notifyDataSetChanged();
+    }
 }
