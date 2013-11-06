@@ -24,11 +24,6 @@ public class WeightExerciseFragment extends RoboFragment {
     EnterValueBar rightEnterValueBar;
     private EditableExercise editableExercise;
 
-    public WeightExerciseFragment(EditableExercise editableExercise) {
-        super();
-        this.editableExercise = editableExercise;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +34,7 @@ public class WeightExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
         setBars();
 
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {

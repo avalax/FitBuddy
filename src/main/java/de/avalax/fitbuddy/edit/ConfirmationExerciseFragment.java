@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.UpdateableActivity;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -20,11 +21,7 @@ public class ConfirmationExerciseFragment extends RoboFragment {
 
     @InjectView(R.id.buttonCancel)
     Button buttonCancel;
-
-    public ConfirmationExerciseFragment(EditableExercise editableExercise) {
-        super();
-        this.editableExercise = editableExercise;
-    }
+    private UpdateableActivity updateableActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +33,8 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        updateableActivity = (UpdateableActivity) getActivity();
+        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
         exerciseNameEditText.setText(editableExercise.getName());
         if (editableExercise instanceof ExistingEditableExercise) {
             //TODO: extract to resources
@@ -44,15 +43,16 @@ public class ConfirmationExerciseFragment extends RoboFragment {
         exerciseNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                editableExercise.setName(exerciseNameEditText.getText().toString());
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editableExercise.setName(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                updateableActivity.notifyDataSetChanged();
             }
         });
     }

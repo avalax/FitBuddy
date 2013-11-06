@@ -22,11 +22,6 @@ public class EffortExerciseFragment extends RoboFragment {
     @InjectView(R.id.rightEnterValueBar)
     EnterValueBar rightEnterValueBar;
 
-    public EffortExerciseFragment(EditableExercise editableExercise) {
-        super();
-        this.editableExercise = editableExercise;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +32,7 @@ public class EffortExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
         setBars();
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
             @Override

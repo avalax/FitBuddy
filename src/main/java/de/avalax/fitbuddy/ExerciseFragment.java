@@ -34,14 +34,14 @@ public class ExerciseFragment extends RoboFragment {
     @InjectView(R.id.rightProgressBar)
     private VerticalProgressBar setsProgressBar;
     private int exercisePosition;
-    private WorkoutActivity workoutActivity;
+    private UpdateableActivity updateableActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         exercisePosition = getArguments().getInt("exerciseIndex");
-        workoutActivity = (WorkoutActivity)getActivity();
+        updateableActivity = (UpdateableActivity)getActivity();
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
@@ -103,7 +103,7 @@ public class ExerciseFragment extends RoboFragment {
                     break;
             }
             setViews(exercisePosition);
-            workoutActivity.notifyDataSetChanged();
+            updateableActivity.notifyDataSetChanged();
         } else if(resultCode == Activity.RESULT_CANCELED && requestCode == EDIT_EXERCISE) {
             //TODO: delete exercise, show anythingelse, when last exercise is deleted
             Log.d("DeleteExercise", "onActivityResult()");

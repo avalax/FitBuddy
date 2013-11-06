@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.edit;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -18,13 +19,18 @@ public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment;
+        Bundle args = new Bundle();
+        args.putSerializable("editableExercise", editableExercise);
         if (position == 0) {
-            return new WeightExerciseFragment(editableExercise);
+            fragment = new WeightExerciseFragment();
         } else if (position == 1) {
-            return new EffortExerciseFragment(editableExercise);
+            fragment = new EffortExerciseFragment();
         } else {
-            return new ConfirmationExerciseFragment(editableExercise);
+            fragment = new ConfirmationExerciseFragment();
         }
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

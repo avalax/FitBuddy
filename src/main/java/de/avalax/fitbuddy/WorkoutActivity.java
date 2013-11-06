@@ -11,7 +11,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.view_pager)
-public class WorkoutActivity extends RoboFragmentActivity {
+public class WorkoutActivity extends RoboFragmentActivity implements UpdateableActivity {
 
     @InjectView(R.id.pager)
     private ViewPager viewPager;
