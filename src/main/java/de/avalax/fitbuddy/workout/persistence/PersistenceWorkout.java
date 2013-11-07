@@ -17,61 +17,61 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
-    public Exercise getExercise(int position) {
-        return workout.getExercise(position);
+    public Exercise getExercise(int index) {
+        return workout.getExercise(index);
     }
 
     @Override
-    public Set getCurrentSet(int position) {
-        return workout.getCurrentSet(position);
+    public Set getCurrentSet(int index) {
+        return workout.getCurrentSet(index);
     }
 
     @Override
-    public String getName(int position) {
-        return workout.getName(position);
+    public String getName(int index) {
+        return workout.getName(index);
     }
 
     @Override
-    public float getProgress(int position) {
-        return workout.getProgress(position);
+    public float getProgress(int index) {
+        return workout.getProgress(index);
     }
 
     @Override
-    public void addExerciseBefore(int position, Exercise exercise) {
+    public void addExerciseBefore(int index, Exercise exercise) {
         //TODO: delegate to datalayer
-        workout.addExerciseBefore(position, exercise);
+        workout.addExerciseBefore(index, exercise);
     }
 
     @Override
-    public void addExerciseAfter(int position, Exercise exercise) {
+    public void addExerciseAfter(int index, Exercise exercise) {
         //TODO: delegate to dataLayer
-        workout.addExerciseAfter(position, exercise);
+        workout.addExerciseAfter(index, exercise);
     }
 
     @Override
-    public void setExercise(int position, Exercise exercise) {
+    public void setExercise(int index, Exercise exercise) {
         //TODO: delegate to dataLayer
-        workout.setExercise(position,exercise);
+        workout.setExercise(index,exercise);
     }
 
     @Override
-    public int getReps(int position) {
-        return workout.getReps(position);
+    public int getReps(int index) {
+        return workout.getReps(index);
     }
 
     @Override
-    public void setReps(int position, int reps) {
-        workout.setReps(position, reps);
+    public void setReps(int index, int reps) {
+        workout.setReps(index, reps);
     }
 
     @Override
-    public void setTendency(int position, Tendency tendency) {
-        workout.setTendency(position, tendency);
+    public void setTendency(int index, Tendency tendency) {
+        workout.setTendency(index, tendency);
     }
 
     @Override
-    public void incrementSet(int position) {
-        workout.incrementSet(position);
+    public void incrementSet(int index) {
+        workout.incrementSet(index);
     }
 
     @Override

@@ -16,65 +16,65 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise getExercise(int position) {
-        if (!isValid(position)) {
+    public Exercise getExercise(int index) {
+        if (isIndexOutOfBounds(index)) {
             throw new ExerciseNotAvailableException();
         }
-        return exercises.get(position);
+        return exercises.get(index);
     }
 
     @Override
-    public void setReps(int position, int reps) {
-        getExercise(position).setReps(reps);
+    public void setReps(int index, int reps) {
+        getExercise(index).setReps(reps);
     }
 
     @Override
-    public void setTendency(int position, Tendency tendency) {
-        getExercise(position).setTendency(tendency);
+    public void setTendency(int index, Tendency tendency) {
+        getExercise(index).setTendency(tendency);
     }
 
     @Override
-    public void incrementSet(int position) {
-        getExercise(position).incrementCurrentSet();
+    public void incrementSet(int index) {
+        getExercise(index).incrementCurrentSet();
     }
 
     @Override
-    public Set getCurrentSet(int position) {
-        return getExercise(position).getCurrentSet();
+    public Set getCurrentSet(int index) {
+        return getExercise(index).getCurrentSet();
     }
 
     @Override
-    public String getName(int position) {
-        return getExercise(position).getName();
+    public String getName(int index) {
+        return getExercise(index).getName();
     }
 
     @Override
-    public float getProgress(int position) {
-        Exercise exercise = getExercise(position);
+    public float getProgress(int index) {
+        Exercise exercise = getExercise(index);
         float maxSets = (float) exercise.getMaxSets();
         float setNumber = (float) exercise.getSetNumber();
-        if (getReps(position) == 0) {
+        if (getReps(index) == 0) {
             setNumber--;
         }
-        return position + (setNumber / maxSets);
+        return index + (setNumber / maxSets);
     }
 
     @Override
-    public void addExerciseBefore(int position, Exercise exercise) {
-        exercises.add(position, exercise);
+    public void addExerciseBefore(int index, Exercise exercise) {
+        exercises.add(index, exercise);
     }
 
     @Override
-    public void addExerciseAfter(int position, Exercise exercise) {
-        exercises.add(position + 1, exercise);
+    public void addExerciseAfter(int index, Exercise exercise) {
+        exercises.add(index + 1, exercise);
     }
 
     @Override
-    public void setExercise(int position, Exercise exercise) {
-        if (exercises.size() > position) {
-            exercises.set(position, exercise);
-        } else {
+    public void setExercise(int index, Exercise exercise) {
+        if (isIndexOutOfBounds(index)) {
             exercises.add(exercise);
+        } else {
+            exercises.set(index, exercise);
         }
     }
 
@@ -84,19 +84,19 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public int getReps(int position) {
-        return getExercise(position).getReps();
+    public int getReps(int index) {
+        return getExercise(index).getReps();
     }
 
-    private boolean isValid(int index) {
-        return isIndexNotNegative(index) && isIndexInArray(index);
+    private boolean isIndexOutOfBounds(int index) {
+        return isIndexNegative(index) || isIndexGreaterEqualThan(index);
     }
 
-    private boolean isIndexInArray(int index) {
-        return index <= exercises.size() - 1;
+    private boolean isIndexGreaterEqualThan(int index) {
+        return index >= exercises.size();
     }
 
-    private boolean isIndexNotNegative(int index) {
-        return index >= 0;
+    private boolean isIndexNegative(int index) {
+        return index < 0;
     }
 }
