@@ -47,14 +47,16 @@ public class BasicExercise implements Exercise {
 
     @Override
     public Set getCurrentSet() {
-        return sets.get(currentSetIndex());
+        int index = setNumber - 1;
+        return sets.get(index);
     }
 
     @Override
     public void setCurrentSet(int setNumber) {
-        if (isIndexNotInArray(setNumber - 1)) {
+        int index = setNumber - 1;
+        if (isIndexGreaterEqualThan(index)) {
             this.setNumber = getMaxSets();
-        } else if (isIndexNegative(setNumber - 1)) {
+        } else if (isIndexNegative(index)) {
             this.setNumber = 1;
         } else {
             this.setNumber = setNumber;
@@ -62,13 +64,13 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setReps(int reps) {
-        getCurrentSet().setReps(reps);
+    public int getReps() {
+        return getCurrentSet().getReps();
     }
 
     @Override
-    public int getReps() {
-        return getCurrentSet().getReps();
+    public void setReps(int reps) {
+        getCurrentSet().setReps(reps);
     }
 
     @Override
@@ -93,21 +95,16 @@ public class BasicExercise implements Exercise {
     @Override
     public double getWeightRaise(Tendency tendency) {
         double weight = getCurrentSet().getWeight();
-        switch (tendency) {
-            case MINUS:
-                return getMinusTendencyWeight(weight);
-            case PLUS:
-                return getPlusTendencyWeight(weight);
-            default:
-                return weight;
+        if (tendency == Tendency.PLUS) {
+            return getPlusTendencyWeight(weight);
         }
+        if (tendency == Tendency.MINUS) {
+            return getMinusTendencyWeight(weight);
+        }
+        return weight;
     }
 
-    private int currentSetIndex() {
-        return setNumber - 1;
-    }
-
-    private boolean isIndexNotInArray(int index) {
+    private boolean isIndexGreaterEqualThan(int index) {
         return index >= sets.size();
     }
 

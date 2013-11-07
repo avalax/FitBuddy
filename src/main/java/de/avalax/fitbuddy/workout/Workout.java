@@ -18,4 +18,5 @@ public interface Workout {
     void addExerciseBefore(int index, Exercise exercise);
     void addExerciseAfter(int index, Exercise exercise);
     void setExercise(int index, Exercise exercise);
+    void removeExercise(int index);
 }

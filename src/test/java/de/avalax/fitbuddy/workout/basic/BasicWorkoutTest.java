@@ -20,11 +20,11 @@ public class BasicWorkoutTest {
 
     private Workout workout;
     private LinkedList<Exercise> exercises;
-    private int exercisePosition;
+    private int exerciseIndex;
 
     @Before
     public void setUp() throws Exception {
-        exercisePosition = 0;
+        exerciseIndex = 0;
         exercises = new LinkedList<Exercise>();
         workout = new BasicWorkout(exercises);
     }
@@ -65,7 +65,7 @@ public class BasicWorkoutTest {
 
         when(exercise.getCurrentSet()).thenReturn(set);
 
-        assertThat(workout.getCurrentSet(exercisePosition), equalTo(set));
+        assertThat(workout.getCurrentSet(exerciseIndex), equalTo(set));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
 
-        workout.setReps(exercisePosition, 12);
+        workout.setReps(exerciseIndex, 12);
 
         verify(exercise).setReps(12);
     }
@@ -85,7 +85,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         when(exercise.getReps()).thenReturn(12);
 
-        assertThat(workout.getReps(exercisePosition), equalTo(12));
+        assertThat(workout.getReps(exerciseIndex), equalTo(12));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         when(exercise.getName()).thenReturn("NameOfExercise");
 
-        assertThat(workout.getName(exercisePosition), equalTo("NameOfExercise"));
+        assertThat(workout.getName(exerciseIndex), equalTo("NameOfExercise"));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         exercises.add(mock(Exercise.class));
 
-        workout.setTendency(exercisePosition, Tendency.NEUTRAL);
+        workout.setTendency(exerciseIndex, Tendency.NEUTRAL);
 
         verify(exercise).setTendency(Tendency.NEUTRAL);
     }
@@ -114,7 +114,7 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
         exercises.add(mock(Exercise.class));
 
-        workout.incrementSet(exercisePosition);
+        workout.incrementSet(exerciseIndex);
 
         verify(exercise).incrementCurrentSet();
 
@@ -144,7 +144,7 @@ public class BasicWorkoutTest {
         when(exercise.getSetNumber()).thenReturn(1);
         when(exercise.getReps()).thenReturn(0);
 
-        assertThat(workout.getProgress(exercisePosition), equalTo(0.0f));
+        assertThat(workout.getProgress(exerciseIndex), equalTo(0.0f));
     }
 
     @Test
@@ -177,10 +177,10 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
 
-        workout.addExerciseBefore(exercisePosition,exercise);
+        workout.addExerciseBefore(exerciseIndex,exercise);
 
         assertThat(exercises.size(),is(2));
-        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
+        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
     }
 
     @Test
@@ -188,20 +188,20 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
 
-        workout.addExerciseAfter(exercisePosition,exercise);
+        workout.addExerciseAfter(exerciseIndex,exercise);
 
         assertThat(exercises.size(),is(2));
-        assertThat(workout.getExercise(exercisePosition+1), equalTo(exercise));
+        assertThat(workout.getExercise(exerciseIndex +1), equalTo(exercise));
     }
 
     @Test
     public void setExercise_shouldAddExerciseAtPosition() throws Exception {
         Exercise exercise = mock(Exercise.class);
 
-        workout.setExercise(exercisePosition, exercise);
+        workout.setExercise(exerciseIndex, exercise);
 
         assertThat(exercises.size(),is(1));
-        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
+        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
     }
 
     @Test
@@ -209,9 +209,47 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
 
-        workout.setExercise(exercisePosition, exercise);
+        workout.setExercise(exerciseIndex, exercise);
 
         assertThat(exercises.size(),is(1));
-        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
+        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
+    }
+
+    @Test
+    public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
+        exercises.add(mock(Exercise.class));
+
+        workout.removeExercise(exerciseIndex);
+
+        assertThat(exercises.size(), is(0));
+    }
+
+    @Test
+    public void removeExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(exercise);
+        exercises.add(mock(Exercise.class));
+
+        workout.removeExercise(1);
+
+        assertThat(exercises.size(), is(1));
+        assertThat(exercises.get(0),equalTo(exercise));
+    }
+
+    @Test
+    public void removeExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+        exercises.add(exercise);
+
+        workout.removeExercise(0);
+
+        assertThat(exercises.size(), is(1));
+        assertThat(exercises.get(0),equalTo(exercise));
+    }
+
+    @Test
+    public void removeExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
+        workout.removeExercise(0);
     }
 }

@@ -55,6 +55,12 @@ public class PersistenceWorkout implements Workout{
     }
 
     @Override
+    public void removeExercise(int index) {
+        //TODO: delegate to dataLayer
+        workout.removeExercise(index);
+    }
+
+    @Override
     public int getReps(int index) {
         return workout.getReps(index);
     }

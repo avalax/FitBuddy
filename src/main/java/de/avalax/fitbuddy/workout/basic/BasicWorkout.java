@@ -79,6 +79,14 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public void removeExercise(int index) {
+        if (isIndexOutOfBounds(index)) {
+            return;
+        }
+        exercises.remove(index);
+    }
+
+    @Override
     public int getExerciseCount() {
         return exercises.size();
     }
