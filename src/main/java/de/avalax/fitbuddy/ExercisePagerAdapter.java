@@ -16,6 +16,8 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     private Workout workout;
     @InjectResource(R.string.result_title)
     private String resultTitle;
+    @InjectResource(R.string.welcome_title)
+    private String welcomeTitle;
 
     public ExercisePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -29,8 +31,9 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
             Bundle args = new Bundle();
             args.putInt("exerciseIndex", exerciseIndex);
             fragment.setArguments(args);
-
             return fragment;
+        } else if (workout.getExerciseCount() == 0) {
+            return new FirstStartFragment();
         } else {
             return new WorkoutResultFragment();
         }
@@ -46,9 +49,16 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
         if (position < workout.getExerciseCount()) {
             Exercise currentExercise = workout.getExercise(position);
 
-            return String.format("%1$s : %2$skg",currentExercise.getName(),currentExercise.getWeight());
+            return String.format("%1$s : %2$skg", currentExercise.getName(), currentExercise.getWeight());
+        } else if (workout.getExerciseCount() == 0) {
+            return welcomeTitle;
         } else {
             return resultTitle;
         }
+    }
+
+    @Override
+    public int getItemPosition(Object item) {
+        return POSITION_NONE;
     }
 }

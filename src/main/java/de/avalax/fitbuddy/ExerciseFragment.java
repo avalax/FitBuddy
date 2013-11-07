@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +87,7 @@ public class ExerciseFragment extends RoboFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
             EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
             Exercise exercise = editableExercise.createExercise();
@@ -105,8 +105,8 @@ public class ExerciseFragment extends RoboFragment {
             setViews(exercisePosition);
             updateableActivity.notifyDataSetChanged();
         } else if(resultCode == Activity.RESULT_CANCELED && requestCode == EDIT_EXERCISE) {
-            //TODO: delete exercise, show anythingelse, when last exercise is deleted
-            Log.d("DeleteExercise", "onActivityResult()");
+            workout.removeExercise(exercisePosition);
+            updateableActivity.notifyDataSetChanged();
         }
     }
 

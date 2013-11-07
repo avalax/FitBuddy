@@ -16,7 +16,7 @@ public class DummyDataLayer implements DataLayer {
     public Workout load() {
         LinkedList<Exercise> exercises = new LinkedList<Exercise>();
         exercises.add(new BasicExercise("Bankdrücken", createSetWithThreeSets(70,12), 5));
-        exercises.add(new BasicExercise("Schrägbankdrücken", createSetWithThreeSets(40,10), 5));
+        /* exercises.add(new BasicExercise("Schrägbankdrücken", createSetWithThreeSets(40,10), 5));
         exercises.add(new BasicExercise("Butterfly", createSetWithThreeSets(60,15), 5));
         exercises.add(new BasicExercise("Liegestüze", createSetWithThreeSets(0,30), 12.5));
         exercises.add(new BasicExercise("Lat-Ziehen hinter den Nacken", createSetWithThreeSets(50,12), 5));
@@ -24,7 +24,7 @@ public class DummyDataLayer implements DataLayer {
         exercises.add(new BasicExercise("Klimmzüge", createSetWithThreeSets(60,8), 5));
         exercises.add(new BasicExercise("Hammercurls", createSetWithThreeSets(30,20), 2.5));
         exercises.add(new BasicExercise("Larry Scoot Armbeugen", createSetWithThreeSets(30,12), 2.5));
-        exercises.add(new BasicExercise("Situps", createSetWithThreeSets(0,30), 2.5));
+        exercises.add(new BasicExercise("Situps", createSetWithThreeSets(0,30), 2.5)); */
         return new BasicWorkout(exercises);
     }
 
