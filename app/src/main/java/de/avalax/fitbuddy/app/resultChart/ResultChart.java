@@ -32,12 +32,26 @@ public class ResultChart extends View {
     }
 
     private void drawResultChart(Canvas canvas) {
-        Rect progressBody = new Rect(0, iconNegative.getHeight(), this.getWidth(), getTitleBarWithResultChartHeight());
-        canvas.drawRect(progressBody, getBackgroundPaint("#33B5E5"));
-        String repsText = "12";
+        int[] sets = {15,12,6};
+        int barHeight = getHeight();
+        String barBackgroundColor = "#33B5E5";
+        int yOffset = iconNegative.getHeight();
+
+        for (int i=0;i< sets.length;i++) {
+            String repsText = String.valueOf(sets[i]);
+            int barWidth = Math.round(getWidth() / sets.length);
+            int xOffset = barWidth * i;
+            drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, yOffset, xOffset);
+        }
+
+    }
+
+    private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int yOffset, int xOffset) {
+        Rect progressBody = new Rect(xOffset, yOffset, barWidth + xOffset, getTitleBarWithResultChartHeight());
+        canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
         Paint titleTextPaint = getTextPaint(50, Typeface.BOLD);
         float repsTextWidth = titleTextPaint.measureText(repsText, 0, repsText.length());
-        canvas.drawText(repsText, getWidth() / 2 - (repsTextWidth / 2), getHeight() / 2 + (titleTextPaint.getTextSize() / 2), titleTextPaint);
+        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), barHeight / 2 + (titleTextPaint.getTextSize() / 2), titleTextPaint);
     }
 
     private void drawTendency(Canvas canvas) {
