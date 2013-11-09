@@ -27,6 +27,7 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
 
     @Override
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
+        //TODO: VelocityTracker ??? Log.d("foo","bar")
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
         if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
