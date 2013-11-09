@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:components="http://schemas.android.com/apk/res/de.avalax.fitbuddy.app"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="horizontal">
+
+	<de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar
+			android:id="@+id/leftEnterValueBar"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			android:background="#33B5E5"
+			components:textSize="50px"
+			components:textColor="#ffffff"
+            components:labelTextSize="14px"
+            components:label="weight"
+            components:value="2.5"
+			/>
+
+	<de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar
+			android:id="@+id/rightEnterValueBar"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:background="#ff4444"
+			android:layout_weight="1"
+			components:textSize="50px"
+			components:textColor="#ffffff"
+            components:labelTextSize="14px"
+            components:label="raise"
+            components:value="1.25"
+			/>
+</LinearLayout>

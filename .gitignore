@@ -11,6 +11,7 @@
 # generated files
 bin/
 gen/
+target/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -18,8 +19,8 @@ local.properties
 # Eclipse project files
 .classpath
 .project
-/target/
+.settings
 
 # IntelliJ project files
-fitbuddy.iml
-/.idea/
+*.iml
+.idea/
