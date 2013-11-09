@@ -64,10 +64,10 @@ public class VerticalProgressBar extends View implements SwipeableBar {
     private void drawProgressBar(Canvas canvas) {
         Paint contentPaint = new Paint();
         contentPaint.setAntiAlias(true);
-        int height = calculateProgressBarHeight();
-        Rect progressBody = new Rect(0, getHeight() - height, this.getWidth(), getHeight());
         contentPaint.setStyle(Paint.Style.FILL);
         contentPaint.setColor(barColor);
+        int height = calculateProgressBarHeight();
+        Rect progressBody = new Rect(0, getHeight() - height, this.getWidth(), getHeight());
         canvas.drawRect(progressBody, contentPaint);
     }
 
