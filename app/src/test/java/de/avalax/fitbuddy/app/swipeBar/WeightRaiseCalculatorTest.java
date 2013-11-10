@@ -22,7 +22,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(0.0));
+        assertThat(newWeightRaise, equalTo(0.0));
     }
 
     @Test
@@ -32,27 +32,47 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(0.0));
+        assertThat(newWeightRaise, equalTo(0.0));
     }
 
     @Test
-    public void testCalculate_shouldReturn075WhenModificationFrom0Is1() throws Exception {
+    public void testCalculate_shouldReturn025WhenModificationFrom0Is1() throws Exception {
         double currentWeightRaise = 0.0;
         int modification = 1;
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(0.75));
+        assertThat(newWeightRaise, equalTo(0.25));
     }
 
     @Test
-    public void testCalculate_shouldReturn125WhenModificationFrom0Is2() throws Exception {
+    public void testCalculate_shouldReturn05WhenModificationFrom0Is2() throws Exception {
         double currentWeightRaise = 0.0;
         int modification = 2;
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(1.25));
+        assertThat(newWeightRaise, equalTo(0.5));
+    }
+
+    @Test
+    public void testCalculate_shouldReturn075WhenModificationFrom05Is1() throws Exception {
+        double currentWeightRaise = 0.5;
+        int modification = 1;
+
+        double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
+
+        assertThat(newWeightRaise, equalTo(0.75));
+    }
+
+    @Test
+    public void testCalculate_shouldReturn125WhenModificationFrom075Is1() throws Exception {
+        double currentWeightRaise = 0.75;
+        int modification = 1;
+
+        double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
+
+        assertThat(newWeightRaise, equalTo(1.25));
     }
 
     @Test
@@ -62,7 +82,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(2.5));
+        assertThat(newWeightRaise, equalTo(2.5));
     }
 
     @Test
@@ -72,7 +92,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(5.0));
+        assertThat(newWeightRaise, equalTo(5.0));
     }
 
     @Test
@@ -82,7 +102,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(7.5));
+        assertThat(newWeightRaise, equalTo(7.5));
     }
 
     @Test
@@ -92,7 +112,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(10.0));
+        assertThat(newWeightRaise, equalTo(10.0));
     }
 
     @Test
@@ -102,7 +122,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(12.5));
+        assertThat(newWeightRaise, equalTo(12.5));
     }
 
     @Test
@@ -112,7 +132,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(15.0));
+        assertThat(newWeightRaise, equalTo(15.0));
     }
 
     @Test
@@ -122,7 +142,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(20.0));
+        assertThat(newWeightRaise, equalTo(20.0));
     }
 
     @Test
@@ -132,7 +152,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(20.0));
+        assertThat(newWeightRaise, equalTo(20.0));
     }
 
     @Test
@@ -142,7 +162,7 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(1.25));
+        assertThat(newWeightRaise, equalTo(1.25));
     }
 
     @Test
@@ -152,6 +172,6 @@ public class WeightRaiseCalculatorTest {
 
         double newWeightRaise = weightRaiseCalculator.calculate(currentWeightRaise, modification);
 
-        assertThat(newWeightRaise,equalTo(0.75));
+        assertThat(newWeightRaise, equalTo(0.75));
     }
 }
