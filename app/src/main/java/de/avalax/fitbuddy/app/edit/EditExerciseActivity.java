@@ -51,7 +51,7 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
             setResult(RESULT_OK, returnIntent);
         }
         if (v.getId() == R.id.buttonCancel) {
-            setResult(RESULT_CANCELED);
+            setResult(RESULT_FIRST_USER);
         }
         finish();
     }

@@ -106,7 +106,7 @@ public class ExerciseFragment extends RoboFragment {
             }
             setViews(exercisePosition);
             updateableActivity.notifyDataSetChanged();
-        } else if(resultCode == Activity.RESULT_CANCELED && requestCode == EDIT_EXERCISE) {
+        } else if(resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
             workout.removeExercise(exercisePosition);
             updateableActivity.notifyDataSetChanged();
         }
