@@ -10,21 +10,19 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
-    private static int SWIPE_MIN_DISTANCE;
-    private static int SWIPE_THRESHOLD_VELOCITY;
+    private int minSwipeDistance;
+    private int thresholdSwipeVelocity;
+		private ViewConfiguration viewConfiguration;
 
     private final GestureDetector gdt;
 
     public SwipeBarOnTouchListener(Context context, SwipeableBar swipeableBar, int swipeMoveMax) {
         final SwipeBarOnTouchListener touchListener = this;
-	      final ViewConfiguration vc = ViewConfiguration.get(context);
-	      SWIPE_MIN_DISTANCE = vc.getScaledPagingTouchSlop();
-	      SWIPE_THRESHOLD_VELOCITY = vc.getScaledMinimumFlingVelocity();
+	      viewConfiguration = ViewConfiguration.get(context);
+	      minSwipeDistance = viewConfiguration.getScaledPagingTouchSlop();
+	      thresholdSwipeVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
 
-	      Log.d("", "swipeMinDistance = " + SWIPE_MIN_DISTANCE);
-	      Log.d("", "swipeThresholdVelocity = " + SWIPE_THRESHOLD_VELOCITY);
-
-        gdt = new GestureDetector(context,new SwipeBarOnGestureListener(swipeMoveMax, swipeableBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {
+        gdt = new GestureDetector(context,new SwipeBarOnGestureListener(swipeMoveMax, swipeableBar, minSwipeDistance, thresholdSwipeVelocity) {
             @Override
             public void onFlingEvent(int moved) {
                 touchListener.onFlingEvent(moved);
