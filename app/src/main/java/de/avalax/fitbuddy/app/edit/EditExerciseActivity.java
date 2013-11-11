@@ -47,6 +47,10 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
     public void clickEvent(View v) {
         Intent returnIntent = new Intent();
         if (v.getId() == R.id.buttonSave) {
+            if (editableExercise.getName() == null) {
+                //TODO: extract to resources
+                editableExercise.setName("new exercise");
+            }
             returnIntent.putExtra("editableExercise", editableExercise);
             setResult(RESULT_OK, returnIntent);
         }

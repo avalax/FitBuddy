@@ -14,13 +14,11 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class ConfirmationExerciseFragment extends RoboFragment {
-    private EditableExercise editableExercise;
-
     @InjectView(R.id.exerciseNameEditText)
     EditText exerciseNameEditText;
-
     @InjectView(R.id.buttonCancel)
     Button buttonCancel;
+    private EditableExercise editableExercise;
     private UpdateableActivity updateableActivity;
 
     @Override
@@ -34,8 +32,11 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateableActivity = (UpdateableActivity) getActivity();
-        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
-        exerciseNameEditText.setText(editableExercise.getName());
+        editableExercise = (EditableExercise) getArguments().getSerializable("editableExercise");
+        //TODO: extract to resources
+        if (!"new exercise".equals(editableExercise.getName())) {
+            exerciseNameEditText.setText(editableExercise.getName());
+        }
         if (editableExercise instanceof ExistingEditableExercise) {
             //TODO: extract to resources
             buttonCancel.setText("delete");
