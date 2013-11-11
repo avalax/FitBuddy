@@ -1,7 +1,9 @@
 package de.avalax.fitbuddy.app.swipeBar;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 
 public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
     private SwipeableBar swipeableBar;
@@ -27,14 +29,15 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
 
     @Override
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
-        //TODO: VelocityTracker ??? Log.d("foo","bar")
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
-        if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
-            onFlingEvent(calculateMoved(moved, swipeableBar.getHeight()));
+	      int scaledBarHeight = swipeableBar.getHeight()/2;
+
+	    if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
+            onFlingEvent(calculateMoved(moved, scaledBarHeight));
             return true;
         } else if (-moved > swipeMinDistance && absVelocityY > swipeMinDistance) {
-            onFlingEvent(-calculateMoved(moved, swipeableBar.getHeight()));
+            onFlingEvent(-calculateMoved(moved, scaledBarHeight));
             return true;
         }
         return false;
