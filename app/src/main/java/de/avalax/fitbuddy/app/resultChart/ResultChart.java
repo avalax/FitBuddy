@@ -53,9 +53,9 @@ public class ResultChart extends View {
     private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int yOffset, int xOffset) {
         Rect progressBody = new Rect(xOffset, yOffset, barWidth + xOffset, getTitleBarWithResultChartHeight());
         canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
-        Paint titleTextPaint = getTextPaint(50, Typeface.BOLD);
+        Paint titleTextPaint = getTextPaint(14, Typeface.BOLD);
         float repsTextWidth = titleTextPaint.measureText(repsText, 0, repsText.length());
-        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), barHeight / 2 + (titleTextPaint.getTextSize() / 2), titleTextPaint);
+        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), barHeight - yOffset - (titleTextPaint.getTextSize() / 2), titleTextPaint);
     }
 
     private void drawTendency(Canvas canvas) {
