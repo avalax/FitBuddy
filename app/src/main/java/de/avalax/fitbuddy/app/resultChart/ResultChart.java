@@ -53,8 +53,7 @@ public class ResultChart extends View {
         Rect progressBody = new Rect(xOffset, 0, barWidth + xOffset, barHeight);
         canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
         Paint paint = getTextPaint(50, Typeface.BOLD);
-        float repsTextWidth = paint.measureText(repsText, 0, repsText.length());
-        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), (barHeight / 2) + (paint.getTextSize() / 2), paint);
+        canvas.drawText(repsText, xOffset + (barWidth / 2), (barHeight / 2) + (paint.getTextSize() / 2), paint);
     }
 
     private void drawTendency(Canvas canvas) {
@@ -88,12 +87,14 @@ public class ResultChart extends View {
     }
 
     private Paint getTextPaint(float textSize, int typeface) {
-        Paint titleTextPaint = new Paint();
-        titleTextPaint.setColor(Color.parseColor("#ffffff"));
-        titleTextPaint.setTypeface(Typeface.create("sans", typeface));
-        titleTextPaint.setTextSize(textSize);
-        titleTextPaint.setAntiAlias(true);
-        return titleTextPaint;
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#ffffff"));
+        paint.setTypeface(Typeface.create("sans", typeface));
+        paint.setTextSize(textSize);
+        paint.setAntiAlias(true);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        return paint;
     }
 
     private Paint getBackgroundPaint(String colorString) {
