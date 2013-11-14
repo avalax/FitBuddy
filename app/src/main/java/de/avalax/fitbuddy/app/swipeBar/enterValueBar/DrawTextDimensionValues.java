@@ -34,7 +34,7 @@ public class DrawTextDimensionValues {
     public DrawTextDimensionValues invoke() {
         float fontWidth = paint.measureText(text, 0, text.length());
         x = (width / 2) - (fontWidth / 2);
-        y = height / 2;
+        y = (height / 2) + (paint.getTextSize() / 2);
         return this;
     }
 

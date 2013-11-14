@@ -31,31 +31,30 @@ public class ResultChart extends View {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawTitlebar(canvas);
         drawResultChart(canvas);
         drawTendency(canvas);
     }
 
     private void drawResultChart(Canvas canvas) {
-        int[] sets = {15, 12, 6};
-        int barHeight = getHeight();
+        int[] sets = {15, 12, 6, 4};
         int yOffset = iconNegative.getHeight();
+        int barHeight = getHeight() - yOffset;
 
         for (int i = 0; i < sets.length; i++) {
             String repsText = String.valueOf(sets[i]);
             int barWidth = Math.round(getWidth() / sets.length);
             int xOffset = barWidth * i;
-            drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, yOffset, xOffset);
+            drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, xOffset);
         }
 
     }
 
-    private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int yOffset, int xOffset) {
-        Rect progressBody = new Rect(xOffset, yOffset, barWidth + xOffset, getTitleBarWithResultChartHeight());
+    private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int xOffset) {
+        Rect progressBody = new Rect(xOffset, 0, barWidth + xOffset, barHeight);
         canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
-        Paint titleTextPaint = getTextPaint(14, Typeface.BOLD);
-        float repsTextWidth = titleTextPaint.measureText(repsText, 0, repsText.length());
-        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), barHeight - yOffset - (titleTextPaint.getTextSize() / 2), titleTextPaint);
+        Paint paint = getTextPaint(50, Typeface.BOLD);
+        float repsTextWidth = paint.measureText(repsText, 0, repsText.length());
+        canvas.drawText(repsText, xOffset + (barWidth / 2) - (repsTextWidth / 2), (barHeight / 2) + (paint.getTextSize() / 2), paint);
     }
 
     private void drawTendency(Canvas canvas) {
@@ -86,18 +85,6 @@ public class ResultChart extends View {
         Paint paint = new Paint();
         paint.setAlpha(70);
         canvas.drawBitmap(bitmap, left, top, paint);
-    }
-
-    private void drawTitlebar(Canvas canvas) {
-        Rect progressBody = new Rect(0, 0, this.getWidth(), iconNegative.getHeight());
-        canvas.drawRect(progressBody, getBackgroundPaint(backgroundColor));
-
-        String weightText = "120 kg";
-        String titleText = "Bankdrücken";
-        Paint titleTextPaint = getTextPaint(14, Typeface.NORMAL);
-        float weigthWidth = titleTextPaint.measureText(weightText, 0, weightText.length());
-        canvas.drawText(titleText, 0, titleTextPaint.getTextSize(), titleTextPaint);
-        canvas.drawText(weightText, getWidth() - weigthWidth, titleTextPaint.getTextSize(), titleTextPaint);
     }
 
     private Paint getTextPaint(float textSize, int typeface) {

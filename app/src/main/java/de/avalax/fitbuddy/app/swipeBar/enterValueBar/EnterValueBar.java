@@ -52,7 +52,7 @@ public class EnterValueBar extends View implements SwipeableBar {
 
     private void drawCurrentValue(Canvas canvas, String textCurrentValue) {
         DrawTextDimensionValues drawTextDimensionValues = new DrawTextDimensionValues(textColor, valueTextSize, typeface, textCurrentValue, getWidth(), getHeight()).invoke();
-        canvas.drawText(textCurrentValue, drawTextDimensionValues.getX(), drawTextDimensionValues.getY() + (valueTextSize / 2), drawTextDimensionValues.getPaint());
+        canvas.drawText(textCurrentValue, drawTextDimensionValues.getX(), drawTextDimensionValues.getY(), drawTextDimensionValues.getPaint());
     }
 
     public synchronized void setValue(String value) {
