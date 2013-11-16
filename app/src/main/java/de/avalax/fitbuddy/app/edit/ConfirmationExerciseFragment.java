@@ -14,6 +14,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class ConfirmationExerciseFragment extends RoboFragment {
+    private static final String EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.exerciseNameEditText)
     EditText exerciseNameEditText;
     @InjectView(R.id.buttonCancel)
@@ -21,10 +22,19 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     private EditableExercise editableExercise;
     private UpdateableActivity updateableActivity;
 
+    public static ConfirmationExerciseFragment newInstance(EditableExercise editableExercise) {
+        ConfirmationExerciseFragment confirmationExerciseFragment = new ConfirmationExerciseFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(EDITABLE_EXERCISE, editableExercise);
+        confirmationExerciseFragment.setArguments(args);
+        return confirmationExerciseFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         return inflater.inflate(R.layout.edit_confirmation, container, false);
     }
 
@@ -32,7 +42,6 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateableActivity = (UpdateableActivity) getActivity();
-        editableExercise = (EditableExercise) getArguments().getSerializable("editableExercise");
         //TODO: extract to resources
         if (!"new exercise".equals(editableExercise.getName())) {
             exerciseNameEditText.setText(editableExercise.getName());

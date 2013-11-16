@@ -14,6 +14,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class WeightExerciseFragment extends RoboFragment {
+    private static final String EDITABLE_EXERCISE = "editableExercise";
     @Inject
     WeightRaiseCalculator weightRaiseCalculator;
     @Inject
@@ -24,17 +25,25 @@ public class WeightExerciseFragment extends RoboFragment {
     EnterValueBar rightEnterValueBar;
     private EditableExercise editableExercise;
 
+    public static WeightExerciseFragment newInstance(EditableExercise editableExercise) {
+        WeightExerciseFragment weightExerciseFragment = new WeightExerciseFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(EDITABLE_EXERCISE, editableExercise);
+        weightExerciseFragment.setArguments(args);
+        return weightExerciseFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         return inflater.inflate(R.layout.edit_weight, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
         setBars();
 
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
@@ -69,7 +78,7 @@ public class WeightExerciseFragment extends RoboFragment {
     }
 
     private void changeWeightRaise(int moved) {
-        double weightRaise = weightRaiseCalculator.calculate(editableExercise.getWeightRaise(),moved);
+        double weightRaise = weightRaiseCalculator.calculate(editableExercise.getWeightRaise(), moved);
         editableExercise.setWeightRaise(weightRaise);
         setBars();
     }
@@ -89,10 +98,10 @@ public class WeightExerciseFragment extends RoboFragment {
     }
 
     private String getShortenDouble(double weight) {
-       if (weight == (int) weight) {
-              return String.valueOf((int)weight);
+        if (weight == (int) weight) {
+            return String.valueOf((int) weight);
         } else {
-           return String.valueOf(weight);
-       }
+            return String.valueOf(weight);
+        }
     }
 }

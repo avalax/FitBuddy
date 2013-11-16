@@ -13,26 +13,34 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class EffortExerciseFragment extends RoboFragment {
-    private EditableExercise editableExercise;
+    private static final String EDITABLE_EXERCISE = "editableExercise";
     @Inject
     Context context;
     @InjectView(R.id.leftEnterValueBar)
     EnterValueBar leftEnterValueBar;
-
     @InjectView(R.id.rightEnterValueBar)
     EnterValueBar rightEnterValueBar;
+    private EditableExercise editableExercise;
+
+    public static EffortExerciseFragment newInstance(EditableExercise editableExercise) {
+        EffortExerciseFragment effortExerciseFragment = new EffortExerciseFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(EDITABLE_EXERCISE, editableExercise);
+        effortExerciseFragment.setArguments(args);
+        return effortExerciseFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         return inflater.inflate(R.layout.edit_effort, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editableExercise = (EditableExercise)getArguments().getSerializable("editableExercise");
         setBars();
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
             @Override

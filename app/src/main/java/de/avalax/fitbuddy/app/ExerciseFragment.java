@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.inject.Inject;
-
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.app.edit.ExistingEditableExercise;
@@ -23,6 +21,7 @@ import roboguice.inject.InjectView;
 
 public class ExerciseFragment extends RoboFragment {
 
+    private static final String EXERCISE_INDEX = "exerciseIndex";
     private static final int ADD_EXERCISE_BEFORE = 1;
     private static final int EDIT_EXERCISE = 2;
     private static final int ADD_EXERCISE_AFTER = 3;
@@ -37,12 +36,20 @@ public class ExerciseFragment extends RoboFragment {
     private int exercisePosition;
     private UpdateableActivity updateableActivity;
 
+    public static ExerciseFragment newInstance(int exerciseIndex) {
+        ExerciseFragment fragment = new ExerciseFragment();
+        Bundle args = new Bundle();
+        args.putInt(EXERCISE_INDEX, exerciseIndex);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        exercisePosition = getArguments().getInt("exerciseIndex");
-        updateableActivity = (UpdateableActivity)getActivity();
+        exercisePosition = getArguments().getInt(EXERCISE_INDEX);
+        updateableActivity = (UpdateableActivity) getActivity();
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
@@ -106,7 +113,7 @@ public class ExerciseFragment extends RoboFragment {
             }
             setViews(exercisePosition);
             updateableActivity.notifyDataSetChanged();
-        } else if(resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
+        } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
             workout.removeExercise(exercisePosition);
             updateableActivity.notifyDataSetChanged();
         }
