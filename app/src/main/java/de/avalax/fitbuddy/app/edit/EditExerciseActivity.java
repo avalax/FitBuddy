@@ -13,7 +13,7 @@ import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.view_pager)
+@ContentView(R.layout.activity_view_pager)
 public class EditExerciseActivity extends RoboFragmentActivity implements UpdateableActivity{
 
     @InjectView(R.id.pager)

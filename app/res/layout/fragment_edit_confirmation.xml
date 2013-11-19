@@ -25,7 +25,7 @@
         android:text="save"
         android:id="@+id/buttonSave"
         android:layout_gravity="center"
-        android:drawableLeft="@drawable/icon_positive"
+        android:drawableLeft="@drawable/ic_action_tendency_positive"
         android:onClick="clickEvent"/>
 
     <Button
@@ -34,6 +34,6 @@
         android:text="cancel"
         android:id="@+id/buttonCancel"
         android:layout_gravity="right|center_vertical"
-        android:drawableLeft="@drawable/icon_negative"
+        android:drawableLeft="@drawable/ic_action_tendency_negative"
         android:onClick="clickEvent"/>
 </LinearLayout>

@@ -35,7 +35,7 @@ public class EffortExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
-        return inflater.inflate(R.layout.edit_effort, container, false);
+        return inflater.inflate(R.layout.fragment_edit_effort, container, false);
     }
 
     @Override

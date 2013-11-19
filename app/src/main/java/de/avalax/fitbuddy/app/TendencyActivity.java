@@ -11,7 +11,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.tendency)
+@ContentView(R.layout.activity_tendency)
 @Deprecated
 public class TendencyActivity extends RoboActivity {
     private Tendency tendency = null;

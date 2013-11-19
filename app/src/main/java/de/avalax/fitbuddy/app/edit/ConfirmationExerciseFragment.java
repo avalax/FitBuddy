@@ -35,7 +35,7 @@ public class ConfirmationExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
-        return inflater.inflate(R.layout.edit_confirmation, container, false);
+        return inflater.inflate(R.layout.fragment_edit_confirmation, container, false);
     }
 
     @Override

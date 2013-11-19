@@ -11,6 +11,6 @@ public class FirstStartFragment extends RoboFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.first_start, container, false);
+        return inflater.inflate(R.layout.fragment_first_start, container, false);
     }
 }

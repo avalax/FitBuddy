@@ -20,9 +20,9 @@ public class ResultChart extends View {
     public ResultChart(Context context, AttributeSet attrs) {
         super(context, attrs);
         Resources res = getResources();
-        iconNegative = BitmapFactory.decodeResource(res, R.drawable.icon_negative);
-        iconNeutral = BitmapFactory.decodeResource(res, R.drawable.icon_neutral);
-        iconPositive = BitmapFactory.decodeResource(res, R.drawable.icon_positive);
+        iconNegative = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_negative);
+        iconNeutral = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_neutral);
+        iconPositive = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_positive);
         backgroundColor = "#333333";
         barBackgroundColor = "#33B5E5";
         tendency = Tendency.NEUTRAL;

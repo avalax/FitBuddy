@@ -18,7 +18,7 @@ import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.view_pager)
+@ContentView(R.layout.activity_view_pager)
 public class WorkoutActivity extends RoboFragmentActivity implements UpdateableActivity {
 
     private static final int ADD_EXERCISE = 4;
