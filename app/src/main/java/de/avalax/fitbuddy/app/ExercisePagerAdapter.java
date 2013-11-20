@@ -43,7 +43,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position < workout.getExerciseCount()) {
             Exercise currentExercise = workout.getExercise(position);
-
+            //TODO: extract to resources
             return String.format("%1$s : %2$skg", currentExercise.getName(), currentExercise.getWeight());
         } else if (workout.getExerciseCount() == 0) {
             return welcomeTitle;

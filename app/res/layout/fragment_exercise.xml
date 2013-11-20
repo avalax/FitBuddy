@@ -10,20 +10,20 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:layout_weight="1"
-			android:background="#33B5E5"
+			android:background="@color/primary_background"
 			components:textSize="@dimen/bar_font_size"
-			components:textColor="#ffffff"
-			components:barColor="#0099CC"
+			components:textColor="@color/main_text"
+			components:barColor="@color/primary_progressbar"
 			/>
 
 	<de.avalax.fitbuddy.app.swipeBar.progressBar.VerticalProgressBar
 			android:id="@+id/rightProgressBar"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:background="#ff4444"
+			android:background="@color/secondary_background"
 			android:layout_weight="1"
 			components:textSize="@dimen/bar_font_size"
-			components:textColor="#ffffff"
-			components:barColor="#CC0000"
+			components:textColor="@color/main_text"
+			components:barColor="@color/secondary_progressbar"
 			/>
 </LinearLayout>

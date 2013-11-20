@@ -6,14 +6,14 @@
 
     <style name="PagerTitleStrip">
         <item name="android:textAppearance">@style/PagerTitleStripTextAppearance</item>
-        <item name="android:background">#333</item>
+        <item name="android:background">@color/pager_background</item>
         <item name="android:paddingTop">6.67dp</item>
         <item name="android:paddingBottom">6.67dp</item>
         <item name="android:layout_gravity">top</item>
     </style>
 
     <style name="PagerTitleStripTextAppearance">
-        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textColor">@color/main_text</item>
         <item name="android:textSize">@dimen/font_size</item>
     </style>
 </resources>
