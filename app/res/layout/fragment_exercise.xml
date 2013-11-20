@@ -11,7 +11,7 @@
 			android:layout_height="fill_parent"
 			android:layout_weight="1"
 			android:background="#33B5E5"
-			components:textSize="50px"
+			components:textSize="@dimen/bar_font_size"
 			components:textColor="#ffffff"
 			components:barColor="#0099CC"
 			/>
@@ -22,7 +22,7 @@
 			android:layout_height="fill_parent"
 			android:background="#ff4444"
 			android:layout_weight="1"
-			components:textSize="50px"
+			components:textSize="@dimen/bar_font_size"
 			components:textColor="#ffffff"
 			components:barColor="#CC0000"
 			/>

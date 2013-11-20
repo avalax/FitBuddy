@@ -11,9 +11,9 @@
 			android:layout_height="fill_parent"
 			android:layout_weight="1"
 			android:background="#33B5E5"
-			components:textSize="50px"
+			components:textSize="@dimen/bar_font_size"
 			components:textColor="#ffffff"
-            components:labelTextSize="14px"
+            components:labelTextSize="@dimen/font_size"
             components:label="reps"
             components:value="12"
 			/>
@@ -24,9 +24,9 @@
 			android:layout_height="fill_parent"
 			android:background="#ff4444"
 			android:layout_weight="1"
-			components:textSize="50px"
+			components:textSize="@dimen/bar_font_size"
 			components:textColor="#ffffff"
-            components:labelTextSize="14px"
+            components:labelTextSize="@dimen/font_size"
             components:label="sets"
             components:value="3"
 			/>
