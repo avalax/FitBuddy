@@ -22,10 +22,10 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     private Button buttonCancel;
     @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
-    private EditableExercise editableExercise;
-    private UpdateableActivity updateableActivity;
     @InjectResource(R.string.button_delete_exercise_text)
     private String buttonDeleteExerciseText;
+    private EditableExercise editableExercise;
+    private UpdateableActivity updateableActivity;
 
     public static ConfirmationExerciseFragment newInstance(EditableExercise editableExercise) {
         ConfirmationExerciseFragment confirmationExerciseFragment = new ConfirmationExerciseFragment();

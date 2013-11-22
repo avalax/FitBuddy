@@ -14,17 +14,21 @@ public class ResultChart extends View {
     private final Bitmap iconNeutral;
     private final Bitmap iconPositive;
     private String backgroundColor;
-    private  String barBackgroundColor;
+    private String barBackgroundColor;
     private Tendency tendency;
+    private String barTextColor;
 
     public ResultChart(Context context, AttributeSet attrs) {
         super(context, attrs);
         Resources res = getResources();
+        //TODO: roboguice
         iconNegative = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_negative);
         iconNeutral = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_neutral);
         iconPositive = BitmapFactory.decodeResource(res, R.drawable.ic_action_tendency_positive);
-        backgroundColor = "#333333";
-        barBackgroundColor = "#33B5E5";
+        //TODO: stylable
+        backgroundColor = getResources().getString(R.color.pager_background);
+        barBackgroundColor = getResources().getString(R.color.primary_background);
+        barTextColor = getResources().getString(R.color.main_text);
         tendency = Tendency.NEUTRAL;
     }
 
@@ -36,6 +40,7 @@ public class ResultChart extends View {
     }
 
     private void drawResultChart(Canvas canvas) {
+        //TODO: dynamic
         int[] sets = {15, 12, 6, 4};
         int yOffset = iconNegative.getHeight();
         int barHeight = getHeight() - yOffset;
@@ -52,6 +57,7 @@ public class ResultChart extends View {
     private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int xOffset) {
         Rect progressBody = new Rect(xOffset, 0, barWidth + xOffset, barHeight);
         canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
+        //TODO: dimens
         Paint paint = getTextPaint(50, Typeface.BOLD);
         canvas.drawText(repsText, xOffset + (barWidth / 2), (barHeight / 2) + (paint.getTextSize() / 2), paint);
     }
@@ -66,12 +72,12 @@ public class ResultChart extends View {
         }
         if (tendency == Tendency.NEUTRAL) {
             drawBitmap(canvas, iconNeutral, getWidth() / 2 - (iconNeutral.getWidth() / 2), getTitleBarWithResultChartHeight());
-        }    else {
+        } else {
             drawBitmapDeactivated(canvas, iconNeutral, getWidth() / 2 - (iconNeutral.getWidth() / 2), getTitleBarWithResultChartHeight());
         }
         if (tendency == Tendency.PLUS) {
             drawBitmap(canvas, iconPositive, getWidth() - iconPositive.getWidth(), getTitleBarWithResultChartHeight());
-        }       else {
+        } else {
             drawBitmapDeactivated(canvas, iconPositive, getWidth() - iconPositive.getWidth(), getTitleBarWithResultChartHeight());
         }
     }
@@ -88,7 +94,8 @@ public class ResultChart extends View {
 
     private Paint getTextPaint(float textSize, int typeface) {
         Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#ffffff"));
+        paint.setColor(Color.parseColor(barTextColor));
+        //TODO: styles.xml
         paint.setTypeface(Typeface.create("sans", typeface));
         paint.setTextSize(textSize);
         paint.setAntiAlias(true);

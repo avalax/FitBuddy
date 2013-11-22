@@ -98,6 +98,7 @@ public class ExerciseFragment extends RoboFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
+            //TODO: constant
             EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
             Exercise exercise = editableExercise.createExercise();
             switch (requestCode) {
@@ -148,6 +149,7 @@ public class ExerciseFragment extends RoboFragment {
 
     private Intent getIntent(EditableExercise editableExercise) {
         Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
+        //TODO: constant
         intent.putExtra("editableExercise", editableExercise);
         return intent;
     }

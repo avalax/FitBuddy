@@ -84,6 +84,7 @@ public class WorkoutActivity extends RoboFragmentActivity implements UpdateableA
 
     private Intent getIntent(EditableExercise editableExercise) {
         Intent intent = new Intent(getApplicationContext(), EditExerciseActivity.class);
+        //TODO: constant
         intent.putExtra("editableExercise", editableExercise);
         return intent;
     }
