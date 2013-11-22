@@ -17,6 +17,9 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     private String resultTitle;
     @InjectResource(R.string.welcome_title)
     private String welcomeTitle;
+    @InjectResource(R.string.exercise_title)
+    private String exerciseTitle;
+
 
     public ExercisePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -43,8 +46,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position < workout.getExerciseCount()) {
             Exercise currentExercise = workout.getExercise(position);
-            //TODO: extract to resources
-            return String.format("%1$s : %2$skg", currentExercise.getName(), currentExercise.getWeight());
+            return String.format(exerciseTitle, currentExercise.getName(), currentExercise.getWeight());
         } else if (workout.getExerciseCount() == 0) {
             return welcomeTitle;
         } else {

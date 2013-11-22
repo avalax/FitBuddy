@@ -11,6 +11,7 @@ import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.UpdateableActivity;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_view_pager)
@@ -18,6 +19,8 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
 
     @InjectView(R.id.pager)
     private ViewPager viewPager;
+    @InjectResource(R.string.new_exercise_name)
+    private String newExerciseName;
     private EditableExercise editableExercise;
 
     @Override
@@ -48,9 +51,9 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
         Intent returnIntent = new Intent();
         if (v.getId() == R.id.buttonSave) {
             if (editableExercise.getName() == null) {
-                //TODO: extract to resources
-                editableExercise.setName("new exercise");
+                editableExercise.setName(newExerciseName);
             }
+            //TODO: extract from here
             returnIntent.putExtra("editableExercise", editableExercise);
             setResult(RESULT_OK, returnIntent);
         }

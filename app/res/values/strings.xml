@@ -7,4 +7,10 @@
     <string name="positiveLabel">+%2$s = %1$s kg</string>
     <string name="result_title">result</string>
     <string name="welcome_title">welcome</string>
+    <string name="exercise_title">%1$s : %2$skg</string>
+    <string name="new_exercise_name">"new exercise"</string>
+    <string name="edit_weight_title">weight - %1s</string>
+    <string name="edit_effort_title">"effort - %1s"</string>
+    <string name="edit_confirmation_title">save - %1s</string>
+    <string name="button_delete_exercise_text">delete</string>
 </resources>
