@@ -14,7 +14,7 @@
 			components:textSize="@dimen/bar_font_size"
 			components:textColor="@color/main_text"
             components:labelTextSize="@dimen/font_size"
-            components:label="reps"
+            components:label="@string/edit_reps_bar_title"
             components:value="12"
 			/>
 
@@ -27,7 +27,7 @@
 			components:textSize="@dimen/bar_font_size"
 			components:textColor="@color/main_text"
             components:labelTextSize="@dimen/font_size"
-            components:label="sets"
+            components:label="@string/edit_sets_bar_title"
             components:value="3"
 			/>
 </LinearLayout>

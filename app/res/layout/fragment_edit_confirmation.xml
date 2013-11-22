@@ -17,12 +17,12 @@
         android:inputType="textAutoComplete"
         android:editable="true"
         android:enabled="true"
-        android:hint="exercise name"/>
+        android:hint="@string/new_exercise_name"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="save"
+        android:text="@string/edit_button_save_exercise_text"
         android:id="@+id/buttonSave"
         android:layout_gravity="center"
         android:drawableLeft="@drawable/ic_action_tendency_positive"
@@ -31,7 +31,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="cancel"
+        android:text="@string/edit_button_cancel_edit_text"
         android:id="@+id/buttonCancel"
         android:layout_gravity="right|center_vertical"
         android:drawableLeft="@drawable/ic_action_tendency_negative"

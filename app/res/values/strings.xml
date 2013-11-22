@@ -12,5 +12,11 @@
     <string name="edit_weight_title">weight - %1s</string>
     <string name="edit_effort_title">"effort - %1s"</string>
     <string name="edit_confirmation_title">save - %1s</string>
-    <string name="button_delete_exercise_text">delete</string>
+    <string name="edit_weight_bar_title">weight</string>
+    <string name="edit_weight_raise_bar_title">raise</string>
+    <string name="edit_reps_bar_title">reps</string>
+    <string name="edit_sets_bar_title">sets</string>
+    <string name="edit_button_save_exercise_text">Save</string>
+    <string name="edit_button_delete_exercise_text">Delete</string>
+    <string name="edit_button_cancel_edit_text">Cancel</string>
 </resources>
