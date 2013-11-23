@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -22,6 +23,8 @@ import roboguice.inject.InjectView;
 public class WorkoutActivity extends RoboFragmentActivity implements UpdateableActivity {
 
     private static final int ADD_EXERCISE = 4;
+    @Inject
+    Context context;
     @Inject
     private Workout workout;
     @InjectView(R.id.pager)
@@ -59,7 +62,7 @@ public class WorkoutActivity extends RoboFragmentActivity implements UpdateableA
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK && requestCode == ADD_EXERCISE) {
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
+            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE);
             Exercise exercise = editableExercise.createExercise();
             workout.setExercise(0, exercise);
             notifyDataSetChanged();
@@ -68,24 +71,24 @@ public class WorkoutActivity extends RoboFragmentActivity implements UpdateableA
 
     public void onClickEvent(View v) {
         if (v.getId() == R.id.buttonAddExercise) {
-            startActivityForResult(getIntent(createNewEditableExercise()), ADD_EXERCISE);
+            startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE);
         }
+    }
+
+    private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
+        //TODO: merge with ExerciseFragment - startEditExerciseActivity
+        Intent intent = new Intent(context, EditExerciseActivity.class);
+        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
+        startActivityForResult(intent, requestCode);
     }
 
     private NewEditableExercise createNewEditableExercise() {
         NewEditableExercise newEditableExercise = new NewEditableExercise();
-        //TODO: extract to resources
+        //TODO: extract to resources / factory pattern
         newEditableExercise.setWeight(2.5);
         newEditableExercise.setWeightRaise(1.25);
         newEditableExercise.setReps(12);
         newEditableExercise.setSets(3);
         return newEditableExercise;
-    }
-
-    private Intent getIntent(EditableExercise editableExercise) {
-        Intent intent = new Intent(getApplicationContext(), EditExerciseActivity.class);
-        //TODO: constant
-        intent.putExtra("editableExercise", editableExercise);
-        return intent;
     }
 }

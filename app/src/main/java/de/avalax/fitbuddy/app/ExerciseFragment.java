@@ -8,10 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
-import de.avalax.fitbuddy.app.edit.EditableExercise;
-import de.avalax.fitbuddy.app.edit.ExistingEditableExercise;
-import de.avalax.fitbuddy.app.edit.NewEditableExercise;
+import de.avalax.fitbuddy.app.edit.*;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.progressBar.VerticalProgressBar;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -21,7 +18,7 @@ import roboguice.inject.InjectView;
 
 public class ExerciseFragment extends RoboFragment {
 
-    private static final String EXERCISE_INDEX = "exerciseIndex";
+    private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     private static final int ADD_EXERCISE_BEFORE = 1;
     private static final int EDIT_EXERCISE = 2;
     private static final int ADD_EXERCISE_AFTER = 3;
@@ -39,7 +36,7 @@ public class ExerciseFragment extends RoboFragment {
     public static ExerciseFragment newInstance(int exerciseIndex) {
         ExerciseFragment fragment = new ExerciseFragment();
         Bundle args = new Bundle();
-        args.putInt(EXERCISE_INDEX, exerciseIndex);
+        args.putInt(ARGS_EXERCISE_INDEX, exerciseIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +45,7 @@ public class ExerciseFragment extends RoboFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        exercisePosition = getArguments().getInt(EXERCISE_INDEX);
+        exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
         updateableActivity = (UpdateableActivity) getActivity();
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
@@ -65,12 +62,12 @@ public class ExerciseFragment extends RoboFragment {
 
             @Override
             protected void onLongPressedLeftEvent() {
-                addExerciseBeforeCurrentExercise();
+                startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE_BEFORE);
             }
 
             @Override
             protected void onLongPressedRightEvent() {
-                editCurrentExercise();
+                startEditExerciseActivity(context, createExistingEditableExercise(), EDIT_EXERCISE);
             }
         });
 
@@ -82,12 +79,12 @@ public class ExerciseFragment extends RoboFragment {
 
             @Override
             protected void onLongPressedLeftEvent() {
-                editCurrentExercise();
+                startEditExerciseActivity(context, createExistingEditableExercise(), EDIT_EXERCISE);
             }
 
             @Override
             protected void onLongPressedRightEvent() {
-                addExerciseAfterCurrentExercise();
+                startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE_AFTER);
             }
         });
 
@@ -98,8 +95,7 @@ public class ExerciseFragment extends RoboFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
-            //TODO: constant
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
+            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE) ;
             Exercise exercise = editableExercise.createExercise();
             switch (requestCode) {
                 case ADD_EXERCISE_BEFORE:
@@ -120,21 +116,16 @@ public class ExerciseFragment extends RoboFragment {
         }
     }
 
-    private void addExerciseBeforeCurrentExercise() {
-        startActivityForResult(getIntent(createNewEditableExercise()), ADD_EXERCISE_BEFORE);
-    }
-
-    private void addExerciseAfterCurrentExercise() {
-        startActivityForResult(getIntent(createNewEditableExercise()), ADD_EXERCISE_AFTER);
-    }
-
-    private void editCurrentExercise() {
-        startActivityForResult(getIntent(createExistingEditableExercise()), EDIT_EXERCISE);
+    private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
+        //TODO: merge with WorkoutFragment - startEditExerciseActivity
+        Intent intent = new Intent(context,EditExerciseActivity.class);
+        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
+        startActivityForResult(intent, requestCode);
     }
 
     private NewEditableExercise createNewEditableExercise() {
         NewEditableExercise newEditableExercise = new NewEditableExercise();
-        //TODO: extract to resources
+        //TODO: extract to resources / factory pattern
         newEditableExercise.setWeight(2.5);
         newEditableExercise.setWeightRaise(1.25);
         newEditableExercise.setReps(12);
@@ -143,15 +134,9 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private EditableExercise createExistingEditableExercise() {
+        //TODO: factory pattern
         Exercise exercise = workout.getExercise(exercisePosition);
         return new ExistingEditableExercise(exercise);
-    }
-
-    private Intent getIntent(EditableExercise editableExercise) {
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditExerciseActivity.class);
-        //TODO: constant
-        intent.putExtra("editableExercise", editableExercise);
-        return intent;
     }
 
     private int getMaxMoveForSets(Workout workout) {

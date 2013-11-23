@@ -4,6 +4,7 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 
 import java.io.Serializable;
 
+//TODO: change to Parcelable
 public interface EditableExercise extends Serializable {
     String getName();
 

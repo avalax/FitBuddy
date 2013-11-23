@@ -16,7 +16,7 @@ import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_view_pager)
 public class EditExerciseActivity extends RoboFragmentActivity implements UpdateableActivity{
-
+    public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
     private ViewPager viewPager;
     @InjectResource(R.string.new_exercise_name)
@@ -48,14 +48,11 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
     }
 
     public void clickEvent(View v) {
-        Intent returnIntent = new Intent();
         if (v.getId() == R.id.buttonSave) {
             if (editableExercise.getName() == null) {
                 editableExercise.setName(newExerciseName);
             }
-            //TODO: extract from here
-            returnIntent.putExtra("editableExercise", editableExercise);
-            setResult(RESULT_OK, returnIntent);
+            setResult(RESULT_OK, createIntentResult());
         }
         if (v.getId() == R.id.buttonCancel) {
             setResult(RESULT_FIRST_USER);
@@ -63,8 +60,14 @@ public class EditExerciseActivity extends RoboFragmentActivity implements Update
         finish();
     }
 
+    private Intent createIntentResult() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(EXTRA_EDITABLE_EXERCISE, editableExercise);
+        return returnIntent;
+    }
+
     private EditableExercise getEditableExercise() {
-        return (EditableExercise) getIntent().getSerializableExtra("editableExercise");
+        return (EditableExercise) getIntent().getSerializableExtra(EXTRA_EDITABLE_EXERCISE);
     }
 
     private EditExercisePagerAdapter getEditExercisePagerAdapter() {
