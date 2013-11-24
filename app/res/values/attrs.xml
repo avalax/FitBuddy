@@ -18,4 +18,8 @@
         <attr name="label" format="string"/>
         <attr name="labelTextSize" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="VerticalProgressBar">
+        <attr name="imageLevel" format="integer"/>
+        <attr name="progressBar" format="reference" />
+    </declare-styleable>
 </resources>

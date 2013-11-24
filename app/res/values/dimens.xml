@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="font_size">18.67sp</dimen>
-    <dimen name="bar_font_size">66.67sp</dimen>
+    <dimen name="font_size">20sp</dimen>
+    <dimen name="bar_font_size">68sp</dimen>
+    <dimen name="padding_bar_text">40dp</dimen>
 </resources>
