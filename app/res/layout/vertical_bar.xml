@@ -12,15 +12,23 @@
             components:imageLevel="5000"
             components:progressBar="@drawable/primary_progress_bar"/>
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="9"
-              android:id="@+id/textView1" android:layout_gravity="center" android:textColor="@color/main_text"
-              android:textSize="@dimen/bar_font_size" android:textStyle="bold"
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="9"
+              android:id="@+id/valueTextView"
+              android:layout_gravity="center"
+              android:textColor="@color/main_text"
+              android:textSize="@dimen/bar_font_size"
+              android:textStyle="bold"
               android:layout_marginBottom="@dimen/padding_bar_text"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12"
-            android:id="@+id/textView" android:layout_gravity="center" android:textColor="@color/main_text"
-            android:textSize="@dimen/bar_font_size" android:textStyle="bold"
+            android:id="@+id/maxValueTextView"
+            android:layout_gravity="center"
+            android:textColor="@color/main_text"
+            android:textSize="@dimen/bar_font_size"
+            android:textStyle="bold"
             android:layout_marginTop="@dimen/padding_bar_text"/>
 </FrameLayout>
