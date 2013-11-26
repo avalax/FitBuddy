@@ -19,4 +19,6 @@
     <string name="edit_button_save_exercise_text">Save</string>
     <string name="edit_button_delete_exercise_text">Delete</string>
     <string name="edit_button_cancel_edit_text">Cancel</string>
+    <string name="vertical_bar_contentDescription">progressBar</string>
+    <string name="vertical_bar_default_text">0</string>
 </resources>
