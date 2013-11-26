@@ -5,7 +5,7 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-	<view class="de.avalax.fitbuddy.app.swipeBar.progressBar.VerticalProgressBar"
+	<view class="de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView"
 			android:id="@+id/leftProgressBar"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
@@ -16,7 +16,7 @@
             components:progressbar="@drawable/primary_progress_bar"
 			/>
 
-	<view class="de.avalax.fitbuddy.app.swipeBar.progressBar.VerticalProgressBar"
+	<view class="de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView"
 			android:id="@+id/rightProgressBar"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"

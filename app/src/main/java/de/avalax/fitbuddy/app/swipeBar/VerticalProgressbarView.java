@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app.swipeBar.progressBar;
+package de.avalax.fitbuddy.app.swipeBar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,31 +7,37 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
-import de.avalax.fitbuddy.app.swipeBar.SwipeableBar;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Workout;
 
-public class VerticalProgressBar extends FrameLayout implements SwipeableBar {
+public class VerticalProgressbarView extends FrameLayout implements SwipeableBar {
     private TextView maxValueTextView;
     private TextView valueTextView;
     private ImageView imageView;
 
-    public VerticalProgressBar(Context context) {
+    public VerticalProgressbarView(Context context) {
         super(context);
         init(context);
     }
 
-    public VerticalProgressBar(Context context, AttributeSet attrs) {
+    public VerticalProgressbarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
         attributs(attrs);
     }
 
-    public VerticalProgressBar(Context context, AttributeSet attrs, int defStyle) {
+    public VerticalProgressbarView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
         attributs(attrs);
+    }
+
+    private void init(Context context) {
+        inflate(context, R.layout.view_vertical_progressbar, this);
+        maxValueTextView = (TextView) findViewById(R.id.maxValueTextView);
+        valueTextView = (TextView) findViewById(R.id.valueTextView);
+        imageView = (ImageView) findViewById(R.id.verticalProgressBar);
     }
 
     private void attributs(AttributeSet attrs) {
@@ -39,13 +45,6 @@ public class VerticalProgressBar extends FrameLayout implements SwipeableBar {
         imageView.setImageDrawable(a.getDrawable(R.styleable.ProgressBar_progressbar));
         imageView.setBackgroundColor(a.getColor(R.styleable.ProgressBar_background, R.color.primary_background));
         a.recycle();
-    }
-
-    private void init(Context context) {
-        inflate(context, R.layout.vertical_bar, this);
-        maxValueTextView = (TextView) findViewById(R.id.maxValueTextView);
-        valueTextView = (TextView) findViewById(R.id.valueTextView);
-        imageView = (ImageView) findViewById(R.id.verticalProgressBar);
     }
 
     public void setProgressBar(Workout workout, int exercisePosition) {

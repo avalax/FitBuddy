@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.edit.*;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
-import de.avalax.fitbuddy.app.swipeBar.progressBar.VerticalProgressBar;
+import de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
@@ -27,9 +27,9 @@ public class ExerciseFragment extends RoboFragment {
     @Inject
     private Workout workout;
     @InjectView(R.id.leftProgressBar)
-    private VerticalProgressBar repsProgressBar;
+    private VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
-    private VerticalProgressBar setsProgressBar;
+    private VerticalProgressbarView setsProgressBar;
     private int exercisePosition;
     private UpdateableActivity updateableActivity;
 
