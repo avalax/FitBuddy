@@ -167,7 +167,7 @@ public class ExerciseFragment extends RoboFragment {
     }
 
     private void setViews(int exercisePosition) {
-        repsProgressBar.setProgressBar(workout.getExercise(exercisePosition).getCurrentSet());
-        setsProgressBar.setProgressBar(workout, exercisePosition);
+        repsProgressBar.updateProgressbar(workout.getExercise(exercisePosition).getCurrentSet());
+        setsProgressBar.updateProgressbar(workout, exercisePosition);
     }
 }

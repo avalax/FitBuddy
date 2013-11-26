@@ -47,29 +47,29 @@ public class VerticalProgressbarView extends FrameLayout implements SwipeableBar
         a.recycle();
     }
 
-    public void setProgressBar(Workout workout, int exercisePosition) {
+    public void updateProgressbar(Workout workout, int exercisePosition) {
         Exercise exercise = workout.getExercise(exercisePosition);
         float currentValue = workout.getProgress(exercisePosition);
         int maxValue = workout.getExerciseCount();
         String currentValueText = String.valueOf(exercise.getSetNumber());
         String maxValueText = String.valueOf(exercise.getMaxSets());
-        updateProgressBar(currentValue, maxValue, currentValueText, maxValueText);
+        updateProgressbar(currentValue, maxValue, currentValueText, maxValueText);
     }
 
-    public void setProgressBar(Set set) {
+    public void updateProgressbar(Set set) {
         int currentValue = set.getReps();
         int maxValue = set.getMaxReps();
-        updateProgressBar(currentValue, maxValue, String.valueOf(currentValue), String.valueOf(maxValue));
+        updateProgressbar(currentValue, maxValue, String.valueOf(currentValue), String.valueOf(maxValue));
     }
 
-    private void updateProgressBar(float currentValue, int maxValue, String currentValueText, String maxValueText) {
+    private void updateProgressbar(float currentValue, int maxValue, String currentValueText, String maxValueText) {
         valueTextView.setText(currentValueText);
         maxValueTextView.setText(maxValueText);
-        imageView.setImageLevel(calculateProgressBarHeight(currentValue, maxValue));
+        imageView.setImageLevel(calculateProgressbarHeight(currentValue, maxValue));
         postInvalidate();
     }
 
-    private int calculateProgressBarHeight(float currentValue, int maxValue) {
+    private int calculateProgressbarHeight(float currentValue, int maxValue) {
         float scale = currentValue / maxValue;
         return Math.round(scale * 10000);
     }
