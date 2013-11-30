@@ -21,4 +21,5 @@
     <string name="edit_button_cancel_edit_text">Cancel</string>
     <string name="vertical_bar_contentDescription">progressBar</string>
     <string name="vertical_bar_default_text">0</string>
+    <string name="edit_label_default_text">label</string>
 </resources>

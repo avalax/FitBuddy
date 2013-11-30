@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="ProgressBar">
         <attr name="progressbar" format="reference"/>
         <attr name="imageLevel" format="integer"/>
         <attr name="background" format="color"/>
     </declare-styleable>
     <declare-styleable name="EnterValueBar">
-        <attr name="textColor" format="color"/>
-        <attr name="textSize" format="dimension"/>
         <attr name="value" format="string"/>
-        <attr name="valueTextSize" format="dimension"/>
         <attr name="label" format="string"/>
-        <attr name="labelTextSize" format="dimension"/>
     </declare-styleable>
 </resources>

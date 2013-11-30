@@ -2,12 +2,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        android:layout_width="fill_parent"
        android:layout_height="fill_parent">
-    <ImageView
-            android:id="@+id/verticalProgressBar"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
-            android:layout_gravity="center"
-            android:contentDescription="@string/vertical_bar_contentDescription"/>
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="@string/vertical_bar_default_text"
@@ -15,16 +9,15 @@
               android:layout_gravity="center"
               android:textColor="@color/main_text"
               android:textSize="@dimen/bar_font_size"
-              android:textStyle="bold"
-              android:layout_marginBottom="@dimen/padding_bar_text"/>
+              android:textStyle="bold"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vertical_bar_default_text"
-            android:id="@+id/maxValueTextView"
-            android:layout_gravity="center"
+            android:text="@string/edit_label_default_text"
+            android:id="@+id/labelTextView"
+            android:layout_gravity="center_horizontal|bottom"
             android:textColor="@color/main_text"
-            android:textSize="@dimen/bar_font_size"
+            android:textSize="@dimen/font_size"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/padding_bar_text"/>
+            android:layout_marginBottom="@dimen/padding_bar_text"/>
 </merge>

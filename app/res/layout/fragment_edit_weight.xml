@@ -5,28 +5,22 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-    <de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar
+    <de.avalax.fitbuddy.app.swipeBar.EnterValueBar
         android:id="@+id/leftEnterValueBar"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:background="@color/primary_background"
-        components:textSize="@dimen/bar_font_size"
-        components:textColor="@color/main_text"
-        components:labelTextSize="@dimen/font_size"
         components:label="@string/edit_weight_bar_title"
         components:value="2.5"
         />
 
-    <de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar
+    <de.avalax.fitbuddy.app.swipeBar.EnterValueBar
         android:id="@+id/rightEnterValueBar"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/secondary_background"
         android:layout_weight="1"
-        components:textSize="@dimen/bar_font_size"
-        components:textColor="@color/main_text"
-        components:labelTextSize="@dimen/font_size"
         components:label="@string/edit_weight_raise_bar_title"
         components:value="1.25"
         />

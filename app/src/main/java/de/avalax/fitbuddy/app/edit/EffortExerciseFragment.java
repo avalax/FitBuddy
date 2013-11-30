@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
-import de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar;
+import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -74,8 +74,8 @@ public class EffortExerciseFragment extends RoboFragment {
     }
 
     private void setBars() {
-        leftEnterValueBar.setValue(String.valueOf(editableExercise.getReps()));
-        rightEnterValueBar.setValue(String.valueOf(editableExercise.getSets()));
+        leftEnterValueBar.updateEnterValueBar(String.valueOf(editableExercise.getReps()));
+        rightEnterValueBar.updateEnterValueBar(String.valueOf(editableExercise.getSets()));
     }
 
     private void changeReps(int moved) {

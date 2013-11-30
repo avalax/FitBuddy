@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
-import de.avalax.fitbuddy.app.swipeBar.enterValueBar.EnterValueBar;
+import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -93,8 +93,8 @@ public class WeightExerciseFragment extends RoboFragment {
     }
 
     private void setBars() {
-        leftEnterValueBar.setValue(getShortenDouble(editableExercise.getWeight()));
-        rightEnterValueBar.setValue(getShortenDouble(editableExercise.getWeightRaise()));
+        leftEnterValueBar.updateEnterValueBar(getShortenDouble(editableExercise.getWeight()));
+        rightEnterValueBar.updateEnterValueBar(getShortenDouble(editableExercise.getWeightRaise()));
     }
 
     private String getShortenDouble(double weight) {
