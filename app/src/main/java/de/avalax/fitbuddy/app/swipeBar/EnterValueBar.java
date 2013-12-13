@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
 
-public class EnterValueBar extends FrameLayout implements SwipeableBar {
+public class EnterValueBar extends FrameLayout {
     private TextView valueTextView;
     private TextView labelTextView;
 

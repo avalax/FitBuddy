@@ -2,23 +2,24 @@ package de.avalax.fitbuddy.app.swipeBar;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 
 public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
-    private SwipeableBar swipeableBar;
+    private View swipeableView;
     private int swipeMoveMax;
     private int swipeMinDistance;
     private int swipeThresholdVelocity;
 
-    public SwipeBarOnGestureListener(int swipeMoveMax, SwipeableBar swipeableBar, int swipeMinDistance, int swipeThresholdVelocity) {
+    public SwipeBarOnGestureListener(int swipeMoveMax, View swipeableView, int swipeMinDistance, int swipeThresholdVelocity) {
         this.swipeMoveMax = swipeMoveMax;
-        this.swipeableBar = swipeableBar;
+        this.swipeableView = swipeableView;
         this.swipeMinDistance = swipeMinDistance;
         this.swipeThresholdVelocity = swipeThresholdVelocity;
     }
 
     @Override
     public void onLongPress(android.view.MotionEvent e) {
-        if (e.getX() > swipeableBar.getWidth() / 2) {
+        if (e.getX() > swipeableView.getWidth() / 2) {
             onLongPressedRightEvent();
         } else {
             onLongPressedLeftEvent();
@@ -29,7 +30,7 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
     public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
         float absVelocityY = Math.abs(velocityY);
         float moved = startMotionEvent.getY() - endMotionEvent.getY();
-        int scaledBarHeight = swipeableBar.getHeight() / 2;
+        int scaledBarHeight = swipeableView.getHeight() / 2;
 
         if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
             onFlingEvent(calculateMoved(moved, scaledBarHeight));

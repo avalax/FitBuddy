@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app.swipeBar;
 
 import android.view.MotionEvent;
+import android.view.View;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class SwipeBarOnGestureListenerTest {
 
     @Before
     public void setUp() {
-        SwipeableBar verticalProgressBar = mock(SwipeableBar.class);
+        View verticalProgressBar = mock(View.class);
         when(verticalProgressBar.getHeight()).thenReturn(PROGRESS_BAR_HEIGHT);
         when(verticalProgressBar.getWidth()).thenReturn(PROGRESS_BAR_WIDTH);
         swipeBarOnGestureListener = new SwipeBarOnGestureListener(SWIPE_MOVE_MAX, verticalProgressBar, SWIPE_MIN_DISTANCE, SWIPE_THRESHOLD_VELOCITY) {

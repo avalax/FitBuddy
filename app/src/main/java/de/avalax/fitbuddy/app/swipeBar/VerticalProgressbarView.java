@@ -11,7 +11,7 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Workout;
 
-public class VerticalProgressbarView extends FrameLayout implements SwipeableBar {
+public class VerticalProgressbarView extends FrameLayout {
     private TextView maxValueTextView;
     private TextView valueTextView;
     private ImageView imageView;
