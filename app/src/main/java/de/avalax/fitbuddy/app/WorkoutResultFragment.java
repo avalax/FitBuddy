@@ -1,12 +1,13 @@
 package de.avalax.fitbuddy.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 import com.google.inject.Inject;
+import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
@@ -18,6 +19,8 @@ public class WorkoutResultFragment extends RoboFragment {
     private Workout workout;
     @Inject
     private LayoutInflater layoutInflater;
+    @Inject
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,13 +36,27 @@ public class WorkoutResultFragment extends RoboFragment {
     }
 
     private void initViewFlipper() {
-        resultChartViewFlipper.setOnTouchListener(new View.OnTouchListener() {
+        resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context,resultChartViewFlipper,1) {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                resultChartViewFlipper.setInAnimation(getActivity(), R.anim.out_to_top);
-                resultChartViewFlipper.setOutAnimation(getActivity(), R.anim.in_from_bottom);
-                resultChartViewFlipper.showNext();
-                return true;
+            protected void onFlingEvent(int moved) {
+                if (moved > 0) {
+                    resultChartViewFlipper.setInAnimation(getActivity(), R.anim.out_to_top);
+                    resultChartViewFlipper.setOutAnimation(getActivity(), R.anim.in_from_bottom);
+                    resultChartViewFlipper.showNext();
+                }
+                if (moved < 0) {
+                    resultChartViewFlipper.setInAnimation(getActivity(), R.anim.out_to_bottom);
+                    resultChartViewFlipper.setOutAnimation(getActivity(), R.anim.in_from_top);
+                    resultChartViewFlipper.showPrevious();
+                }
+            }
+
+            @Override
+            protected void onLongPressedLeftEvent() {
+            }
+
+            @Override
+            protected void onLongPressedRightEvent() {
             }
         });
     }
