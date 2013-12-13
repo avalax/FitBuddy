@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class SwipeBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
-    private static final int SWIPE_MIN_DISTANCE = 60;
+    private static final int SWIPE_MIN_DISTANCE = 30;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final Integer PROGRESS_BAR_HEIGHT = 240;
     private static final Integer PROGRESS_BAR_WIDTH = 300;
