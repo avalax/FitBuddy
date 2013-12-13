@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 import com.google.inject.Inject;
+import de.avalax.fitbuddy.app.resultChart.ResultChart;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
@@ -65,7 +66,8 @@ public class WorkoutResultFragment extends RoboFragment {
         for (int i = 0; i < workout.getExerciseCount(); i++) {
             View inflate = layoutInflater.inflate(R.layout.view_exercise_result, null);
             resultChartViewFlipper.addView(inflate);
-            //exercices.add(workout.getExercise(i));
+            ResultChart resultChart = (ResultChart) inflate.findViewById(R.id.resultChart);
+            resultChart.setExercise(workout.getExercise(i));
         }
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 
 public class ResultChart extends View {
@@ -17,6 +18,7 @@ public class ResultChart extends View {
     private String barBackgroundColor;
     private Tendency tendency;
     private String barTextColor;
+    private Exercise exercise;
 
     public ResultChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,14 +42,13 @@ public class ResultChart extends View {
     }
 
     private void drawResultChart(Canvas canvas) {
-        //TODO: dynamic
-        int[] sets = {15, 12, 6, 4};
         int yOffset = iconNegative.getHeight();
         int barHeight = getHeight() - yOffset;
 
-        for (int i = 0; i < sets.length; i++) {
-            String repsText = String.valueOf(sets[i]);
-            int barWidth = Math.round(getWidth() / sets.length);
+        for (int i = 0; i < exercise.getMaxSets(); i++) {
+            exercise.setCurrentSet(i+1);
+            String repsText = String.valueOf(exercise.getCurrentSet().getReps());
+            int barWidth = Math.round(getWidth() / exercise.getMaxSets());
             int xOffset = barWidth * i;
             drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, xOffset);
         }
@@ -114,5 +115,9 @@ public class ResultChart extends View {
 
     private int getTitleBarWithResultChartHeight() {
         return getHeight() - iconNegative.getHeight();
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
 }
