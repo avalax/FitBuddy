@@ -24,14 +24,6 @@ public class ResultChart extends View {
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawResultChart(canvas);
-        drawTitle(canvas);
-    }
-
-    private void drawTitle(Canvas canvas) {
-        Paint paint = getTextPaint(14, Typeface.BOLD);
-        int barHeight = getHeight();
-        String title = exercise != null ? exercise.getName() : "title";
-        canvas.drawText(title, getWidth() / 2, barHeight - (paint.getTextSize() * 2), paint);
     }
 
     private void drawResultChart(Canvas canvas) {

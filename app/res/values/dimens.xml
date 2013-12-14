@@ -3,4 +3,5 @@
     <dimen name="font_size">20sp</dimen>
     <dimen name="bar_font_size">68sp</dimen>
     <dimen name="padding_bar_text">40dp</dimen>
+    <dimen name="padding_result_bar_text">68dp</dimen>
 </resources>

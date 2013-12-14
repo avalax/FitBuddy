@@ -36,4 +36,14 @@
         android:src="@drawable/ic_action_tendency_positive"
         android:layout_margin="4dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_label_default_text"
+        android:id="@+id/resultChartEditText"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/padding_result_bar_text"
+        android:textColor="@color/main_text"
+        android:textSize="@dimen/font_size"/>
+
 </FrameLayout>
