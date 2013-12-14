@@ -39,6 +39,15 @@ public class ResultChart extends View {
         super.onDraw(canvas);
         drawResultChart(canvas);
         drawTendency(canvas);
+        drawTitle(canvas);
+    }
+
+    private void drawTitle(Canvas canvas) {
+        int yOffset = iconNegative.getHeight();
+        Paint paint = getTextPaint(14, Typeface.BOLD);
+        int barHeight = getHeight() - yOffset;
+        String title = exercise != null ? exercise.getName() : "title";
+        canvas.drawText(title, getWidth() / 2, barHeight - (paint.getTextSize() * 2), paint);
     }
 
     private void drawResultChart(Canvas canvas) {
