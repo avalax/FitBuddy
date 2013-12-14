@@ -53,15 +53,15 @@ public class ResultChart extends View {
     private void drawResultChart(Canvas canvas) {
         int yOffset = iconNegative.getHeight();
         int barHeight = getHeight() - yOffset;
-
-        for (int i = 0; i < exercise.getMaxSets(); i++) {
-            exercise.setCurrentSet(i+1);
-            String repsText = String.valueOf(exercise.getCurrentSet().getReps());
-            int barWidth = Math.round(getWidth() / exercise.getMaxSets());
-            int xOffset = barWidth * i;
-            drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, xOffset);
+        if (exercise != null) {
+            for (int i = 0; i < exercise.getMaxSets(); i++) {
+                exercise.setCurrentSet(i + 1);
+                String repsText = String.valueOf(exercise.getCurrentSet().getReps());
+                int barWidth = Math.round(getWidth() / exercise.getMaxSets());
+                int xOffset = barWidth * i;
+                drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, xOffset);
+            }
         }
-
     }
 
     private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int xOffset) {
