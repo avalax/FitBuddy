@@ -38,7 +38,9 @@ public class WorkoutResultFragment extends RoboFragment {
     }
 
     private void initViewFlipper() {
-        resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context,resultChartViewFlipper,1) {
+        //TODO: restore view on recreate
+        //TODO: update when exercise is changed
+        resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context, resultChartViewFlipper, 1) {
             @Override
             protected void onFlingEvent(int moved) {
                 if (moved > 0) {

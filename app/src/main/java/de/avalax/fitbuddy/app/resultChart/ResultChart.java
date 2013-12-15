@@ -1,73 +1,57 @@
 package de.avalax.fitbuddy.app.resultChart;
 
 import android.content.Context;
-import android.graphics.*;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
-public class ResultChart extends View {
+public class ResultChart extends LinearLayout {
 
-    private String barBackgroundColor;
-    private String barTextColor;
-    private Exercise exercise;
+    @Inject
+    private LayoutInflater layoutInflater;
+    private Context context;
+
+    public ResultChart(Context context) {
+        super(context);
+        init(context);
+    }
 
     public ResultChart(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //TODO: stylable
-        barBackgroundColor = getResources().getString(R.color.primary_background);
-        barTextColor = getResources().getString(R.color.main_text);
+        init(context);
     }
 
-    @Override
-    protected synchronized void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawResultChart(canvas);
+    public ResultChart(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context);
     }
 
-    private void drawResultChart(Canvas canvas) {
-        int barHeight = getHeight();
-        if (exercise != null) {
-            for (int i = 0; i < exercise.getMaxSets(); i++) {
-                exercise.setCurrentSet(i + 1);
-                String repsText = String.valueOf(exercise.getCurrentSet().getReps());
-                int barWidth = Math.round(getWidth() / exercise.getMaxSets());
-                int xOffset = barWidth * i;
-                drawBar(canvas, barWidth, barHeight, repsText, barBackgroundColor, xOffset);
-            }
-        }
-    }
-
-    private void drawBar(Canvas canvas, int barWidth, int barHeight, String repsText, String barBackgroundColor, int xOffset) {
-        Rect progressBody = new Rect(xOffset, 0, barWidth + xOffset, barHeight);
-        canvas.drawRect(progressBody, getBackgroundPaint(barBackgroundColor));
-        //TODO: dimens
-        Paint paint = getTextPaint(50, Typeface.BOLD);
-        canvas.drawText(repsText, xOffset + (barWidth / 2), (barHeight / 2) + (paint.getTextSize() / 2), paint);
-    }
-
-    private Paint getTextPaint(float textSize, int typeface) {
-        Paint paint = new Paint();
-        paint.setColor(Color.parseColor(barTextColor));
-        //TODO: styles.xml
-        paint.setTypeface(Typeface.create("sans", typeface));
-        paint.setTextSize(textSize);
-        paint.setAntiAlias(true);
-        paint.setTextAlign(Paint.Align.CENTER);
-
-        return paint;
-    }
-
-    private Paint getBackgroundPaint(String colorString) {
-        Paint contentPaint = new Paint();
-        contentPaint.setAntiAlias(true);
-        contentPaint.setStyle(Paint.Style.FILL);
-        contentPaint.setColor(Color.parseColor(colorString));
-        return contentPaint;
+    private void init(Context context) {
+        this.context = context;
     }
 
     public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+        removeAllViews();
+        //TODO: do not setCurrentSet
+        LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        p.weight = 1;
+        int setNumber = exercise.getSetNumber();
+        for (int i = 0; i < exercise.getMaxSets(); i++) {
+            exercise.setCurrentSet(i + 1);
+            ResultChartProgressbarView child = new ResultChartProgressbarView(context);
+            child.setLayoutParams(p);
+            //TODO: move to ResultChartProgressbarView
+            //TODO: move stylings to xml
+            ImageView imageView = (ImageView) child.findViewById(R.id.verticalProgressBar);
+            imageView.setBackgroundColor(getResources().getColor(R.color.primary_background));
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.primary_progress_bar));
+            child.updateProgressbar(exercise.getCurrentSet());
+            addView(child);
+        }
+        exercise.setCurrentSet(setNumber);
     }
 }
