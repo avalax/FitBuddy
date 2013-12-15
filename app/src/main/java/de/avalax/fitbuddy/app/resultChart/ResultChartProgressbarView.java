@@ -45,13 +45,13 @@ public class ResultChartProgressbarView extends FrameLayout {
     }
 
     public void updateProgressbar(Set set) {
-        float currentValue = set.getReps();
+        int currentValue = set.getReps();
         int maxValue = set.getMaxReps();
         String currentValueText = String.valueOf(currentValue);
         updateProgressbar(currentValue, maxValue, currentValueText);
     }
 
-    private void updateProgressbar(float currentValue, int maxValue, String currentValueText) {
+    private void updateProgressbar(int currentValue, int maxValue, String currentValueText) {
         valueTextView.setText(currentValueText);
         imageView.setImageLevel(calculateProgressbarHeight(currentValue, maxValue));
     }
