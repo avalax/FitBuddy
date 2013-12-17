@@ -150,10 +150,12 @@ public class ExerciseFragment extends RoboFragment {
     private void changeReps(int moved) {
         setReps(moved);
         setViews(exercisePosition);
+        updateableActivity.notifyDataSetChanged();
     }
 
     private void changeSets(int moved) {
         setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
+        setViews(exercisePosition);
     }
 
     private void setReps(int moved) {
@@ -163,7 +165,6 @@ public class ExerciseFragment extends RoboFragment {
 
     private void setSet(int setNumber) {
         workout.getExercise(exercisePosition).setCurrentSet(setNumber);
-        setViews(exercisePosition);
     }
 
     private void setViews(int exercisePosition) {
