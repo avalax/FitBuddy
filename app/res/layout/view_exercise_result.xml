@@ -15,26 +15,35 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/minusTendencyImageView"
         android:layout_gravity="left|bottom"
         android:src="@drawable/ic_action_tendency_negative"
-        android:layout_margin="4dp"/>
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton1"
+        android:id="@+id/neutralTendencyImageView"
         android:layout_gravity="center_horizontal|bottom"
         android:src="@drawable/ic_action_tendency_neutral"
-        android:layout_margin="4dp"/>
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="4dp"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton2"
+        android:id="@+id/plusTendencyImageView"
         android:layout_gravity="right|bottom"
         android:src="@drawable/ic_action_tendency_positive"
-        android:layout_margin="4dp"/>
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.resultChart.ResultChart;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class WorkoutResultFragment extends RoboFragment {
     public static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
+    public static final float ALPHA_NOT_SELECTED = 1F;
+    public static final float ALPHA_SELECTED = 0.2F;
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;
     @Inject
@@ -25,10 +29,12 @@ public class WorkoutResultFragment extends RoboFragment {
     private LayoutInflater layoutInflater;
     @Inject
     private Context context;
+    private UpdateableActivity updateableActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        updateableActivity = (UpdateableActivity) getActivity();
         return inflater.inflate(R.layout.fragment_result, container, false);
     }
 
@@ -92,6 +98,46 @@ public class WorkoutResultFragment extends RoboFragment {
         resultChart.setExercise(exercise);
         TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
         editText.setText(name);
+        setTendency(resultChartView, exercise);
         return resultChartView;
+    }
+
+    private void setTendency(View resultChartView, final Exercise exercise) {
+        ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
+        ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
+        ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
+
+        minusTendency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercise.setTendency(Tendency.MINUS);
+                updateableActivity.notifyDataSetChanged();
+            }
+        });
+
+        neutralTendency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercise.setTendency(Tendency.NEUTRAL);
+                updateableActivity.notifyDataSetChanged();
+            }
+        });
+
+        plusTendency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercise.setTendency(Tendency.PLUS);
+                updateableActivity.notifyDataSetChanged();
+            }
+        });
+
+        Tendency tendency = exercise.getTendency();
+        minusTendency.setAlpha(enabled(Tendency.MINUS.equals(tendency)));
+        neutralTendency.setAlpha(enabled(Tendency.NEUTRAL.equals(tendency)));
+        plusTendency.setAlpha(enabled(Tendency.PLUS.equals(tendency)));
+    }
+
+    private float enabled(boolean selected) {
+        return selected ? ALPHA_NOT_SELECTED : ALPHA_SELECTED;
     }
 }
