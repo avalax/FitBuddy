@@ -10,6 +10,7 @@ import android.widget.ViewFlipper;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.resultChart.ResultChart;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
+import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
@@ -78,12 +79,19 @@ public class WorkoutResultFragment extends RoboFragment {
 
     private void fillViewFlipper() {
         for (int i = 0; i < workout.getExerciseCount(); i++) {
-            View inflate = layoutInflater.inflate(R.layout.view_exercise_result, null);
-            resultChartViewFlipper.addView(inflate);
-            ResultChart resultChart = (ResultChart) inflate.findViewById(R.id.resultChart);
-            resultChart.setExercise(workout.getExercise(i));
-            TextView editText = (TextView) inflate.findViewById(R.id.resultChartEditText);
-            editText.setText(workout.getName(i));
+            Exercise exercise = workout.getExercise(i);
+            String name = workout.getName(i);
+            View resultChartView = createResultChartView(exercise, name);
+            resultChartViewFlipper.addView(resultChartView);
         }
+    }
+
+    private View createResultChartView(Exercise exercise, String name) {
+        View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
+        ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
+        resultChart.setExercise(exercise);
+        TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
+        editText.setText(name);
+        return resultChartView;
     }
 }
