@@ -96,6 +96,7 @@ public class WorkoutResultFragment extends RoboFragment {
         View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
         ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
         resultChart.setExercise(exercise);
+        //TODO: set Textoutput for weightraise
         TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
         editText.setText(name);
         setTendency(resultChartView, exercise);
@@ -107,34 +108,28 @@ public class WorkoutResultFragment extends RoboFragment {
         ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
         ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
 
-        minusTendency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exercise.setTendency(Tendency.MINUS);
-                updateableActivity.notifyDataSetChanged();
-            }
-        });
+        registerOnClickListener(minusTendency, exercise, Tendency.MINUS);
+        registerOnClickListener(neutralTendency, exercise, Tendency.NEUTRAL);
+        registerOnClickListener(plusTendency, exercise, Tendency.PLUS);
 
-        neutralTendency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exercise.setTendency(Tendency.NEUTRAL);
-                updateableActivity.notifyDataSetChanged();
-            }
-        });
+        updateTendency(minusTendency, neutralTendency, plusTendency, exercise.getTendency());
+    }
 
-        plusTendency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exercise.setTendency(Tendency.PLUS);
-                updateableActivity.notifyDataSetChanged();
-            }
-        });
-
-        Tendency tendency = exercise.getTendency();
+    private void updateTendency(ImageView minusTendency, ImageView neutralTendency, ImageView plusTendency, Tendency tendency) {
         minusTendency.setAlpha(enabled(Tendency.MINUS.equals(tendency)));
         neutralTendency.setAlpha(enabled(Tendency.NEUTRAL.equals(tendency)));
         plusTendency.setAlpha(enabled(Tendency.PLUS.equals(tendency)));
+    }
+
+    private void registerOnClickListener(ImageView imageView, final Exercise exercise, final Tendency tendency) {
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercise.setTendency(tendency);
+                //TODO: is redraw of all fragments is needed? only the parent view is invalidated
+                updateableActivity.notifyDataSetChanged();
+            }
+        });
     }
 
     private float enabled(boolean selected) {
