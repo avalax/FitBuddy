@@ -15,6 +15,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class WorkoutResultFragment extends RoboFragment {
+    public static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;
     @Inject
@@ -34,12 +35,22 @@ public class WorkoutResultFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewFlipper();
-        fillListView();
+        fillViewFlipper();
+        if (savedInstanceState != null) {
+            restoreViewFlipper(savedInstanceState);
+        }
+    }
+
+    private void restoreViewFlipper(Bundle savedInstanceState) {
+        resultChartViewFlipper.setDisplayedChild(savedInstanceState.getInt(RESULT_CHART_DISPLAYED_CHILD));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(RESULT_CHART_DISPLAYED_CHILD, resultChartViewFlipper.getDisplayedChild());
     }
 
     private void initViewFlipper() {
-        //TODO: restore view on recreate
-        //TODO: update when exercise is changed
         resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context, resultChartViewFlipper, 1) {
             @Override
             protected void onFlingEvent(int moved) {
@@ -65,7 +76,7 @@ public class WorkoutResultFragment extends RoboFragment {
         });
     }
 
-    private void fillListView() {
+    private void fillViewFlipper() {
         for (int i = 0; i < workout.getExerciseCount(); i++) {
             View inflate = layoutInflater.inflate(R.layout.view_exercise_result, null);
             resultChartViewFlipper.addView(inflate);
