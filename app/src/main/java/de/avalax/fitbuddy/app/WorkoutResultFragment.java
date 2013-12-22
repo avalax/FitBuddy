@@ -15,12 +15,15 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 public class WorkoutResultFragment extends RoboFragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 1F;
     private static final float ALPHA_SELECTED = 0.2F;
+    @InjectResource(R.string.exercise_title)
+    private String exerciseTitle;
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;
     @Inject
@@ -66,7 +69,7 @@ public class WorkoutResultFragment extends RoboFragment {
                 Tendency tendency = (Tendency) v.getTag(R.id.tendency);
                 Exercise exercise = (Exercise) v.getTag(R.id.exercise);
                 exercise.setTendency(tendency);
-                updateTendency(tendency);
+                updateCurrentResultChartView(exercise);
             }
         };
     }
@@ -107,19 +110,15 @@ public class WorkoutResultFragment extends RoboFragment {
         Exercise exercise = workout.getExercise(exercisePosition);
         View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
 
-        setResultChart(resultChartView, exercise);
+        setExerciseToResultChart(resultChartView, exercise);
         registerOnClickListener(resultChartView, exercise);
-        updateTendency(resultChartView, exercise.getTendency());
+        updateResultChartView(resultChartView, exercise);
         return resultChartView;
     }
 
-    private void setResultChart(View resultChartView, Exercise exercise) {
+    private void setExerciseToResultChart(View resultChartView, Exercise exercise) {
         ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
-        TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
-
         resultChart.setExercise(exercise);
-        //TODO: set Textoutput for weightraise
-        editText.setText(exercise.getName());
     }
 
     private void registerOnClickListener(View resultChartView, Exercise exercise) {
@@ -138,12 +137,28 @@ public class WorkoutResultFragment extends RoboFragment {
         imageView.setOnClickListener(tendencyOnClickListener);
     }
 
-    private void updateTendency(Tendency tendency) {
+    private void updateCurrentResultChartView(Exercise exercise) {
         View resultChartView = resultChartViewFlipper.getCurrentView();
-        updateTendency(resultChartView, tendency);
+        updateResultChartView(resultChartView, exercise);
     }
 
-    private void updateTendency(View resultChartView, Tendency tendency) {
+    private void updateResultChartView(View resultChartView, Exercise exercise) {
+        updateExerciseText(resultChartView, exercise);
+        updateTendencyImageViews(resultChartView, exercise);
+    }
+
+    private void updateExerciseText(View resultChartView, Exercise exercise) {
+        TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
+        Tendency tendency = exercise.getTendency();
+        String exerciseName = exercise.getName();
+        //TODO: textformating
+        String text = String.format(exerciseTitle, exerciseName, exercise.getWeightRaise(tendency));
+
+        editText.setText(text);
+    }
+
+    private void updateTendencyImageViews(View resultChartView, Exercise exercise) {
+        Tendency tendency = exercise.getTendency();
         ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
         ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
         ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
