@@ -18,6 +18,7 @@ public class BasicExercise implements Exercise {
         this.sets = sets;
         this.weightRaise = weightRaise;
         this.setNumber = 1;
+        this.tendency = Tendency.NEUTRAL;
     }
 
     @Override

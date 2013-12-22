@@ -51,6 +51,11 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getTendency_shouldReturnTendencyNeutralOnCreation() throws Exception {
+        assertThat(exercise.getTendency(), equalTo(Tendency.NEUTRAL));
+    }
+
+    @Test
     public void getTendency_shouldReturnTendencyPlus() throws Exception {
         exercise.setTendency(Tendency.PLUS);
 
