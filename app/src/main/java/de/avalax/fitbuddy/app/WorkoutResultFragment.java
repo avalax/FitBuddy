@@ -40,14 +40,10 @@ public class WorkoutResultFragment extends RoboFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewFlipper();
-        fillViewFlipper();
+        setOnTouchListener();
         if (savedInstanceState != null) {
             restoreViewFlipper(savedInstanceState);
         }
-    }
-
-    private void restoreViewFlipper(Bundle savedInstanceState) {
-        resultChartViewFlipper.setDisplayedChild(savedInstanceState.getInt(RESULT_CHART_DISPLAYED_CHILD));
     }
 
     @Override
@@ -55,7 +51,11 @@ public class WorkoutResultFragment extends RoboFragment {
         savedInstanceState.putInt(RESULT_CHART_DISPLAYED_CHILD, resultChartViewFlipper.getDisplayedChild());
     }
 
-    private void initViewFlipper() {
+    private void restoreViewFlipper(Bundle savedInstanceState) {
+        resultChartViewFlipper.setDisplayedChild(savedInstanceState.getInt(RESULT_CHART_DISPLAYED_CHILD));
+    }
+
+    private void setOnTouchListener() {
         resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context, resultChartViewFlipper, 1) {
             @Override
             protected void onFlingEvent(int moved) {
@@ -81,57 +81,60 @@ public class WorkoutResultFragment extends RoboFragment {
         });
     }
 
-    private void fillViewFlipper() {
+    private void initViewFlipper() {
         for (int i = 0; i < workout.getExerciseCount(); i++) {
             Exercise exercise = workout.getExercise(i);
-            String name = workout.getName(i);
-            View resultChartView = createResultChartView(exercise, name);
+            View resultChartView = createResultChartView(exercise);
             resultChartViewFlipper.addView(resultChartView);
         }
     }
 
-    private View createResultChartView(Exercise exercise, String name) {
+    private View createResultChartView(Exercise exercise) {
         View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
-        ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
-        resultChart.setExercise(exercise);
-        //TODO: set Textoutput for weightraise
-        TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
-        editText.setText(name);
-        setTendency(resultChartView, exercise);
+
+        setResultChart(resultChartView, exercise);
+        tendencyOnClickListener(resultChartView, exercise);
+        updateTendency(resultChartView, exercise.getTendency());
         return resultChartView;
     }
 
-    private void setTendency(View resultChartView, final Exercise exercise) {
+    private void setResultChart(View resultChartView, Exercise exercise) {
+        ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
+        TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
+
+        resultChart.setExercise(exercise);
+        //TODO: set Textoutput for weightraise
+        editText.setText(exercise.getName());
+    }
+
+    private void tendencyOnClickListener(View resultChartView, Exercise exercise) {
         ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
         ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
         ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
 
-        registerOnClickListener(minusTendency, exercise, Tendency.MINUS);
-        registerOnClickListener(neutralTendency, exercise, Tendency.NEUTRAL);
-        registerOnClickListener(plusTendency, exercise, Tendency.PLUS);
-
-        updateTendency(minusTendency, neutralTendency, plusTendency, exercise.getTendency());
+        setOnClickListener(minusTendency, exercise, Tendency.MINUS);
+        setOnClickListener(neutralTendency, exercise, Tendency.NEUTRAL);
+        setOnClickListener(plusTendency, exercise, Tendency.PLUS);
     }
 
-    private void updateTendency(ImageView minusTendency, ImageView neutralTendency, ImageView plusTendency, Tendency tendency) {
-        minusTendency.setAlpha(enabled(Tendency.MINUS.equals(tendency)));
-        neutralTendency.setAlpha(enabled(Tendency.NEUTRAL.equals(tendency)));
-        plusTendency.setAlpha(enabled(Tendency.PLUS.equals(tendency)));
-    }
-
-    private void registerOnClickListener(ImageView imageView, final Exercise exercise, final Tendency tendency) {
+    private void setOnClickListener(ImageView imageView, final Exercise exercise, final Tendency tendency) {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exercise.setTendency(tendency);
                 View resultChartView = resultChartViewFlipper.getCurrentView();
-
-                ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
-                ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
-                ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
-                updateTendency(minusTendency, neutralTendency, plusTendency, exercise.getTendency());
+                exercise.setTendency(tendency);
+                updateTendency(resultChartView, tendency);
             }
         });
+    }
+
+    private void updateTendency(View resultChartView, Tendency tendency) {
+        ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
+        ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
+        ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
+        minusTendency.setAlpha(enabled(Tendency.MINUS.equals(tendency)));
+        neutralTendency.setAlpha(enabled(Tendency.NEUTRAL.equals(tendency)));
+        plusTendency.setAlpha(enabled(Tendency.PLUS.equals(tendency)));
     }
 
     private float enabled(boolean selected) {
