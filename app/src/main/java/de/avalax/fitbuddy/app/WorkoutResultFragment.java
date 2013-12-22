@@ -29,12 +29,10 @@ public class WorkoutResultFragment extends RoboFragment {
     private LayoutInflater layoutInflater;
     @Inject
     private Context context;
-    private UpdateableActivity updateableActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        updateableActivity = (UpdateableActivity) getActivity();
         return inflater.inflate(R.layout.fragment_result, container, false);
     }
 
@@ -126,8 +124,12 @@ public class WorkoutResultFragment extends RoboFragment {
             @Override
             public void onClick(View v) {
                 exercise.setTendency(tendency);
-                //TODO: is redraw of all fragments is needed? only the parent view is invalidated
-                updateableActivity.notifyDataSetChanged();
+                View resultChartView = resultChartViewFlipper.getCurrentView();
+
+                ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
+                ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
+                ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
+                updateTendency(minusTendency, neutralTendency, plusTendency, exercise.getTendency());
             }
         });
     }
