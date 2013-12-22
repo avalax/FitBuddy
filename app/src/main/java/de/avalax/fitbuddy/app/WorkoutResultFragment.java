@@ -18,9 +18,9 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class WorkoutResultFragment extends RoboFragment {
-    public static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
-    public static final float ALPHA_NOT_SELECTED = 1F;
-    public static final float ALPHA_SELECTED = 0.2F;
+    private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
+    private static final float ALPHA_NOT_SELECTED = 1F;
+    private static final float ALPHA_SELECTED = 0.2F;
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;
     @Inject
@@ -29,6 +29,7 @@ public class WorkoutResultFragment extends RoboFragment {
     private LayoutInflater layoutInflater;
     @Inject
     private Context context;
+    private View.OnClickListener tendencyOnClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +40,11 @@ public class WorkoutResultFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initOnClickListener();
         initViewFlipper();
         setOnTouchListener();
+
         if (savedInstanceState != null) {
             restoreViewFlipper(savedInstanceState);
         }
@@ -53,6 +57,18 @@ public class WorkoutResultFragment extends RoboFragment {
 
     private void restoreViewFlipper(Bundle savedInstanceState) {
         resultChartViewFlipper.setDisplayedChild(savedInstanceState.getInt(RESULT_CHART_DISPLAYED_CHILD));
+    }
+
+    private void initOnClickListener() {
+        tendencyOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tendency tendency = (Tendency) v.getTag(R.id.tendency);
+                Exercise exercise = (Exercise) v.getTag(R.id.exercise);
+                exercise.setTendency(tendency);
+                updateTendency(tendency);
+            }
+        };
     }
 
     private void setOnTouchListener() {
@@ -83,17 +99,16 @@ public class WorkoutResultFragment extends RoboFragment {
 
     private void initViewFlipper() {
         for (int i = 0; i < workout.getExerciseCount(); i++) {
-            Exercise exercise = workout.getExercise(i);
-            View resultChartView = createResultChartView(exercise);
-            resultChartViewFlipper.addView(resultChartView);
+            resultChartViewFlipper.addView(createResultChartView(i));
         }
     }
 
-    private View createResultChartView(Exercise exercise) {
+    private View createResultChartView(int exercisePosition) {
+        Exercise exercise = workout.getExercise(exercisePosition);
         View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
 
         setResultChart(resultChartView, exercise);
-        tendencyOnClickListener(resultChartView, exercise);
+        registerOnClickListener(resultChartView, exercise);
         updateTendency(resultChartView, exercise.getTendency());
         return resultChartView;
     }
@@ -107,7 +122,7 @@ public class WorkoutResultFragment extends RoboFragment {
         editText.setText(exercise.getName());
     }
 
-    private void tendencyOnClickListener(View resultChartView, Exercise exercise) {
+    private void registerOnClickListener(View resultChartView, Exercise exercise) {
         ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
         ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
         ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
@@ -117,21 +132,22 @@ public class WorkoutResultFragment extends RoboFragment {
         setOnClickListener(plusTendency, exercise, Tendency.PLUS);
     }
 
-    private void setOnClickListener(ImageView imageView, final Exercise exercise, final Tendency tendency) {
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View resultChartView = resultChartViewFlipper.getCurrentView();
-                exercise.setTendency(tendency);
-                updateTendency(resultChartView, tendency);
-            }
-        });
+    private void setOnClickListener(ImageView imageView, Exercise exercise, Tendency tendency) {
+        imageView.setTag(R.id.tendency, tendency);
+        imageView.setTag(R.id.exercise, exercise);
+        imageView.setOnClickListener(tendencyOnClickListener);
+    }
+
+    private void updateTendency(Tendency tendency) {
+        View resultChartView = resultChartViewFlipper.getCurrentView();
+        updateTendency(resultChartView, tendency);
     }
 
     private void updateTendency(View resultChartView, Tendency tendency) {
         ImageView minusTendency = (ImageView) resultChartView.findViewById(R.id.minusTendencyImageView);
         ImageView neutralTendency = (ImageView) resultChartView.findViewById(R.id.neutralTendencyImageView);
         ImageView plusTendency = (ImageView) resultChartView.findViewById(R.id.plusTendencyImageView);
+
         minusTendency.setAlpha(enabled(Tendency.MINUS.equals(tendency)));
         neutralTendency.setAlpha(enabled(Tendency.NEUTRAL.equals(tendency)));
         plusTendency.setAlpha(enabled(Tendency.PLUS.equals(tendency)));
