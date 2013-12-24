@@ -20,7 +20,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_view_pager)
-public class WorkoutActivity extends RoboFragmentActivity implements UpdateableActivity {
+public class MainActivity extends RoboFragmentActivity implements UpdateableActivity {
 
     private static final int ADD_EXERCISE = 4;
     @Inject
@@ -39,7 +39,7 @@ public class WorkoutActivity extends RoboFragmentActivity implements UpdateableA
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent upIntent = new Intent(this, WorkoutActivity.class);
+            Intent upIntent = new Intent(this, MainActivity.class);
             if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                 TaskStackBuilder.from(this)
                         .addNextIntent(upIntent)
