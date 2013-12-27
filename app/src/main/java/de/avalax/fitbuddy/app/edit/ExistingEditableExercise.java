@@ -75,7 +75,7 @@ public class ExistingEditableExercise implements EditableExercise {
 
     @Override
     public Exercise createExercise() {
-        //TODO: extract to ExerciseFragment
+        //TODO: extract to CurrentExerciseFragment
         List<Set> sets = new ArrayList<Set>();
         for (int i=0;i<this.sets;i++) {
             sets.add(new BasicSet(weight,reps));

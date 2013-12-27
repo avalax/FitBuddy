@@ -34,6 +34,7 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext()));
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
     }
 
     private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
-        //TODO: merge with ExerciseFragment - startEditExerciseActivity
+        //TODO: merge with CurrentExerciseFragment - startEditExerciseActivity
         Intent intent = new Intent(context, EditExerciseActivity.class);
         intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
         startActivityForResult(intent, requestCode);

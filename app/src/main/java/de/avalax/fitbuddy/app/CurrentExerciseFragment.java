@@ -16,7 +16,7 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
-public class ExerciseFragment extends RoboFragment {
+public class CurrentExerciseFragment extends RoboFragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     private static final int ADD_EXERCISE_BEFORE = 1;
@@ -33,8 +33,8 @@ public class ExerciseFragment extends RoboFragment {
     private int exercisePosition;
     private UpdateableActivity updateableActivity;
 
-    public static ExerciseFragment newInstance(int exerciseIndex) {
-        ExerciseFragment fragment = new ExerciseFragment();
+    public static CurrentExerciseFragment newInstance(int exerciseIndex) {
+        CurrentExerciseFragment fragment = new CurrentExerciseFragment();
         Bundle args = new Bundle();
         args.putInt(ARGS_EXERCISE_INDEX, exerciseIndex);
         fragment.setArguments(args);

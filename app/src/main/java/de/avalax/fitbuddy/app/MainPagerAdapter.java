@@ -12,13 +12,16 @@ import roboguice.RoboGuice;
 import roboguice.inject.InjectResource;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
+    private static final int ADDITIONAL_FRAGMENTS = 3;
     @Inject
     private Workout workout;
-    @InjectResource(R.string.result_title)
+    @InjectResource(R.string.title_result)
     private String resultTitle;
-    @InjectResource(R.string.welcome_title)
-    private String welcomeTitle;
-    @InjectResource(R.string.exercise_title)
+    @InjectResource(R.string.title_start)
+    private String startTitle;
+    @InjectResource(R.string.title_finish)
+    private String finishTitle;
+    @InjectResource(R.string.title_exercise)
     private String exerciseTitle;
 
 
@@ -28,35 +31,45 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int exerciseIndex) {
-        if (exerciseIndex < workout.getExerciseCount()) {
-            return ExerciseFragment.newInstance(exerciseIndex);
-        } else if (workout.getExerciseCount() == 0) {
-            return new FirstStartFragment();
-        } else {
+    public Fragment getItem(int position) {
+        if (position == 0 || workout.getExerciseCount() == 0) {
+            return new StartWorkoutFragment();
+        } else if (getExercisePosition(position) < workout.getExerciseCount()) {
+            return CurrentExerciseFragment.newInstance(getExercisePosition(position));
+        } else if (getExercisePosition(position) - workout.getExerciseCount() == 0) {
             return new ResultChartFragment();
+        } else {
+            return new FinishWorkoutFragment();
         }
     }
 
     @Override
     public int getCount() {
-        return workout.getExerciseCount() + 1;
+        return workout.getExerciseCount() + ADDITIONAL_FRAGMENTS;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position < workout.getExerciseCount()) {
-            Exercise currentExercise = workout.getExercise(position);
+        if (position == 0) {
+            return startTitle;
+        } else if (getExercisePosition(position) < workout.getExerciseCount()) {
+            Exercise currentExercise = workout.getExercise(getExercisePosition(position));
             return String.format(exerciseTitle, currentExercise.getName(), currentExercise.getWeight());
         } else if (workout.getExerciseCount() == 0) {
-            return welcomeTitle;
-        } else {
+            return startTitle;
+        } else if (getExercisePosition(position) - workout.getExerciseCount() == 0) {
             return resultTitle;
+        } else {
+            return finishTitle;
         }
     }
 
     @Override
     public int getItemPosition(Object item) {
         return POSITION_NONE;
+    }
+
+    private int getExercisePosition(int position) {
+        return position - 1;
     }
 }

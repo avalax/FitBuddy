@@ -22,7 +22,7 @@ public class ResultChartFragment extends RoboFragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 1F;
     private static final float ALPHA_SELECTED = 0.2F;
-    @InjectResource(R.string.exercise_title)
+    @InjectResource(R.string.title_exercise)
     private String exerciseTitle;
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;

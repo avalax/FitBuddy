@@ -5,9 +5,10 @@
     <string name="negativeLabel">-%2$s = %1$s kg</string>
     <string name="neutralLabel">%1$s kg</string>
     <string name="positiveLabel">+%2$s = %1$s kg</string>
-    <string name="result_title">result</string>
-    <string name="welcome_title">welcome</string>
-    <string name="exercise_title">%1$s : %2$skg</string>
+    <string name="title_result">result</string>
+    <string name="title_start">start</string>
+    <string name="title_finish">finish</string>
+    <string name="title_exercise">%1$s : %2$skg</string>
     <string name="new_exercise_name">"new exercise"</string>
     <string name="edit_weight_title">weight - %1s</string>
     <string name="edit_effort_title">"effort - %1s"</string>
