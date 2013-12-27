@@ -33,7 +33,7 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext()));
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext()));
     }
 
     @Override

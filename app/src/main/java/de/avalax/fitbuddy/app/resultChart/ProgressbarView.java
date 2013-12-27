@@ -9,22 +9,22 @@ import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Set;
 
-public class ResultChartProgressbarView extends FrameLayout {
+public class ProgressbarView extends FrameLayout {
     private TextView valueTextView;
     private ImageView imageView;
 
-    public ResultChartProgressbarView(Context context) {
+    public ProgressbarView(Context context) {
         super(context);
         init(context);
     }
 
-    public ResultChartProgressbarView(Context context, AttributeSet attrs) {
+    public ProgressbarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
         attributs(attrs);
     }
 
-    public ResultChartProgressbarView(Context context, AttributeSet attrs, int defStyle) {
+    public ProgressbarView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
         attributs(attrs);

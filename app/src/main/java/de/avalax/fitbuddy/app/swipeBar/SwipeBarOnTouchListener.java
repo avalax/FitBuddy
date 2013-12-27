@@ -30,7 +30,6 @@ public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
             public void onLongPressedRightEvent() {
                 touchListener.onLongPressedRightEvent();
             }
-
         });
     }
 

@@ -9,23 +9,23 @@ import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
-public class ResultChart extends LinearLayout {
+public class ResultChartView extends LinearLayout {
 
     @Inject
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public ResultChart(Context context) {
+    public ResultChartView(Context context) {
         super(context);
         init(context);
     }
 
-    public ResultChart(Context context, AttributeSet attrs) {
+    public ResultChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public ResultChart(Context context, AttributeSet attrs, int defStyle) {
+    public ResultChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -42,9 +42,9 @@ public class ResultChart extends LinearLayout {
         int setNumber = exercise.getSetNumber();
         for (int i = 0; i < exercise.getMaxSets(); i++) {
             exercise.setCurrentSet(i + 1);
-            ResultChartProgressbarView child = new ResultChartProgressbarView(context);
+            ProgressbarView child = new ProgressbarView(context);
             child.setLayoutParams(p);
-            //TODO: move to ResultChartProgressbarView
+            //TODO: move to ProgressbarView
             //TODO: move stylings to xml
             ImageView imageView = (ImageView) child.findViewById(R.id.verticalProgressBar);
             imageView.setBackgroundColor(getResources().getColor(R.color.primary_background));

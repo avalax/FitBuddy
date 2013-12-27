@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app;
+package de.avalax.fitbuddy.app.resultChart;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.app.resultChart.ResultChart;
+import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
@@ -18,7 +18,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
-public class WorkoutResultFragment extends RoboFragment {
+public class ResultChartFragment extends RoboFragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 1F;
     private static final float ALPHA_SELECTED = 0.2F;
@@ -117,7 +117,7 @@ public class WorkoutResultFragment extends RoboFragment {
     }
 
     private void setExerciseToResultChart(View resultChartView, Exercise exercise) {
-        ResultChart resultChart = (ResultChart) resultChartView.findViewById(R.id.resultChart);
+        ResultChartView resultChart = (ResultChartView) resultChartView.findViewById(R.id.resultChart);
         resultChart.setExercise(exercise);
     }
 

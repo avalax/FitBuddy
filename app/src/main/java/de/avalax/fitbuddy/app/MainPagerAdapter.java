@@ -5,12 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import com.google.inject.Inject;
+import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.RoboGuice;
 import roboguice.inject.InjectResource;
 
-public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Inject
     private Workout workout;
     @InjectResource(R.string.result_title)
@@ -21,7 +22,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
     private String exerciseTitle;
 
 
-    public ExercisePagerAdapter(FragmentManager fm, Context context) {
+    public MainPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         RoboGuice.getInjector(context).injectMembersWithoutViews(this);
     }
@@ -33,7 +34,7 @@ public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
         } else if (workout.getExerciseCount() == 0) {
             return new FirstStartFragment();
         } else {
-            return new WorkoutResultFragment();
+            return new ResultChartFragment();
         }
     }
 
