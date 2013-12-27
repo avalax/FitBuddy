@@ -18,12 +18,18 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
     }
 
     @Override
-    public void onLongPress(android.view.MotionEvent e) {
+    public void onLongPress(MotionEvent e) {
         if (e.getX() > swipeableView.getWidth() / 2) {
             onLongPressedRightEvent();
         } else {
             onLongPressedLeftEvent();
         }
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        onFlingEvent(1);
+        return true;
     }
 
     @Override
@@ -41,6 +47,8 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
         }
         return false;
     }
+
+
 
     private int calculateMoved(float moved, int height) {
         if (Math.abs(moved) + swipeMinDistance >= height) {

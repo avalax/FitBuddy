@@ -140,6 +140,15 @@ public class SwipeBarOnGestureListenerTest {
     }
 
     @Test
+    public void testOnSingleTapUp_shouldSetMovedTo1() throws Exception {
+        MotionEvent motionEvent = mock(MotionEvent.class);
+
+        swipeBarOnGestureListener.onSingleTapUp(motionEvent);
+
+        assertThat(onFlingEventMoved, equalTo(1));
+    }
+
+    @Test
          public void testOnLongPress_shouldPressOnTheLeft() throws Exception {
         swipeBarOnGestureListener.onLongPress(getMotionEvent(0, 0));
 
