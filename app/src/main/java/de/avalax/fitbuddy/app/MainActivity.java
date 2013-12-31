@@ -71,8 +71,9 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
     }
 
     public void onClickEvent(View v) {
-        if (v.getId() == R.id.buttonAddExercise) {
+        if (v.getId() == R.id.buttonAddWorkout) {
             startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE);
+            //TODO: create as new workout
         }
     }
 
