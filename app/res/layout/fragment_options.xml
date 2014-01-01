@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:drawableLeft="@drawable/ic_action_tendency_neutral"
+        android:drawableLeft="@drawable/ic_action_edit"
         android:onClick="onClickEvent"
         android:text="edit workout"
         android:textSize="@dimen/font_size" />
@@ -30,7 +30,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:drawableLeft="@drawable/ic_action_tendency_neutral"
+        android:drawableLeft="@drawable/ic_action_change_exercise"
         android:text="switch workout"
         android:textSize="@dimen/font_size" />
 
@@ -41,7 +41,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:drawableLeft="@drawable/ic_action_tendency_neutral"
+        android:drawableLeft="@drawable/ic_action_new_exercise"
         android:text="add workout"
         android:textSize="@dimen/font_size" />
 
