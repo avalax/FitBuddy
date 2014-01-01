@@ -20,8 +20,8 @@ import roboguice.inject.InjectView;
 
 public class ResultChartFragment extends RoboFragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
-    private static final float ALPHA_NOT_SELECTED = 1F;
-    private static final float ALPHA_SELECTED = 0.2F;
+    private static final float ALPHA_NOT_SELECTED = 0.8F;
+    private static final float ALPHA_SELECTED = 0.3F;
     @InjectResource(R.string.title_exercise)
     private String exerciseTitle;
     @InjectView(R.id.resultChartViewFlipper)
