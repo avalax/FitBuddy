@@ -12,7 +12,7 @@
 			android:layout_weight="1"
 			android:background="@color/primary_background"
             components:label="@string/edit_reps_bar_title"
-            components:value="12"
+            components:value="@string/vertical_bar_default_text"
 			/>
 
 	<de.avalax.fitbuddy.app.swipeBar.EnterValueBar
@@ -22,6 +22,6 @@
 			android:background="@color/secondary_background"
 			android:layout_weight="1"
             components:label="@string/edit_sets_bar_title"
-            components:value="3"
+            components:value="@string/vertical_bar_default_text"
 			/>
 </LinearLayout>

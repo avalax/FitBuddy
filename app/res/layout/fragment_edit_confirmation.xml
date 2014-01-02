@@ -4,15 +4,15 @@
     android:background="@drawable/primary_options_background"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="36dp"
-    android:paddingRight="36dp">
+    android:paddingLeft="@dimen/padding_vertical_view"
+    android:paddingRight="@dimen/padding_vertical_view">
 
     <EditText
         android:id="@+id/exerciseNameEditText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_bottom_view"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/new_exercise_name"
@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_bottom_view"
         android:drawableLeft="@drawable/ic_action_accept"
         android:onClick="clickEvent"
         android:text="@string/action_save" />

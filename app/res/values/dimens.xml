@@ -4,4 +4,6 @@
     <dimen name="bar_font_size">68sp</dimen>
     <dimen name="padding_bar_text">40dp</dimen>
     <dimen name="padding_result_bar_text">68dp</dimen>
+    <dimen name="margin_bottom_view">16dp</dimen>
+    <dimen name="padding_vertical_view">36dp</dimen>
 </resources>
