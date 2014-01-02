@@ -16,7 +16,7 @@
         android:layout_marginBottom="16dp"
         android:drawableLeft="@drawable/ic_action_edit"
         android:onClick="onClickEvent"
-        android:text="finish workout"
+        android:text="@string/action_toggle_editmode"
         android:textSize="@dimen/font_size" />
 
     <Button
@@ -26,7 +26,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:drawableLeft="@drawable/ic_action_change_exercise"
-        android:text="switch workout"
+        android:text="@string/action_switch_workout"
         android:textSize="@dimen/font_size" />
 
     <Button
@@ -34,7 +34,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_action_new_exercise"
-        android:text="add workout"
+        android:text="@string/action_create_new_workout"
         android:textSize="@dimen/font_size" />
 
 </LinearLayout>

@@ -22,7 +22,7 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     private Button buttonCancel;
     @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
-    @InjectResource(R.string.edit_button_delete_exercise_text)
+    @InjectResource(R.string.action_delete)
     private String buttonDeleteExerciseText;
     private EditableExercise editableExercise;
     private UpdateableActivity updateableActivity;

@@ -17,10 +17,14 @@
     <string name="edit_weight_raise_bar_title">raise</string>
     <string name="edit_reps_bar_title">reps</string>
     <string name="edit_sets_bar_title">sets</string>
-    <string name="edit_button_save_exercise_text">Save</string>
-    <string name="edit_button_delete_exercise_text">Delete</string>
-    <string name="edit_button_cancel_edit_text">Cancel</string>
     <string name="vertical_bar_contentDescription">progressBar</string>
     <string name="vertical_bar_default_text">0</string>
     <string name="edit_label_default_text">label</string>
+    <string name="action_toggle_editmode">edit workout</string>
+    <string name="action_switch_workout">switch workout</string>
+    <string name="action_create_new_workout">add workout</string>
+    <string name="action_finish_workout">finish workout</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
 </resources>
