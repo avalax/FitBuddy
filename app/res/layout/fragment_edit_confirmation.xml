@@ -1,39 +1,39 @@
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="60dp"
-    android:paddingBottom="60dp"
-    android:gravity="center_vertical|center_horizontal">
+    android:background="@drawable/primary_options_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="36dp"
+    android:paddingRight="36dp">
 
     <EditText
+        android:id="@+id/exerciseNameEditText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/exerciseNameEditText"
-        android:layout_gravity="center"
-        android:inputType="textAutoComplete"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
         android:editable="true"
         android:enabled="true"
-        android:hint="@string/new_exercise_name"/>
+        android:hint="@string/new_exercise_name"
+        android:inputType="textAutoComplete" />
 
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_button_save_exercise_text"
         android:id="@+id/buttonSave"
-        android:layout_gravity="center"
-        android:drawableLeft="@drawable/ic_action_tendency_positive"
-        android:onClick="clickEvent"/>
-
-    <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/edit_button_cancel_edit_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:drawableLeft="@drawable/ic_action_accept"
+        android:onClick="clickEvent"
+        android:text="@string/edit_button_save_exercise_text" />
+
+    <Button
         android:id="@+id/buttonCancel"
-        android:layout_gravity="right|center_vertical"
-        android:drawableLeft="@drawable/ic_action_tendency_negative"
-        android:onClick="clickEvent"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/ic_action_cancel"
+        android:onClick="clickEvent"
+        android:text="@string/edit_button_cancel_edit_text" />
 </LinearLayout>
