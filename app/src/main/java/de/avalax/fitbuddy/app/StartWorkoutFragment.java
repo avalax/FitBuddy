@@ -11,6 +11,6 @@ public class StartWorkoutFragment extends RoboFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_options, container, false);
+        return inflater.inflate(R.layout.fragment_start, container, false);
     }
 }

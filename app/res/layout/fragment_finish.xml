@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:paddingBottom="40dp"
+    android:paddingLeft="36dp"
+    android:paddingRight="36dp"
+    android:paddingTop="60dp"
+    android:background="@drawable/primary_options_background">
+
+    <Button
+        android:id="@+id/buttonEditWorkout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_save"
+        android:onClick="onClickEvent"
+        android:text="finish workout"
+        android:textSize="@dimen/font_size" />
+
+    <Button
+        android:id="@+id/buttonSwitchWorkout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_change_exercise"
+        android:text="switch workout"
+        android:textSize="@dimen/font_size" />
+
+    <Button
+        android:id="@+id/buttonAddWorkout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_new_exercise"
+        android:text="add workout"
+        android:textSize="@dimen/font_size" />
+
+</LinearLayout>
