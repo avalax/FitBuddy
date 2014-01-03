@@ -15,7 +15,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/margin_bottom_view"
         android:drawableLeft="@drawable/ic_action_edit"
-        android:onClick="onClickEvent"
         android:text="@string/action_toggle_editmode"
         android:textSize="@dimen/font_size" />
 
