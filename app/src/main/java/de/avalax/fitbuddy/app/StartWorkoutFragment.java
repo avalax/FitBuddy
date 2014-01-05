@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
-public class StartWorkoutFragment extends Fragment implements View.OnClickListener {
+public class StartWorkoutFragment extends Fragment {
     @InjectView(R.id.buttonEditWorkout)
-    Button buttonEditWorkout;
+    protected Button buttonEditWorkout;
     @InjectView(R.id.buttonSwitchWorkout)
-    Button buttonSwitchWorkout;
+    protected Button buttonSwitchWorkout;
     @InjectView(R.id.buttonAddWorkout)
-    Button buttonAddWorkout;
+    protected Button buttonAddWorkout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,25 +27,18 @@ public class StartWorkoutFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        buttonEditWorkout.setOnClickListener(this);
-        buttonSwitchWorkout.setOnClickListener(this);
-        buttonAddWorkout.setOnClickListener(this);
+    @OnClick(R.id.buttonEditWorkout)
+    protected void toogleEditMode() {
+        Log.d("onClick", "buttonEditWorkout");
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonEditWorkout:
-                Log.d("onClick", "buttonEditWorkout");
-                break;
-            case R.id.buttonSwitchWorkout:
-                Log.d("onClick", "buttonSwitchWorkout");
-                break;
-            case R.id.buttonAddWorkout:
-                Log.d("onClick", "buttonAddWorkout");
-                break;
-        }
+    @OnClick(R.id.buttonAddWorkout)
+    protected void addNewWorkout() {
+        Log.d("onClick", "buttonAddWorkout");
+    }
+
+    @OnClick(R.id.buttonSwitchWorkout)
+    protected void switchWorkout() {
+        Log.d("onClick", "buttonSwitchWorkout");
     }
 }
