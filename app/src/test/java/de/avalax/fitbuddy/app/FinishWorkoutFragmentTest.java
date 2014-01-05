@@ -9,19 +9,19 @@ import org.robolectric.util.FragmentTestUtil;
 import static de.avalax.fitbuddy.app.Asserts.assertOnClickListenerRegistered;
 
 @RunWith(RobolectricTestRunner.class)
-public class StartWorkoutFragmentTest {
-    private StartWorkoutFragment startWorkoutFragment;
+public class FinishWorkoutFragmentTest {
+    private FinishWorkoutFragment finishWorkoutFragment;
 
     @Before
     public void setUp() throws Exception {
-        startWorkoutFragment = new StartWorkoutFragment();
-        FragmentTestUtil.startFragment(startWorkoutFragment);
+        finishWorkoutFragment = new FinishWorkoutFragment();
+        FragmentTestUtil.startFragment(finishWorkoutFragment);
     }
 
     @Test
     public void testOnViewCreated_shouldRegisterOnClickEvents() throws Exception {
-        assertOnClickListenerRegistered(startWorkoutFragment.buttonEditWorkout);
-        assertOnClickListenerRegistered(startWorkoutFragment.buttonAddWorkout);
-        assertOnClickListenerRegistered(startWorkoutFragment.buttonSwitchWorkout);
+        assertOnClickListenerRegistered(finishWorkoutFragment.buttonFinishWorkout);
+        assertOnClickListenerRegistered(finishWorkoutFragment.buttonAddWorkout);
+        assertOnClickListenerRegistered(finishWorkoutFragment.buttonSwitchWorkout);
     }
 }

@@ -29,7 +29,7 @@ public class StartWorkoutFragment extends Fragment {
 
     @OnClick(R.id.buttonEditWorkout)
     protected void toogleEditMode() {
-        Log.d("onClick", "buttonEditWorkout");
+        Log.d("onClick", "buttonFinishWorkout");
     }
 
     @OnClick(R.id.buttonAddWorkout)

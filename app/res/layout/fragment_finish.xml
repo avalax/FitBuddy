@@ -9,13 +9,12 @@
     android:paddingRight="@dimen/padding_vertical_view">
 
     <Button
-        android:id="@+id/buttonEditWorkout"
+        android:id="@+id/buttonFinishWorkout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/margin_bottom_view"
         android:drawableLeft="@drawable/ic_action_save"
-        android:onClick="onClickEvent"
         android:text="@string/action_finish_workout"
         android:textSize="@dimen/font_size" />
 
