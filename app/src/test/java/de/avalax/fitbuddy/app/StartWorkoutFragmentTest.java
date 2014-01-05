@@ -19,7 +19,7 @@ public class StartWorkoutFragmentTest {
     }
 
     @Test
-    public void testOnViewCreated_shouldRegisterOnClickEvents() throws Exception {
+    public void shouldRegisterOnClickEvents() throws Exception {
         assertOnClickListenerRegistered(startWorkoutFragment.buttonEditWorkout);
         assertOnClickListenerRegistered(startWorkoutFragment.buttonAddWorkout);
         assertOnClickListenerRegistered(startWorkoutFragment.buttonSwitchWorkout);
