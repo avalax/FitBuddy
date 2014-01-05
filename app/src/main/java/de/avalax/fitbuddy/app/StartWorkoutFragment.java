@@ -1,32 +1,33 @@
 package de.avalax.fitbuddy.app;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class StartWorkoutFragment extends RoboFragment implements View.OnClickListener {
+public class StartWorkoutFragment extends Fragment implements View.OnClickListener {
     @InjectView(R.id.buttonEditWorkout)
-    private Button buttonEditWorkout;
+    Button buttonEditWorkout;
     @InjectView(R.id.buttonSwitchWorkout)
-    private Button buttonSwitchWorkout;
+    Button buttonSwitchWorkout;
     @InjectView(R.id.buttonAddWorkout)
-    private Button buttonAddWorkout;
+    Button buttonAddWorkout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_start, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         buttonEditWorkout.setOnClickListener(this);
         buttonSwitchWorkout.setOnClickListener(this);
         buttonAddWorkout.setOnClickListener(this);
@@ -36,13 +37,13 @@ public class StartWorkoutFragment extends RoboFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonEditWorkout:
-                Log.d("onClick","buttonEditWorkout");
+                Log.d("onClick", "buttonEditWorkout");
                 break;
             case R.id.buttonSwitchWorkout:
-                Log.d("onClick","buttonSwitchWorkout");
+                Log.d("onClick", "buttonSwitchWorkout");
                 break;
             case R.id.buttonAddWorkout:
-                Log.d("onClick","buttonAddWorkout");
+                Log.d("onClick", "buttonAddWorkout");
                 break;
         }
     }
