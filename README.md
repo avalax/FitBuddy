@@ -1,5 +1,7 @@
 ![Logo FitBuddy](https://raw.github.com/avalax/FitBuddy/master/app/doc/about/logo-fitbuddy.png)
 ==========
+[![Build Status](https://travis-ci.org/avalax/FitBuddy.png?branch=master)](https://travis-ci.org/avalax/FitBuddy)
+
 FitBuddy is an Android (>= 4.0 (API level 14)) App to measure your Workout.
 
 Fitbuddy ermöglicht es während des Workouts Wiederholungen und Sätze einfach zu zählen. Die App ist für die [Omate TrueSmart Smartwatch](http://www.omate.com/) optimiert, so dass die Wiederholungen direkt durch die Bewegung der Hand gezählt werden können. Zusätzlich steht aber auch die Eingabe über Touch und Swype Gesten zur Verfügung. Das Interface ist auf schnelle und einfache Ablesbarkeit optimiert, so dass man während des Trainings nicht abgelenkt wird.
