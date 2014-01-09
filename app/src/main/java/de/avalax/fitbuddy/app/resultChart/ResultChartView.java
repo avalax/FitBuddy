@@ -37,7 +37,7 @@ public class ResultChartView extends LinearLayout {
     public void setExercise(Exercise exercise) {
         removeAllViews();
         //TODO: do not setCurrentSet
-        LayoutParams p = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         p.weight = 1;
         int setNumber = exercise.getSetNumber();
         for (int i = 0; i < exercise.getMaxSets(); i++) {
