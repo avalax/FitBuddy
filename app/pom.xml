@@ -48,4 +48,20 @@
             <type>jar</type>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>19</platform>
+                    </sdk>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
