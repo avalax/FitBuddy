@@ -1,16 +1,12 @@
-package de.avalax.fitbuddy.datalayer.persistence;
+package de.avalax.fitbuddy.datalayer;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
-import de.avalax.fitbuddy.datalayer.DataLayer;
-import de.avalax.fitbuddy.datalayer.PersistenceWorkout;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PersistenceWorkoutTest {
 

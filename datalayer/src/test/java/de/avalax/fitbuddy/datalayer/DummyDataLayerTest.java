@@ -1,13 +1,11 @@
-package de.avalax.fitbuddy.datalayer.persistence;
+package de.avalax.fitbuddy.datalayer;
 
 import de.avalax.fitbuddy.core.workout.Workout;
-import de.avalax.fitbuddy.datalayer.DataLayer;
-import de.avalax.fitbuddy.datalayer.DummyDataLayer;
 import org.junit.Before;
 import org.junit.Test;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
 
 public class DummyDataLayerTest {
 
@@ -20,6 +18,6 @@ public class DummyDataLayerTest {
 
     @Test
     public void load_shouldReturnAWorkout() throws Exception {
-        assertThat(dataLayer.load(),instanceOf(Workout.class));
+        assertThat(dataLayer.load(), instanceOf(Workout.class));
     }
 }
