@@ -10,7 +10,7 @@ public interface Workout {
     Set getCurrentSet(int index);
     String getName(int index);
     float getProgress(int index);
-    //TODO: interface segregation
+    //TODO: move to WorkoutDAO
     void addExerciseBefore(int index, Exercise exercise);
     void addExerciseAfter(int index, Exercise exercise);
     void setExercise(int index, Exercise exercise);

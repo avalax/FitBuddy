@@ -34,25 +34,25 @@ public class PersistenceWorkout implements Workout{
 
     @Override
     public void addExerciseBefore(int index, Exercise exercise) {
-        //TODO: delegate to datalayer
+        //TODO: move to WorkoutDAO
         workout.addExerciseBefore(index, exercise);
     }
 
     @Override
     public void addExerciseAfter(int index, Exercise exercise) {
-        //TODO: delegate to dataLayer
+        //TODO: move to WorkoutDAO
         workout.addExerciseAfter(index, exercise);
     }
 
     @Override
     public void setExercise(int index, Exercise exercise) {
-        //TODO: delegate to dataLayer
+        //TODO: move to WorkoutDAO
         workout.setExercise(index,exercise);
     }
 
     @Override
     public void removeExercise(int index) {
-        //TODO: delegate to dataLayer
+        //TODO: move to WorkoutDAO
         workout.removeExercise(index);
     }
 
