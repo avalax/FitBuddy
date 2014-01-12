@@ -1,17 +1,13 @@
-package de.avalax.fitbuddy.core.workout.persistence;
+package de.avalax.fitbuddy.datalayer;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
 
-@Singleton
 public class PersistenceWorkout implements Workout{
     private Workout workout;
 
-    @Inject
     public PersistenceWorkout(DataLayer dataLayer) {
         workout = dataLayer.load();
     }

@@ -1,9 +1,5 @@
 package de.avalax.fitbuddy.core.workout;
 
-import com.google.inject.ImplementedBy;
-import de.avalax.fitbuddy.core.workout.persistence.PersistenceWorkout;
-
-@ImplementedBy(PersistenceWorkout.class)
 public interface Workout {
     Exercise getExercise(int index);
     int getExerciseCount();

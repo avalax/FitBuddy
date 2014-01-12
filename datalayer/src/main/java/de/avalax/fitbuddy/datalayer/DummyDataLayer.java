@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.core.workout.persistence;
+package de.avalax.fitbuddy.datalayer;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;

@@ -8,11 +8,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
-import android.view.View;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.EditableExercise;
-import de.avalax.fitbuddy.app.edit.NewEditableExercise;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.activity.RoboFragmentActivity;
@@ -68,29 +66,5 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
             workout.setExercise(0, exercise);
             notifyDataSetChanged();
         }
-    }
-
-    public void onClickEvent(View v) {
-        if (v.getId() == R.id.buttonAddWorkout) {
-            startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE);
-            //TODO: create as new workout
-        }
-    }
-
-    private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
-        //TODO: merge with CurrentExerciseFragment - startEditExerciseActivity
-        Intent intent = new Intent(context, EditExerciseActivity.class);
-        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
-        startActivityForResult(intent, requestCode);
-    }
-
-    private NewEditableExercise createNewEditableExercise() {
-        NewEditableExercise newEditableExercise = new NewEditableExercise();
-        //TODO: extract to resources / factory pattern
-        newEditableExercise.setWeight(2.5);
-        newEditableExercise.setWeightRaise(1.25);
-        newEditableExercise.setReps(12);
-        newEditableExercise.setSets(3);
-        return newEditableExercise;
     }
 }

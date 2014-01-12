@@ -1,6 +1,8 @@
-package de.avalax.fitbuddy.core.workout.persistence;
+package de.avalax.fitbuddy.datalayer.persistence;
 
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.datalayer.DataLayer;
+import de.avalax.fitbuddy.datalayer.DummyDataLayer;
 import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

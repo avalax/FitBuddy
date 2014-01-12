@@ -1,8 +1,10 @@
-package de.avalax.fitbuddy.core.workout.persistence;
+package de.avalax.fitbuddy.datalayer.persistence;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.datalayer.DataLayer;
+import de.avalax.fitbuddy.datalayer.PersistenceWorkout;
 import org.junit.Before;
 import org.junit.Test;
 
