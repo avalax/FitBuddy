@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
@@ -27,7 +28,7 @@ public class ResultChartFragment extends RoboFragment {
     @InjectView(R.id.resultChartViewFlipper)
     private ViewFlipper resultChartViewFlipper;
     @Inject
-    private Workout workout;
+    private WorkoutSession workoutSession;
     @Inject
     private LayoutInflater layoutInflater;
     @Inject
@@ -101,12 +102,14 @@ public class ResultChartFragment extends RoboFragment {
     }
 
     private void initViewFlipper() {
+        Workout workout = workoutSession.getWorkout();
         for (int i = 0; i < workout.getExerciseCount(); i++) {
             resultChartViewFlipper.addView(createResultChartView(i));
         }
     }
 
     private View createResultChartView(int exercisePosition) {
+        Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercise(exercisePosition);
         View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
 

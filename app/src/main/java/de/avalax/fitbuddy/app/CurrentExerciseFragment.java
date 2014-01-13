@@ -25,7 +25,7 @@ public class CurrentExerciseFragment extends RoboFragment {
     @Inject
     Context context;
     @Inject
-    private Workout workout;
+    private WorkoutSession workoutSession;
     @InjectView(R.id.leftProgressBar)
     private VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
@@ -53,7 +53,7 @@ public class CurrentExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Workout workout = workoutSession.getWorkout();
         repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onFlingEvent(int moved) {
@@ -94,6 +94,7 @@ public class CurrentExerciseFragment extends RoboFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        Workout workout = workoutSession.getWorkout();
         if (resultCode == Activity.RESULT_OK) {
             EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE) ;
             Exercise exercise = editableExercise.createExercise();
@@ -135,6 +136,7 @@ public class CurrentExerciseFragment extends RoboFragment {
 
     private EditableExercise createExistingEditableExercise() {
         //TODO: factory pattern
+        Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercise(exercisePosition);
         return new ExistingEditableExercise(exercise);
     }
@@ -154,20 +156,24 @@ public class CurrentExerciseFragment extends RoboFragment {
     }
 
     private void changeSets(int moved) {
+        Workout workout = workoutSession.getWorkout();
         setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
         setViews(exercisePosition);
     }
 
     private void setReps(int moved) {
+        Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercise(exercisePosition);
         exercise.setReps(exercise.getReps() + moved);
     }
 
     private void setSet(int setNumber) {
+        Workout workout = workoutSession.getWorkout();
         workout.getExercise(exercisePosition).setCurrentSet(setNumber);
     }
 
     private void setViews(int exercisePosition) {
+        Workout workout = workoutSession.getWorkout();
         repsProgressBar.updateProgressbar(workout.getExercise(exercisePosition).getCurrentSet());
         setsProgressBar.updateProgressbar(workout, exercisePosition);
     }

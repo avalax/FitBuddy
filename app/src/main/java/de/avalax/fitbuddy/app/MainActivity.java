@@ -24,7 +24,7 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
     @Inject
     Context context;
     @Inject
-    private Workout workout;
+    private WorkoutSession workoutSession;
     @InjectView(R.id.pager)
     private ViewPager viewPager;
 
@@ -63,6 +63,7 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
         if (resultCode == Activity.RESULT_OK && requestCode == ADD_EXERCISE) {
             EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE);
             Exercise exercise = editableExercise.createExercise();
+            Workout workout = workoutSession.getWorkout();
             workout.setExercise(0, exercise);
             notifyDataSetChanged();
         }

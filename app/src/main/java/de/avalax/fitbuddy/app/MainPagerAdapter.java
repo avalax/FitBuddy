@@ -14,7 +14,7 @@ import roboguice.inject.InjectResource;
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private static final int ADDITIONAL_FRAGMENTS = 3;
     @Inject
-    private Workout workout;
+    private WorkoutSession workoutSession;
     @InjectResource(R.string.title_result)
     private String resultTitle;
     @InjectResource(R.string.title_start)
@@ -32,6 +32,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Workout workout = workoutSession.getWorkout();
         if (position == 0 || workout.getExerciseCount() == 0) {
             return new StartWorkoutFragment();
         } else if (getExercisePosition(position) < workout.getExerciseCount()) {
@@ -45,11 +46,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
+        Workout workout = workoutSession.getWorkout();
         return workout.getExerciseCount() + ADDITIONAL_FRAGMENTS;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
+        Workout workout = workoutSession.getWorkout();
         if (position == 0) {
             return startTitle;
         } else if (getExercisePosition(position) < workout.getExerciseCount()) {

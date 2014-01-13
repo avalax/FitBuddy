@@ -10,12 +10,8 @@ import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.google.inject.Inject;
-import de.avalax.fitbuddy.core.workout.Workout;
 
 public class StartWorkoutFragment extends Fragment {
-    @Inject
-    Workout workout;
     @InjectView(R.id.buttonEditWorkout)
     protected Button buttonEditWorkout;
     @InjectView(R.id.buttonSwitchWorkout)
