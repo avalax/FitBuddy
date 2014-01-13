@@ -20,7 +20,7 @@ public class StaticWorkoutDAO implements WorkoutDAO {
 
     @Override
     public Workout load() {
-        LinkedList<Exercise> exercises = new LinkedList<Exercise>();
+        LinkedList<Exercise> exercises = new LinkedList<>();
         exercises.add(new BasicExercise("Bankdrücken", createExerciseWithThreeSets(70, 12), 5));
         exercises.add(new BasicExercise("Schrägbankdrücken", createExerciseWithThreeSets(40, 10), 5));
         /**exercises.add(new BasicExercise("Butterfly", createExerciseWithThreeSets(60, 15), 5));
