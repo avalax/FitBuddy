@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,8 @@ public class CurrentExerciseFragment extends RoboFragment {
     @InjectView(R.id.rightProgressBar)
     private VerticalProgressbarView setsProgressBar;
     private int exercisePosition;
-    private UpdateableActivity updateableActivity;
+    protected ViewPager viewPager;
+
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
         CurrentExerciseFragment fragment = new CurrentExerciseFragment();
@@ -46,7 +48,7 @@ public class CurrentExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
-        updateableActivity = (UpdateableActivity) getActivity();
+        viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
@@ -110,10 +112,12 @@ public class CurrentExerciseFragment extends RoboFragment {
                     break;
             }
             setViews(exercisePosition);
-            updateableActivity.notifyDataSetChanged();
+            viewPager.getAdapter().notifyDataSetChanged();
+            viewPager.invalidate();
         } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
             workout.removeExercise(exercisePosition);
-            updateableActivity.notifyDataSetChanged();
+            viewPager.getAdapter().notifyDataSetChanged();
+            viewPager.invalidate();
         }
     }
 
@@ -152,7 +156,9 @@ public class CurrentExerciseFragment extends RoboFragment {
     private void changeReps(int moved) {
         setReps(moved);
         setViews(exercisePosition);
-        updateableActivity.notifyDataSetChanged();
+        //TODO: only update ResultChartFragment
+        viewPager.getAdapter().notifyDataSetChanged();
+        viewPager.invalidate();
     }
 
     private void changeSets(int moved) {

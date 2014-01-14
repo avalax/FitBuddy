@@ -18,7 +18,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_view_pager)
-public class MainActivity extends RoboFragmentActivity implements UpdateableActivity {
+public class MainActivity extends RoboFragmentActivity {
 
     private static final int ADD_EXERCISE = 4;
     @Inject
@@ -52,11 +52,6 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
         return super.onOptionsItemSelected(item);
     }
 
-    public void notifyDataSetChanged() {
-        viewPager.getAdapter().notifyDataSetChanged();
-        viewPager.invalidate();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -65,7 +60,8 @@ public class MainActivity extends RoboFragmentActivity implements UpdateableActi
             Exercise exercise = editableExercise.createExercise();
             Workout workout = workoutSession.getWorkout();
             workout.setExercise(0, exercise);
-            notifyDataSetChanged();
+            viewPager.getAdapter().notifyDataSetChanged();
+            viewPager.invalidate();
         }
     }
 }

@@ -21,10 +21,10 @@ public class FinishWorkoutFragment extends Fragment {
     protected Button buttonSwitchWorkout;
     @InjectView(R.id.buttonAddWorkout)
     protected Button buttonAddWorkout;
-    protected ViewPager pager;
     @Inject
     private WorkoutSession workoutSession;
-    private UpdateableActivity updateableActivity;
+    protected ViewPager viewPager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,11 +32,7 @@ public class FinishWorkoutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_finish, container, false);
         ButterKnife.inject(this, view);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        //TODO: FCoI
-        if (getActivity() instanceof UpdateableActivity) {
-            updateableActivity = (UpdateableActivity) getActivity();
-        }
-        pager = (ViewPager) getActivity().findViewById(R.id.pager);
+        viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         return view;
     }
 
@@ -44,8 +40,9 @@ public class FinishWorkoutFragment extends Fragment {
     protected void finishWorkout() {
         Log.d("onClick", "finishWorkout");
         workoutSession.finishWorkout();
-        updateableActivity.notifyDataSetChanged();
-        pager.setCurrentItem(1,true);
+        viewPager.getAdapter().notifyDataSetChanged();
+        viewPager.invalidate();
+        viewPager.setCurrentItem(1, true);
     }
 
     @OnClick(R.id.buttonAddWorkout)

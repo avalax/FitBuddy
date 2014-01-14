@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app.edit;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import de.avalax.fitbuddy.app.R;
-import de.avalax.fitbuddy.app.UpdateableActivity;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
@@ -25,7 +25,7 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     @InjectResource(R.string.action_delete)
     private String buttonDeleteExerciseText;
     private EditableExercise editableExercise;
-    private UpdateableActivity updateableActivity;
+    private ViewPager viewPager;
 
     public static ConfirmationExerciseFragment newInstance(EditableExercise editableExercise) {
         ConfirmationExerciseFragment confirmationExerciseFragment = new ConfirmationExerciseFragment();
@@ -46,7 +46,7 @@ public class ConfirmationExerciseFragment extends RoboFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        updateableActivity = (UpdateableActivity) getActivity();
+        viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         if (!newExerciseName.equals(editableExercise.getName())) {
             exerciseNameEditText.setText(editableExercise.getName());
         }
@@ -65,7 +65,8 @@ public class ConfirmationExerciseFragment extends RoboFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                updateableActivity.notifyDataSetChanged();
+                viewPager.getAdapter().notifyDataSetChanged();
+                viewPager.invalidate();
             }
         });
     }
