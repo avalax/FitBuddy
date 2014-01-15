@@ -9,6 +9,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import com.google.inject.Inject;
+import com.viewpagerindicator.TitlePageIndicator;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -27,12 +28,15 @@ public class MainActivity extends RoboFragmentActivity {
     private WorkoutSession workoutSession;
     @InjectView(R.id.pager)
     private ViewPager viewPager;
+    @InjectView(R.id.indicator)
+    private TitlePageIndicator pageIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext()));
         viewPager.setCurrentItem(1);
+        pageIndicator.setViewPager(viewPager);
     }
 
     @Override

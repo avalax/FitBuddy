@@ -2,6 +2,9 @@
 <resources>
     <dimen name="font_size">20sp</dimen>
     <dimen name="bar_font_size">68sp</dimen>
+    <dimen name="pager_font_size">18.67sp</dimen>
+    <dimen name="pager_height">42dp</dimen>
+    <dimen name="pager_footer_line_height">0dp</dimen>
     <dimen name="padding_bar_text">40dp</dimen>
     <dimen name="padding_result_bar_text">68dp</dimen>
     <dimen name="margin_bottom_view">16dp</dimen>
