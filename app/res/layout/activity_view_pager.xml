@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.viewpagerindicator.TitlePageIndicator
+    <android.support.v4.view.PagerTitleStrip
         android:id="@+id/indicator"
         style="@style/PagerTitleStrip"
-        android:layout_width="match_parent"
-        app:footerIndicatorStyle="none"
-        app:footerLineHeight="@dimen/pager_footer_line_height"
-        app:selectedBold="false"
-        app:selectedColor="@color/main_text" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"/>
+</android.support.v4.view.ViewPager>

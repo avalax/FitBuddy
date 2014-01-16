@@ -7,7 +7,6 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
-import com.viewpagerindicator.TitlePageIndicator;
 import de.avalax.fitbuddy.app.R;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
@@ -19,8 +18,6 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
     private ViewPager viewPager;
-    @InjectView(R.id.indicator)
-    private TitlePageIndicator pageIndicator;
     @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
     private EditableExercise editableExercise;
@@ -30,7 +27,6 @@ public class EditExerciseActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         this.editableExercise = getEditableExercise();
         viewPager.setAdapter(getEditExercisePagerAdapter());
-        pageIndicator.setViewPager(viewPager);
     }
 
     @Override

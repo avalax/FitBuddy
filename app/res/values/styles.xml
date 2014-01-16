@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:typeface">sans</item>
     </style>
 
     <style name="PagerTitleStrip">
-        <item name="android:layout_height">@dimen/pager_height</item>
-        <item name="android:layout_gravity">top</item>
+        <item name="android:textAppearance">@style/PagerTitleStripTextAppearance</item>
         <item name="android:background">@color/pager_background</item>
-        <item name="android:paddingTop">6.67dp</item>
-        <item name="android:paddingBottom">6.67dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_gravity">top</item>
+    </style>
+
+    <style name="PagerTitleStripTextAppearance">
+        <item name="android:textColor">@color/main_text</item>
         <item name="android:textSize">@dimen/pager_font_size</item>
-        <item name="android:textColor">@color/shadow_text</item>
     </style>
 </resources>
