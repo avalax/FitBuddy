@@ -8,7 +8,7 @@
 
     <parent>
         <artifactId>parent</artifactId>
-        <groupId>de.avalax.fibuddy</groupId>
+        <groupId>de.avalax.fitbuddy</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -48,13 +48,13 @@
             <type>apklib</type>
         </dependency>
         <dependency>
-            <groupId>de.avalax.fibuddy</groupId>
+            <groupId>de.avalax.fitbuddy</groupId>
             <artifactId>core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>de.avalax.fibuddy</groupId>
+            <groupId>de.avalax.fitbuddy</groupId>
             <artifactId>datalayer</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <type>jar</type>
