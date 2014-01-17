@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -14,15 +13,11 @@ import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.activity_view_pager)
 public class MainActivity extends RoboFragmentActivity {
 
     private static final int ADD_EXERCISE = 4;
-    @Inject
-    Context context;
     @Inject
     private WorkoutSession workoutSession;
     @InjectView(R.id.pager)
@@ -31,9 +26,9 @@ public class MainActivity extends RoboFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_pager);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext()));
         viewPager.setCurrentItem(1);
-
     }
 
     @Override
