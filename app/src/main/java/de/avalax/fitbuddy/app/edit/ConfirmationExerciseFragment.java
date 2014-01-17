@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app.edit;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,17 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.avalax.fitbuddy.app.R;
-import roboguice.fragment.RoboFragment;
+import roboguice.RoboGuice;
 import roboguice.inject.InjectResource;
-import roboguice.inject.InjectView;
 
-public class ConfirmationExerciseFragment extends RoboFragment {
+public class ConfirmationExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.exerciseNameEditText)
-    private EditText exerciseNameEditText;
+    protected EditText exerciseNameEditText;
     @InjectView(R.id.buttonCancel)
-    private Button buttonCancel;
+    protected Button buttonCancel;
     @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
     @InjectResource(R.string.action_delete)
@@ -40,7 +42,10 @@ public class ConfirmationExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
-        return inflater.inflate(R.layout.fragment_edit_confirmation, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_confirmation, container, false);
+        ButterKnife.inject(this, view);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        return view;
     }
 
     @Override

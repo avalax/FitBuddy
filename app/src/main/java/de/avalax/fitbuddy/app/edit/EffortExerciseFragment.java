@@ -2,17 +2,19 @@ package de.avalax.fitbuddy.app.edit;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
-import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
+import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
+import roboguice.RoboGuice;
 
-public class EffortExerciseFragment extends RoboFragment {
+public class EffortExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
     @Inject
     Context context;
@@ -35,7 +37,10 @@ public class EffortExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
-        return inflater.inflate(R.layout.fragment_edit_effort, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_effort, container, false);
+        ButterKnife.inject(this, view);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        return view;
     }
 
     @Override

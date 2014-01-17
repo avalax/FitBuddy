@@ -1,24 +1,24 @@
 package de.avalax.fitbuddy.app.edit;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
-import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
+import roboguice.RoboGuice;
 
-public class WeightExerciseFragment extends RoboFragment {
+public class WeightExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
     @Inject
     WeightRaiseCalculator weightRaiseCalculator;
-    @Inject
-    Context context;
     @InjectView(R.id.leftEnterValueBar)
     EnterValueBar leftEnterValueBar;
     @InjectView(R.id.rightEnterValueBar)
@@ -38,7 +38,10 @@ public class WeightExerciseFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
-        return inflater.inflate(R.layout.fragment_edit_weight, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
+        ButterKnife.inject(this, view);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        return view;
     }
 
     @Override
@@ -46,7 +49,8 @@ public class WeightExerciseFragment extends RoboFragment {
         super.onViewCreated(view, savedInstanceState);
         setBars();
 
-        leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
+        final Activity activity = getActivity();
+        leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(activity, leftEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeWeight(moved);
@@ -61,7 +65,7 @@ public class WeightExerciseFragment extends RoboFragment {
             }
         });
 
-        rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, rightEnterValueBar, 2) {
+        rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(activity, rightEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeWeightRaise(moved);

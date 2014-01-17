@@ -4,35 +4,38 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.google.inject.Inject;
-import de.avalax.fitbuddy.app.edit.*;
+import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
+import de.avalax.fitbuddy.app.edit.EditableExercise;
+import de.avalax.fitbuddy.app.edit.ExistingEditableExercise;
+import de.avalax.fitbuddy.app.edit.NewEditableExercise;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
+import roboguice.RoboGuice;
 
-public class CurrentExerciseFragment extends RoboFragment {
+public class CurrentExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     private static final int ADD_EXERCISE_BEFORE = 1;
     private static final int EDIT_EXERCISE = 2;
     private static final int ADD_EXERCISE_AFTER = 3;
     @Inject
-    Context context;
-    @Inject
     private WorkoutSession workoutSession;
     @InjectView(R.id.leftProgressBar)
-    private VerticalProgressbarView repsProgressBar;
+    protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
-    private VerticalProgressbarView setsProgressBar;
+    protected VerticalProgressbarView setsProgressBar;
     private int exercisePosition;
-    protected ViewPager viewPager;
+    private ViewPager viewPager;
 
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
@@ -47,15 +50,19 @@ public class CurrentExerciseFragment extends RoboFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
         viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
-        return inflater.inflate(R.layout.fragment_exercise, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercise, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Workout workout = workoutSession.getWorkout();
+        final Context context = getActivity();
         repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(workout)) {
             @Override
             public void onFlingEvent(int moved) {

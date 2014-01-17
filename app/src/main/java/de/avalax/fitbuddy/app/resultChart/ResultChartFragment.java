@@ -2,12 +2,15 @@ package de.avalax.fitbuddy.app.resultChart;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutSession;
@@ -15,18 +18,17 @@ import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.fragment.RoboFragment;
+import roboguice.RoboGuice;
 import roboguice.inject.InjectResource;
-import roboguice.inject.InjectView;
 
-public class ResultChartFragment extends RoboFragment {
+public class ResultChartFragment extends Fragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 0.8F;
     private static final float ALPHA_SELECTED = 0.3F;
     @InjectResource(R.string.title_exercise)
     private String exerciseTitle;
     @InjectView(R.id.resultChartViewFlipper)
-    private ViewFlipper resultChartViewFlipper;
+    protected ViewFlipper resultChartViewFlipper;
     @Inject
     private WorkoutSession workoutSession;
     @Inject
@@ -38,7 +40,10 @@ public class ResultChartFragment extends RoboFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_result, container, false);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
