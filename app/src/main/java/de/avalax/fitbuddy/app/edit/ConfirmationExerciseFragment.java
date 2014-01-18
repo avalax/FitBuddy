@@ -13,8 +13,6 @@ import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.app.R;
-import roboguice.RoboGuice;
-import roboguice.inject.InjectResource;
 
 public class ConfirmationExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
@@ -22,10 +20,6 @@ public class ConfirmationExerciseFragment extends Fragment {
     protected EditText exerciseNameEditText;
     @InjectView(R.id.buttonCancel)
     protected Button buttonCancel;
-    @InjectResource(R.string.new_exercise_name)
-    private String newExerciseName;
-    @InjectResource(R.string.action_delete)
-    private String buttonDeleteExerciseText;
     private EditableExercise editableExercise;
     private ViewPager viewPager;
 
@@ -44,7 +38,6 @@ public class ConfirmationExerciseFragment extends Fragment {
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         View view = inflater.inflate(R.layout.fragment_edit_confirmation, container, false);
         ButterKnife.inject(this, view);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         return view;
     }
 
@@ -52,11 +45,11 @@ public class ConfirmationExerciseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
-        if (!newExerciseName.equals(editableExercise.getName())) {
+        if (!exerciseNameEditText.getHint().toString().equals(editableExercise.getName())) {
             exerciseNameEditText.setText(editableExercise.getName());
         }
         if (editableExercise instanceof ExistingEditableExercise) {
-            buttonCancel.setText(buttonDeleteExerciseText);
+            buttonCancel.setText(R.string.action_delete);
         }
         exerciseNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
