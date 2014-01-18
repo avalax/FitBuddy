@@ -9,10 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import de.avalax.fitbuddy.app.R;
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-@ContentView(R.layout.activity_view_pager)
 public class EditExerciseActivity extends RoboFragmentActivity {
     public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
@@ -23,6 +21,7 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_pager);
         init();
     }
 
