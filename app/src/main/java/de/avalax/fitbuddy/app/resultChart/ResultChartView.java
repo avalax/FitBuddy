@@ -13,25 +13,17 @@ public class ResultChartView extends LinearLayout {
 
     @Inject
     private LayoutInflater layoutInflater;
-    private Context context;
 
     public ResultChartView(Context context) {
         super(context);
-        init(context);
     }
 
     public ResultChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public ResultChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
-    }
-
-    private void init(Context context) {
-        this.context = context;
     }
 
     public void setExercise(Exercise exercise) {
@@ -42,7 +34,7 @@ public class ResultChartView extends LinearLayout {
         int setNumber = exercise.getSetNumber();
         for (int i = 0; i < exercise.getMaxSets(); i++) {
             exercise.setCurrentSet(i + 1);
-            ProgressbarView child = new ProgressbarView(context);
+            ProgressbarView child = new ProgressbarView(getContext());
             child.setLayoutParams(p);
             //TODO: move to ProgressbarView
             //TODO: move stylings to xml
