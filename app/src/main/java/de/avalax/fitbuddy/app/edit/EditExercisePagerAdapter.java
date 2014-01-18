@@ -1,28 +1,31 @@
 package de.avalax.fitbuddy.app.edit;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import de.avalax.fitbuddy.app.R;
-import roboguice.RoboGuice;
-import roboguice.inject.InjectResource;
 
 public class EditExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     private EditableExercise editableExercise;
-    @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
-    @InjectResource(R.string.edit_weight_title)
     private String editWeightTitle;
-    @InjectResource(R.string.edit_effort_title)
     private String editEffortTitle;
-    @InjectResource(R.string.edit_confirmation_title)
     private String editConfirmationTitle;
 
     public EditExercisePagerAdapter(FragmentManager fm, Context context, EditableExercise editableExercise) {
         super(fm);
-        RoboGuice.getInjector(context).injectMembersWithoutViews(this);
+        init(context, editableExercise);
+    }
+
+    private void init(Context context, EditableExercise editableExercise) {
+        Resources resources = context.getResources();
+        this.newExerciseName = resources.getString(R.string.new_exercise_name);
+        this.editWeightTitle = resources.getString(R.string.edit_weight_title);
+        this.editEffortTitle = resources.getString(R.string.edit_effort_title);
+        this.editConfirmationTitle = resources.getString(R.string.edit_confirmation_title);
         this.editableExercise = editableExercise;
     }
 

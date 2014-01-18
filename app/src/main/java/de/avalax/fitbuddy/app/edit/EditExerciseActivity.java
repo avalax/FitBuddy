@@ -10,7 +10,6 @@ import android.view.View;
 import de.avalax.fitbuddy.app.R;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.ContentView;
-import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_view_pager)
@@ -18,14 +17,18 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
     private ViewPager viewPager;
-    @InjectResource(R.string.new_exercise_name)
     private String newExerciseName;
     private EditableExercise editableExercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    private void init() {
         this.editableExercise = getEditableExercise();
+        this.newExerciseName = getResources().getString(R.string.new_exercise_name);
         viewPager.setAdapter(getEditExercisePagerAdapter());
     }
 

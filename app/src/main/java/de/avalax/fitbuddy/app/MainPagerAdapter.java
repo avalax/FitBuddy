@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,25 +10,28 @@ import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.RoboGuice;
-import roboguice.inject.InjectResource;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private static final int ADDITIONAL_FRAGMENTS = 3;
     @Inject
     private WorkoutSession workoutSession;
-    @InjectResource(R.string.title_result)
     private String resultTitle;
-    @InjectResource(R.string.title_start)
     private String startTitle;
-    @InjectResource(R.string.title_finish)
     private String finishTitle;
-    @InjectResource(R.string.title_exercise)
     private String exerciseTitle;
-
 
     public MainPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         RoboGuice.getInjector(context).injectMembersWithoutViews(this);
+        init(context);
+    }
+
+    private void init(Context context) {
+        Resources resources = context.getResources();
+        this.resultTitle = resources.getString(R.string.title_result);
+        this.startTitle = resources.getString(R.string.title_start);
+        this.finishTitle = resources.getString(R.string.title_finish);
+        this.exerciseTitle = resources.getString(R.string.title_exercise);
     }
 
     @Override

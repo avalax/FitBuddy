@@ -19,28 +19,25 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
 import roboguice.RoboGuice;
-import roboguice.inject.InjectResource;
 
 public class ResultChartFragment extends Fragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 0.8F;
     private static final float ALPHA_SELECTED = 0.3F;
-    @InjectResource(R.string.title_exercise)
-    private String exerciseTitle;
-    @InjectView(R.id.resultChartViewFlipper)
-    protected ViewFlipper resultChartViewFlipper;
     @Inject
     private WorkoutSession workoutSession;
-    @Inject
-    private LayoutInflater layoutInflater;
-    @Inject
-    private Context context;
+    @InjectView(R.id.resultChartViewFlipper)
+    protected ViewFlipper resultChartViewFlipper;
+    private String exerciseTitle;
+    private LayoutInflater inflater;
     private View.OnClickListener tendencyOnClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
+        this.inflater = inflater;
+        this.exerciseTitle = getResources().getString(R.string.title_exercise);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         ButterKnife.inject(this, view);
         return view;
@@ -81,6 +78,7 @@ public class ResultChartFragment extends Fragment {
     }
 
     private void setOnTouchListener() {
+        Context context = getActivity();
         resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context, resultChartViewFlipper, 1) {
             @Override
             protected void onFlingEvent(int moved) {
@@ -116,7 +114,7 @@ public class ResultChartFragment extends Fragment {
     private View createResultChartView(int exercisePosition) {
         Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercise(exercisePosition);
-        View resultChartView = layoutInflater.inflate(R.layout.view_exercise_result, null);
+        View resultChartView = inflater.inflate(R.layout.view_exercise_result, null);
 
         setExerciseToResultChart(resultChartView, exercise);
         registerOnClickListener(resultChartView, exercise);
