@@ -7,14 +7,16 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.avalax.fitbuddy.app.R;
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.inject.InjectView;
+
 
 public class EditExerciseActivity extends RoboFragmentActivity {
     public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
-    private ViewPager viewPager;
+    protected ViewPager viewPager;
     private String newExerciseName;
     private EditableExercise editableExercise;
 
@@ -22,6 +24,7 @@ public class EditExerciseActivity extends RoboFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
+        ButterKnife.inject(this);
         init();
     }
 
