@@ -8,16 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
-import roboguice.RoboGuice;
 
 public class EffortExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
-    @Inject
-    Context context;
     @InjectView(R.id.leftEnterValueBar)
     EnterValueBar leftEnterValueBar;
     @InjectView(R.id.rightEnterValueBar)
@@ -39,7 +35,6 @@ public class EffortExerciseFragment extends Fragment {
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         View view = inflater.inflate(R.layout.fragment_edit_effort, container, false);
         ButterKnife.inject(this, view);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         return view;
     }
 
@@ -47,6 +42,7 @@ public class EffortExerciseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setBars();
+        Context context = getActivity();
         leftEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, leftEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
