@@ -1,8 +1,9 @@
 package de.avalax.fitbuddy.app;
 
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
+
+import javax.inject.Inject;
 
 public class WorkoutSession {
     private Workout workout;

@@ -5,24 +5,21 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.RoboGuice;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private static final int ADDITIONAL_FRAGMENTS = 3;
-    @Inject
-    private WorkoutSession workoutSession;
+    protected WorkoutSession workoutSession;
     private String resultTitle;
     private String startTitle;
     private String finishTitle;
     private String exerciseTitle;
 
-    public MainPagerAdapter(FragmentManager fm, Context context) {
+    public MainPagerAdapter(FragmentManager fm, Context context, WorkoutSession workoutSession) {
         super(fm);
-        RoboGuice.getInjector(context).injectMembersWithoutViews(this);
+        this.workoutSession = workoutSession;
         init(context);
     }
 

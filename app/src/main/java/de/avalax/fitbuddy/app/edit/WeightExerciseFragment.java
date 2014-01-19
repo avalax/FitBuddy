@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.inject.Inject;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.swipeBar.EnterValueBar;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
-import roboguice.RoboGuice;
+
+import javax.inject.Inject;
 
 public class WeightExerciseFragment extends Fragment {
     private static final String EDITABLE_EXERCISE = "editableExercise";
@@ -40,7 +41,7 @@ public class WeightExerciseFragment extends Fragment {
         editableExercise = (EditableExercise) getArguments().getSerializable(EDITABLE_EXERCISE);
         View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
         ButterKnife.inject(this, view);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         return view;
     }
 

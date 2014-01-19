@@ -3,36 +3,38 @@ package de.avalax.fitbuddy.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.activity.RoboFragmentActivity;
 
-public class MainActivity extends RoboFragmentActivity {
+import javax.inject.Inject;
+
+public class MainActivity extends FragmentActivity {
     private static final int ADD_EXERCISE = 4;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @Inject
-    private WorkoutSession workoutSession;
+    protected WorkoutSession workoutSession;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
         ButterKnife.inject(this);
+        ((FitbuddyApplication) getApplication()).inject(this);
         init();
     }
 
     private void init() {
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext()));
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(),workoutSession));
         viewPager.setCurrentItem(1);
     }
 

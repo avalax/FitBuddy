@@ -2,18 +2,12 @@ package de.avalax.fitbuddy.app.resultChart;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
 public class ResultChartView extends LinearLayout {
-
-    @Inject
-    private LayoutInflater layoutInflater;
-
     public ResultChartView(Context context) {
         super(context);
     }

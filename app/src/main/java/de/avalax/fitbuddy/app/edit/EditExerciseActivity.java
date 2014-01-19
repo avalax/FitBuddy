@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.app.edit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
@@ -10,10 +11,9 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.app.R;
-import roboguice.activity.RoboFragmentActivity;
 
 
-public class EditExerciseActivity extends RoboFragmentActivity {
+public class EditExerciseActivity extends FragmentActivity {
     public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
     protected ViewPager viewPager;

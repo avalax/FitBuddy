@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.inject.Inject;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.app.edit.ExistingEditableExercise;
@@ -20,7 +19,8 @@ import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.RoboGuice;
+
+import javax.inject.Inject;
 
 public class CurrentExerciseFragment extends Fragment {
 
@@ -28,15 +28,14 @@ public class CurrentExerciseFragment extends Fragment {
     private static final int ADD_EXERCISE_BEFORE = 1;
     private static final int EDIT_EXERCISE = 2;
     private static final int ADD_EXERCISE_AFTER = 3;
-    @Inject
-    private WorkoutSession workoutSession;
     @InjectView(R.id.leftProgressBar)
     protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
     protected VerticalProgressbarView setsProgressBar;
+    @Inject
+    protected WorkoutSession workoutSession;
     private int exercisePosition;
     private ViewPager viewPager;
-
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
         CurrentExerciseFragment fragment = new CurrentExerciseFragment();
@@ -50,11 +49,11 @@ public class CurrentExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
         viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         ButterKnife.inject(this, view);
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         return view;
     }
 
@@ -105,7 +104,7 @@ public class CurrentExerciseFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, intent);
         Workout workout = workoutSession.getWorkout();
         if (resultCode == Activity.RESULT_OK) {
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE) ;
+            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE);
             Exercise exercise = editableExercise.createExercise();
             switch (requestCode) {
                 case ADD_EXERCISE_BEFORE:
@@ -130,7 +129,7 @@ public class CurrentExerciseFragment extends Fragment {
 
     private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
         //TODO: merge with WorkoutFragment - startEditExerciseActivity
-        Intent intent = new Intent(context,EditExerciseActivity.class);
+        Intent intent = new Intent(context, EditExerciseActivity.class);
         intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
         startActivityForResult(intent, requestCode);
     }

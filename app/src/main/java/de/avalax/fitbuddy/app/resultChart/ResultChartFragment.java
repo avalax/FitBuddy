@@ -11,21 +11,22 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.google.inject.Inject;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
-import roboguice.RoboGuice;
+
+import javax.inject.Inject;
 
 public class ResultChartFragment extends Fragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
     private static final float ALPHA_NOT_SELECTED = 0.8F;
     private static final float ALPHA_SELECTED = 0.3F;
     @Inject
-    private WorkoutSession workoutSession;
+    protected WorkoutSession workoutSession;
     @InjectView(R.id.resultChartViewFlipper)
     protected ViewFlipper resultChartViewFlipper;
     private String exerciseTitle;
@@ -38,8 +39,8 @@ public class ResultChartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
         this.inflater = inflater;
         this.exerciseTitle = getResources().getString(R.string.title_exercise);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         ButterKnife.inject(this, view);
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         return view;
     }
 

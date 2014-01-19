@@ -1,16 +1,13 @@
 package de.avalax.fitbuddy.app.swipeBar;
 
-import com.google.inject.Singleton;
-
 import java.util.HashMap;
 import java.util.Map;
 
-@Singleton
 public class WeightRaiseCalculator {
     private Map<Integer, Double> weightRaiseMapping;
 
     public WeightRaiseCalculator() {
-        weightRaiseMapping = new HashMap<Integer, Double>();
+        weightRaiseMapping = new HashMap<>();
         weightRaiseMapping.put(0, 0.0);
         weightRaiseMapping.put(1, 0.25);
         weightRaiseMapping.put(2, 0.5);
@@ -28,7 +25,7 @@ public class WeightRaiseCalculator {
     public double calculate(double currentWeightRaise, int modification) {
         int key = getKey(currentWeightRaise) + modification;
         if (key >= weightRaiseMapping.size()) {
-            return weightRaiseMapping.get(weightRaiseMapping.size()-1);
+            return weightRaiseMapping.get(weightRaiseMapping.size() - 1);
         }
         if (!weightRaiseMapping.containsKey(key)) {
             return weightRaiseMapping.get(0);

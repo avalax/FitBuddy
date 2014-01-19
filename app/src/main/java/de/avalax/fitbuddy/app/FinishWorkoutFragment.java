@@ -11,8 +11,8 @@ import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.google.inject.Inject;
-import roboguice.RoboGuice;
+
+import javax.inject.Inject;
 
 public class FinishWorkoutFragment extends Fragment {
     @InjectView(R.id.buttonFinishWorkout)
@@ -21,17 +21,16 @@ public class FinishWorkoutFragment extends Fragment {
     protected Button buttonSwitchWorkout;
     @InjectView(R.id.buttonAddWorkout)
     protected Button buttonAddWorkout;
-    @Inject
-    private WorkoutSession workoutSession;
     protected ViewPager viewPager;
-
+    @Inject
+    protected WorkoutSession workoutSession;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_finish, container, false);
         ButterKnife.inject(this, view);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         return view;
     }
