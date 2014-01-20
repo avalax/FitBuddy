@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom">
+
+<ImageView
+    android:id="@+id/minusTendencyImageView"
+    android:layout_width="0dip"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingBottom="4dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:src="@drawable/ic_action_tendency_negative" />
+
+<ImageView
+    android:id="@+id/neutralTendencyImageView"
+    android:layout_width="0dip"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingBottom="4dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:src="@drawable/ic_action_tendency_neutral" />
+
+<ImageView
+    android:id="@+id/plusTendencyImageView"
+    android:layout_width="0dip"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingBottom="4dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:src="@drawable/ic_action_tendency_positive" />
+</LinearLayout>
