@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,5 +41,8 @@ public class StartWorkoutFragment extends Fragment {
     @OnClick(R.id.buttonSwitchWorkout)
     protected void switchWorkout() {
         Log.d("onClick", "buttonSwitchWorkout");
+        //TODO: temp start of activity
+        Intent intent = new Intent(getActivity(), ManageWorkoutActivity.class);
+        startActivityForResult(intent, 0);
     }
 }

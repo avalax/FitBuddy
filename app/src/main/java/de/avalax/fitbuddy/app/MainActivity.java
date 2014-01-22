@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_view_pager);
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
+        getActionBar().hide();
         init();
     }
 

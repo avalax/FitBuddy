@@ -11,10 +11,12 @@ import javax.inject.Singleton;
 
 @Module(injects = {
         MainActivity.class,
+        ManageWorkoutActivity.class,
         CurrentExerciseFragment.class,
         ResultChartFragment.class,
         FinishWorkoutFragment.class,
-        WeightExerciseFragment.class
+        WeightExerciseFragment.class,
+        ManageWorkoutActivity.class
     })
 public class FitbuddyModule {
     @Provides

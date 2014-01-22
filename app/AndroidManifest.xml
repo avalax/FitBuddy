@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".edit.EditExerciseActivity" />
+        <activity android:name=".ManageWorkoutActivity" />
     </application>
 
 </manifest>
