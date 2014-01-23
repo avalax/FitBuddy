@@ -19,32 +19,40 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((FitbuddyApplication) getApplication()).inject(this);
+        initActionBar();
+        initListView();
+    }
+
+    private void initListView() {
+        //TODO: select from dropdown
+        Workout workout = workoutSession.getWorkout();
+        setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
+    }
+
+    private void initActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         //TODO: fill dropdown with workouts
-        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
                 android.R.layout.simple_spinner_dropdown_item);
-        actionBar.setListNavigationCallbacks(mSpinnerAdapter, this);
+        actionBar.setListNavigationCallbacks(spinnerAdapter, this);
         //TODO: select current workout
         actionBar.setSelectedNavigationItem(0);
-
-        //TODO: select from dropdown
-        Workout workout = workoutSession.getWorkout();
-        setListAdapter(WorkoutAdapter.newInstance(getApplication(),R.layout.row, workout));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        //TODO: dynamic data from workouts
         inflater.inflate(R.menu.manage_workout_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        //TODO: onNavigationItemSelected
         return true;
     }
-
 }
