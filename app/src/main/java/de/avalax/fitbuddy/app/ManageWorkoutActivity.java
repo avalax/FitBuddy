@@ -34,12 +34,21 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
-        //TODO: fill dropdown with workouts
-        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
-                android.R.layout.simple_spinner_dropdown_item);
+
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, getWorkouts());
+
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
         //TODO: select current workout
         actionBar.setSelectedNavigationItem(0);
+    }
+
+    private String[] getWorkouts() {
+        //TODO: fill dropdown with workouts
+        return new String[] {
+                "Workout A",
+                "Workout B",
+                "Workout C"};
     }
 
     @Override
