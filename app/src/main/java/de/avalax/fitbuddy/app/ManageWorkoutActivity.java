@@ -44,11 +44,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private String[] getWorkouts() {
-        //TODO: fill dropdown with workouts
-        return new String[] {
-                "Workout A",
-                "Workout B",
-                "Workout C"};
+        return workoutSession.getWorkoutlist();
     }
 
     @Override

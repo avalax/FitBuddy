@@ -23,4 +23,8 @@ public class WorkoutSession {
     public Workout getWorkout() {
         return workout;
     }
+
+    public String[] getWorkoutlist() {
+        return workoutDAO.getWorkoutlist();
+    }
 }

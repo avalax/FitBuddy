@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
 public class WorkoutSessionTest {
@@ -15,11 +16,13 @@ public class WorkoutSessionTest {
     WorkoutDAO workoutDAO;
 
     private Workout workout;
+    private String[] workouts;
 
     @Before
     public void setUp() throws Exception {
         workoutDAO = mock(WorkoutDAO.class);
         workout = mock(Workout.class);
+        workouts =  new String[]{};
         when(workoutDAO.load()).thenReturn(workout);
         workoutSession = new WorkoutSession(workoutDAO);
     }
@@ -40,5 +43,10 @@ public class WorkoutSessionTest {
         assertThat(workoutSession.getWorkout(), equalTo(newWorkout));
     }
 
+    @Test
+    public void testGetWorkoutlist_shouldReturnWorkoutFromWorkoutDAO() throws Exception {
+        when(workoutDAO.getWorkoutlist()).thenReturn(workouts);
 
+        assertThat(workoutSession.getWorkoutlist(),is(workouts));
+    }
 }

@@ -6,7 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -30,5 +32,12 @@ public class StaticWorkoutDAOTest {
         Workout workout = workoutDAO.load();
 
         assertThat(workout, instanceOf(Workout.class));
+    }
+
+    @Test
+    public void testGetWorkouts_shouldReturnAListOfWorkouts() throws Exception {
+        String[] workouts = workoutDAO.getWorkoutlist();
+
+        assertThat(workouts.length, is(not(0)));
     }
 }
