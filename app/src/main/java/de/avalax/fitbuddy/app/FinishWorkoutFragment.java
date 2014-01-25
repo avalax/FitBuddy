@@ -38,7 +38,9 @@ public class FinishWorkoutFragment extends Fragment {
     @OnClick(R.id.buttonFinishWorkout)
     protected void finishWorkout() {
         Log.d("onClick", "finishWorkout");
-        workoutSession.finishWorkout();
+        //TODO: show manage workout activity
+        workoutSession.saveWorkout();
+        workoutSession.switchWorkout(0);
         viewPager.getAdapter().notifyDataSetChanged();
         viewPager.invalidate();
         viewPager.setCurrentItem(1, true);

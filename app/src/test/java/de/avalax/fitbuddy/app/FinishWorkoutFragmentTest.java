@@ -50,7 +50,7 @@ public class FinishWorkoutFragmentTest {
         finishWorkoutFragment.finishWorkout();
 
         InOrder inOrder = inOrder(workoutSession, pagerAdapter,viewPager);
-        inOrder.verify(workoutSession).finishWorkout();
+        inOrder.verify(workoutSession).saveWorkout();
         inOrder.verify(pagerAdapter).notifyDataSetChanged();
         inOrder.verify(viewPager).invalidate();
         inOrder.verify(viewPager).setCurrentItem(1,true);

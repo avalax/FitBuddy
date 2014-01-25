@@ -17,6 +17,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 public class StaticWorkoutDAOTest {
     @InjectMocks
     private StaticWorkoutDAO workoutDAO;
+    private int anyPosition = 42;
 
     @Test
     public void testSave_shouldDoNothing() throws Exception {
@@ -29,7 +30,7 @@ public class StaticWorkoutDAOTest {
 
     @Test
     public void testLoad_shouldReturnAWorkout() throws Exception {
-        Workout workout = workoutDAO.load();
+        Workout workout = workoutDAO.load(anyPosition);
 
         assertThat(workout, instanceOf(Workout.class));
     }

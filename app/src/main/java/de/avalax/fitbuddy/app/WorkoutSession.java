@@ -10,14 +10,13 @@ public class WorkoutSession {
     private WorkoutDAO workoutDAO;
 
     @Inject
-    public WorkoutSession(WorkoutDAO workoutDAO) {
+    public WorkoutSession(WorkoutDAO workoutDAO, int lastPosition) {
         this.workoutDAO = workoutDAO;
-        this.workout = workoutDAO.load();
+        this.workout = workoutDAO.load(lastPosition);
     }
 
-    public void finishWorkout() {
+    public void saveWorkout() {
         workoutDAO.save(workout);
-        workout = workoutDAO.load();
     }
 
     public Workout getWorkout() {
@@ -26,5 +25,9 @@ public class WorkoutSession {
 
     public String[] getWorkoutlist() {
         return workoutDAO.getWorkoutlist();
+    }
+
+    public void switchWorkout(int position) {
+        workout = workoutDAO.load(position);
     }
 }

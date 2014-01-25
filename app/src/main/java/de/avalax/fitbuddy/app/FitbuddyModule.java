@@ -23,7 +23,8 @@ public class FitbuddyModule {
     @Singleton
     WorkoutSession provideWorkoutSession() {
         StaticWorkoutDAO workoutDAO = new StaticWorkoutDAO();
-        return new WorkoutSession(workoutDAO);
+        //TODO: lastPosition from localStorage
+        return new WorkoutSession(workoutDAO, 0);
     }
 
     @Provides

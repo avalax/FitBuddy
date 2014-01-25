@@ -23,8 +23,9 @@ public class WorkoutSessionTest {
         workoutDAO = mock(WorkoutDAO.class);
         workout = mock(Workout.class);
         workouts =  new String[]{};
-        when(workoutDAO.load()).thenReturn(workout);
-        workoutSession = new WorkoutSession(workoutDAO);
+        int lastPosition = 21;
+        when(workoutDAO.load(lastPosition)).thenReturn(workout);
+        workoutSession = new WorkoutSession(workoutDAO, lastPosition);
     }
 
     @Test
@@ -33,14 +34,10 @@ public class WorkoutSessionTest {
     }
 
     @Test
-    public void testFinishWorkout_shouldCallWorkoutDAOSaveAndLoadNewWorkout() throws Exception {
-        Workout newWorkout = mock(Workout.class);
-        when(workoutDAO.load()).thenReturn(newWorkout);
-
-        workoutSession.finishWorkout();
+    public void testSaveWorkout_shouldCallWorkoutDAOSaveAndLoadNewWorkout() throws Exception {
+        workoutSession.saveWorkout();
 
         verify(workoutDAO).save(workout);
-        assertThat(workoutSession.getWorkout(), equalTo(newWorkout));
     }
 
     @Test
@@ -48,5 +45,15 @@ public class WorkoutSessionTest {
         when(workoutDAO.getWorkoutlist()).thenReturn(workouts);
 
         assertThat(workoutSession.getWorkoutlist(),is(workouts));
+    }
+
+    @Test
+    public void testSwitchWorkout_shouldSwitchToWorkoutFromWorkoutDAO() throws Exception {
+        int position = 42;
+        Workout loadedWorkout = mock(Workout.class);
+        when(workoutDAO.load(position)).thenReturn(loadedWorkout);
+
+        workoutSession.switchWorkout(position);
+        assertThat(workoutSession.getWorkout(), is(loadedWorkout));
     }
 }
