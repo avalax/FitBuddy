@@ -24,7 +24,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void initListView() {
-        //TODO: select from dropdown
         Workout workout = workoutSession.getWorkout();
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
     }
@@ -57,7 +56,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        //TODO: onNavigationItemSelected
+        workoutSession.switchWorkout(itemPosition);
+        initListView();
         return true;
     }
 }
