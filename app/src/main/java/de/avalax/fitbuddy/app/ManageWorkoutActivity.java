@@ -3,8 +3,10 @@ package de.avalax.fitbuddy.app;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
@@ -58,6 +60,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         workoutSession.switchWorkout(itemPosition);
         initListView();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_save){
+            Log.d("onOptionsItemSelected","R.id.action_save");
+            setResult(RESULT_OK);
+            finish();
+        }
         return true;
     }
 }

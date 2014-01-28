@@ -41,7 +41,6 @@ public class StartWorkoutFragment extends Fragment {
     @OnClick(R.id.buttonSwitchWorkout)
     protected void switchWorkout() {
         Log.d("onClick", "buttonSwitchWorkout");
-        //TODO: temp start of activity
         Intent intent = new Intent(getActivity(), ManageWorkoutActivity.class);
         startActivityForResult(intent, 0);
     }

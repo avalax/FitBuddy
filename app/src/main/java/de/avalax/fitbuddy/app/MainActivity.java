@@ -10,15 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
-import de.avalax.fitbuddy.app.edit.EditableExercise;
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Workout;
 
 import javax.inject.Inject;
 
 public class MainActivity extends FragmentActivity {
-    private static final int ADD_EXERCISE = 4;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @Inject
@@ -58,14 +53,10 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (resultCode == Activity.RESULT_OK && requestCode == ADD_EXERCISE) {
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE);
-            Exercise exercise = editableExercise.createExercise();
-            Workout workout = workoutSession.getWorkout();
-            workout.setExercise(0, exercise);
+        if (resultCode == Activity.RESULT_OK) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
+            viewPager.setCurrentItem(1, true);
         }
     }
 }

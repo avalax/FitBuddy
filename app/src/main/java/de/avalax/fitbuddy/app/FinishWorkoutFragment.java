@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -38,12 +39,9 @@ public class FinishWorkoutFragment extends Fragment {
     @OnClick(R.id.buttonFinishWorkout)
     protected void finishWorkout() {
         Log.d("onClick", "finishWorkout");
-        //TODO: show manage workout activity
         workoutSession.saveWorkout();
-        workoutSession.switchWorkout(0);
-        viewPager.getAdapter().notifyDataSetChanged();
-        viewPager.invalidate();
-        viewPager.setCurrentItem(1, true);
+        Intent intent = new Intent(getActivity(), ManageWorkoutActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     @OnClick(R.id.buttonAddWorkout)
