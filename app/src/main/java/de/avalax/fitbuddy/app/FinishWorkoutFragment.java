@@ -41,7 +41,7 @@ public class FinishWorkoutFragment extends Fragment {
         Log.d("onClick", "finishWorkout");
         workoutSession.saveWorkout();
         Intent intent = new Intent(getActivity(), ManageWorkoutActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent,ManageWorkoutActivity.SAVE_WORKOUT);
     }
 
     @OnClick(R.id.buttonAddWorkout)

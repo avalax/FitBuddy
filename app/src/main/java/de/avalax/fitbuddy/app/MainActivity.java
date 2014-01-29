@@ -30,7 +30,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void init() {
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(),workoutSession));
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(), workoutSession));
         viewPager.setCurrentItem(1);
     }
 
@@ -53,7 +53,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (resultCode == Activity.RESULT_OK) {
+        if ((requestCode == ManageWorkoutActivity.SAVE_WORKOUT || requestCode == ManageWorkoutActivity.SWITCH_WORKOUT) &&
+                resultCode == Activity.RESULT_OK) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
             viewPager.setCurrentItem(1, true);

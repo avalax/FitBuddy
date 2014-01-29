@@ -15,6 +15,8 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import javax.inject.Inject;
 
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
+    public static final int SAVE_WORKOUT = 1;
+    public static final int SWITCH_WORKOUT = 2;
     @Inject
     protected WorkoutSession workoutSession;
 
@@ -65,8 +67,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save){
-            Log.d("onOptionsItemSelected","R.id.action_save");
+        if (item.getItemId() == R.id.action_save) {
+            Log.d("onOptionsItemSelected", "R.id.action_save");
             setResult(RESULT_OK);
             finish();
         }

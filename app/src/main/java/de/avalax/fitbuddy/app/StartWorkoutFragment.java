@@ -42,6 +42,6 @@ public class StartWorkoutFragment extends Fragment {
     protected void switchWorkout() {
         Log.d("onClick", "buttonSwitchWorkout");
         Intent intent = new Intent(getActivity(), ManageWorkoutActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
     }
 }
