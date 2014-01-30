@@ -3,7 +3,6 @@ package de.avalax.fitbuddy.app;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,7 +52,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        //TODO: dynamic data from workouts
         inflater.inflate(R.menu.manage_workout_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -68,7 +66,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            Log.d("onOptionsItemSelected", "R.id.action_save");
             setResult(RESULT_OK);
             finish();
         }
