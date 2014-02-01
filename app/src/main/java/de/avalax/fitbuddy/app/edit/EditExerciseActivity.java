@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 
 public class EditExerciseActivity extends FragmentActivity {
-    public static final String EXTRA_EDITABLE_EXERCISE = "editableExercise";
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     private String newExerciseName;
@@ -33,10 +32,16 @@ public class EditExerciseActivity extends FragmentActivity {
     private int requestCode;
     private int exercisePosition;
 
-    public static Intent newIntent(Context context, int exercisePosition, EditableExercise editableExercise, int requestCode) {
+    public static Intent newCreateExerciseIntent(Context context, int exercisePosition, int requestCode) {
         Intent intent = new Intent(context, EditExerciseActivity.class);
-        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
         intent.putExtra("requestCode", requestCode);
+        intent.putExtra("exercisePosition", exercisePosition);
+        return intent;
+    }
+
+    public static Intent newEditExerciseIntent(Context context, int exercisePosition) {
+        Intent intent = new Intent(context, EditExerciseActivity.class);
+        intent.putExtra("requestCode", CurrentExerciseFragment.EDIT_EXERCISE);
         intent.putExtra("exercisePosition", exercisePosition);
         return intent;
     }
@@ -47,6 +52,7 @@ public class EditExerciseActivity extends FragmentActivity {
         setContentView(R.layout.activity_view_pager);
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
+        getActionBar().hide();
         init();
     }
 
@@ -113,10 +119,32 @@ public class EditExerciseActivity extends FragmentActivity {
     }
 
     private EditableExercise getEditableExercise() {
-        return (EditableExercise) getIntent().getSerializableExtra(EXTRA_EDITABLE_EXERCISE);
+        if (requestCode == CurrentExerciseFragment.EDIT_EXERCISE) {
+            return createExistingEditableExercise();
+        }
+        else {
+            return createNewEditableExercise();
+        }
     }
 
     private EditExercisePagerAdapter getEditExercisePagerAdapter() {
         return new EditExercisePagerAdapter(getSupportFragmentManager(), getApplicationContext(), editableExercise);
+    }
+
+    private NewEditableExercise createNewEditableExercise() {
+        NewEditableExercise newEditableExercise = new NewEditableExercise();
+        //TODO: extract to resources / factory pattern
+        newEditableExercise.setWeight(2.5);
+        newEditableExercise.setWeightRaise(1.25);
+        newEditableExercise.setReps(12);
+        newEditableExercise.setSets(3);
+        return newEditableExercise;
+    }
+
+    private EditableExercise createExistingEditableExercise() {
+        //TODO: factory pattern
+        Workout workout = workoutSession.getWorkout();
+        Exercise exercise = workout.getExercise(exercisePosition);
+        return new ExistingEditableExercise(exercise);
     }
 }

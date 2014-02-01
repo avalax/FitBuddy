@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
-import de.avalax.fitbuddy.app.edit.EditableExercise;
-import de.avalax.fitbuddy.app.edit.ExistingEditableExercise;
-import de.avalax.fitbuddy.app.edit.NewEditableExercise;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -70,12 +67,14 @@ public class CurrentExerciseFragment extends Fragment {
 
             @Override
             protected void onLongPressedLeftEvent() {
-                startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE_BEFORE);
+                Intent intent = EditExerciseActivity.newCreateExerciseIntent(context, exercisePosition, ADD_EXERCISE_BEFORE);
+                startActivityForResult(intent, ADD_EXERCISE_BEFORE);
             }
 
             @Override
             protected void onLongPressedRightEvent() {
-                startEditExerciseActivity(context, createExistingEditableExercise(), EDIT_EXERCISE);
+                Intent intent = EditExerciseActivity.newEditExerciseIntent(context, exercisePosition);
+                startActivityForResult(intent, EDIT_EXERCISE);
             }
         });
 
@@ -87,12 +86,14 @@ public class CurrentExerciseFragment extends Fragment {
 
             @Override
             protected void onLongPressedLeftEvent() {
-                startEditExerciseActivity(context, createExistingEditableExercise(), EDIT_EXERCISE);
+                Intent intent = EditExerciseActivity.newEditExerciseIntent(context, exercisePosition);
+                startActivityForResult(intent, EDIT_EXERCISE);
             }
 
             @Override
             protected void onLongPressedRightEvent() {
-                startEditExerciseActivity(context, createNewEditableExercise(), ADD_EXERCISE_AFTER);
+                Intent intent = EditExerciseActivity.newCreateExerciseIntent(context, exercisePosition, ADD_EXERCISE_AFTER);
+                startActivityForResult(intent, ADD_EXERCISE_AFTER);
             }
         });
 
@@ -109,28 +110,6 @@ public class CurrentExerciseFragment extends Fragment {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
         }
-    }
-
-    private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
-        Intent intent = EditExerciseActivity.newIntent(context, exercisePosition, editableExercise, requestCode);
-        startActivityForResult(intent, requestCode);
-    }
-
-    private NewEditableExercise createNewEditableExercise() {
-        NewEditableExercise newEditableExercise = new NewEditableExercise();
-        //TODO: extract to resources / factory pattern
-        newEditableExercise.setWeight(2.5);
-        newEditableExercise.setWeightRaise(1.25);
-        newEditableExercise.setReps(12);
-        newEditableExercise.setSets(3);
-        return newEditableExercise;
-    }
-
-    private EditableExercise createExistingEditableExercise() {
-        //TODO: factory pattern
-        Workout workout = workoutSession.getWorkout();
-        Exercise exercise = workout.getExercise(exercisePosition);
-        return new ExistingEditableExercise(exercise);
     }
 
     private int getMaxMoveForSets(Workout workout) {
