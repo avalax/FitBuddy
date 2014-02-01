@@ -1,5 +1,7 @@
 package de.avalax.fitbuddy.app.edit;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.avalax.fitbuddy.app.CurrentExerciseFragment;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.WorkoutSession;
+import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.Workout;
+
+import javax.inject.Inject;
 
 
 public class EditExerciseActivity extends FragmentActivity {
@@ -19,16 +28,31 @@ public class EditExerciseActivity extends FragmentActivity {
     protected ViewPager viewPager;
     private String newExerciseName;
     private EditableExercise editableExercise;
+    @Inject
+    protected WorkoutSession workoutSession;
+    private int requestCode;
+    private int exercisePosition;
+
+    public static Intent newIntent(Context context, int exercisePosition, EditableExercise editableExercise, int requestCode) {
+        Intent intent = new Intent(context, EditExerciseActivity.class);
+        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
+        intent.putExtra("requestCode", requestCode);
+        intent.putExtra("exercisePosition", exercisePosition);
+        return intent;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
         ButterKnife.inject(this);
+        ((FitbuddyApplication) getApplication()).inject(this);
         init();
     }
 
     private void init() {
+        this.requestCode = (int) getIntent().getSerializableExtra("requestCode");
+        this.exercisePosition = (int) getIntent().getSerializableExtra("exercisePosition");
         this.editableExercise = getEditableExercise();
         this.newExerciseName = getResources().getString(R.string.new_exercise_name);
         viewPager.setAdapter(getEditExercisePagerAdapter());
@@ -52,22 +76,40 @@ public class EditExerciseActivity extends FragmentActivity {
     }
 
     public void clickEvent(View v) {
+        int resultCode = RESULT_CANCELED;
         if (v.getId() == R.id.buttonSave) {
             if (editableExercise.getName() == null) {
                 editableExercise.setName(newExerciseName);
             }
-            setResult(RESULT_OK, createIntentResult());
+            resultCode = RESULT_OK;
+            doEvent(resultCode);
         }
         if (v.getId() == R.id.buttonCancel) {
-            setResult(RESULT_FIRST_USER);
+            resultCode = RESULT_FIRST_USER;
+            doEvent(resultCode);
         }
+        setResult(resultCode);
         finish();
     }
 
-    private Intent createIntentResult() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(EXTRA_EDITABLE_EXERCISE, editableExercise);
-        return returnIntent;
+    private void doEvent(int resultCode) {
+        Workout workout = workoutSession.getWorkout();
+        if (resultCode == Activity.RESULT_OK) {
+            Exercise exercise = editableExercise.createExercise();
+            switch (requestCode) {
+                case CurrentExerciseFragment.ADD_EXERCISE_BEFORE:
+                    workout.addExerciseBefore(exercisePosition, exercise);
+                    break;
+                case CurrentExerciseFragment.ADD_EXERCISE_AFTER:
+                    workout.addExerciseAfter(exercisePosition, exercise);
+                    break;
+                case CurrentExerciseFragment.EDIT_EXERCISE:
+                    workout.setExercise(exercisePosition, exercise);
+                    break;
+            }
+        } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == CurrentExerciseFragment.EDIT_EXERCISE) {
+            workout.removeExercise(exercisePosition);
+        }
     }
 
     private EditableExercise getEditableExercise() {

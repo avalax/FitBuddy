@@ -25,9 +25,9 @@ import javax.inject.Inject;
 public class CurrentExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
-    private static final int ADD_EXERCISE_BEFORE = 1;
-    private static final int EDIT_EXERCISE = 2;
-    private static final int ADD_EXERCISE_AFTER = 3;
+    public static final int ADD_EXERCISE_BEFORE = 1;
+    public static final int EDIT_EXERCISE = 2;
+    public static final int ADD_EXERCISE_AFTER = 3;
     @InjectView(R.id.leftProgressBar)
     protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
@@ -102,35 +102,17 @@ public class CurrentExerciseFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        Workout workout = workoutSession.getWorkout();
         if (resultCode == Activity.RESULT_OK) {
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE);
-            Exercise exercise = editableExercise.createExercise();
-            switch (requestCode) {
-                case ADD_EXERCISE_BEFORE:
-                    workout.addExerciseBefore(exercisePosition, exercise);
-                    break;
-                case ADD_EXERCISE_AFTER:
-                    workout.addExerciseAfter(exercisePosition, exercise);
-                    break;
-                case EDIT_EXERCISE:
-                    workout.setExercise(exercisePosition, exercise);
-                    break;
-            }
             setViews(exercisePosition);
-            viewPager.getAdapter().notifyDataSetChanged();
-            viewPager.invalidate();
-        } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
-            workout.removeExercise(exercisePosition);
+        }
+        if (resultCode == Activity.RESULT_OK || resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
         }
     }
 
     private void startEditExerciseActivity(Context context, EditableExercise editableExercise, int requestCode) {
-        //TODO: merge with WorkoutFragment - startEditExerciseActivity
-        Intent intent = new Intent(context, EditExerciseActivity.class);
-        intent.putExtra(EditExerciseActivity.EXTRA_EDITABLE_EXERCISE, editableExercise);
+        Intent intent = EditExerciseActivity.newIntent(context, exercisePosition, editableExercise, requestCode);
         startActivityForResult(intent, requestCode);
     }
 
