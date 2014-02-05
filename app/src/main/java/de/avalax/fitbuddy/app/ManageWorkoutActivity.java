@@ -3,9 +3,9 @@ package de.avalax.fitbuddy.app;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
@@ -29,6 +29,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private void initListView() {
         Workout workout = workoutSession.getWorkout();
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
+        registerForContextMenu(getListView());
     }
 
     private void initActionBar() {
@@ -69,6 +70,27 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             setResult(RESULT_OK);
             finish();
         }
+        return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == getListView().getId()) {
+            AdapterView.AdapterContextMenuInfo info =
+                    (AdapterView.AdapterContextMenuInfo) menuInfo;
+            menu.setHeaderTitle(workoutSession.getWorkout().getName(info.position));
+            String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
+            for (int i = 0; i < menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.d("onCreateContextMenu", String.valueOf(info.position) + "_" + String.valueOf(item.getItemId()));
         return true;
     }
 }

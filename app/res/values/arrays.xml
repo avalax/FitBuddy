@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="actions_edit_exercise">
+        <item>edit selected</item>
+        <item>delete selected</item>
+        <item>add new exercise before</item>
+        <item>add new exercise behind</item>
+    </string-array>
+</resources>
