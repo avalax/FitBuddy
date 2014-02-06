@@ -9,19 +9,21 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 import javax.inject.Inject;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuItemClickListener {
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @InjectView(R.id.actionBarOverflow)
     protected ImageView actionBarOverflow;
     @Inject
     protected WorkoutSession workoutSession;
+    protected String actionSwitchWorkout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class MainActivity extends FragmentActivity {
 
     private void init() {
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(), workoutSession));
+        actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
     }
 
     @Override
@@ -54,6 +57,25 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @OnClick(R.id.actionBarOverflow)
+    protected void switchWorkout() {
+        PopupMenu popupMenu = new PopupMenu(this, actionBarOverflow);
+        popupMenu.inflate(R.menu.main_activity_action);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (actionSwitchWorkout.equals(item.getTitle())) {
+            workoutSession.saveWorkout();
+            Intent intent = new Intent(this, ManageWorkoutActivity.class);
+            startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
+        }
+        return true;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -63,12 +85,5 @@ public class MainActivity extends FragmentActivity {
             viewPager.invalidate();
             viewPager.setCurrentItem(0, true);
         }
-    }
-
-    @OnClick(R.id.actionBarOverflow)
-    protected void switchWorkout() {
-        workoutSession.saveWorkout();
-        Intent intent = new Intent(this, ManageWorkoutActivity.class);
-        startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
     }
 }

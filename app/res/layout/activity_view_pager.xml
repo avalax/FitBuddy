@@ -14,7 +14,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingRight="50dp"/>
+                android:paddingRight="44dp"/>
     </android.support.v4.view.ViewPager>
     <ImageView
             android:background="@drawable/activated_background_dark"
@@ -25,6 +25,6 @@
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_action_overflow_dark" android:layout_alignParentStart="false"
             android:layout_alignParentEnd="false" android:baselineAlignBottom="false"
-            android:paddingLeft="9dp" android:paddingRight="9dp" android:paddingTop="4dp"
+            android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="4dp"
             android:paddingBottom="4dp" android:clickable="true"/>
 </RelativeLayout>
