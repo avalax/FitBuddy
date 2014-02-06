@@ -10,11 +10,9 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
-    private static final int ADDITIONAL_FRAGMENTS = 3;
+    private static final int ADDITIONAL_FRAGMENTS = 1;
     protected WorkoutSession workoutSession;
     private String resultTitle;
-    private String startTitle;
-    private String finishTitle;
     private String exerciseTitle;
 
     public MainPagerAdapter(FragmentManager fm, Context context, WorkoutSession workoutSession) {
@@ -26,22 +24,16 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private void init(Context context) {
         Resources resources = context.getResources();
         this.resultTitle = resources.getString(R.string.title_result);
-        this.startTitle = resources.getString(R.string.title_start);
-        this.finishTitle = resources.getString(R.string.title_finish);
         this.exerciseTitle = resources.getString(R.string.title_exercise);
     }
 
     @Override
     public Fragment getItem(int position) {
         Workout workout = workoutSession.getWorkout();
-        if (position == 0 || workout.getExerciseCount() == 0) {
-            return new StartWorkoutFragment();
-        } else if (getExercisePosition(position) < workout.getExerciseCount()) {
-            return CurrentExerciseFragment.newInstance(getExercisePosition(position));
-        } else if (getExercisePosition(position) - workout.getExerciseCount() == 0) {
+        if (position - workout.getExerciseCount() == 0) {
             return new ResultChartFragment();
         } else {
-            return new FinishWorkoutFragment();
+            return CurrentExerciseFragment.newInstance(position);
         }
     }
 
@@ -54,26 +46,17 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         Workout workout = workoutSession.getWorkout();
-        if (position == 0) {
-            return startTitle;
-        } else if (getExercisePosition(position) < workout.getExerciseCount()) {
-            Exercise currentExercise = workout.getExercise(getExercisePosition(position));
-            return String.format(exerciseTitle, currentExercise.getName(), currentExercise.getWeight());
-        } else if (workout.getExerciseCount() == 0) {
-            return startTitle;
-        } else if (getExercisePosition(position) - workout.getExerciseCount() == 0) {
+        if (position - workout.getExerciseCount() == 0) {
             return resultTitle;
-        } else {
-            return finishTitle;
+        }
+        else {
+            Exercise currentExercise = workout.getExercise(position);
+            return String.format(exerciseTitle, currentExercise.getName(), currentExercise.getWeight());
         }
     }
 
     @Override
     public int getItemPosition(Object item) {
         return POSITION_NONE;
-    }
-
-    private int getExercisePosition(int position) {
-        return position - 1;
     }
 }

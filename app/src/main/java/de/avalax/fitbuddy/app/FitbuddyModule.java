@@ -16,7 +16,6 @@ import javax.inject.Singleton;
         EditExerciseActivity.class,
         CurrentExerciseFragment.class,
         ResultChartFragment.class,
-        FinishWorkoutFragment.class,
         WeightExerciseFragment.class
     })
 public class FitbuddyModule {

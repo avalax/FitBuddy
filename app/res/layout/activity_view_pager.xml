@@ -20,7 +20,7 @@
             android:background="@drawable/activated_background_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:id="@+id/actionBarOverflow"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_action_overflow_dark" android:layout_alignParentStart="false"

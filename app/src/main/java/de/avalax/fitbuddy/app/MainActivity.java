@@ -8,14 +8,18 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 import javax.inject.Inject;
 
 public class MainActivity extends FragmentActivity {
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
+    @InjectView(R.id.actionBarOverflow)
+    protected ImageView actionBarOverflow;
     @Inject
     protected WorkoutSession workoutSession;
 
@@ -31,7 +35,6 @@ public class MainActivity extends FragmentActivity {
 
     private void init() {
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(), workoutSession));
-        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -58,7 +61,14 @@ public class MainActivity extends FragmentActivity {
                 resultCode == Activity.RESULT_OK) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
-            viewPager.setCurrentItem(1, true);
+            viewPager.setCurrentItem(0, true);
         }
+    }
+
+    @OnClick(R.id.actionBarOverflow)
+    protected void switchWorkout() {
+        workoutSession.saveWorkout();
+        Intent intent = new Intent(this, ManageWorkoutActivity.class);
+        startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
     }
 }
