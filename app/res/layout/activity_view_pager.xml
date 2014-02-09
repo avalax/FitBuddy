@@ -23,7 +23,7 @@
             android:id="@+id/actionBarOverflow"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/ic_action_overflow_dark" android:layout_alignParentStart="false"
+            android:src="@drawable/ic_action_overflow" android:layout_alignParentStart="false"
             android:layout_alignParentEnd="false" android:baselineAlignBottom="false"
             android:paddingLeft="6dp" android:paddingRight="6dp" android:paddingTop="4dp"
             android:paddingBottom="4dp" android:clickable="true"/>
