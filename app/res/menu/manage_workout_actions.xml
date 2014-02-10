@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_add_exercise"
+        android:id="@+id/action_add_workout"
         android:icon="@drawable/ic_action_new_exercise"
         android:showAsAction="ifRoom"
         android:title="new_exercise" />
     <item
-        android:id="@+id/action_save"
+        android:id="@+id/action_select_exercise"
         android:icon="@drawable/ic_action_accept"
         android:showAsAction="ifRoom"
         android:title="speichern" />

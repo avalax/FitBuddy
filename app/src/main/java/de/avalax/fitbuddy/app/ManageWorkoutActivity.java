@@ -66,9 +66,14 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
+        if (item.getItemId() == R.id.action_select_exercise) {
             setResult(RESULT_OK);
             finish();
+        } else if (item.getItemId() == android.R.id.home) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (item.getItemId() == R.id.action_add_workout) {
+            Log.d("onOptionsItemSelected","action_add_workout");
         }
         return true;
     }
@@ -90,17 +95,15 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int exercisePosition = info.position;
         if (getString(R.string.action_exercise_edit).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "edit "+ String.valueOf(info.position));
-        }
-        else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "delete "+ String.valueOf(info.position));
-        }
-        else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "add before "+ String.valueOf(info.position));
-        }
-        else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "add behind "+ String.valueOf(info.position));
+            Log.d("onCreateContextMenu", "edit " + String.valueOf(exercisePosition));
+        } else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "delete " + String.valueOf(exercisePosition));
+        } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "add before " + String.valueOf(exercisePosition));
+        } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "add behind " + String.valueOf(exercisePosition));
         }
         return true;
     }
