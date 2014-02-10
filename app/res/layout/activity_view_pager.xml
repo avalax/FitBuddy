@@ -17,7 +17,7 @@
                 android:paddingRight="44dp"/>
     </android.support.v4.view.ViewPager>
     <ImageView
-            android:background="@drawable/activated_background_dark"
+            android:background="@drawable/activated_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/actionBarOverflow"
