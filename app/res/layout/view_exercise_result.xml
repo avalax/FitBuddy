@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pager_background"
     android:orientation="vertical">
 
     <de.avalax.fitbuddy.app.resultChart.ResultChartView
@@ -21,7 +20,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="@dimen/padding_result_bar_text"
         android:text="@string/edit_label_default_text"
-        android:textColor="@color/main_text"
-        android:textSize="@dimen/font_size" />
+        android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textColor="@color/main_text" />
 
 </FrameLayout>

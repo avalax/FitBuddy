@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pager_background">#333333</color>
     <color name="main_text">#FFFFFF</color>
     <color name="primary_background">#33B5E5</color>
     <color name="primary_progressbar">#0099CC</color>

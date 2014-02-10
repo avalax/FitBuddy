@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/toptext"
-            android:textSize="@dimen/font_size"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large"
             android:textColor="@color/primary_progressbar"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
@@ -24,8 +24,7 @@
         <TextView
             android:drawableLeft="@drawable/ic_action_weight"
             android:layout_width="fill_parent"
-            android:textSize="@dimen/font_size"
-            android:textColor="@color/secondary_progressbar"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
             android:layout_height="0dip"
             android:layout_weight="1"
             android:id="@+id/bottomtext"
