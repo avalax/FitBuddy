@@ -26,4 +26,8 @@
     <string name="action_delete">Delete</string>
     <string name="action_cancel">Cancel</string>
     <string name="pager_overflow">show actions</string>
+    <string name="action_exercise_edit">edit selected</string>
+    <string name="action_exercise_delete">delete selected</string>
+    <string name="action_exercise_add_before_selected">add new exercise before</string>
+    <string name="action_exercise_add_behind_selected">add new exercise behind</string>
 </resources>

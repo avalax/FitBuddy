@@ -44,7 +44,7 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
         ImageView iv = (ImageView) v.findViewById(R.id.buttonOverflow);
 
         tt.setText(o.getName());
-        bt.setText(String.valueOf(o.getMaxSets()));
+        bt.setText(String.valueOf(o.getWeight()));
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

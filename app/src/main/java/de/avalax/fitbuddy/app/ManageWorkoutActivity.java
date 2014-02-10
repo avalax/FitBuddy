@@ -90,7 +90,18 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Log.d("onCreateContextMenu", String.valueOf(info.position) + "_" + String.valueOf(item.getItemId()));
+        if (getString(R.string.action_exercise_edit).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "edit "+ String.valueOf(info.position));
+        }
+        else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "delete "+ String.valueOf(info.position));
+        }
+        else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "add before "+ String.valueOf(info.position));
+        }
+        else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
+            Log.d("onCreateContextMenu", "add behind "+ String.valueOf(info.position));
+        }
         return true;
     }
 }
