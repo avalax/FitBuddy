@@ -1,19 +1,26 @@
 package de.avalax.fitbuddy.app;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
+import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
 import de.avalax.fitbuddy.core.workout.Workout;
 
 import javax.inject.Inject;
 
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
+    public static final int ADD_EXERCISE_BEFORE = 1;
+    public static final int EDIT_EXERCISE = 2;
+    public static final int ADD_EXERCISE_AFTER = 3;
+
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
     @Inject
@@ -97,14 +104,26 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int exercisePosition = info.position;
         if (getString(R.string.action_exercise_edit).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "edit " + String.valueOf(exercisePosition));
+            Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercisePosition);
+            startActivityForResult(intent, EDIT_EXERCISE);
         } else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "delete " + String.valueOf(exercisePosition));
+            workoutSession.getWorkout().removeExercise(exercisePosition);
+            initListView();
         } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "add before " + String.valueOf(exercisePosition));
+            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, exercisePosition, ADD_EXERCISE_BEFORE);
+            startActivityForResult(intent, ADD_EXERCISE_BEFORE);
         } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            Log.d("onCreateContextMenu", "add behind " + String.valueOf(exercisePosition));
+            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, exercisePosition, ADD_EXERCISE_AFTER);
+            startActivityForResult(intent, ADD_EXERCISE_AFTER);
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == Activity.RESULT_OK) {
+            initListView();
+        }
     }
 }
