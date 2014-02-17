@@ -56,28 +56,12 @@ public class WeightExerciseFragment extends Fragment {
             protected void onFlingEvent(int moved) {
                 changeWeight(moved);
             }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
-            }
         });
 
         rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(activity, rightEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeWeightRaise(moved);
-            }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
             }
         });
     }

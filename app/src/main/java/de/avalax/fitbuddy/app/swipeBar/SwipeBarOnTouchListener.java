@@ -20,16 +20,6 @@ public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
             public void onFlingEvent(int moved) {
                 touchListener.onFlingEvent(moved);
             }
-
-            @Override
-            public void onLongPressedLeftEvent() {
-                touchListener.onLongPressedLeftEvent();
-            }
-
-            @Override
-            public void onLongPressedRightEvent() {
-                touchListener.onLongPressedRightEvent();
-            }
         });
     }
 
@@ -40,8 +30,4 @@ public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
     }
 
     protected abstract void onFlingEvent(int moved);
-
-    protected abstract void onLongPressedLeftEvent();
-
-    protected abstract void onLongPressedRightEvent();
 }

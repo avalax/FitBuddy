@@ -94,14 +94,6 @@ public class ResultChartFragment extends Fragment {
                     resultChartViewFlipper.showPrevious();
                 }
             }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
-            }
         });
     }
 

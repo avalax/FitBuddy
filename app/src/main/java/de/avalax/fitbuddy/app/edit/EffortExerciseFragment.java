@@ -48,28 +48,12 @@ public class EffortExerciseFragment extends Fragment {
             protected void onFlingEvent(int moved) {
                 changeReps(moved);
             }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
-            }
         });
 
         rightEnterValueBar.setOnTouchListener(new SwipeBarOnTouchListener(context, rightEnterValueBar, 2) {
             @Override
             protected void onFlingEvent(int moved) {
                 changeSets(moved);
-            }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
             }
         });
     }

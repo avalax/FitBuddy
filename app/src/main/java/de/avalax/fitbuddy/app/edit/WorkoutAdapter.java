@@ -17,12 +17,12 @@ import java.util.List;
 public class WorkoutAdapter extends ArrayAdapter<Exercise> {
     private final List<Exercise> items;
 
-    public static WorkoutAdapter newInstance(Context context, int textViewResourceId,Workout workout) {
+    public static WorkoutAdapter newInstance(Context context, int textViewResourceId, Workout workout) {
         List<Exercise> items = new ArrayList<>();
-        for(int i=0;i<workout.getExerciseCount();i++) {
+        for (int i = 0; i < workout.getExerciseCount(); i++) {
             items.add(workout.getExercise(i));
         }
-        return new WorkoutAdapter(context,textViewResourceId,items);
+        return new WorkoutAdapter(context, textViewResourceId, items);
     }
 
     public WorkoutAdapter(Context context, int textViewResourceId, List<Exercise> items) {

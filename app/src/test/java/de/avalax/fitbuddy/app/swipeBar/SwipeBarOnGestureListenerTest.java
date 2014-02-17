@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -21,8 +20,6 @@ public class SwipeBarOnGestureListenerTest {
     private static final Integer PROGRESS_BAR_HEIGHT = 240;
     private static final Integer PROGRESS_BAR_WIDTH = 300;
     private int onFlingEventMoved;
-    private boolean hasLongPressedLeft;
-    private boolean hasLongPressedRight;
 
     private SwipeBarOnGestureListener swipeBarOnGestureListener;
 
@@ -35,16 +32,6 @@ public class SwipeBarOnGestureListenerTest {
             @Override
             public void onFlingEvent(int moved) {
                 onFlingEventMoved = moved;
-            }
-
-            @Override
-            public void onLongPressedLeftEvent() {
-                hasLongPressedLeft = true;
-            }
-
-            @Override
-            public void onLongPressedRightEvent() {
-                hasLongPressedRight = true;
             }
         };
     }
@@ -146,40 +133,6 @@ public class SwipeBarOnGestureListenerTest {
         swipeBarOnGestureListener.onSingleTapUp(motionEvent);
 
         assertThat(onFlingEventMoved, equalTo(1));
-    }
-
-    @Test
-         public void testOnLongPress_shouldPressOnTheLeft() throws Exception {
-        swipeBarOnGestureListener.onLongPress(getMotionEvent(0, 0));
-
-        assertThat(hasLongPressedLeft, is(Boolean.TRUE));
-    }
-
-    @Test
-    public void testOnLongPress_shouldPressOnTheLeftNearRight() throws Exception {
-        swipeBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH/2, 0));
-
-        assertThat(hasLongPressedLeft, is(Boolean.TRUE));
-    }
-
-    @Test
-    public void testOnLongPress_shouldPressOnTheRightNearLeft() throws Exception {
-        swipeBarOnGestureListener.onLongPress(getMotionEvent((PROGRESS_BAR_WIDTH/2)+1, 0));
-
-        assertThat(hasLongPressedRight, is(Boolean.TRUE));
-    }
-
-    @Test
-    public void testOnLongPress_shouldPressOnTheRight() throws Exception {
-        swipeBarOnGestureListener.onLongPress(getMotionEvent(PROGRESS_BAR_WIDTH, 0));
-
-        assertThat(hasLongPressedRight, is(Boolean.TRUE));
-    }
-
-    private MotionEvent getMotionEvent(float x, float y) {
-        MotionEvent e1 = getMotionEvent(y);
-        when(e1.getX()).thenReturn(x);
-        return e1;
     }
 
     private MotionEvent getMotionEvent(float y) {

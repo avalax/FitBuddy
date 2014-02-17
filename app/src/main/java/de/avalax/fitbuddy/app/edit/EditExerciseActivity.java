@@ -12,10 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.app.CurrentExerciseFragment;
-import de.avalax.fitbuddy.app.FitbuddyApplication;
-import de.avalax.fitbuddy.app.R;
-import de.avalax.fitbuddy.app.WorkoutSession;
+import de.avalax.fitbuddy.app.*;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 
@@ -41,7 +38,7 @@ public class EditExerciseActivity extends FragmentActivity {
 
     public static Intent newEditExerciseIntent(Context context, int exercisePosition) {
         Intent intent = new Intent(context, EditExerciseActivity.class);
-        intent.putExtra("requestCode", CurrentExerciseFragment.EDIT_EXERCISE);
+        intent.putExtra("requestCode", ManageWorkoutActivity.EDIT_EXERCISE);
         intent.putExtra("exercisePosition", exercisePosition);
         return intent;
     }
@@ -103,23 +100,23 @@ public class EditExerciseActivity extends FragmentActivity {
         if (resultCode == Activity.RESULT_OK) {
             Exercise exercise = editableExercise.createExercise();
             switch (requestCode) {
-                case CurrentExerciseFragment.ADD_EXERCISE_BEFORE:
+                case ManageWorkoutActivity.ADD_EXERCISE_BEFORE:
                     workout.addExerciseBefore(exercisePosition, exercise);
                     break;
-                case CurrentExerciseFragment.ADD_EXERCISE_AFTER:
+                case ManageWorkoutActivity.ADD_EXERCISE_AFTER:
                     workout.addExerciseAfter(exercisePosition, exercise);
                     break;
-                case CurrentExerciseFragment.EDIT_EXERCISE:
+                case ManageWorkoutActivity.EDIT_EXERCISE:
                     workout.setExercise(exercisePosition, exercise);
                     break;
             }
-        } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == CurrentExerciseFragment.EDIT_EXERCISE) {
+        } else if (resultCode == Activity.RESULT_FIRST_USER && requestCode == ManageWorkoutActivity.EDIT_EXERCISE) {
             workout.removeExercise(exercisePosition);
         }
     }
 
     private EditableExercise getEditableExercise() {
-        if (requestCode == CurrentExerciseFragment.EDIT_EXERCISE) {
+        if (requestCode == ManageWorkoutActivity.EDIT_EXERCISE) {
             return createExistingEditableExercise();
         }
         else {

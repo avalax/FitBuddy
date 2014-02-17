@@ -1,8 +1,6 @@
 package de.avalax.fitbuddy.app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.app.swipeBar.VerticalProgressbarView;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -22,9 +19,6 @@ import javax.inject.Inject;
 public class CurrentExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
-    public static final int ADD_EXERCISE_BEFORE = 1;
-    public static final int EDIT_EXERCISE = 2;
-    public static final int ADD_EXERCISE_AFTER = 3;
     @InjectView(R.id.leftProgressBar)
     protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
@@ -64,18 +58,6 @@ public class CurrentExerciseFragment extends Fragment {
             public void onFlingEvent(int moved) {
                 changeReps(moved);
             }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-                Intent intent = EditExerciseActivity.newCreateExerciseIntent(context, exercisePosition, ADD_EXERCISE_BEFORE);
-                startActivityForResult(intent, ADD_EXERCISE_BEFORE);
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
-                Intent intent = EditExerciseActivity.newEditExerciseIntent(context, exercisePosition);
-                startActivityForResult(intent, EDIT_EXERCISE);
-            }
         });
 
         setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(workout)) {
@@ -83,33 +65,9 @@ public class CurrentExerciseFragment extends Fragment {
             public void onFlingEvent(int moved) {
                 changeSets(moved);
             }
-
-            @Override
-            protected void onLongPressedLeftEvent() {
-                Intent intent = EditExerciseActivity.newEditExerciseIntent(context, exercisePosition);
-                startActivityForResult(intent, EDIT_EXERCISE);
-            }
-
-            @Override
-            protected void onLongPressedRightEvent() {
-                Intent intent = EditExerciseActivity.newCreateExerciseIntent(context, exercisePosition, ADD_EXERCISE_AFTER);
-                startActivityForResult(intent, ADD_EXERCISE_AFTER);
-            }
         });
 
         setViews(exercisePosition);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (resultCode == Activity.RESULT_OK) {
-            setViews(exercisePosition);
-        }
-        if (resultCode == Activity.RESULT_OK || resultCode == Activity.RESULT_FIRST_USER && requestCode == EDIT_EXERCISE) {
-            viewPager.getAdapter().notifyDataSetChanged();
-            viewPager.invalidate();
-        }
     }
 
     private int getMaxMoveForSets(Workout workout) {
