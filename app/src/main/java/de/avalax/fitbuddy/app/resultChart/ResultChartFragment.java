@@ -83,12 +83,12 @@ public class ResultChartFragment extends Fragment {
         resultChartViewFlipper.setOnTouchListener(new SwipeBarOnTouchListener(context, resultChartViewFlipper, 1) {
             @Override
             protected void onFlingEvent(int moved) {
-                if (moved > 0) {
+                if (moved > 0 && resultChartViewFlipper.getDisplayedChild() +1 < workoutSession.getWorkout().getExerciseCount()) {
                     resultChartViewFlipper.setInAnimation(getActivity(), R.anim.out_to_top);
                     resultChartViewFlipper.setOutAnimation(getActivity(), R.anim.in_from_bottom);
                     resultChartViewFlipper.showNext();
                 }
-                if (moved < 0) {
+                if (moved < 0 && resultChartViewFlipper.getDisplayedChild() > 0) {
                     resultChartViewFlipper.setInAnimation(getActivity(), R.anim.out_to_bottom);
                     resultChartViewFlipper.setOutAnimation(getActivity(), R.anim.in_from_top);
                     resultChartViewFlipper.showPrevious();
