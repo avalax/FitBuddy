@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Holo" />
 
     <style name="PagerTitleStrip">
-        <item name="android:textAppearance">@android:style/TextAppearance.Holo.Large</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Holo.Medium</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingRight">44dp</item>
@@ -13,8 +13,8 @@
     <style name="PagerOverflow">
         <item name="android:paddingLeft">7dp</item>
         <item name="android:paddingRight">7dp</item>
-        <item name="android:paddingTop">7dp</item>
-        <item name="android:paddingBottom">7dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="android:background">@drawable/activated_background</item>
         <item name="android:src">@drawable/ic_action_overflow</item>
     </style>

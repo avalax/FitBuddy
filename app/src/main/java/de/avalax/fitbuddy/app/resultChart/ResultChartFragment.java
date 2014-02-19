@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.Workout;
 
 import javax.inject.Inject;
+import java.text.DecimalFormat;
 
 public class ResultChartFragment extends Fragment {
     private static final String RESULT_CHART_DISPLAYED_CHILD = "TAB_NUMBER";
@@ -32,13 +33,15 @@ public class ResultChartFragment extends Fragment {
     private String exerciseTitle;
     private LayoutInflater inflater;
     private View.OnClickListener tendencyOnClickListener;
+    DecimalFormat decimalFormat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
         this.inflater = inflater;
-        this.exerciseTitle = getResources().getString(R.string.title_exercise);
+        this.exerciseTitle = getResources().getString(R.string.title_exercise_with_weight);
+        this.decimalFormat = new DecimalFormat("###.#");
         ButterKnife.inject(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         return view;
@@ -151,9 +154,18 @@ public class ResultChartFragment extends Fragment {
         Tendency tendency = exercise.getTendency();
         String exerciseName = exercise.getName();
         //TODO: textformating
-        String text = String.format(exerciseTitle, exerciseName, exercise.getWeightRaise(tendency));
 
-        editText.setText(text);
+        double weightRaise = exercise.getWeightRaise(tendency);
+
+        editText.setText(getWeightText(exercise, weightRaise));
+    }
+
+    private CharSequence getWeightText(Exercise exercise, double weight) {
+        if (weight > 0) {
+            return String.format(exerciseTitle, exercise.getName(), decimalFormat.format(weight));
+        } else {
+            return exercise.getName();
+        }
     }
 
     private void updateTendencyImageViews(View resultChartView, Exercise exercise) {

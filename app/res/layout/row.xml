@@ -17,8 +17,10 @@
             android:textColor="@color/primary_progressbar"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
+            android:lines="1"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:ellipsize="end"
             android:text="@string/new_exercise_name"/>
 
         <TextView
