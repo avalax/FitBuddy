@@ -20,7 +20,9 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="@dimen/padding_result_bar_text"
         android:text="@string/edit_label_default_text"
-        android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:lines="1"
+        android:ellipsize="end"
         android:textColor="@color/main_text" />
 
 </FrameLayout>
