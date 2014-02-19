@@ -25,7 +25,7 @@ public class StaticWorkoutDAO implements WorkoutDAO {
             exercises.add(new BasicExercise("Bankdrücken", createExerciseWithThreeSets(70, 12), 5));
             exercises.add(new BasicExercise("Schrägbankdrücken", createExerciseWithThreeSets(40, 10), 5));
             exercises.add(new BasicExercise("Butterfly", createExerciseWithThreeSets(60, 15), 5));
-            exercises.add(new BasicExercise("Liegestüze", createExerciseWithThreeSets(0, 30), 12.5));
+            exercises.add(new BasicExercise("Liegestütze", createExerciseWithThreeSets(0, 30), 12.5));
             exercises.add(new BasicExercise("Lat-Ziehen hinter den Nacken", createExerciseWithThreeSets(50, 12), 5));
             exercises.add(new BasicExercise("Hochziehen der Langhantel mit enger Handstellung", createExerciseWithThreeSets(10, 12), 2.5));
             exercises.add(new BasicExercise("Klimmzüge", createExerciseWithThreeSets(60, 8), 5));
