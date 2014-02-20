@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app;
 
+import android.content.SharedPreferences;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
@@ -18,13 +19,18 @@ import javax.inject.Singleton;
         CurrentExerciseFragment.class,
         ResultChartFragment.class,
         WeightExerciseFragment.class
-    })
+})
 public class FitbuddyModule {
+    private final SharedPreferences sharedPreferences;
+
+    public FitbuddyModule(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+    }
+
     @Provides
     @Singleton
     WorkoutSession provideWorkoutSession(WorkoutDAO workoutDAO) {
-        //TODO: lastPosition from localStorage
-        return new WorkoutSession(workoutDAO, 0);
+        return new WorkoutSession(sharedPreferences, workoutDAO);
     }
 
     @Provides

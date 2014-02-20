@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import dagger.ObjectGraph;
 
 public class FitbuddyApplication extends Application {
@@ -8,7 +10,8 @@ public class FitbuddyApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        graph = ObjectGraph.create(new FitbuddyModule());
+        SharedPreferences sharedPreferences = getSharedPreferences("de.avalax.fitbuddy", Context.MODE_PRIVATE);
+        graph = ObjectGraph.create(new FitbuddyModule(sharedPreferences));
     }
 
     public void inject(Object object) {

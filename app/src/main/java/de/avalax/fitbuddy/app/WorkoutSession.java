@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app;
 
+import android.content.SharedPreferences;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
@@ -7,12 +8,15 @@ import javax.inject.Inject;
 
 public class WorkoutSession {
     private Workout workout;
+    private SharedPreferences sharedPreferences;
     private WorkoutDAO workoutDAO;
 
     @Inject
-    public WorkoutSession(WorkoutDAO workoutDAO, int lastPosition) {
+    public WorkoutSession(SharedPreferences sharedPreferences, WorkoutDAO workoutDAO) {
+        this.sharedPreferences = sharedPreferences;
         this.workoutDAO = workoutDAO;
-        this.workout = workoutDAO.load(lastPosition);
+        int workoutPosition = sharedPreferences.getInt("lastWorkoutPosition", 0);
+        this.workout = workoutDAO.load(workoutPosition);
     }
 
     public void saveWorkout() {
