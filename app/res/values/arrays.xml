@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="actions_edit_exercise">
-        <item>@string/action_exercise_edit</item>
         <item>@string/action_exercise_delete</item>
         <item>@string/action_exercise_add_before_selected</item>
         <item>@string/action_exercise_add_behind_selected</item>

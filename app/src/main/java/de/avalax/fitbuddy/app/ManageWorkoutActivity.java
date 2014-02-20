@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
@@ -66,6 +67,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = EditExerciseActivity.newEditExerciseIntent(this, position);
+        startActivityForResult(intent, EDIT_EXERCISE);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.manage_workout_actions, menu);
@@ -113,10 +120,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int exercisePosition = info.position;
-        if (getString(R.string.action_exercise_edit).equals(item.getTitle())) {
-            Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercisePosition);
-            startActivityForResult(intent, EDIT_EXERCISE);
-        } else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
+        if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
             workout.removeExercise(exercisePosition);
             initListView();
         } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
