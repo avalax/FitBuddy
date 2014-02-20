@@ -14,6 +14,7 @@ import android.widget.SpinnerAdapter;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import javax.inject.Inject;
 
@@ -25,19 +26,24 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
     @Inject
-    protected WorkoutSession workoutSession;
+    protected WorkoutDAO workoutDAO;
     @Inject
     protected SharedPreferences sharedPreferences;
+    @Inject
+    protected WorkoutSession workoutSession;
+    private Workout workout;
+    private int workoutPosition;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((FitbuddyApplication) getApplication()).inject(this);
+        workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
         initActionBar();
         initListView();
     }
 
     private void initListView() {
-        Workout workout = workoutSession.getWorkout();
+        workout = workoutDAO.load(workoutPosition);
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
         registerForContextMenu(getListView());
     }
@@ -52,12 +58,11 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 android.R.layout.simple_spinner_dropdown_item, getWorkouts());
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
-        int workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
         actionBar.setSelectedNavigationItem(workoutPosition);
     }
 
     private String[] getWorkouts() {
-        return workoutSession.getWorkoutlist();
+        return workoutDAO.getWorkoutlist();
     }
 
     @Override
@@ -69,7 +74,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        workoutSession.switchWorkout(itemPosition);
+        workout = workoutDAO.load(itemPosition);
+        workoutPosition = itemPosition;
         initListView();
         return true;
     }
@@ -77,13 +83,15 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_select_exercise) {
+            workoutDAO.save(workout);
+            workoutSession.switchWorkout(workoutPosition);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == android.R.id.home) {
             setResult(RESULT_CANCELED);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
-            Log.d("onOptionsItemSelected","action_add_workout");
+            Log.d("onOptionsItemSelected", "action_add_workout");
         }
         return true;
     }
@@ -93,13 +101,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         if (v.getId() == getListView().getId()) {
             AdapterView.AdapterContextMenuInfo info =
                     (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(workoutSession.getWorkout().getName(info.position));
+            menu.setHeaderTitle(workout.getName(info.position));
             String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
         }
-
     }
 
     @Override
@@ -110,7 +117,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercisePosition);
             startActivityForResult(intent, EDIT_EXERCISE);
         } else if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            workoutSession.getWorkout().removeExercise(exercisePosition);
+            workout.removeExercise(exercisePosition);
             initListView();
         } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
             Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, exercisePosition, ADD_EXERCISE_BEFORE);

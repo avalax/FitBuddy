@@ -17,7 +17,6 @@ public class WorkoutSessionTest {
     WorkoutDAO workoutDAO;
 
     private Workout workout;
-    private String[] workouts;
     private SharedPreferences.Editor editor;
 
     @Before
@@ -26,7 +25,6 @@ public class WorkoutSessionTest {
         workout = mock(Workout.class);
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
         editor = mock(SharedPreferences.Editor.class);
-        workouts = new String[]{};
         int lastPosition = 21;
         when(sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0)).thenReturn(lastPosition);
         when(workoutDAO.load(lastPosition)).thenReturn(workout);
@@ -44,13 +42,6 @@ public class WorkoutSessionTest {
         workoutSession.saveWorkout();
 
         verify(workoutDAO).save(workout);
-    }
-
-    @Test
-    public void testGetWorkoutlist_shouldReturnWorkoutFromWorkoutDAO() throws Exception {
-        when(workoutDAO.getWorkoutlist()).thenReturn(workouts);
-
-        assertThat(workoutSession.getWorkoutlist(), is(workouts));
     }
 
     @Test

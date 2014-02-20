@@ -28,10 +28,6 @@ public class WorkoutSession {
         return workout;
     }
 
-    public String[] getWorkoutlist() {
-        return workoutDAO.getWorkoutlist();
-    }
-
     public void switchWorkout(int position) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(LAST_WORKOUT_POSITION, position);
