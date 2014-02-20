@@ -7,6 +7,7 @@ import de.avalax.fitbuddy.app.edit.WeightExerciseFragment;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
 import de.avalax.fitbuddy.datalayer.StaticWorkoutDAO;
+import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import javax.inject.Singleton;
 
@@ -21,8 +22,7 @@ import javax.inject.Singleton;
 public class FitbuddyModule {
     @Provides
     @Singleton
-    WorkoutSession provideWorkoutSession() {
-        StaticWorkoutDAO workoutDAO = new StaticWorkoutDAO();
+    WorkoutSession provideWorkoutSession(WorkoutDAO workoutDAO) {
         //TODO: lastPosition from localStorage
         return new WorkoutSession(workoutDAO, 0);
     }
@@ -31,5 +31,11 @@ public class FitbuddyModule {
     @Singleton
     WeightRaiseCalculator provideWeightRaiseCalculator() {
         return new WeightRaiseCalculator();
+    }
+
+    @Provides
+    @Singleton
+    WorkoutDAO provideWorkoutDAO() {
+        return new StaticWorkoutDAO();
     }
 }
