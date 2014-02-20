@@ -29,7 +29,7 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutSession provideWorkoutSession(WorkoutDAO workoutDAO) {
+    WorkoutSession provideWorkoutSession(SharedPreferences sharedPreferences, WorkoutDAO workoutDAO) {
         return new WorkoutSession(sharedPreferences, workoutDAO);
     }
 
@@ -43,5 +43,11 @@ public class FitbuddyModule {
     @Singleton
     WorkoutDAO provideWorkoutDAO() {
         return new StaticWorkoutDAO();
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences() {
+        return sharedPreferences;
     }
 }

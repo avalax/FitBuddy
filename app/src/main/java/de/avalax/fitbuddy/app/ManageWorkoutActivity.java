@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -25,6 +26,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public static final int SWITCH_WORKOUT = 2;
     @Inject
     protected WorkoutSession workoutSession;
+    @Inject
+    protected SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +52,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 android.R.layout.simple_spinner_dropdown_item, getWorkouts());
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
-        //TODO: select current workout
-        actionBar.setSelectedNavigationItem(0);
+        int workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+        actionBar.setSelectedNavigationItem(workoutPosition);
     }
 
     private String[] getWorkouts() {

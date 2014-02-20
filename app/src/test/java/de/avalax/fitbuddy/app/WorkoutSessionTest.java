@@ -18,18 +18,20 @@ public class WorkoutSessionTest {
 
     private Workout workout;
     private String[] workouts;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Before
     public void setUp() throws Exception {
         workoutDAO = mock(WorkoutDAO.class);
         workout = mock(Workout.class);
-        sharedPreferences = mock(SharedPreferences.class);
-        workouts =  new String[]{};
+        SharedPreferences sharedPreferences = mock(SharedPreferences.class);
+        editor = mock(SharedPreferences.Editor.class);
+        workouts = new String[]{};
         int lastPosition = 21;
-        when(sharedPreferences.getInt("lastWorkoutPosition",0)).thenReturn(lastPosition);
+        when(sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0)).thenReturn(lastPosition);
         when(workoutDAO.load(lastPosition)).thenReturn(workout);
-        workoutSession = new WorkoutSession(sharedPreferences,workoutDAO);
+        when(sharedPreferences.edit()).thenReturn(editor);
+        workoutSession = new WorkoutSession(sharedPreferences, workoutDAO);
     }
 
     @Test
@@ -48,7 +50,7 @@ public class WorkoutSessionTest {
     public void testGetWorkoutlist_shouldReturnWorkoutFromWorkoutDAO() throws Exception {
         when(workoutDAO.getWorkoutlist()).thenReturn(workouts);
 
-        assertThat(workoutSession.getWorkoutlist(),is(workouts));
+        assertThat(workoutSession.getWorkoutlist(), is(workouts));
     }
 
     @Test
@@ -58,6 +60,8 @@ public class WorkoutSessionTest {
         when(workoutDAO.load(position)).thenReturn(loadedWorkout);
 
         workoutSession.switchWorkout(position);
+        verify(editor).putInt(WorkoutSession.LAST_WORKOUT_POSITION, position);
+        verify(editor).commit();
         assertThat(workoutSession.getWorkout(), is(loadedWorkout));
     }
 }
