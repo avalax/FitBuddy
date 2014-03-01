@@ -6,12 +6,13 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
 import de.avalax.fitbuddy.core.workout.Workout;
@@ -32,6 +33,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     protected SharedPreferences sharedPreferences;
     @Inject
     protected WorkoutSession workoutSession;
+    @Inject
+    protected WorkoutFactory workoutFactory;
     private Workout workout;
     private int workoutPosition;
 
@@ -98,7 +101,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             setResult(RESULT_CANCELED);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
-            Log.d("onOptionsItemSelected", "action_add_workout");
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.initiateScan();
         }
         return true;
     }
@@ -136,7 +140,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (resultCode == Activity.RESULT_OK) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null && scanResult.getContents() != null) {
+            Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
+            if (workoutFromJson != null) {
+                workout = workoutFromJson;
+                //TODO: persistence on save
+            }
+            initListView();
+        }
+        else if (resultCode == Activity.RESULT_OK) {
             initListView();
         }
     }

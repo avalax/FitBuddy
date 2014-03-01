@@ -50,4 +50,10 @@ public class FitbuddyModule {
     SharedPreferences provideSharedPreferences() {
         return sharedPreferences;
     }
+
+    @Provides
+    @Singleton
+    WorkoutFactory provideWorkoutFactory() {
+        return new WorkoutFactory();
+    }
 }
