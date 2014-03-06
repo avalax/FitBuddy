@@ -7,7 +7,7 @@ import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
 import de.avalax.fitbuddy.app.edit.WeightExerciseFragment;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
-import de.avalax.fitbuddy.datalayer.StaticWorkoutDAO;
+import de.avalax.fitbuddy.datalayer.FakeWorkoutDAO;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import javax.inject.Singleton;
@@ -42,7 +42,7 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutDAO provideWorkoutDAO() {
-        return new StaticWorkoutDAO();
+        return new FakeWorkoutDAO();
     }
 
     @Provides

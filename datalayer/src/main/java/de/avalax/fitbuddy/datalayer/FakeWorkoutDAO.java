@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StaticWorkoutDAO implements WorkoutDAO {
+public class FakeWorkoutDAO implements WorkoutDAO {
 
     @Override
     public void save(Workout workout) {

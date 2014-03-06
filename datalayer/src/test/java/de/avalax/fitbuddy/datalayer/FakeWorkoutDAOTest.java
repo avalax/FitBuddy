@@ -14,9 +14,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StaticWorkoutDAOTest {
+public class FakeWorkoutDAOTest {
     @InjectMocks
-    private StaticWorkoutDAO workoutDAO;
+    private FakeWorkoutDAO workoutDAO;
     private int anyPosition = 42;
 
     @Test
