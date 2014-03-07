@@ -42,12 +42,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         super.onCreate(savedInstanceState);
         ((FitbuddyApplication) getApplication()).inject(this);
         workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+        workout = workoutDAO.load(workoutPosition);
         initActionBar();
         initListView();
     }
 
     private void initListView() {
-        workout = workoutDAO.load(workoutPosition);
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
         registerForContextMenu(getListView());
     }

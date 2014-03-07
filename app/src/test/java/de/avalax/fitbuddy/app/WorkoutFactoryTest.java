@@ -35,9 +35,27 @@ public class WorkoutFactoryTest {
     }
 
     @Test
-    public void emptyJson_shouldReturnWorkoutWithName() throws Exception {
+    public void emptyJson_shouldReturnEmptyWorkout() throws Exception {
         Workout workout = workoutFactory.fromJson("[\"\",[]]");
+
         assertThat(workout.getName(), equalTo(""));
         assertThat(workout.getExerciseCount(), is(0));
+    }
+
+    @Test
+    public void jsonWithWorkoutName_shouldReturnWorkoutWithNameSet() throws Exception {
+        Workout workout = workoutFactory.fromJson("[\"my workout\",[]]");
+
+        assertThat(workout.getName(), equalTo("my workout"));
+    }
+
+    @Test
+    public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
+        Workout workout = workoutFactory.fromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
+
+        assertThat(workout.getExerciseCount(), is(1));
+        assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
+        assertThat(workout.getExercise(0).getMaxSets(), is(3));
+        assertThat(workout.getExercise(0).getMaxReps(), is(12));
     }
 }
