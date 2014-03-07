@@ -112,7 +112,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         if (v.getId() == getListView().getId()) {
             AdapterView.AdapterContextMenuInfo info =
                     (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(workout.getName(info.position));
+            menu.setHeaderTitle(workout.getExercise(info.position).getName());
             String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);

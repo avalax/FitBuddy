@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 public class BasicWorkout implements Workout {
     private LinkedList<Exercise> exercises;
+    private String name;
 
     public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
@@ -44,8 +45,13 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public String getName(int index) {
-        return getExercise(index).getName();
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

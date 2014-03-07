@@ -8,7 +8,8 @@ public interface Workout {
     void setTendency(int index, Tendency tendency);
     void incrementSet(int index);
     Set getCurrentSet(int index);
-    String getName(int index);
+    void setName(String name);
+    String getName();
     float getProgress(int index);
     //TODO: move to WorkoutDAO
     void addExerciseBefore(int index, Exercise exercise);

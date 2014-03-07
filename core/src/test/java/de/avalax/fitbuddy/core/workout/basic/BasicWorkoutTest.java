@@ -25,7 +25,7 @@ public class BasicWorkoutTest {
     @Before
     public void setUp() throws Exception {
         exerciseIndex = 0;
-        exercises = new LinkedList<Exercise>();
+        exercises = new LinkedList<>();
         workout = new BasicWorkout(exercises);
     }
 
@@ -90,11 +90,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void getName_shouldReturnNameFromExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        when(exercise.getName()).thenReturn("NameOfExercise");
+        String name = "NameOfWorkout";
 
-        assertThat(workout.getName(exerciseIndex), equalTo("NameOfExercise"));
+        workout.setName(name);
+        assertThat(workout.getName(), equalTo(name));
     }
 
     @Test
