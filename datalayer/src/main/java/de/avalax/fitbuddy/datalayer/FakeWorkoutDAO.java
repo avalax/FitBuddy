@@ -30,6 +30,9 @@ public class FakeWorkoutDAO implements WorkoutDAO {
 
     @Override
     public Workout load(int position) {
+        if (workouts.size() <= position) {
+            throw new WorkoutNotAvailableException();
+        }
         return workouts.get(position);
     }
 
@@ -66,10 +69,10 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public String[] getWorkoutlist() {
-        String[] workoutNames = new String[workouts.size()];
-        for (int i=0;i<workouts.size();i++) {
-            workoutNames[i] = workouts.get(i).getName();
+    public List<String> getWorkoutlist() {
+        List<String> workoutNames = new ArrayList<>();
+        for (Workout workout : workouts) {
+            workoutNames.add(workout.getName());
         }
         return workoutNames;
     }
