@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.core.workout;
 
-public interface Workout {
+import java.io.Serializable;
+
+public interface Workout  extends Serializable {
     Exercise getExercise(int index);
     int getExerciseCount();
     int getReps(int index);
