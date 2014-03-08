@@ -145,7 +145,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
             if (workoutFromJson != null) {
                 workout = workoutFromJson;
-                //TODO: persistence on save
+                //TODO: fill arrayadapter with this
+                workoutPosition = workoutDAO.getWorkoutlist().length;
             }
             initListView();
         }
