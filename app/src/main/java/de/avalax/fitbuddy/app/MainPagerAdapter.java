@@ -51,7 +51,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         Workout workout = workoutSession.getWorkout();
         if (position - workout.getExerciseCount() == 0) {
-            return resultTitle;
+            return String.format(resultTitle,workout.getName());
         }
         else {
             Exercise currentExercise = workout.getExercise(position);
