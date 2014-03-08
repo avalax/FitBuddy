@@ -19,6 +19,7 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
     public static final int ADD_EXERCISE_BEFORE = 1;
@@ -27,6 +28,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
+    private boolean initializing;
     @Inject
     protected WorkoutDAO workoutDAO;
     @Inject
@@ -53,6 +55,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void initActionBar() {
+        initializing = true;
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -66,7 +69,11 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private String[] getWorkouts() {
-        return workoutDAO.getWorkoutlist();
+        List<String> workoutlist = workoutDAO.getWorkoutlist();
+        if (workoutlist.size() == workoutPosition) {
+            workoutlist.add(workout.getName());
+        }
+        return workoutlist.toArray(new String[workoutlist.size()]);
     }
 
     @Override
@@ -84,9 +91,14 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        workout = workoutDAO.load(itemPosition);
-        workoutPosition = itemPosition;
-        initListView();
+        if (initializing) {
+            initializing = false;
+        } else {
+            workout = workoutDAO.load(itemPosition);
+            workoutPosition = itemPosition;
+            initActionBar();
+            initListView();
+        }
         return true;
     }
 
@@ -145,12 +157,11 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
             if (workoutFromJson != null) {
                 workout = workoutFromJson;
-                //TODO: fill arrayadapter with this
-                workoutPosition = workoutDAO.getWorkoutlist().length;
+                workoutPosition = workoutDAO.getWorkoutlist().size();
+                initActionBar();
             }
             initListView();
-        }
-        else if (resultCode == Activity.RESULT_OK) {
+        } else if (resultCode == Activity.RESULT_OK) {
             initListView();
         }
     }
