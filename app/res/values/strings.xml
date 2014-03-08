@@ -29,4 +29,5 @@
     <string name="action_exercise_delete">delete exercise</string>
     <string name="action_exercise_add_before_selected">add new exercise before</string>
     <string name="action_exercise_add_behind_selected">add new exercise behind</string>
+    <string name="action_read_qrcode_failed">qrcode is not a fitbuddy workout</string>
 </resources>

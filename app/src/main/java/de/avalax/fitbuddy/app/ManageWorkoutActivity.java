@@ -6,11 +6,9 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SpinnerAdapter;
+import android.widget.*;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
@@ -154,13 +152,20 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
-            Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
-            if (workoutFromJson != null) {
-                workout = workoutFromJson;
-                workoutPosition = workoutDAO.getWorkoutlist().size();
-                initActionBar();
+            try {
+                Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
+                if (workoutFromJson != null) {
+                    workout = workoutFromJson;
+                    workoutPosition = workoutDAO.getWorkoutlist().size();
+                    initActionBar();
+                }
+                initListView();
+            } catch (WorkoutParseException wpe) {
+                //TODO: user friendly error message
+                Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
+                Log.d("reading of qrcode failed",wpe.getMessage());
+                toast.show();
             }
-            initListView();
         } else if (resultCode == Activity.RESULT_OK) {
             initListView();
         }
