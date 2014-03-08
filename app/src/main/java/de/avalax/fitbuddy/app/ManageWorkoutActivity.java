@@ -20,10 +20,12 @@ import javax.inject.Inject;
 import java.util.List;
 
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
+    private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
+    private static final String WORKOUT = "WORKOUT";
     public static final int ADD_EXERCISE_BEFORE = 1;
+
     public static final int EDIT_EXERCISE = 2;
     public static final int ADD_EXERCISE_AFTER = 3;
-
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
     private boolean initializing;
@@ -41,8 +43,13 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((FitbuddyApplication) getApplication()).inject(this);
-        workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-        workout = workoutDAO.load(workoutPosition);
+        if (savedInstanceState != null) {
+            workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
+            workout = (Workout) savedInstanceState.getSerializable(WORKOUT);
+        } else {
+            workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+            workout = workoutDAO.load(workoutPosition);
+        }
         initActionBar();
         initListView();
     }
@@ -161,13 +168,19 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 }
                 initListView();
             } catch (WorkoutParseException wpe) {
-                //TODO: user friendly error message
                 Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
-                Log.d("reading of qrcode failed",wpe.getMessage());
+                Log.d("reading of qrcode failed", wpe.getMessage());
                 toast.show();
             }
         } else if (resultCode == Activity.RESULT_OK) {
             initListView();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(WORKOUT_POSITION,workoutPosition);
+        savedInstanceState.putSerializable(WORKOUT,workout);
     }
 }
