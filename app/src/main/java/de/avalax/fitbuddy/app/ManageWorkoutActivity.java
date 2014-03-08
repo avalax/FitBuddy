@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
@@ -22,13 +24,15 @@ import java.util.List;
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private static final String WORKOUT = "WORKOUT";
-    public static final int ADD_EXERCISE_BEFORE = 1;
+    private static final String UNSAVED_CHANGES = "UNSAVED_CHANGES";
 
+    public static final int ADD_EXERCISE_BEFORE = 1;
     public static final int EDIT_EXERCISE = 2;
     public static final int ADD_EXERCISE_AFTER = 3;
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
     private boolean initializing;
+    private boolean unsavedChanges;
     @Inject
     protected WorkoutDAO workoutDAO;
     @Inject
@@ -39,17 +43,23 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     protected WorkoutFactory workoutFactory;
     private Workout workout;
     private int workoutPosition;
+    private View footer;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.manage_workout);
+        ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         if (savedInstanceState != null) {
             workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
             workout = (Workout) savedInstanceState.getSerializable(WORKOUT);
+            unsavedChanges = savedInstanceState.getBoolean(UNSAVED_CHANGES);
         } else {
             workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
             workout = workoutDAO.load(workoutPosition);
+            unsavedChanges = false;
         }
+        footer = findViewById(R.id.footer_undo);
         initActionBar();
         initListView();
     }
@@ -57,6 +67,9 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private void initListView() {
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
         registerForContextMenu(getListView());
+        if (unsavedChanges) {
+            showUnsavedChanges();
+        }
     }
 
     private void initActionBar() {
@@ -103,6 +116,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             workoutPosition = itemPosition;
             initActionBar();
             initListView();
+            showUnsavedChanges();
         }
         return true;
     }
@@ -167,6 +181,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                     initActionBar();
                 }
                 initListView();
+                showUnsavedChanges();
             } catch (WorkoutParseException wpe) {
                 Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
                 Log.d("reading of qrcode failed", wpe.getMessage());
@@ -174,13 +189,30 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             }
         } else if (resultCode == Activity.RESULT_OK) {
             initListView();
+            showUnsavedChanges();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(WORKOUT_POSITION,workoutPosition);
-        savedInstanceState.putSerializable(WORKOUT,workout);
+        savedInstanceState.putInt(WORKOUT_POSITION, workoutPosition);
+        savedInstanceState.putSerializable(WORKOUT, workout);
+        savedInstanceState.putBoolean(UNSAVED_CHANGES, unsavedChanges);
+    }
+
+    @OnClick(R.id.button_undo)
+    protected void undoChanges() {
+        footer.setVisibility(View.GONE);
+        workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+        workout = workoutDAO.load(workoutPosition);
+        unsavedChanges = false;
+        initActionBar();
+        initListView();
+    }
+
+    private void showUnsavedChanges() {
+        unsavedChanges = true;
+        footer.setVisibility(View.VISIBLE);
     }
 }

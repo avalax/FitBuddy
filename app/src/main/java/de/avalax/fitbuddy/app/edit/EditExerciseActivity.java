@@ -12,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.app.*;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
+import de.avalax.fitbuddy.app.ManageWorkoutActivity;
+import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 
