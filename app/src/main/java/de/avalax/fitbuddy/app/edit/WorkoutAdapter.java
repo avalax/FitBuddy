@@ -11,11 +11,13 @@ import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutAdapter extends ArrayAdapter<Exercise> {
-    private final List<Exercise> items;
+    private final List<Exercise> exercises;
+    DecimalFormat decimalFormat;
 
     public static WorkoutAdapter newInstance(Context context, int textViewResourceId, Workout workout) {
         List<Exercise> items = new ArrayList<>();
@@ -25,9 +27,10 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
         return new WorkoutAdapter(context, textViewResourceId, items);
     }
 
-    public WorkoutAdapter(Context context, int textViewResourceId, List<Exercise> items) {
-        super(context, textViewResourceId, items);
-        this.items = items;
+    public WorkoutAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
+        super(context, textViewResourceId, exercises);
+        this.exercises = exercises;
+        this.decimalFormat = new DecimalFormat("###.#");
     }
 
     @Override
@@ -38,13 +41,17 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
             v = vi.inflate(R.layout.row, null);
         }
 
-        Exercise o = items.get(position);
-        TextView tt = (TextView) v.findViewById(R.id.toptext);
-        TextView bt = (TextView) v.findViewById(R.id.bottomtext);
+        Exercise exercise = exercises.get(position);
+        TextView name = (TextView) v.findViewById(R.id.toptext);
+        TextView weight = (TextView) v.findViewById(R.id.weightTextView);
+        TextView reps = (TextView) v.findViewById(R.id.repsTextView);
+        TextView sets = (TextView) v.findViewById(R.id.setsTextView);
         ImageView iv = (ImageView) v.findViewById(R.id.buttonOverflow);
 
-        tt.setText(o.getName());
-        bt.setText(String.valueOf(o.getWeight()));
+        name.setText(exercise.getName());
+        weight.setText(getWeightText(exercise.getWeight()));
+        reps.setText(String.valueOf(exercise.getMaxReps()));
+        sets.setText(String.valueOf(exercise.getMaxSets()));
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,5 +59,13 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
             }
         });
         return v;
+    }
+
+    private CharSequence getWeightText(double weight) {
+        if (weight > 0) {
+            return decimalFormat.format(weight);
+        } else {
+            return "-";
+        }
     }
 }
