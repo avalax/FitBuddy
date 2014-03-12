@@ -39,16 +39,18 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="undo"
+            android:text="UNDO"
             android:id="@+id/button_undo"
             android:drawableLeft="@drawable/ic_action_undo"
+            android:drawablePadding="6dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:onClick="clickEvent"
+            android:textAppearance="@android:style/TextAppearance.Holo.Small"
             android:background="?android:attr/selectableItemBackground"
             android:paddingRight="10dp"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="12dp"/>
 
         <View
             android:layout_width="1dp"
