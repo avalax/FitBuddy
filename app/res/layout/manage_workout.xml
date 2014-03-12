@@ -11,24 +11,11 @@
         android:layout_weight="1" />
 
     <RelativeLayout
-        style="@android:style/Widget"
         android:id="@+id/footer_undo"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="@color/primary_progressbar"
         android:visibility="gone">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="undo"
-            android:id="@+id/button_undo"
-            android:drawableLeft="@drawable/ic_action_undo"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="clickEvent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,5 +27,35 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignParentTop="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="undo"
+            android:id="@+id/button_undo"
+            android:drawableLeft="@drawable/ic_action_undo"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="clickEvent"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignLeft="@+id/button_undo" />
     </RelativeLayout>
 </LinearLayout>
