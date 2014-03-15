@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Tendency;
+import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 
 import java.util.List;
 
@@ -48,6 +49,9 @@ public class BasicExercise implements Exercise {
 
     @Override
     public Set getCurrentSet() {
+        if (setNumber > sets.size()) {
+            throw new SetNotAvailableException();
+        }
         int index = setNumber - 1;
         return sets.get(index);
     }

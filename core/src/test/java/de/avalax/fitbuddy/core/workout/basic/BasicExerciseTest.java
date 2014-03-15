@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Tendency;
+import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -177,6 +178,11 @@ public class BasicExerciseTest {
         exercise = createExercise(2.5, 5.0);
 
         assertThat(exercise.getWeightRaise(Tendency.MINUS),equalTo(0.0));
+    }
+
+    @Test(expected = SetNotAvailableException.class)
+    public void getCurrentSet_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
+        exercise.getCurrentSet();
     }
 
     private Exercise createExercise(double weight, double weightRaise) {
