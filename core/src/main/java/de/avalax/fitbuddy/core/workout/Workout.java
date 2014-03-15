@@ -18,4 +18,5 @@ public interface Workout  extends Serializable {
     void addExerciseAfter(int index, Exercise exercise);
     void setExercise(int index, Exercise exercise);
     void removeExercise(int index);
+    void addExercise(Exercise exercise);
 }

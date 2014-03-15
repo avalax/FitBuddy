@@ -16,7 +16,9 @@ import butterknife.OnClick;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
+import de.avalax.fitbuddy.app.edit.EditableExercise;
 import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
+import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
@@ -33,6 +35,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public static final int ADD_EXERCISE_AFTER = 3;
     public static final int SAVE_WORKOUT = 1;
     public static final int SWITCH_WORKOUT = 2;
+    private static final int ADD_EXERCISE = 4;
     private boolean initializing;
     private boolean unsavedChanges;
     @Inject
@@ -46,6 +49,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private Workout workout;
     private int workoutPosition;
     private View footer;
+    private Integer exercisePosition;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +102,9 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = EditExerciseActivity.newEditExerciseIntent(this, position);
+        Exercise exercise = workout.getExercise(position);
+        Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercise);
+        this.exercisePosition = position;
         startActivityForResult(intent, EDIT_EXERCISE);
     }
 
@@ -184,10 +190,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             workout.removeExercise(exercisePosition);
             initListView();
         } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, exercisePosition, ADD_EXERCISE_BEFORE);
+            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
+            this.exercisePosition = exercisePosition;
             startActivityForResult(intent, ADD_EXERCISE_BEFORE);
         } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, exercisePosition, ADD_EXERCISE_AFTER);
+            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
+            this.exercisePosition = exercisePosition;
             startActivityForResult(intent, ADD_EXERCISE_AFTER);
         }
         return true;
@@ -213,6 +221,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 toast.show();
             }
         } else if (resultCode == Activity.RESULT_OK) {
+            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
+            if (requestCode == ADD_EXERCISE) {
+                workout.addExercise(editableExercise.createExercise());
+            } else if (requestCode == ADD_EXERCISE_BEFORE) {
+                workout.addExerciseBefore(this.exercisePosition, editableExercise.createExercise());
+            } else if (requestCode == ADD_EXERCISE_AFTER) {
+                workout.addExerciseAfter(this.exercisePosition, editableExercise.createExercise());
+            } else if (requestCode == EDIT_EXERCISE) {
+                workout.setExercise(this.exercisePosition, editableExercise.createExercise());
+            }
             initListView();
             showUnsavedChanges();
         }
@@ -243,7 +261,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public void onClick(View v) {
-        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, 0, ADD_EXERCISE_AFTER);
-        startActivityForResult(intent, ADD_EXERCISE_AFTER);
+        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
+        this.exercisePosition = 0;
+        startActivityForResult(intent, ADD_EXERCISE);
     }
 }

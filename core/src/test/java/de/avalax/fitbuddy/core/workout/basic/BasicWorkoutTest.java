@@ -172,6 +172,17 @@ public class BasicWorkoutTest {
     }
 
     @Test
+    public void addExercise_shouldAddExercise() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+        exercises.add(mock(Exercise.class));
+
+        workout.addExercise(exercise);
+
+        assertThat(exercises.size(),is(2));
+        assertThat(exercises.getLast(), equalTo(exercise));
+    }
+
+    @Test
     public void addExerciseBefore_shouldAddExerciseBeforePosition() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));

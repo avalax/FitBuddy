@@ -93,6 +93,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
+    }
+
+    @Override
     public int getExerciseCount() {
         return exercises.size();
     }
