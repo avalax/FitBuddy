@@ -21,22 +21,22 @@ public class WorkoutFactoryTest {
 
     @Test(expected = WorkoutParseException.class)
     public void nullInstance_shouldThrowWorkoutParseException() throws Exception {
-        workoutFactory.fromJson(null);
+        workoutFactory.createFromJson(null);
     }
 
     @Test(expected = WorkoutParseException.class)
          public void emtpyString_shouldThrowWorkoutParseException() throws Exception {
-        workoutFactory.fromJson("");
+        workoutFactory.createFromJson("");
     }
 
     @Test(expected = WorkoutParseException.class)
     public void invalidJasonString_shouldThrowWorkoutParseException() throws Exception {
-        workoutFactory.fromJson("NotAJsonString");
+        workoutFactory.createFromJson("NotAJsonString");
     }
 
     @Test
     public void emptyJson_shouldReturnEmptyWorkout() throws Exception {
-        Workout workout = workoutFactory.fromJson("[\"\",[]]");
+        Workout workout = workoutFactory.createFromJson("[\"\",[]]");
 
         assertThat(workout.getName(), equalTo(""));
         assertThat(workout.getExerciseCount(), is(0));
@@ -44,18 +44,26 @@ public class WorkoutFactoryTest {
 
     @Test
     public void jsonWithWorkoutName_shouldReturnWorkoutWithNameSet() throws Exception {
-        Workout workout = workoutFactory.fromJson("[\"my workout\",[]]");
+        Workout workout = workoutFactory.createFromJson("[\"my workout\",[]]");
 
         assertThat(workout.getName(), equalTo("my workout"));
     }
 
     @Test
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
-        Workout workout = workoutFactory.fromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
+        Workout workout = workoutFactory.createFromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
 
         assertThat(workout.getExerciseCount(), is(1));
         assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
         assertThat(workout.getExercise(0).getMaxSets(), is(3));
         assertThat(workout.getExercise(0).getMaxReps(), is(12));
+    }
+
+    @Test
+    public void createNewWorkout_shouldReturnAnEmptyWorkout() throws Exception {
+        Workout workout = workoutFactory.createNew();
+
+        assertThat(workout.getName(), equalTo("new workout"));
+        assertThat(workout.getExerciseCount(), is(0));
     }
 }

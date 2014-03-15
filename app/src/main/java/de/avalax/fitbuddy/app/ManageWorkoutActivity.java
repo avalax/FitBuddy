@@ -2,7 +2,9 @@ package de.avalax.fitbuddy.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -132,10 +134,33 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             setResult(RESULT_CANCELED);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
-            IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.initiateScan();
+            final CharSequence[] items = {"Create a new workout", "Scan from QR-Code"};
+            final Activity activity = this;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Add a workout");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    if (item == 0) {
+                        createNewWorkout();
+                    } else if (item == 1) {
+                        IntentIntegrator integrator = new IntentIntegrator(activity);
+                        integrator.initiateScan();
+                    }
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+
         }
         return true;
+    }
+
+    private void createNewWorkout() {
+        workout = workoutFactory.createNew();
+        workoutPosition = workoutDAO.getWorkoutlist().size();
+        initActionBar();
+        initListView();
+        showUnsavedChanges();
     }
 
     @Override
@@ -174,7 +199,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
             try {
-                Workout workoutFromJson = workoutFactory.fromJson(scanResult.getContents());
+                Workout workoutFromJson = workoutFactory.createFromJson(scanResult.getContents());
                 if (workoutFromJson != null) {
                     workout = workoutFromJson;
                     workoutPosition = workoutDAO.getWorkoutlist().size();

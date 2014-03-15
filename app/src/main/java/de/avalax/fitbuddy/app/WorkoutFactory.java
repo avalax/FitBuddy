@@ -15,7 +15,7 @@ import java.util.List;
 public class WorkoutFactory {
     Gson gson = new Gson();
 
-    public Workout fromJson(String contents) {
+    public Workout createFromJson(String contents) {
         if (contents == null || contents.isEmpty()) {
             throw new WorkoutParseException();
         }
@@ -30,6 +30,7 @@ public class WorkoutFactory {
                     int maxReps =  (int)((double) exercise.get(1));
                     sets.add(new BasicSet(weight, maxReps));
                 }
+                //TODO: weightRaise is not 0
                 exercices.add(new BasicExercise((String)exercise.get(0),sets,0));
             }
             BasicWorkout workout = new BasicWorkout(exercices);
@@ -38,5 +39,12 @@ public class WorkoutFactory {
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
         }
+    }
+
+    public Workout createNew() {
+        LinkedList<Exercise> exercises = new LinkedList<>();
+        BasicWorkout workout = new BasicWorkout(exercises);
+        workout.setName("new workout");
+        return workout;
     }
 }
