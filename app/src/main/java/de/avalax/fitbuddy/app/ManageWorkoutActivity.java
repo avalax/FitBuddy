@@ -23,7 +23,7 @@ import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener {
+public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener, View.OnClickListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private static final String WORKOUT = "WORKOUT";
     private static final String UNSAVED_CHANGES = "UNSAVED_CHANGES";
@@ -239,5 +239,11 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private void showUnsavedChanges() {
         unsavedChanges = true;
         footer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this, 0, ADD_EXERCISE_AFTER);
+        startActivityForResult(intent, ADD_EXERCISE_AFTER);
     }
 }
