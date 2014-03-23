@@ -1,12 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_add_workout"
-        android:icon="@drawable/ic_action_new_exercise"
-        android:showAsAction="ifRoom"
-        android:title="new_exercise" />
-    <item
         android:id="@+id/action_select_exercise"
         android:icon="@drawable/ic_action_accept"
-        android:showAsAction="ifRoom"
-        android:title="speichern" />
+        android:showAsAction="always"
+        android:title="save changes" />
+    <item
+        android:id="@+id/action_change_workout_name"
+        android:showAsAction="collapseActionView"
+        android:title="change workout name" />
+    <item
+        android:id="@+id/action_add_workout"
+        android:showAsAction="collapseActionView"
+        android:title="add new workout" />
 </menu>

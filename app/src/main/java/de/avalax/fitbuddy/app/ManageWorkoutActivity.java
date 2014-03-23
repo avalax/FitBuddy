@@ -157,6 +157,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             AlertDialog alert = builder.create();
             alert.show();
 
+        } else if (item.getItemId() == R.id.action_change_workout_name) {
+            editWorkoutName();
         }
         return true;
     }
@@ -264,5 +266,23 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
         this.exercisePosition = 0;
         startActivityForResult(intent, ADD_EXERCISE);
+    }
+
+    private void editWorkoutName() {
+        final EditText input = new EditText(this);
+        input.setText(workout.getName());
+        new AlertDialog.Builder(this)
+                .setTitle("workout name")
+                .setView(input)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (!workout.getName().equals(input.getText().toString())) {
+                            showUnsavedChanges();
+                        }
+                        workout.setName(input.getText().toString());
+                        initActionBar();
+                    }
+                })
+            .show();
     }
 }
