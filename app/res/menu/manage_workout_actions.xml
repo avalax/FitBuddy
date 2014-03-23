@@ -9,6 +9,10 @@
         android:showAsAction="collapseActionView"
         android:title="change workout name" />
     <item
+        android:id="@+id/action_delete_workout"
+        android:showAsAction="collapseActionView"
+        android:title="delete selected workout" />
+    <item
         android:id="@+id/action_add_workout"
         android:showAsAction="collapseActionView"
         android:title="add new workout" />

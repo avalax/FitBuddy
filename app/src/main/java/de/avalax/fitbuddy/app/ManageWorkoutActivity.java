@@ -93,7 +93,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private String[] getWorkouts() {
-        List<String> workoutlist = workoutDAO.getWorkoutlist();
+        List<String> workoutlist = workoutDAO.getList();
         if (workoutlist.size() == workoutPosition) {
             workoutlist.add(workout.getName());
         }
@@ -159,13 +159,15 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
         } else if (item.getItemId() == R.id.action_change_workout_name) {
             editWorkoutName();
+        } else if (item.getItemId() == R.id.action_delete_workout) {
+            deleteWorkout();
         }
         return true;
     }
 
     private void createNewWorkout() {
         workout = workoutFactory.createNew();
-        workoutPosition = workoutDAO.getWorkoutlist().size();
+        workoutPosition = workoutDAO.getList().size();
         initActionBar();
         initListView();
         showUnsavedChanges();
@@ -212,7 +214,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 Workout workoutFromJson = workoutFactory.createFromJson(scanResult.getContents());
                 if (workoutFromJson != null) {
                     workout = workoutFromJson;
-                    workoutPosition = workoutDAO.getWorkoutlist().size();
+                    workoutPosition = workoutDAO.getList().size();
                     initActionBar();
                 }
                 initListView();
@@ -248,12 +250,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
-        footer.setVisibility(View.GONE);
         workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
         workout = workoutDAO.load(workoutPosition);
-        unsavedChanges = false;
+        hideUnsavedChanges();
         initActionBar();
         initListView();
+    }
+
+    private void hideUnsavedChanges() {
+        unsavedChanges = false;
+        footer.setVisibility(View.GONE);
     }
 
     private void showUnsavedChanges() {
@@ -283,6 +289,21 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                         initActionBar();
                     }
                 })
-            .show();
+                .show();
+    }
+
+    private void deleteWorkout() {
+        //TODO: undo function remove workout
+        workoutDAO.remove(workout);
+        workoutPosition = workoutDAO.getList().size() - 1;
+        if (workoutPosition >= 0) {
+            workout = workoutDAO.load(workoutPosition);
+            initActionBar();
+            initListView();
+        } else {
+            createNewWorkout();
+            workoutDAO.save(workout);
+            hideUnsavedChanges();
+        }
     }
 }

@@ -69,12 +69,17 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public List<String> getWorkoutlist() {
+    public List<String> getList() {
         List<String> workoutNames = new ArrayList<>();
         for (Workout workout : workouts) {
             workoutNames.add(workout.getName());
         }
         return workoutNames;
+    }
+
+    @Override
+    public void remove(Workout workout) {
+        workouts.remove(workout);
     }
 
     private List<Set> createExerciseWithThreeSets(double weight, int reps) {
