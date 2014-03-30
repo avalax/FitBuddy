@@ -18,7 +18,6 @@ import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.*;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.EditableExercise;
-import de.avalax.fitbuddy.app.editExercise.WorkoutAdapter;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 

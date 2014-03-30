@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app.editExercise;
+package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
