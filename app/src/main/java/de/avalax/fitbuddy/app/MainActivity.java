@@ -13,6 +13,7 @@ import android.widget.PopupMenu;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 
 import javax.inject.Inject;
 

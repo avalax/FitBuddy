@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app.edit;
+package de.avalax.fitbuddy.app.editExercise;
 
 import android.app.Activity;
 import android.os.Bundle;

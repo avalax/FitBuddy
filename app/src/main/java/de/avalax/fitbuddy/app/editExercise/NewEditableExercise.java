@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app.edit;
+package de.avalax.fitbuddy.app.editExercise;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
@@ -8,20 +8,11 @@ import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExistingEditableExercise implements EditableExercise {
-    private String name;
+public class NewEditableExercise implements EditableExercise {
     private int reps;
     private int sets;
     private double weight;
     private double weightRaise;
-
-    public ExistingEditableExercise(Exercise exercise) {
-        name = exercise.getName();
-        reps = exercise.getMaxReps();
-        sets = exercise.getMaxSets();
-        weight = exercise.getWeight();
-        weightRaise = exercise.getWeightRaise();
-    }
 
     @Override
     public String getName() {
@@ -32,6 +23,8 @@ public class ExistingEditableExercise implements EditableExercise {
     public void setName(String name) {
         this.name = name;
     }
+
+    private String name;
 
     @Override
     public int getReps() {

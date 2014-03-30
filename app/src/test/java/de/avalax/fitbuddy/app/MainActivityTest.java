@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app;
 
 import android.view.MenuItem;
+import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

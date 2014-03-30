@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app;
+package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,9 +15,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import de.avalax.fitbuddy.app.edit.EditExerciseActivity;
-import de.avalax.fitbuddy.app.edit.EditableExercise;
-import de.avalax.fitbuddy.app.edit.WorkoutAdapter;
+import de.avalax.fitbuddy.app.*;
+import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
+import de.avalax.fitbuddy.app.editExercise.EditableExercise;
+import de.avalax.fitbuddy.app.editExercise.WorkoutAdapter;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
@@ -232,6 +233,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void deleteExercise(int exercisePosition) {
         workout.removeExercise(exercisePosition);
+        showUnsavedChanges();
         initListView();
     }
 

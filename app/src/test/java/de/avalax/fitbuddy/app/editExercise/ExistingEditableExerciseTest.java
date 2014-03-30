@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.app.edit;
+package de.avalax.fitbuddy.app.editExercise;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
 import org.junit.Before;

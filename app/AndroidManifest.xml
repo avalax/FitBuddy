@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".edit.EditExerciseActivity" />
-        <activity android:name=".ManageWorkoutActivity" />
+        <activity android:name=".editExercise.EditExerciseActivity" />
+        <activity android:name=".manageWorkout.ManageWorkoutActivity" />
     </application>
 
 </manifest>

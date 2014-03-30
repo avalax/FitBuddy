@@ -8,7 +8,7 @@ import de.avalax.fitbuddy.datalayer.WorkoutNotAvailableException;
 import javax.inject.Inject;
 
 public class WorkoutSession {
-    protected static final String LAST_WORKOUT_POSITION = "lastWorkoutPosition";
+    public static final String LAST_WORKOUT_POSITION = "lastWorkoutPosition";
     private Workout workout;
     private SharedPreferences sharedPreferences;
     private WorkoutDAO workoutDAO;
