@@ -56,6 +56,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         setContentView(R.layout.manage_workout);
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
+        init(savedInstanceState);
+        initActionBar();
+        initListView();
+    }
+
+    private void init(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
             workout = (Workout) savedInstanceState.getSerializable(WORKOUT);
@@ -66,8 +72,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             unsavedChanges = false;
         }
         footer = findViewById(R.id.footer_undo);
-        initActionBar();
-        initListView();
     }
 
     private void initListView() {
@@ -102,6 +106,10 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
+        startEditExerciseActivity(position);
+    }
+
+    private void startEditExerciseActivity(int position) {
         Exercise exercise = workout.getExercise(position);
         Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercise);
         this.exercisePosition = position;
@@ -120,49 +128,60 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         if (initializing) {
             initializing = false;
         } else {
-            workout = workoutDAO.load(itemPosition);
-            workoutPosition = itemPosition;
-            initActionBar();
-            initListView();
-            showUnsavedChanges();
+            switchWorkout(itemPosition);
         }
         return true;
     }
 
+    private void switchWorkout(int itemPosition) {
+        workout = workoutDAO.load(itemPosition);
+        workoutPosition = itemPosition;
+        initActionBar();
+        initListView();
+        showUnsavedChanges();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_select_exercise) {
-            workoutDAO.save(workout);
-            workoutSession.switchWorkout(workoutPosition);
+        if (item.getItemId() == R.id.action_save_workout) {
+            save();
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == android.R.id.home) {
             setResult(RESULT_CANCELED);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
-            final CharSequence[] items = {"Create a new workout", "Scan from QR-Code"};
-            final Activity activity = this;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Add a workout");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    if (item == 0) {
-                        createNewWorkout();
-                    } else if (item == 1) {
-                        IntentIntegrator integrator = new IntentIntegrator(activity);
-                        integrator.initiateScan();
-                    }
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-
+            showNewWorkoutAltertDialog();
         } else if (item.getItemId() == R.id.action_change_workout_name) {
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
             deleteWorkout();
         }
         return true;
+    }
+
+    private void showNewWorkoutAltertDialog() {
+        final CharSequence[] items = {"Create a new workout", "Scan from QR-Code"};
+        final Activity activity = this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add a workout");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    createNewWorkout();
+                } else if (item == 1) {
+                    IntentIntegrator integrator = new IntentIntegrator(activity);
+                    integrator.initiateScan();
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void save() {
+        workoutDAO.save(workout);
+        workoutSession.switchWorkout(workoutPosition);
     }
 
     private void createNewWorkout() {
@@ -176,33 +195,44 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == getListView().getId()) {
-            AdapterView.AdapterContextMenuInfo info =
-                    (AdapterView.AdapterContextMenuInfo) menuInfo;
-            menu.setHeaderTitle(workout.getExercise(info.position).getName());
-            String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
-            for (int i = 0; i < menuItems.length; i++) {
-                menu.add(Menu.NONE, i, i, menuItems[i]);
-            }
+            buildExerciseContextMenu(menu, (AdapterView.AdapterContextMenuInfo) menuInfo);
+        }
+    }
+
+    private void buildExerciseContextMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
+        menu.setHeaderTitle(workout.getExercise(menuInfo.position).getName());
+        String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int exercisePosition = info.position;
-        if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            workout.removeExercise(exercisePosition);
-            initListView();
-        } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
-            this.exercisePosition = exercisePosition;
-            startActivityForResult(intent, ADD_EXERCISE_BEFORE);
-        } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
-            this.exercisePosition = exercisePosition;
-            startActivityForResult(intent, ADD_EXERCISE_AFTER);
-        }
+        exerciseActions(item, info.position);
         return true;
+    }
+
+    private void exerciseActions(MenuItem item, int exercisePosition) {
+        if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
+            deleteExercise(exercisePosition);
+        } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
+            startAddExerciseActivity(exercisePosition, ADD_EXERCISE_BEFORE);
+        } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
+            startAddExerciseActivity(exercisePosition, ADD_EXERCISE_AFTER);
+        }
+    }
+
+    private void startAddExerciseActivity(int exercisePosition, int action) {
+        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
+        this.exercisePosition = exercisePosition;
+        startActivityForResult(intent, action);
+    }
+
+    private void deleteExercise(int exercisePosition) {
+        workout.removeExercise(exercisePosition);
+        initListView();
     }
 
     @Override
@@ -269,9 +299,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     public void onClick(View v) {
-        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
-        this.exercisePosition = 0;
-        startActivityForResult(intent, ADD_EXERCISE);
+        startAddExerciseActivity(0, ADD_EXERCISE);
     }
 
     private void editWorkoutName() {
