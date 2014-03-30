@@ -19,7 +19,6 @@ import de.avalax.fitbuddy.app.*;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.EditableExercise;
 import de.avalax.fitbuddy.app.editExercise.WorkoutAdapter;
-import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
@@ -47,10 +46,10 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     protected WorkoutSession workoutSession;
     @Inject
     protected WorkoutFactory workoutFactory;
-    private Workout workout;
+    @Inject
+    protected ManageWorkout manageWorkout;
     private int workoutPosition;
     private View footer;
-    private Integer exercisePosition;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,18 +64,18 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private void init(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
-            workout = (Workout) savedInstanceState.getSerializable(WORKOUT);
+            manageWorkout.setWorkout((Workout) savedInstanceState.getSerializable(WORKOUT));
             unsavedChanges = savedInstanceState.getBoolean(UNSAVED_CHANGES);
         } else {
             workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-            workout = workoutDAO.load(workoutPosition);
+            manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
             unsavedChanges = false;
         }
         footer = findViewById(R.id.footer_undo);
     }
 
     private void initListView() {
-        setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, workout));
+        setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, manageWorkout.getWorkout()));
         registerForContextMenu(getListView());
         if (unsavedChanges) {
             showUnsavedChanges();
@@ -100,7 +99,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private String[] getWorkouts() {
         List<String> workoutlist = workoutDAO.getList();
         if (workoutlist.size() == workoutPosition) {
-            workoutlist.add(workout.getName());
+            workoutlist.add(manageWorkout.getWorkout().getName());
         }
         return workoutlist.toArray(new String[workoutlist.size()]);
     }
@@ -108,13 +107,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         startEditExerciseActivity(position);
-    }
-
-    private void startEditExerciseActivity(int position) {
-        Exercise exercise = workout.getExercise(position);
-        Intent intent = EditExerciseActivity.newEditExerciseIntent(this, exercise);
-        this.exercisePosition = position;
-        startActivityForResult(intent, EDIT_EXERCISE);
     }
 
     @Override
@@ -135,7 +127,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void switchWorkout(int itemPosition) {
-        workout = workoutDAO.load(itemPosition);
+        manageWorkout.setWorkout(workoutDAO.load(itemPosition));
         workoutPosition = itemPosition;
         initActionBar();
         initListView();
@@ -181,12 +173,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void save() {
-        workoutDAO.save(workout);
+        workoutDAO.save(manageWorkout.getWorkout());
         workoutSession.switchWorkout(workoutPosition);
     }
 
     private void createNewWorkout() {
-        workout = workoutFactory.createNew();
+        manageWorkout.setWorkout(workoutFactory.createNew());
         workoutPosition = workoutDAO.getList().size();
         initActionBar();
         initListView();
@@ -201,7 +193,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void buildExerciseContextMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
-        menu.setHeaderTitle(workout.getExercise(menuInfo.position).getName());
+        menu.setHeaderTitle(manageWorkout.getWorkout().getExercise(menuInfo.position).getName());
         String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
@@ -225,14 +217,18 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         }
     }
 
+    private void startEditExerciseActivity(int position) {
+        startAddExerciseActivity(position, EDIT_EXERCISE);
+    }
+
     private void startAddExerciseActivity(int exercisePosition, int action) {
         Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
-        this.exercisePosition = exercisePosition;
+        manageWorkout.setExercisePosition(exercisePosition);
         startActivityForResult(intent, action);
     }
 
     private void deleteExercise(int exercisePosition) {
-        workout.removeExercise(exercisePosition);
+        manageWorkout.getWorkout().removeExercise(exercisePosition);
         showUnsavedChanges();
         initListView();
     }
@@ -245,7 +241,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             try {
                 Workout workoutFromJson = workoutFactory.createFromJson(scanResult.getContents());
                 if (workoutFromJson != null) {
-                    workout = workoutFromJson;
+                    manageWorkout.setWorkout(workoutFromJson);
                     workoutPosition = workoutDAO.getList().size();
                     initActionBar();
                 }
@@ -259,13 +255,13 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         } else if (resultCode == Activity.RESULT_OK) {
             EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
             if (requestCode == ADD_EXERCISE) {
-                workout.addExercise(editableExercise.createExercise());
+                manageWorkout.getWorkout().addExercise(editableExercise.createExercise());
             } else if (requestCode == ADD_EXERCISE_BEFORE) {
-                workout.addExerciseBefore(this.exercisePosition, editableExercise.createExercise());
+                manageWorkout.getWorkout().addExerciseBefore(manageWorkout.getExercisePosition(), editableExercise.createExercise());
             } else if (requestCode == ADD_EXERCISE_AFTER) {
-                workout.addExerciseAfter(this.exercisePosition, editableExercise.createExercise());
+                manageWorkout.getWorkout().addExerciseAfter(manageWorkout.getExercisePosition(), editableExercise.createExercise());
             } else if (requestCode == EDIT_EXERCISE) {
-                workout.setExercise(this.exercisePosition, editableExercise.createExercise());
+                manageWorkout.getWorkout().setExercise(manageWorkout.getExercisePosition(), editableExercise.createExercise());
             }
             initListView();
             showUnsavedChanges();
@@ -276,14 +272,14 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(WORKOUT_POSITION, workoutPosition);
-        savedInstanceState.putSerializable(WORKOUT, workout);
+        savedInstanceState.putSerializable(WORKOUT, manageWorkout.getWorkout());
         savedInstanceState.putBoolean(UNSAVED_CHANGES, unsavedChanges);
     }
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
         workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-        workout = workoutDAO.load(workoutPosition);
+        manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
         hideUnsavedChanges();
         initActionBar();
         initListView();
@@ -306,16 +302,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void editWorkoutName() {
         final EditText input = new EditText(this);
-        input.setText(workout.getName());
+        input.setText(manageWorkout.getWorkout().getName());
         new AlertDialog.Builder(this)
                 .setTitle("workout name")
                 .setView(input)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if (!workout.getName().equals(input.getText().toString())) {
+                        if (!manageWorkout.getWorkout().getName().equals(input.getText().toString())) {
                             showUnsavedChanges();
                         }
-                        workout.setName(input.getText().toString());
+                        manageWorkout.getWorkout().setName(input.getText().toString());
                         initActionBar();
                     }
                 })
@@ -324,15 +320,15 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void deleteWorkout() {
         //TODO: undo function remove workout
-        workoutDAO.remove(workout);
+        workoutDAO.remove(manageWorkout.getWorkout());
         workoutPosition = workoutDAO.getList().size() - 1;
         if (workoutPosition >= 0) {
-            workout = workoutDAO.load(workoutPosition);
+            manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
             initActionBar();
             initListView();
         } else {
             createNewWorkout();
-            workoutDAO.save(workout);
+            workoutDAO.save(manageWorkout.getWorkout());
             hideUnsavedChanges();
         }
     }

@@ -5,6 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.WeightExerciseFragment;
+import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
@@ -56,5 +57,11 @@ public class FitbuddyModule {
     @Singleton
     WorkoutFactory provideWorkoutFactory() {
         return new WorkoutFactory();
+    }
+
+    @Provides
+    @Singleton
+    ManageWorkout provideManageWorkout() {
+        return new ManageWorkout();
     }
 }
