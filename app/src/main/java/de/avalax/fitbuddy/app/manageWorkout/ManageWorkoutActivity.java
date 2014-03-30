@@ -27,8 +27,6 @@ import java.util.List;
 
 public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener, View.OnClickListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
-    private static final String WORKOUT = "WORKOUT";
-    private static final String UNSAVED_CHANGES = "UNSAVED_CHANGES";
 
     public static final int ADD_EXERCISE_BEFORE = 1;
     public static final int EDIT_EXERCISE = 2;
@@ -37,7 +35,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public static final int SWITCH_WORKOUT = 2;
     private static final int ADD_EXERCISE = 4;
     private boolean initializing;
-    private boolean unsavedChanges;
     @Inject
     protected WorkoutDAO workoutDAO;
     @Inject
@@ -64,22 +61,19 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private void init(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
-            manageWorkout.setWorkout((Workout) savedInstanceState.getSerializable(WORKOUT));
-            unsavedChanges = savedInstanceState.getBoolean(UNSAVED_CHANGES);
         } else {
             workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-            manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
-            unsavedChanges = false;
         }
+        manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
         footer = findViewById(R.id.footer_undo);
+        if (manageWorkout.hasUnsavedChanges()) {
+            showUnsavedChanges();
+        }
     }
 
     private void initListView() {
         setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, manageWorkout.getWorkout()));
         registerForContextMenu(getListView());
-        if (unsavedChanges) {
-            showUnsavedChanges();
-        }
     }
 
     private void initActionBar() {
@@ -106,7 +100,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        startEditExerciseActivity(position);
+        startAddExerciseActivity(position, EDIT_EXERCISE);
     }
 
     @Override
@@ -131,7 +125,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         workoutPosition = itemPosition;
         initActionBar();
         initListView();
-        showUnsavedChanges();
     }
 
     @Override
@@ -178,11 +171,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void createNewWorkout() {
-        manageWorkout.setWorkout(workoutFactory.createNew());
-        workoutPosition = workoutDAO.getList().size();
+        Workout workout = workoutFactory.createNew();
+        manageWorkout.setWorkout(workout);
+        workoutDAO.save(workout);
+        workoutPosition = workoutDAO.getList().size() - 1;
         initActionBar();
         initListView();
-        showUnsavedChanges();
     }
 
     @Override
@@ -203,22 +197,14 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        exerciseActions(item, info.position);
-        return true;
-    }
-
-    private void exerciseActions(MenuItem item, int exercisePosition) {
         if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            deleteExercise(exercisePosition);
+            deleteExercise(info.position);
         } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            startAddExerciseActivity(exercisePosition, ADD_EXERCISE_BEFORE);
+            startAddExerciseActivity(info.position, ADD_EXERCISE_BEFORE);
         } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            startAddExerciseActivity(exercisePosition, ADD_EXERCISE_AFTER);
+            startAddExerciseActivity(info.position, ADD_EXERCISE_AFTER);
         }
-    }
-
-    private void startEditExerciseActivity(int position) {
-        startAddExerciseActivity(position, EDIT_EXERCISE);
+        return true;
     }
 
     private void startAddExerciseActivity(int exercisePosition, int action) {
@@ -229,6 +215,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void deleteExercise(int exercisePosition) {
         manageWorkout.getWorkout().removeExercise(exercisePosition);
+        manageWorkout.setUnsavedChanges(true);
+        //TODO: undo remove exercise
         showUnsavedChanges();
         initListView();
     }
@@ -242,11 +230,11 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 Workout workoutFromJson = workoutFactory.createFromJson(scanResult.getContents());
                 if (workoutFromJson != null) {
                     manageWorkout.setWorkout(workoutFromJson);
-                    workoutPosition = workoutDAO.getList().size();
+                    workoutDAO.save(workoutFromJson);
+                    workoutPosition = workoutDAO.getList().size() - 1;
                     initActionBar();
+                    initListView();
                 }
-                initListView();
-                showUnsavedChanges();
             } catch (WorkoutParseException wpe) {
                 Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
                 Log.d("reading of qrcode failed", wpe.getMessage());
@@ -264,7 +252,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 manageWorkout.getWorkout().setExercise(manageWorkout.getExercisePosition(), editableExercise.createExercise());
             }
             initListView();
-            showUnsavedChanges();
         }
     }
 
@@ -272,8 +259,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(WORKOUT_POSITION, workoutPosition);
-        savedInstanceState.putSerializable(WORKOUT, manageWorkout.getWorkout());
-        savedInstanceState.putBoolean(UNSAVED_CHANGES, unsavedChanges);
     }
 
     @OnClick(R.id.button_undo)
@@ -286,12 +271,10 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private void hideUnsavedChanges() {
-        unsavedChanges = false;
         footer.setVisibility(View.GONE);
     }
 
     private void showUnsavedChanges() {
-        unsavedChanges = true;
         footer.setVisibility(View.VISIBLE);
     }
 
@@ -309,10 +292,9 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (!manageWorkout.getWorkout().getName().equals(input.getText().toString())) {
-                            showUnsavedChanges();
+                            manageWorkout.getWorkout().setName(input.getText().toString());
+                            initActionBar();
                         }
-                        manageWorkout.getWorkout().setName(input.getText().toString());
-                        initActionBar();
                     }
                 })
                 .show();
@@ -324,12 +306,13 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         workoutPosition = workoutDAO.getList().size() - 1;
         if (workoutPosition >= 0) {
             manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
+            manageWorkout.setUnsavedChanges(true);
+            showUnsavedChanges();
             initActionBar();
             initListView();
         } else {
             createNewWorkout();
             workoutDAO.save(manageWorkout.getWorkout());
-            hideUnsavedChanges();
         }
     }
 }
