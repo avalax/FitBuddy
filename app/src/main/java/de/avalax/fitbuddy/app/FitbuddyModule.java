@@ -61,7 +61,7 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    ManageWorkout provideManageWorkout() {
-        return new ManageWorkout();
+    ManageWorkout provideManageWorkout(WorkoutSession workoutSession) {
+        return new ManageWorkout(workoutSession);
     }
 }

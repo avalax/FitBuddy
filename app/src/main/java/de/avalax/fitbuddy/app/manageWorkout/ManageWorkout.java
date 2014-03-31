@@ -1,9 +1,12 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.view.View;
+import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Workout;
 
 public class ManageWorkout {
+
+    protected WorkoutSession workoutSession;
 
     private boolean unsavedChanges;
 
@@ -11,12 +14,16 @@ public class ManageWorkout {
 
     private Workout workout;
 
+    public ManageWorkout(WorkoutSession workoutSession) {
+        this.workoutSession = workoutSession;
+    }
+
     public void setUnsavedChanges(boolean unsavedChanges) {
         this.unsavedChanges = unsavedChanges;
     }
 
     public int unsavedChangesVisibility() {
-        return unsavedChanges? View.VISIBLE : View.GONE;
+        return unsavedChanges ? View.VISIBLE : View.GONE;
     }
 
     public void setExercisePosition(Integer exercisePosition) {
@@ -36,5 +43,7 @@ public class ManageWorkout {
         this.workout = workout;
     }
 
-
+    public void switchWorkout(int position) {
+        workoutSession.switchWorkout(position);
+    }
 }

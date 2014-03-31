@@ -38,8 +38,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     protected WorkoutDAO workoutDAO;
     @Inject
     protected SharedPreferences sharedPreferences;
-    @Inject
-    protected WorkoutSession workoutSession;
+
     @Inject
     protected WorkoutFactory workoutFactory;
     @Inject
@@ -227,7 +226,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void save() {
         workoutDAO.save(manageWorkout.getWorkout());
-        workoutSession.switchWorkout(workoutPosition);
+        manageWorkout.switchWorkout(workoutPosition);
     }
 
     private void createNewWorkout() {
