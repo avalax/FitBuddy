@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
+import android.view.View;
 import de.avalax.fitbuddy.core.workout.Workout;
 
 public class ManageWorkout {
@@ -14,8 +15,8 @@ public class ManageWorkout {
         this.unsavedChanges = unsavedChanges;
     }
 
-    public boolean hasUnsavedChanges() {
-        return unsavedChanges;
+    public int unsavedChangesVisibility() {
+        return unsavedChanges? View.VISIBLE : View.GONE;
     }
 
     public void setExercisePosition(Integer exercisePosition) {
