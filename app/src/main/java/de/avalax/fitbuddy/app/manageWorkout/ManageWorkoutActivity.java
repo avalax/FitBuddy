@@ -18,8 +18,6 @@ import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.*;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.EditableExercise;
-import de.avalax.fitbuddy.core.workout.Workout;
-import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -35,12 +33,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     private static final int ADD_EXERCISE = 4;
     private boolean initializing;
     @Inject
-    protected WorkoutDAO workoutDAO;
-    @Inject
     protected SharedPreferences sharedPreferences;
-
-    @Inject
-    protected WorkoutFactory workoutFactory;
     @Inject
     protected ManageWorkout manageWorkout;
     private int workoutPosition;
@@ -93,7 +86,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
-            save();
+            manageWorkout.switchWorkout(workoutPosition);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == android.R.id.home) {
@@ -104,7 +97,9 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         } else if (item.getItemId() == R.id.action_change_workout_name) {
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
-            deleteWorkout();
+            manageWorkout.deleteWorkout();
+            initActionBar();
+            initListView();
         }
         return true;
     }
@@ -150,8 +145,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
-        workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-        manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
+        manageWorkout.undoUnsavedChanges();
         initActionBar();
         initListView();
     }
@@ -162,7 +156,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         } else {
             workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
         }
-        manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
+        manageWorkout.setWorkout(workoutPosition);
         footer = findViewById(R.id.footer_undo);
         initActionBar();
         initListView();
@@ -189,16 +183,16 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     private String[] getWorkouts() {
-        List<String> workoutlist = workoutDAO.getList();
+        List<String> workoutlist = manageWorkout.getWorkouts();
         if (workoutlist.size() == workoutPosition) {
             workoutlist.add(manageWorkout.getWorkout().getName());
         }
         return workoutlist.toArray(new String[workoutlist.size()]);
     }
 
-    private void switchWorkout(int itemPosition) {
-        manageWorkout.setWorkout(workoutDAO.load(itemPosition));
-        workoutPosition = itemPosition;
+    private void switchWorkout(int position) {
+        manageWorkout.setWorkout(position);
+        workoutPosition = position;
         initActionBar();
         initListView();
     }
@@ -211,7 +205,8 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                    createNewWorkout();
+                    manageWorkout.createNewWorkout();
+                    workoutPosition = manageWorkout.getWorkouts().size() - 1;
                     initActionBar();
                     initListView();
                 } else if (item == 1) {
@@ -222,18 +217,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    private void save() {
-        workoutDAO.save(manageWorkout.getWorkout());
-        manageWorkout.switchWorkout(workoutPosition);
-    }
-
-    private void createNewWorkout() {
-        Workout workout = workoutFactory.createNew();
-        manageWorkout.setWorkout(workout);
-        workoutDAO.save(workout);
-        workoutPosition = workoutDAO.getList().size() - 1;
     }
 
     private void buildExerciseContextMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
@@ -259,14 +242,10 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     private void createWorkoutFromJson(String jsonString) {
         try {
-            Workout workoutFromJson = workoutFactory.createFromJson(jsonString);
-            if (workoutFromJson != null) {
-                manageWorkout.setWorkout(workoutFromJson);
-                workoutDAO.save(workoutFromJson);
-                workoutPosition = workoutDAO.getList().size() - 1;
-                initActionBar();
-                initListView();
-            }
+            manageWorkout.createWorkoutFromJson(jsonString);
+            workoutPosition = manageWorkout.getWorkouts().size() - 1;
+            initActionBar();
+            initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
             Log.d("reading of qrcode failed", wpe.getMessage());
@@ -289,20 +268,5 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                     }
                 })
                 .show();
-    }
-
-    private void deleteWorkout() {
-        //TODO: undo function remove workout
-        workoutDAO.remove(manageWorkout.getWorkout());
-        workoutPosition = workoutDAO.getList().size() - 1;
-        if (workoutPosition >= 0) {
-            manageWorkout.setWorkout(workoutDAO.load(workoutPosition));
-        } else {
-            createNewWorkout();
-            workoutDAO.save(manageWorkout.getWorkout());
-        }
-        manageWorkout.setUnsavedChanges(true);
-        initActionBar();
-        initListView();
     }
 }
