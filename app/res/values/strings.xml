@@ -6,6 +6,7 @@
     <string name="neutralLabel">%1$s kg</string>
     <string name="positiveLabel">+%2$s = %1$s kg</string>
     <string name="title_result">result of %1s</string>
+    <string name="title_weight">%1$skg</string>
     <string name="title_exercise_with_weight">%1$s: %2$skg</string>
     <string name="new_exercise_name">"new exercise"</string>
     <string name="edit_weight_title">weight - %1s</string>

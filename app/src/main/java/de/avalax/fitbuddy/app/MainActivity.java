@@ -10,21 +10,28 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
+import de.avalax.fitbuddy.core.workout.Exercise;
 
 import javax.inject.Inject;
+import java.text.DecimalFormat;
 
 public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuItemClickListener {
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @InjectView(R.id.actionBarOverflow)
     protected ImageView actionBarOverflow;
+    @InjectView(R.id.weightTextView)
+    protected TextView weightTextView;
     @Inject
     protected WorkoutSession workoutSession;
     protected String actionSwitchWorkout;
+    private DecimalFormat decimalFormat;
+    private String weightTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +44,32 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
     }
 
     private void init() {
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getApplicationContext(), workoutSession));
+        this.decimalFormat = new DecimalFormat("###.#");
+        this.weightTitle = getResources().getString(R.string.title_weight);
+        //TODO: 0 check, when workout has no exercise
+        this.weightTextView.setText(exerciseWeightText(0));
+        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), workoutSession);
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                weightTextView.setText(exerciseWeightText(position));
+            }
+        });
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
+    }
+
+    private String exerciseWeightText(int position) {
+        Exercise exercise = workoutSession.getWorkout().getExercise(position);
+        double weight = exercise.getWeight();
+        //TODO: show hide weight, change margins
+        if (weight > 0) {
+            return String.format(weightTitle, decimalFormat.format(weight));
+        } else {
+            return "";
+        }
     }
 
     @Override

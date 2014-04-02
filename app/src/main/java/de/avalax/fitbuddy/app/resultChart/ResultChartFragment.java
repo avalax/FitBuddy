@@ -33,7 +33,7 @@ public class ResultChartFragment extends Fragment {
     private String exerciseTitle;
     private LayoutInflater inflater;
     private View.OnClickListener tendencyOnClickListener;
-    DecimalFormat decimalFormat;
+    private DecimalFormat decimalFormat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,7 +152,6 @@ public class ResultChartFragment extends Fragment {
     private void updateExerciseText(View resultChartView, Exercise exercise) {
         TextView editText = (TextView) resultChartView.findViewById(R.id.resultChartEditText);
         Tendency tendency = exercise.getTendency();
-        String exerciseName = exercise.getName();
         //TODO: textformating
 
         double weightRaise = exercise.getWeightRaise(tendency);

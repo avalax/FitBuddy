@@ -19,6 +19,21 @@
             android:layout_gravity="top" />
     </android.support.v4.view.ViewPager>
 
+    <TextView
+        android:id="@+id/weightTextView"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="xxx.xkg"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="44dp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:gravity="right" />
+
     <ImageView
         style="@style/PagerOverflow"
         android:layout_width="wrap_content"

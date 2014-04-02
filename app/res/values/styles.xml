@@ -7,7 +7,7 @@
         <item name="android:textAppearance">@android:style/TextAppearance.Holo.Medium</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingRight">44dp</item>
+        <item name="android:paddingRight">108dp</item>
     </style>
 
     <style name="PagerOverflow">
