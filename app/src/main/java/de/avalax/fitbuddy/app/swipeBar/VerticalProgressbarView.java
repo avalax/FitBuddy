@@ -9,7 +9,6 @@ import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Workout;
 
 public class VerticalProgressbarView extends FrameLayout {
     private TextView maxValueTextView;
@@ -47,8 +46,7 @@ public class VerticalProgressbarView extends FrameLayout {
         a.recycle();
     }
 
-    public void updateProgressbar(Workout workout, int exercisePosition) {
-        Exercise exercise = workout.getExercise(exercisePosition);
+    public void updateProgressbar(Exercise exercise) {
         //TODO: extract calculation
         int currentValue = exercise.getSetNumber() - (exercise.getCurrentSet().getReps() == 0 ? 1 : 0);
         int maxValue = exercise.getMaxSets();

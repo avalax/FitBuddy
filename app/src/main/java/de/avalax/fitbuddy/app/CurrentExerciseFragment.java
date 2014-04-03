@@ -110,7 +110,7 @@ public class CurrentExerciseFragment extends Fragment {
     private void setViews(int exercisePosition) {
         Workout workout = workoutSession.getWorkout();
         repsProgressBar.updateProgressbar(workout.getExercise(exercisePosition).getCurrentSet());
-        setsProgressBar.updateProgressbar(workout, exercisePosition);
+        setsProgressBar.updateProgressbar(workout.getExercise(exercisePosition));
         updateWorkoutProgress(exercisePosition);
     }
 
