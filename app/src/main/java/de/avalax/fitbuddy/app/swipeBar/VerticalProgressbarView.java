@@ -49,10 +49,11 @@ public class VerticalProgressbarView extends FrameLayout {
 
     public void updateProgressbar(Workout workout, int exercisePosition) {
         Exercise exercise = workout.getExercise(exercisePosition);
-        float currentValue = workout.getProgress(exercisePosition);
-        int maxValue = workout.getExerciseCount();
+        //TODO: extract calculation
+        int currentValue = exercise.getSetNumber() - (exercise.getCurrentSet().getReps() == 0 ? 1 : 0);
+        int maxValue = exercise.getMaxSets();
         String currentValueText = String.valueOf(exercise.getSetNumber());
-        String maxValueText = String.valueOf(exercise.getMaxSets());
+        String maxValueText = String.valueOf(maxValue);
         updateProgressbar(currentValue, maxValue, currentValueText, maxValueText);
     }
 

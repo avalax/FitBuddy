@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
@@ -23,6 +24,8 @@ public class CurrentExerciseFragment extends Fragment {
     protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
     protected VerticalProgressbarView setsProgressBar;
+    @InjectView(R.id.workoutProgressBar)
+    protected ProgressBar workoutProggressBar;
     @Inject
     protected WorkoutSession workoutSession;
     private int exercisePosition;
@@ -40,11 +43,12 @@ public class CurrentExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
-        viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+        this.exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
+        this.viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         ButterKnife.inject(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
+        updateWorkoutProgress(exercisePosition);
         return view;
     }
 
@@ -107,5 +111,18 @@ public class CurrentExerciseFragment extends Fragment {
         Workout workout = workoutSession.getWorkout();
         repsProgressBar.updateProgressbar(workout.getExercise(exercisePosition).getCurrentSet());
         setsProgressBar.updateProgressbar(workout, exercisePosition);
+        updateWorkoutProgress(exercisePosition);
+    }
+
+    private void updateWorkoutProgress(int exercisePosition) {
+        Workout workout = workoutSession.getWorkout();
+        float currentValue = workout.getProgress(exercisePosition);
+        int maxValue = workout.getExerciseCount();
+        workoutProggressBar.setProgress(calculateProgressbarHeight(currentValue,maxValue));
+    }
+
+    private int calculateProgressbarHeight(float currentValue, int maxValue) {
+        float scale = currentValue / maxValue;
+        return Math.round(scale * 100);
     }
 }
