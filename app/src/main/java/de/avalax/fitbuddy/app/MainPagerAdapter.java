@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.exceptions.ExerciseNotAvailableException;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     protected WorkoutSession workoutSession;
@@ -28,8 +29,12 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         Workout workout = workoutSession.getWorkout();
-        Exercise currentExercise = workout.getExercise(position);
-        return currentExercise.getName();
+        try {
+            Exercise currentExercise = workout.getExercise(position);
+            return currentExercise.getName();
+        } catch (ExerciseNotAvailableException e) {
+            return "";
+        }
     }
 
     @Override
