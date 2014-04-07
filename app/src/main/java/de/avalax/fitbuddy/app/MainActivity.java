@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
     protected ImageView actionBarOverflow;
     @InjectView(R.id.weightTextView)
     protected TextView weightTextView;
+    @InjectView(R.id.indicator)
+    protected PagerTitleStrip indicator;
     @Inject
     protected WorkoutSession workoutSession;
     protected String actionSwitchWorkout;
@@ -51,14 +55,32 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), workoutSession);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {}
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrollStateChanged(int state) {
+            }
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             public void onPageSelected(int position) {
                 weightTextView.setText(exerciseWeightText(position));
             }
         });
+        weightTextView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                indicator.setPadding(indicator.getPaddingLeft(), indicator.getPaddingTop(), paddingRight(left, right), indicator.getPaddingBottom());
+                indicator.requestLayout();
+            }
+        });
+
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
+    }
+
+    private int paddingRight(int left, int right) {
+        final float scale = getResources().getDisplayMetrics().density;
+        //TODO: extract 8dp to styles
+        int paddingRight = (int) (8 * scale + 0.5f);
+        return paddingRight + right - left;
     }
 
     private String exerciseWeightText(int position) {
