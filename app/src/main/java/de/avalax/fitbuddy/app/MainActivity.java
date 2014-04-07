@@ -68,8 +68,9 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
         weightTextView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                indicator.setPadding(indicator.getPaddingLeft(), indicator.getPaddingTop(), paddingRight(left, right), indicator.getPaddingBottom());
-                indicator.requestLayout();
+                if (right != paddingRight(left, right)) {
+                    indicator.setPadding(indicator.getPaddingLeft(), indicator.getPaddingTop(), paddingRight(left, right), indicator.getPaddingBottom());
+                }
             }
         });
 
