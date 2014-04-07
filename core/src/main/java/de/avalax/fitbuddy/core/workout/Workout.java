@@ -12,7 +12,7 @@ public interface Workout  extends Serializable {
     Set getCurrentSet(int index);
     void setName(String name);
     String getName();
-    float getProgress(int index);
+    double getProgress(int index);
     //TODO: move to WorkoutDAO
     void addExerciseBefore(int index, Exercise exercise);
     void addExerciseAfter(int index, Exercise exercise);

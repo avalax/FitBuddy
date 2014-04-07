@@ -47,28 +47,26 @@ public class VerticalProgressbarView extends FrameLayout {
     }
 
     public void updateProgressbar(Exercise exercise) {
-        int currentValue = exercise.getSetNumber() - 1;
-        int maxValue = exercise.getMaxSets() - 1;
         String currentValueText = String.valueOf(exercise.getSetNumber());
         String maxValueText = String.valueOf(exercise.getMaxSets());
-        updateProgressbar(currentValue, maxValue, currentValueText, maxValueText);
+        updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
 
     public void updateProgressbar(Set set) {
-        int currentValue = set.getReps();
+        double currentValue = set.getReps();
         int maxValue = set.getMaxReps();
-        updateProgressbar(currentValue, maxValue, String.valueOf(currentValue), String.valueOf(maxValue));
+        updateProgressbar(currentValue / maxValue, String.valueOf(set.getReps()), String.valueOf(maxValue));
     }
 
-    private void updateProgressbar(int currentValue, int maxValue, String currentValueText, String maxValueText) {
+    private void updateProgressbar(double progress, String currentValueText, String maxValueText) {
         valueTextView.setText(currentValueText);
         maxValueTextView.setText(maxValueText);
-        imageView.setImageLevel(calculateProgressbarHeight(currentValue, maxValue));
+        imageView.setImageLevel(calculateProgressbarHeight(progress, 1));
         postInvalidate();
     }
 
-    private int calculateProgressbarHeight(float currentValue, int maxValue) {
-        float scale = currentValue / maxValue;
-        return Math.round(scale * 10000);
+    private int calculateProgressbarHeight(double currentValue, int maxValue) {
+        double scale = currentValue / maxValue;
+        return (int)Math.round(scale * 10000);
     }
 }

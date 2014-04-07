@@ -116,13 +116,10 @@ public class CurrentExerciseFragment extends Fragment {
 
     private void updateWorkoutProgress(int exercisePosition) {
         Workout workout = workoutSession.getWorkout();
-        float currentValue = workout.getProgress(exercisePosition);
-        int maxValue = workout.getExerciseCount();
-        workoutProggressBar.setProgress(calculateProgressbarHeight(currentValue,maxValue));
+        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exercisePosition)));
     }
 
-    private int calculateProgressbarHeight(float currentValue, int maxValue) {
-        float scale = currentValue / maxValue;
-        return Math.round(scale * 100);
+    private int calculateProgressbarHeight(double progess) {
+        return (int)Math.round(progess * 100);
     }
 }

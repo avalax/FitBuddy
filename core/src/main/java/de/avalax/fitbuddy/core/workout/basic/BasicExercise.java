@@ -83,6 +83,13 @@ public class BasicExercise implements Exercise {
         return getCurrentSet().getMaxReps();
     }
 
+    @Override
+    public double getProgress() {
+        double setsProgress = (setNumber - 1) / (double) getMaxSets();
+        double repsProgress = getReps() / (double) getMaxReps() / getMaxSets();
+        return setsProgress + repsProgress;
+    }
+
     public void incrementCurrentSet() {
         setCurrentSet(setNumber + 1);
     }

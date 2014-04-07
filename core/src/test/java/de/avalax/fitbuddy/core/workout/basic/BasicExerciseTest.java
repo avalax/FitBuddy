@@ -5,8 +5,10 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
+import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +17,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 
+@RunWith(HierarchicalContextRunner.class)
 public class BasicExerciseTest {
 
     Exercise exercise;
     List<Set> sets;
 
     @Before
-    public void setUp() throws Exception{
-        sets = new ArrayList<Set>();
-        exercise = new BasicExercise("Bankdrücken",sets, 2.5);
+    public void setUp() throws Exception {
+        sets = new ArrayList<>();
+        exercise = new BasicExercise("Bankdrücken", sets, 2.5);
     }
 
     @Test
@@ -69,7 +72,7 @@ public class BasicExerciseTest {
         sets.add(set);
         when(set.getReps()).thenReturn(12);
 
-        assertThat(exercise.getReps(),equalTo(12));
+        assertThat(exercise.getReps(), equalTo(12));
     }
 
     @Test
@@ -98,7 +101,7 @@ public class BasicExerciseTest {
 
         exercise.setCurrentSet(-1);
 
-        assertThat(exercise.getSetNumber(),equalTo(1));
+        assertThat(exercise.getSetNumber(), equalTo(1));
     }
 
     @Test
@@ -143,41 +146,41 @@ public class BasicExerciseTest {
 
     @Test
     public void getWeightRaise_shouldGetWeightRaise() throws Exception {
-        exercise = new BasicExercise("NeutralTendency",sets,5.0);
+        exercise = new BasicExercise("NeutralTendency", sets, 5.0);
 
-        assertThat(exercise.getWeightRaise(),equalTo(5.0));
+        assertThat(exercise.getWeightRaise(), equalTo(5.0));
     }
 
     @Test
     public void getWeightRaise_shouldGetWeightRaiseForNeutralTendency() throws Exception {
-        exercise = new BasicExercise("NeutralTendency",sets,5.0);
+        exercise = new BasicExercise("NeutralTendency", sets, 5.0);
         Set set = mock(Set.class);
         sets.add(set);
 
         when(set.getWeight()).thenReturn(2.5);
 
-        assertThat(exercise.getWeightRaise(Tendency.NEUTRAL),equalTo(2.5));
+        assertThat(exercise.getWeightRaise(Tendency.NEUTRAL), equalTo(2.5));
     }
 
     @Test
     public void getWeightRaise_shouldGetWeightRaiseForPositiveTendency() {
         exercise = createExercise(2.5, 5.0);
 
-        assertThat(exercise.getWeightRaise(Tendency.PLUS),equalTo(7.5));
+        assertThat(exercise.getWeightRaise(Tendency.PLUS), equalTo(7.5));
     }
 
     @Test
     public void getWeightRaise_shouldGetWeightRaiseForMinusTendency() {
         exercise = createExercise(15.0, 5.0);
 
-        assertThat(exercise.getWeightRaise(Tendency.MINUS),equalTo(10.0));
+        assertThat(exercise.getWeightRaise(Tendency.MINUS), equalTo(10.0));
     }
 
     @Test
     public void getWeightRaise_shouldGetWeightRaiseForMinusTendencyWhenRaiseWouldBeNegative() {
         exercise = createExercise(2.5, 5.0);
 
-        assertThat(exercise.getWeightRaise(Tendency.MINUS),equalTo(0.0));
+        assertThat(exercise.getWeightRaise(Tendency.MINUS), equalTo(0.0));
     }
 
     @Test(expected = SetNotAvailableException.class)
@@ -185,8 +188,75 @@ public class BasicExerciseTest {
         exercise.getCurrentSet();
     }
 
+    public class givenAnExerciseProgress {
+        @Test(expected = SetNotAvailableException.class)
+        public void withoutSets_shouldHaveZeroProgress() throws Exception {
+            exercise.getProgress();
+        }
+
+        @Test
+        public void oneSetWithoutReps_shouldHaveZeroProgress() throws Exception {
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(0);
+            sets.add(set);
+            assertThat(exercise.getProgress(), equalTo(0.0));
+        }
+
+        @Test
+        public void oneSetWithMaxReps_shouldHaveFullProgress() throws Exception {
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(100);
+            sets.add(set);
+            assertThat(exercise.getProgress(), equalTo(1.0));
+        }
+
+        @Test
+        public void oneSetWithMaxReps_shouldHaveHalfProgress() throws Exception {
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(50);
+            sets.add(set);
+            assertThat(exercise.getProgress(), equalTo(0.5));
+        }
+
+        @Test
+        public void twoSetsWithoutReps_shouldHaveHalfProgress() throws Exception {
+            sets.add(mock(Set.class));
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(0);
+            sets.add(set);
+            exercise.setCurrentSet(2);
+            assertThat(exercise.getProgress(), equalTo(0.5));
+        }
+
+        @Test
+        public void twoSetsWithMaxReps_shouldHaveFallProgress() throws Exception {
+            sets.add(mock(Set.class));
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(100);
+            sets.add(set);
+            exercise.setCurrentSet(2);
+            assertThat(exercise.getProgress(), equalTo(1.0));
+        }
+
+        @Test
+        public void twoSetsWithHalfReps_shouldHave75Progress() throws Exception {
+            sets.add(mock(Set.class));
+            Set set = mock(Set.class);
+            when(set.getMaxReps()).thenReturn(100);
+            when(set.getReps()).thenReturn(50);
+            sets.add(set);
+            exercise.setCurrentSet(2);
+            assertThat(exercise.getProgress(), equalTo(0.75));
+        }
+    }
+
     private Exercise createExercise(double weight, double weightRaise) {
-        Exercise exercise = new BasicExercise("MinusTendency",sets,weightRaise);
+        Exercise exercise = new BasicExercise("MinusTendency", sets, weightRaise);
         Set set = mock(Set.class);
         sets.add(set);
 

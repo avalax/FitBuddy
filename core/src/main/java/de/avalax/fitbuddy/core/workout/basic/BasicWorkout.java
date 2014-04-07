@@ -55,14 +55,10 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public float getProgress(int index) {
+    public double getProgress(int index) {
         Exercise exercise = getExercise(index);
-        float maxSets = (float) exercise.getMaxSets();
-        float setNumber = (float) exercise.getSetNumber();
-        if (getReps(index) == 0) {
-            setNumber--;
-        }
-        return index + (setNumber / maxSets);
+
+        return (index + exercise.getProgress()) / getExerciseCount();
     }
 
     @Override
