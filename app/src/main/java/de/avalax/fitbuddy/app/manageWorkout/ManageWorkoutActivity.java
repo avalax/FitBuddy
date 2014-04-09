@@ -89,9 +89,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             manageWorkout.switchWorkout(workoutPosition);
             setResult(RESULT_OK);
             finish();
-        } else if (item.getItemId() == android.R.id.home) {
-            setResult(RESULT_CANCELED);
-            finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
             showNewWorkoutAltertDialog();
         } else if (item.getItemId() == R.id.action_change_workout_name) {
@@ -172,7 +169,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         initializing = true;
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 
         SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
