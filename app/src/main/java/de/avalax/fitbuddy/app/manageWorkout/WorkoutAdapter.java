@@ -35,30 +35,33 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
-        if (v == null) {
+        ViewHolder holder;
+        if (convertView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.row, null);
+            convertView = vi.inflate(R.layout.row, null);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.toptext);
+            holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);
+            holder.reps = (TextView) convertView.findViewById(R.id.repsTextView);
+            holder.sets = (TextView) convertView.findViewById(R.id.setsTextView);
+            holder.iv = (ImageView) convertView.findViewById(R.id.buttonOverflow);
+            holder.iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.showContextMenu();
+                }
+            });
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Exercise exercise = exercises.get(position);
-        TextView name = (TextView) v.findViewById(R.id.toptext);
-        TextView weight = (TextView) v.findViewById(R.id.weightTextView);
-        TextView reps = (TextView) v.findViewById(R.id.repsTextView);
-        TextView sets = (TextView) v.findViewById(R.id.setsTextView);
-        ImageView iv = (ImageView) v.findViewById(R.id.buttonOverflow);
-
-        name.setText(exercise.getName());
-        weight.setText(getWeightText(exercise.getWeight()));
-        reps.setText(String.valueOf(exercise.getMaxReps()));
-        sets.setText(String.valueOf(exercise.getMaxSets()));
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.showContextMenu();
-            }
-        });
-        return v;
+        holder.name.setText(exercise.getName());
+        holder.weight.setText(getWeightText(exercise.getWeight()));
+        holder.reps.setText(String.valueOf(exercise.getMaxReps()));
+        holder.sets.setText(String.valueOf(exercise.getMaxSets()));
+        return convertView;
     }
 
     private CharSequence getWeightText(double weight) {
@@ -67,5 +70,13 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
         } else {
             return "-";
         }
+    }
+
+    private static class ViewHolder {
+        public TextView name;
+        public TextView weight;
+        public TextView sets;
+        public TextView reps;
+        public ImageView iv;
     }
 }
