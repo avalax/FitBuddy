@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:components="http://schemas.android.com/apk/res/de.avalax.fitbuddy.app"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent">
+
     <ProgressBar
         android:id="@+id/workoutProgressBar"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
@@ -12,8 +12,10 @@
         android:indeterminate="false"
         android:max="100"
         android:progress="75"
-        android:progressDrawable="@drawable/workout_progress_bar"/>
+        android:progressDrawable="@drawable/workout_progress_bar" />
+
     <LinearLayout
+        android:layout_below="@+id/workoutProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -34,4 +36,4 @@
             components:background="@color/secondary_background"
             components:progressbar="@drawable/secondary_progress_bar" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

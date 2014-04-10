@@ -1,77 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
     android:background="@drawable/activated_background">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="fill_parent">
+    <TextView
+        android:id="@+id/toptext"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textColor="@color/primary_progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="52dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="@string/new_exercise_name" />
 
-        <TextView
-            android:id="@+id/toptext"
-            android:textAppearance="@android:style/TextAppearance.Holo.Large"
-            android:textColor="@color/primary_progressbar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:ellipsize="end"
-            android:text="@string/new_exercise_name" />
+    <TextView
+        android:id="@+id/setsTextView"
+        android:layout_below="@+id/toptext"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:drawableLeft="@drawable/ic_action_change_exercise"
+        android:text="@string/edit_sets_bar_title"
+        android:layout_marginLeft="5dp"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee" />
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/repsTextView"
+        android:layout_below="@+id/toptext"
+        android:layout_toRightOf="@+id/setsTextView"
+        android:drawableLeft="@drawable/ic_action_repeat"
+        android:text="@string/edit_reps_bar_title"
+        android:layout_width="64dp"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee" />
 
-            <TextView
-                android:id="@+id/setsTextView"
-                android:drawableLeft="@drawable/ic_action_change_exercise"
-                android:text="@string/edit_sets_bar_title"
-                android:paddingLeft="10dp"
-                android:layout_width="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:gravity="center"
-                android:ellipsize="marquee" />
-
-            <TextView
-                android:id="@+id/weightTextView"
-                android:drawableLeft="@drawable/ic_action_weight"
-                android:text="@string/edit_weight_bar_title"
-                android:layout_width="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_centerHorizontal="true"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/repsTextView"
-                android:drawableLeft="@drawable/ic_action_repeat"
-                android:text="@string/edit_reps_bar_title"
-                android:paddingRight="10dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:gravity="center"
-                android:ellipsize="marquee" />
-        </RelativeLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/weightTextView"
+        android:layout_below="@+id/toptext"
+        android:layout_toRightOf="@+id/repsTextView"
+        android:drawableLeft="@drawable/ic_action_weight"
+        android:text="@string/edit_weight_bar_title"
+        android:layout_width="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/buttonOverflow"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_marginRight="6dip"
         android:src="@drawable/ic_action_overflow"
         android:focusable="false"
-        android:paddingLeft="6dp"
+        android:paddingLeft="10dp"
         android:paddingRight="6dp"
         android:focusableInTouchMode="false" />
-</LinearLayout>
+</RelativeLayout>

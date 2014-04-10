@@ -12,10 +12,10 @@
     <string name="edit_weight_title">weight - %1s</string>
     <string name="edit_effort_title">"effort - %1s"</string>
     <string name="edit_confirmation_title">save - %1s</string>
-    <string name="edit_weight_bar_title">weight</string>
+    <string name="edit_weight_bar_title">xx.x</string>
     <string name="edit_weight_raise_bar_title">raise</string>
-    <string name="edit_reps_bar_title">reps</string>
-    <string name="edit_sets_bar_title">sets</string>
+    <string name="edit_reps_bar_title">xx</string>
+    <string name="edit_sets_bar_title">xx</string>
     <string name="vertical_bar_contentDescription">progressBar</string>
     <string name="vertical_bar_default_text">0</string>
     <string name="edit_label_default_text">label</string>
