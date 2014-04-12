@@ -9,10 +9,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static de.avalax.fitbuddy.app.Asserts.assertNextStartedActivityForResult;
-import static de.avalax.fitbuddy.app.Asserts.assertOnClickListenerRegistered;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityTest {
@@ -27,15 +24,11 @@ public class MainActivityTest {
     }
 
     @Test
-    public void whenCreated_thenOnClickListenerAreRegistered() throws Exception {
-        assertOnClickListenerRegistered(mainActivity.actionBarOverflow);
-    }
-
-    @Test
     public void whenSwitchWorkoutClicked_thenManageWorkoutActivityIsStarted() throws Exception {
         MenuItem menuItem = mock(MenuItem.class);
+        when(menuItem.getItemId()).thenReturn(R.id.action_switch_workout);
         when(menuItem.getTitle()).thenReturn(mainActivity.actionSwitchWorkout);
-        mainActivity.onMenuItemClick(menuItem);
+        mainActivity.onOptionsItemSelected(menuItem);
 
         verify(workoutSession).saveWorkout();
         assertNextStartedActivityForResult(mainActivity, ManageWorkoutActivity.class);

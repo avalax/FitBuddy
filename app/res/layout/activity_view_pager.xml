@@ -1,45 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <de.avalax.fitbuddy.app.FixedViewPager
-        android:id="@+id/pager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-
-        <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/indicator"
-            style="@style/PagerTitleStrip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top" />
-    </de.avalax.fitbuddy.app.FixedViewPager>
-
-    <TextView
-        android:id="@+id/weightTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingRight="44dp"
-        android:textStyle="bold"
-        android:singleLine="true"
-        android:gravity="right" />
-
-    <ImageView
-        style="@style/PagerOverflow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/actionBarOverflow"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:clickable="true"
-        android:contentDescription="@string/pager_overflow" />
-</RelativeLayout>
+<de.avalax.fitbuddy.app.FixedViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />

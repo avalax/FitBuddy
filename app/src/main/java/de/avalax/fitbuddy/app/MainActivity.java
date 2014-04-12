@@ -1,41 +1,32 @@
 package de.avalax.fitbuddy.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;
 
-public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends FragmentActivity {
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
-    @InjectView(R.id.actionBarOverflow)
-    protected ImageView actionBarOverflow;
-    @InjectView(R.id.weightTextView)
-    protected TextView weightTextView;
-    @InjectView(R.id.indicator)
-    protected PagerTitleStrip indicator;
     @Inject
     protected WorkoutSession workoutSession;
     protected String actionSwitchWorkout;
     private DecimalFormat decimalFormat;
     private String weightTitle;
+    private MenuItem menuItem;
+    private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,15 +34,27 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
         setContentView(R.layout.activity_view_pager);
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
-        getActionBar().hide();
         init();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, menu);
+        this.menuItem = menu.findItem(R.id.action_title_weight);
+        updatePage(this.position);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void init() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setBackgroundDrawable(null);
+
+        this.position = 0;
         this.decimalFormat = new DecimalFormat("###.#");
         this.weightTitle = getResources().getString(R.string.title_weight);
         //TODO: 0 check, when workout has no exercise
-        this.weightTextView.setText(exerciseWeightText(0));
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), workoutSession);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -62,73 +65,39 @@ public class MainActivity extends FragmentActivity implements PopupMenu.OnMenuIt
             }
 
             public void onPageSelected(int position) {
-                weightTextView.setText(exerciseWeightText(position));
-            }
-        });
-        weightTextView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (right != paddingRight(left, right)) {
-                    indicator.setPadding(indicator.getPaddingLeft(), indicator.getPaddingTop(), paddingRight(left, right), indicator.getPaddingBottom());
-                }
+                updatePage(position);
             }
         });
 
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
     }
 
-    private int paddingRight(int left, int right) {
-        final float scale = getResources().getDisplayMetrics().density;
-        //TODO: extract 8dp to styles
-        int paddingRight = (int) (8 * scale + 0.5f);
-        return paddingRight + right - left;
+    private void updatePage(int position) {
+        this.position = position;
+        setTitle(workoutSession.getWorkout().getExercise(position).getName());
+        if (menuItem != null) {
+            menuItem.setTitle(exerciseWeightText(position));
+        }
     }
 
     private String exerciseWeightText(int position) {
         Exercise exercise = workoutSession.getWorkout().getExercise(position);
         double weight = exercise.getWeight();
-        //TODO: show hide weight, change margins
         if (weight > 0) {
             return String.format(weightTitle, decimalFormat.format(weight));
         } else {
-            return "";
+            return "-";
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            Intent upIntent = new Intent(this, MainActivity.class);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.from(this)
-                        .addNextIntent(upIntent)
-                        .startActivities();
-                finish();
-            } else {
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @OnClick(R.id.actionBarOverflow)
-    protected void switchWorkout() {
-        PopupMenu popupMenu = new PopupMenu(this, actionBarOverflow);
-        popupMenu.inflate(R.menu.main_activity_action);
-        popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.show();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        if (actionSwitchWorkout.equals(item.getTitle())) {
+        if (item.getItemId() == R.id.action_switch_workout) {
             workoutSession.saveWorkout();
             Intent intent = new Intent(this, ManageWorkoutActivity.class);
             startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

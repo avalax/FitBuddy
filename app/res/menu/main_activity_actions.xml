@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_title_weight"
+        android:title="@string/title_weight"
+        android:showAsAction="always" />
+    <item
+        android:id="@+id/action_switch_workout"
+        android:title="@string/action_switch_workout"
+        android:showAsAction="never" />
+</menu>
