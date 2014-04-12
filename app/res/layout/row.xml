@@ -53,7 +53,8 @@
         android:ellipsize="marquee"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
+    <ImageButton
+        style="?android:borderlessButtonStyle"
         android:id="@+id/buttonOverflow"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
