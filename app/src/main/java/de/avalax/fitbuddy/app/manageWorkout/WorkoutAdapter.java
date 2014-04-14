@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -44,13 +43,6 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
             holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);
             holder.reps = (TextView) convertView.findViewById(R.id.repsTextView);
             holder.sets = (TextView) convertView.findViewById(R.id.setsTextView);
-            holder.iv = (ImageView) convertView.findViewById(R.id.buttonOverflow);
-            holder.iv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.showContextMenu();
-                }
-            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -77,6 +69,5 @@ public class WorkoutAdapter extends ArrayAdapter<Exercise> {
         public TextView weight;
         public TextView sets;
         public TextView reps;
-        public ImageView iv;
     }
 }

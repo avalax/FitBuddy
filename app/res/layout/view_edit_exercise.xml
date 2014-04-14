@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="1"
+        android:orientation="vertical" android:layout_width="0dp" android:layout_height="match_parent">
+    <ImageButton
+        style="?android:borderlessButtonStyle"
+        android:id="@+id/buttonOverflow"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_action_change_exercise"
+        android:focusable="false"
+        android:paddingLeft="10dp"
+        android:paddingRight="6dp"
+        android:focusableInTouchMode="false" />
+    <ImageButton
+        style="?android:borderlessButtonStyle"
+        android:id="@+id/buttonOverflow2"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_action_weight"
+        android:focusable="false"
+        android:paddingLeft="10dp"
+        android:paddingRight="6dp"
+        android:focusableInTouchMode="false" />
+        </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="1" android:orientation="vertical" android:layout_width="0dp" android:layout_height="match_parent">
+        <ImageButton
+            style="?android:borderlessButtonStyle"
+            android:id="@+id/buttonOverflow3"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_action_repeat"
+            android:focusable="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="6dp"
+            android:focusableInTouchMode="false" />
+        <ImageButton
+            style="?android:borderlessButtonStyle"
+            android:id="@+id/buttonOverflow4"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_action_edit"
+            android:focusable="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="6dp"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+</LinearLayout>

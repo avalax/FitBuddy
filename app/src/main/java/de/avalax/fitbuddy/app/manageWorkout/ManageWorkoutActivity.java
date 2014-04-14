@@ -18,6 +18,7 @@ import com.google.zxing.integration.android.IntentResult;
 import de.avalax.fitbuddy.app.*;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.EditableExercise;
+import de.avalax.fitbuddy.core.workout.Exercise;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -62,13 +63,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId() == getListView().getId()) {
-            buildExerciseContextMenu(menu, (AdapterView.AdapterContextMenuInfo) menuInfo);
-        }
-    }
-
-    @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         if (initializing) {
             initializing = false;
@@ -80,7 +74,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        startAddExerciseActivity(position, EDIT_EXERCISE);
+        editExercise(position);
     }
 
     @Override
@@ -216,14 +210,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         alert.show();
     }
 
-    private void buildExerciseContextMenu(ContextMenu menu, AdapterView.AdapterContextMenuInfo menuInfo) {
-        menu.setHeaderTitle(manageWorkout.getWorkout().getExercise(menuInfo.position).getName());
-        String[] menuItems = getResources().getStringArray(R.array.actions_edit_exercise);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
-    }
-
     private void startAddExerciseActivity(int exercisePosition, int action) {
         Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
         manageWorkout.setExercisePosition(exercisePosition);
@@ -264,6 +250,27 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                         }
                     }
                 })
+                .show();
+    }
+
+    private void editExercise(int position) {
+        Exercise exercise = manageWorkout.getWorkout().getExercise(position);
+        final ManageWorkoutActivity manageWorkoutActivity = this;
+        View view = getLayoutInflater().inflate(R.layout.view_edit_exercise, null);
+        new AlertDialog.Builder(this)
+                .setTitle(exercise.getName())
+                .setView(view)
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Toast.makeText(manageWorkoutActivity, "delete", 1000);
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(manageWorkoutActivity, "save", 1000);
+                            }
+                        }
+                )
                 .show();
     }
 }

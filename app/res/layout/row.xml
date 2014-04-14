@@ -52,17 +52,4 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:layout_centerHorizontal="true" />
-
-    <ImageButton
-        style="?android:borderlessButtonStyle"
-        android:id="@+id/buttonOverflow"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:src="@drawable/ic_action_overflow"
-        android:focusable="false"
-        android:paddingLeft="10dp"
-        android:paddingRight="6dp"
-        android:focusableInTouchMode="false" />
 </RelativeLayout>
