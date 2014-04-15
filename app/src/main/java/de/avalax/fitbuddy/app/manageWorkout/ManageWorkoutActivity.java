@@ -253,7 +253,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 .show();
     }
 
-    private void editExercise(int position) {
+    private void editExercise(final int position) {
         Exercise exercise = manageWorkout.getWorkout().getExercise(position);
         final ManageWorkoutActivity manageWorkoutActivity = this;
         View view = getLayoutInflater().inflate(R.layout.view_edit_exercise, null);
@@ -262,7 +262,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                 .setView(view)
                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(manageWorkoutActivity, "delete", 1000);
+                        deleteExercise(position);
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
