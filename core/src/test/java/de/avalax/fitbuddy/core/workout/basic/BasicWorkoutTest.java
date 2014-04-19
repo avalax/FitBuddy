@@ -260,5 +260,11 @@ public class BasicWorkoutTest {
             assertThat(workout.getProgress(1), equalTo(0.75));
         }
 
+
+    }
+
+    @Test
+    public void getExercises_shouldReturnExercises() throws Exception {
+        assertThat(exercises,is(workout.getExercises()));
     }
 }

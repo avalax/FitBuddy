@@ -7,6 +7,7 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.exceptions.ExerciseNotAvailableException;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class BasicWorkout implements Workout {
     private LinkedList<Exercise> exercises;
@@ -91,6 +92,11 @@ public class BasicWorkout implements Workout {
     @Override
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
+    }
+
+    @Override
+    public List<Exercise> getExercises() {
+        return exercises;
     }
 
     @Override

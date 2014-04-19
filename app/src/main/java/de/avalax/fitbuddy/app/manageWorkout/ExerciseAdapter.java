@@ -8,25 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Workout;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-public class WorkoutAdapter extends ArrayAdapter<Exercise> {
-    private final List<Exercise> exercises;
+public class ExerciseAdapter extends ArrayAdapter<Exercise> {
+    private List<Exercise> exercises;
     DecimalFormat decimalFormat;
 
-    public static WorkoutAdapter newInstance(Context context, int textViewResourceId, Workout workout) {
-        List<Exercise> items = new ArrayList<>();
-        for (int i = 0; i < workout.getExerciseCount(); i++) {
-            items.add(workout.getExercise(i));
-        }
-        return new WorkoutAdapter(context, textViewResourceId, items);
-    }
-
-    public WorkoutAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
+    public ExerciseAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
         super(context, textViewResourceId, exercises);
         this.exercises = exercises;
         this.decimalFormat = new DecimalFormat("###.#");

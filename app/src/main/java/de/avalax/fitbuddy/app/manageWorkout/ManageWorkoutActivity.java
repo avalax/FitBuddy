@@ -55,7 +55,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         manageWorkout.setWorkout(workoutPosition);
         fragment = new WorkoutListFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, fragment).commit();
+                .replace(R.id.fragment_container, fragment).commit();
         initActionBar();
     }
 

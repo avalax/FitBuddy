@@ -53,7 +53,8 @@ public class WorkoutListFragment extends ListFragment {
     }
 
     protected void initListView() {
-        setListAdapter(WorkoutAdapter.newInstance(getActivity(), R.layout.row, manageWorkout.getWorkout()));
+        //TODO: setdata using adapter.setData(data);
+        setListAdapter(new ExerciseAdapter(getActivity(), R.layout.row, manageWorkout.getWorkout().getExercises()));
         footer.setVisibility(manageWorkout.unsavedChangesVisibility());
     }
 
