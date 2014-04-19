@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.text.DecimalFormat;
 
 public class MainActivity extends FragmentActivity {
+    private static final int SWITCH_WORKOUT = 1;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @Inject
@@ -95,7 +96,7 @@ public class MainActivity extends FragmentActivity {
         if (item.getItemId() == R.id.action_switch_workout) {
             workoutSession.saveWorkout();
             Intent intent = new Intent(this, ManageWorkoutActivity.class);
-            startActivityForResult(intent, ManageWorkoutActivity.SWITCH_WORKOUT);
+            startActivityForResult(intent, SWITCH_WORKOUT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -103,7 +104,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if ((requestCode == ManageWorkoutActivity.SAVE_WORKOUT || requestCode == ManageWorkoutActivity.SWITCH_WORKOUT) &&
+        if (requestCode == SWITCH_WORKOUT &&
                 resultCode == Activity.RESULT_OK) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();

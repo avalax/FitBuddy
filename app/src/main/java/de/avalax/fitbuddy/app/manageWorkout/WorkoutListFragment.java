@@ -89,4 +89,10 @@ public class WorkoutListFragment extends ListFragment {
         manageWorkout.undoUnsavedChanges();
         initListView();
     }
+
+    @OnClick(android.R.id.empty)
+    protected void addExercixe() {
+        //TODO: add exercise
+        Toast.makeText(getActivity(), "add exercise", Toast.LENGTH_LONG).show();
+    }
 }

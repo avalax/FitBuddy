@@ -22,8 +22,7 @@
             android:layout_weight="1"
             android:lines="1"
             android:ellipsize="end"
-            android:text="click to add your first exercise"
-            android:onClick="onClick"/>
+            android:text="click to add your first exercise" />
 
     <RelativeLayout
             android:id="@+id/footer_undo"

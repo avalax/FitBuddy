@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -21,21 +23,12 @@ import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutParseException;
 import de.avalax.fitbuddy.app.WorkoutSession;
-import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
-import de.avalax.fitbuddy.app.editExercise.EditableExercise;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, View.OnClickListener {
+public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
-
-    public static final int ADD_EXERCISE_BEFORE = 1;
-    public static final int EDIT_EXERCISE = 2;
-    public static final int ADD_EXERCISE_AFTER = 3;
-    public static final int SAVE_WORKOUT = 1;
-    public static final int SWITCH_WORKOUT = 2;
-    private static final int ADD_EXERCISE = 4;
     private boolean initializing;
     @Inject
     protected SharedPreferences sharedPreferences;
@@ -108,40 +101,12 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
-            startAddExerciseActivity(info.position, ADD_EXERCISE_BEFORE);
-        } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
-            startAddExerciseActivity(info.position, ADD_EXERCISE_AFTER);
-        }
-        return true;
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
             createWorkoutFromJson(scanResult.getContents());
-        } else if (resultCode == Activity.RESULT_OK) {
-            EditableExercise editableExercise = (EditableExercise) intent.getSerializableExtra("editableExercise");
-            if (requestCode == ADD_EXERCISE) {
-                manageWorkout.getWorkout().addExercise(editableExercise.createExercise());
-            } else if (requestCode == ADD_EXERCISE_BEFORE) {
-                manageWorkout.getWorkout().addExerciseBefore(manageWorkout.getExercisePosition(), editableExercise.createExercise());
-            } else if (requestCode == ADD_EXERCISE_AFTER) {
-                manageWorkout.getWorkout().addExerciseAfter(manageWorkout.getExercisePosition(), editableExercise.createExercise());
-            } else if (requestCode == EDIT_EXERCISE) {
-                manageWorkout.getWorkout().setExercise(manageWorkout.getExercisePosition(), editableExercise.createExercise());
-            }
-            fragment.initListView();
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        startAddExerciseActivity(0, ADD_EXERCISE);
     }
 
     private void initActionBar() {
@@ -193,12 +158,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    private void startAddExerciseActivity(int exercisePosition, int action) {
-        Intent intent = EditExerciseActivity.newCreateExerciseIntent(this);
-        manageWorkout.setExercisePosition(exercisePosition);
-        startActivityForResult(intent, action);
     }
 
     private void createWorkoutFromJson(String jsonString) {
