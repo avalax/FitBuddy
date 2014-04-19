@@ -27,7 +27,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = vi.inflate(R.layout.row, null);
+            convertView = vi.inflate(R.layout.item_exercise, null);
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.toptext);
             holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);

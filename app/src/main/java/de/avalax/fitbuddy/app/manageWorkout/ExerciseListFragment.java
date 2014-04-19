@@ -18,7 +18,7 @@ import de.avalax.fitbuddy.core.workout.Exercise;
 
 import javax.inject.Inject;
 
-public class WorkoutListFragment extends ListFragment {
+public class ExerciseListFragment extends ListFragment {
     @Inject
     protected ManageWorkout manageWorkout;
 
@@ -30,7 +30,7 @@ public class WorkoutListFragment extends ListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         super.onCreate(savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
-        View view = inflater.inflate(R.layout.manage_workout, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
         ButterKnife.inject(this, view);
         init(savedInstanceState);
         return view;
@@ -54,7 +54,7 @@ public class WorkoutListFragment extends ListFragment {
 
     protected void initListView() {
         //TODO: setdata using adapter.setData(data);
-        setListAdapter(new ExerciseAdapter(getActivity(), R.layout.row, manageWorkout.getWorkout().getExercises()));
+        setListAdapter(new ExerciseAdapter(getActivity(), R.layout.item_exercise, manageWorkout.getWorkout().getExercises()));
         footer.setVisibility(manageWorkout.unsavedChangesVisibility());
     }
 

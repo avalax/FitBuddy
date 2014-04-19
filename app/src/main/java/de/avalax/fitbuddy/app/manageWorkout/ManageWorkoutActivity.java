@@ -35,7 +35,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Inject
     protected ManageWorkout manageWorkout;
     private int workoutPosition;
-    private WorkoutListFragment fragment;
+    private ExerciseListFragment exerciseListFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +53,9 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
         }
         manageWorkout.setWorkout(workoutPosition);
-        fragment = new WorkoutListFragment();
+        exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment).commit();
+                .replace(R.id.fragment_container, exerciseListFragment).commit();
         initActionBar();
     }
 
@@ -95,7 +95,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
             initActionBar();
-            fragment.initListView();
+            exerciseListFragment.initListView();
         }
         return true;
     }
@@ -135,7 +135,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         manageWorkout.setWorkout(position);
         workoutPosition = position;
         initActionBar();
-        fragment.initListView();
+        exerciseListFragment.initListView();
     }
 
     private void showNewWorkoutAltertDialog() {
@@ -149,7 +149,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     manageWorkout.createNewWorkout();
                     workoutPosition = manageWorkout.getWorkouts().size() - 1;
                     initActionBar();
-                    fragment.initListView();
+                    exerciseListFragment.initListView();
                 } else if (item == 1) {
                     IntentIntegrator integrator = new IntentIntegrator(activity);
                     integrator.initiateScan();
@@ -165,7 +165,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             manageWorkout.createWorkoutFromJson(jsonString);
             workoutPosition = manageWorkout.getWorkouts().size() - 1;
             initActionBar();
-            fragment.initListView();
+            exerciseListFragment.initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
             Log.d("reading of qrcode failed", wpe.getMessage());
