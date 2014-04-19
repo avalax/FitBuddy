@@ -7,6 +7,7 @@ import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.WeightExerciseFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
+import de.avalax.fitbuddy.app.manageWorkout.WorkoutListFragment;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.app.swipeBar.WeightRaiseCalculator;
 import de.avalax.fitbuddy.datalayer.FakeWorkoutDAO;
@@ -20,7 +21,8 @@ import javax.inject.Singleton;
         EditExerciseActivity.class,
         CurrentExerciseFragment.class,
         ResultChartFragment.class,
-        WeightExerciseFragment.class
+        WeightExerciseFragment.class,
+        WorkoutListFragment.class
 })
 public class FitbuddyModule {
     private final SharedPreferences sharedPreferences;

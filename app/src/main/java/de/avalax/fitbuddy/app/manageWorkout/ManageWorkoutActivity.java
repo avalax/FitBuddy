@@ -3,27 +3,31 @@ package de.avalax.fitbuddy.app.manageWorkout;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import de.avalax.fitbuddy.app.*;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
+import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.WorkoutParseException;
+import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.app.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.editExercise.EditableExercise;
-import de.avalax.fitbuddy.core.workout.Exercise;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnNavigationListener, View.OnClickListener {
+public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, View.OnClickListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
 
     public static final int ADD_EXERCISE_BEFORE = 1;
@@ -38,15 +42,28 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Inject
     protected ManageWorkout manageWorkout;
     private int workoutPosition;
-    private View footer;
+    private WorkoutListFragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_workout);
+        setContentView(R.layout.activity_manage_workout);
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         init(savedInstanceState);
+    }
+
+    private void init(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
+        } else {
+            workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+        }
+        manageWorkout.setWorkout(workoutPosition);
+        fragment = new WorkoutListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragment).commit();
+        initActionBar();
     }
 
     @Override
@@ -73,11 +90,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        editExercise(position);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
             manageWorkout.switchWorkout(workoutPosition);
@@ -90,7 +102,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
             initActionBar();
-            initListView();
+            fragment.initListView();
         }
         return true;
     }
@@ -98,9 +110,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (getString(R.string.action_exercise_delete).equals(item.getTitle())) {
-            deleteExercise(info.position);
-        } else if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
+        if (getString(R.string.action_exercise_add_before_selected).equals(item.getTitle())) {
             startAddExerciseActivity(info.position, ADD_EXERCISE_BEFORE);
         } else if (getString(R.string.action_exercise_add_behind_selected).equals(item.getTitle())) {
             startAddExerciseActivity(info.position, ADD_EXERCISE_AFTER);
@@ -125,38 +135,13 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
             } else if (requestCode == EDIT_EXERCISE) {
                 manageWorkout.getWorkout().setExercise(manageWorkout.getExercisePosition(), editableExercise.createExercise());
             }
-            initListView();
+            fragment.initListView();
         }
     }
 
     @Override
     public void onClick(View v) {
         startAddExerciseActivity(0, ADD_EXERCISE);
-    }
-
-    @OnClick(R.id.button_undo)
-    protected void undoChanges() {
-        manageWorkout.undoUnsavedChanges();
-        initActionBar();
-        initListView();
-    }
-
-    private void init(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
-        } else {
-            workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
-        }
-        manageWorkout.setWorkout(workoutPosition);
-        footer = findViewById(R.id.footer_undo);
-        initActionBar();
-        initListView();
-    }
-
-    private void initListView() {
-        setListAdapter(WorkoutAdapter.newInstance(getApplication(), R.layout.row, manageWorkout.getWorkout()));
-        registerForContextMenu(getListView());
-        footer.setVisibility(manageWorkout.unsavedChangesVisibility());
     }
 
     private void initActionBar() {
@@ -185,7 +170,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         manageWorkout.setWorkout(position);
         workoutPosition = position;
         initActionBar();
-        initListView();
+        fragment.initListView();
     }
 
     private void showNewWorkoutAltertDialog() {
@@ -199,7 +184,7 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                     manageWorkout.createNewWorkout();
                     workoutPosition = manageWorkout.getWorkouts().size() - 1;
                     initActionBar();
-                    initListView();
+                    fragment.initListView();
                 } else if (item == 1) {
                     IntentIntegrator integrator = new IntentIntegrator(activity);
                     integrator.initiateScan();
@@ -216,19 +201,12 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
         startActivityForResult(intent, action);
     }
 
-    private void deleteExercise(int exercisePosition) {
-        manageWorkout.getWorkout().removeExercise(exercisePosition);
-        manageWorkout.setUnsavedChanges(true);
-        //TODO: undo remove exercise
-        initListView();
-    }
-
     private void createWorkoutFromJson(String jsonString) {
         try {
             manageWorkout.createWorkoutFromJson(jsonString);
             workoutPosition = manageWorkout.getWorkouts().size() - 1;
             initActionBar();
-            initListView();
+            fragment.initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
             Log.d("reading of qrcode failed", wpe.getMessage());
@@ -250,27 +228,6 @@ public class ManageWorkoutActivity extends ListActivity implements ActionBar.OnN
                         }
                     }
                 })
-                .show();
-    }
-
-    private void editExercise(final int position) {
-        Exercise exercise = manageWorkout.getWorkout().getExercise(position);
-        final ManageWorkoutActivity manageWorkoutActivity = this;
-        View view = getLayoutInflater().inflate(R.layout.view_edit_exercise, null);
-        new AlertDialog.Builder(this)
-                .setTitle(exercise.getName())
-                .setView(view)
-                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        deleteExercise(position);
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Toast.makeText(manageWorkoutActivity, "save", 1000);
-                            }
-                        }
-                )
                 .show();
     }
 }
