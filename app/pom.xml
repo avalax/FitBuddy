@@ -13,6 +13,13 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>android-support</id>
+            <url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -34,7 +41,7 @@
         <dependency>
             <groupId>com.jakewharton</groupId>
             <artifactId>butterknife</artifactId>
-            <version>4.0.1</version>
+            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.robolectric</groupId>
@@ -49,14 +56,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.android</groupId>
+            <groupId>com.android.support</groupId>
             <artifactId>support-v4</artifactId>
-            <version>r7</version>
+            <version>19.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>android-integration</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
