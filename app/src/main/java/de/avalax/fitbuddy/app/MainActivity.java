@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnPageChange;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
@@ -56,24 +57,13 @@ public class MainActivity extends FragmentActivity {
         this.decimalFormat = new DecimalFormat("###.#");
         this.weightTitle = getResources().getString(R.string.title_weight);
         //TODO: 0 check, when workout has no exercise
-        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), workoutSession);
-        viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {
-            }
-
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            public void onPageSelected(int position) {
-                updatePage(position);
-            }
-        });
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutSession));
 
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
     }
 
-    private void updatePage(int position) {
+    @OnPageChange(R.id.pager)
+    protected void updatePage(int position) {
         this.position = position;
         setTitle(workoutSession.getWorkout().getExercise(position).getName());
         if (menuItem != null) {
