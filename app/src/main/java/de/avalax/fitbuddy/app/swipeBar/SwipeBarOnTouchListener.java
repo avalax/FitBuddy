@@ -1,13 +1,13 @@
 package de.avalax.fitbuddy.app.swipeBar;
 
 import android.content.Context;
-import android.view.GestureDetector;
+import android.support.v4.view.GestureDetectorCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
-    private final GestureDetector gdt;
+    private final GestureDetectorCompat gdt;
 
     public SwipeBarOnTouchListener(Context context, View swipeableView, int swipeMoveMax) {
         final SwipeBarOnTouchListener touchListener = this;
@@ -15,7 +15,7 @@ public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
         int minSwipeDistance = viewConfiguration.getScaledPagingTouchSlop();
         int thresholdSwipeVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
 
-        gdt = new GestureDetector(context, new SwipeBarOnGestureListener(swipeMoveMax, swipeableView, minSwipeDistance, thresholdSwipeVelocity) {
+        gdt = new GestureDetectorCompat (context, new SwipeBarOnGestureListener(swipeMoveMax, swipeableView, minSwipeDistance, thresholdSwipeVelocity) {
             @Override
             public void onFlingEvent(int moved) {
                 touchListener.onFlingEvent(moved);
