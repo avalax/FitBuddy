@@ -95,6 +95,9 @@
                         <platform>19</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                    <proguard>
+                        <skip>false</skip>
+                    </proguard>
                 </configuration>
             </plugin>
         </plugins>
