@@ -9,11 +9,13 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnPageChange;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.Workout;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;
@@ -24,6 +26,8 @@ public class MainActivity extends FragmentActivity {
     protected ViewPager viewPager;
     @Inject
     protected WorkoutSession workoutSession;
+    @InjectView(R.id.workoutProgressBar)
+    protected ProgressBar workoutProggressBar;
     protected String actionSwitchWorkout;
     private DecimalFormat decimalFormat;
     private String weightTitle;
@@ -68,6 +72,7 @@ public class MainActivity extends FragmentActivity {
         setTitle(workoutSession.getWorkout().getExercise(position).getName());
         if (menuItem != null) {
             menuItem.setTitle(exerciseWeightText(position));
+            updateWorkoutProgress(position);
         }
     }
 
@@ -100,5 +105,14 @@ public class MainActivity extends FragmentActivity {
             viewPager.invalidate();
             viewPager.setCurrentItem(0, true);
         }
+    }
+
+    protected void updateWorkoutProgress(int exercisePosition) {
+        Workout workout = workoutSession.getWorkout();
+        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exercisePosition)));
+    }
+
+    private int calculateProgressbarHeight(double progess) {
+        return (int)Math.round(progess * 100);
     }
 }

@@ -3,11 +3,9 @@ package de.avalax.fitbuddy.app;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.app.swipeBar.SwipeBarOnTouchListener;
@@ -24,12 +22,9 @@ public class CurrentExerciseFragment extends Fragment {
     protected VerticalProgressbarView repsProgressBar;
     @InjectView(R.id.rightProgressBar)
     protected VerticalProgressbarView setsProgressBar;
-    @InjectView(R.id.workoutProgressBar)
-    protected ProgressBar workoutProggressBar;
     @Inject
     protected WorkoutSession workoutSession;
     private int exercisePosition;
-    private ViewPager viewPager;
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
         CurrentExerciseFragment fragment = new CurrentExerciseFragment();
@@ -44,11 +39,9 @@ public class CurrentExerciseFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         this.exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
-        this.viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         ButterKnife.inject(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
-        updateWorkoutProgress(exercisePosition);
         return view;
     }
 
@@ -85,15 +78,14 @@ public class CurrentExerciseFragment extends Fragment {
     private void changeReps(int moved) {
         setReps(moved);
         setViews(exercisePosition);
-        //TODO: only update ResultChartFragment
-        viewPager.getAdapter().notifyDataSetChanged();
-        viewPager.invalidate();
+        updateWorkoutProgress(exercisePosition);
     }
 
     private void changeSets(int moved) {
         Workout workout = workoutSession.getWorkout();
         setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
         setViews(exercisePosition);
+        updateWorkoutProgress(exercisePosition);
     }
 
     private void setReps(int moved) {
@@ -111,15 +103,9 @@ public class CurrentExerciseFragment extends Fragment {
         Workout workout = workoutSession.getWorkout();
         repsProgressBar.updateProgressbar(workout.getExercise(exercisePosition).getCurrentSet());
         setsProgressBar.updateProgressbar(workout.getExercise(exercisePosition));
-        updateWorkoutProgress(exercisePosition);
     }
 
     private void updateWorkoutProgress(int exercisePosition) {
-        Workout workout = workoutSession.getWorkout();
-        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exercisePosition)));
-    }
-
-    private int calculateProgressbarHeight(double progess) {
-        return (int)Math.round(progess * 100);
+        ((MainActivity) getActivity()).updateWorkoutProgress(exercisePosition);
     }
 }
