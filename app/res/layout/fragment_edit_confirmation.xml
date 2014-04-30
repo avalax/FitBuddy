@@ -25,7 +25,7 @@
         android:layout_marginBottom="@dimen/margin_bottom_view"
         android:drawableLeft="@drawable/ic_action_accept"
         android:onClick="clickEvent"
-        android:text="@string/action_save" />
+        android:text="@string/save" />
 
     <Button
         android:id="@+id/buttonCancel"
@@ -34,5 +34,5 @@
         android:layout_gravity="center_horizontal"
         android:drawableLeft="@drawable/ic_action_cancel"
         android:onClick="clickEvent"
-        android:text="@string/action_cancel" />
+        android:text="@string/cancel" />
 </LinearLayout>

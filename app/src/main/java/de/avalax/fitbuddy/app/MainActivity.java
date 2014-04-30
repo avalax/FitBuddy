@@ -4,7 +4,9 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnPageChange;
+import de.avalax.fitbuddy.app.dialog.ExerciseDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
@@ -47,7 +50,7 @@ public class MainActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
-        this.menuItem = menu.findItem(R.id.action_title_weight);
+        this.menuItem = menu.findItem(R.id.action_change_weight);
         updatePage(this.position);
         return super.onCreateOptionsMenu(menu);
     }
@@ -93,6 +96,9 @@ public class MainActivity extends FragmentActivity {
             Intent intent = new Intent(this, ManageWorkoutActivity.class);
             startActivityForResult(intent, SWITCH_WORKOUT);
         }
+        if (item.getItemId() == R.id.action_change_weight) {
+            showEditDialog();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -105,6 +111,22 @@ public class MainActivity extends FragmentActivity {
             viewPager.invalidate();
             viewPager.setCurrentItem(0, true);
         }
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ExerciseDialogFragment editNameDialog = new ExerciseDialogFragment() {
+            @Override
+            public void onDialogNegativeClick() {
+
+            }
+
+            @Override
+            public void onDialogPositiveClick() {
+
+            }
+        };
+        editNameDialog.show(fm, "fragment_edit_name");
     }
 
     protected void updateWorkoutProgress(int exercisePosition) {

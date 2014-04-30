@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:components="http://schemas.android.com/apk/res/de.avalax.fitbuddy.app"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <de.avalax.fitbuddy.app.swipeBar.EnterValueBar
-        android:id="@+id/leftEnterValueBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/primary_background"
-        components:label="@string/edit_weight_bar_title"
-        components:value="@string/vertical_bar_default_text"
-        />
-
-    <de.avalax.fitbuddy.app.swipeBar.EnterValueBar
-        android:id="@+id/rightEnterValueBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/secondary_background"
-        android:layout_weight="1"
-        components:label="@string/edit_weight_raise_bar_title"
-        components:value="@string/vertical_bar_default_text"
-        />
-</LinearLayout>
+    <NumberPicker
+        android:layout_toLeftOf="@+id/dividor"
+        android:id="@+id/numberPicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/dividor"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=","/>
+    <NumberPicker
+        android:layout_toRightOf="@+id/dividor"
+        android:id="@+id/numberPicker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_toRightOf="@+id/numberPicker2"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kg"
+        android:layout_marginRight="10dp"/>
+</RelativeLayout>
