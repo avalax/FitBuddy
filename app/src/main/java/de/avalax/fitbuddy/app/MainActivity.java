@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -118,12 +117,12 @@ public class MainActivity extends FragmentActivity {
         ExerciseDialogFragment editNameDialog = new ExerciseDialogFragment() {
             @Override
             public void onDialogNegativeClick() {
-
+                //TODO:
             }
 
             @Override
             public void onDialogPositiveClick() {
-
+                //TODO:
             }
         };
         editNameDialog.show(fm, "fragment_edit_name");
@@ -135,6 +134,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     private int calculateProgressbarHeight(double progess) {
-        return (int)Math.round(progess * 100);
+        return (int) Math.round(progess * 100);
     }
 }

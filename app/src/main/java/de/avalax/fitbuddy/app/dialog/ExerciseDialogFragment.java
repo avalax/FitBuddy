@@ -14,11 +14,11 @@ import de.avalax.fitbuddy.app.R;
 
 abstract public class ExerciseDialogFragment extends DialogFragment {
 
-    @InjectView(R.id.numberPicker1)
-    protected NumberPicker numberPicker;
+    @InjectView(R.id.weightNumberPicker)
+    protected NumberPicker weightNumberPicker;
 
-    @InjectView(R.id.numberPicker2)
-    protected NumberPicker numberPicker2;
+    @InjectView(R.id.weightDecimalPlacesNumberPicker)
+    protected NumberPicker weightDecimalPlacesNumberPicker;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -27,14 +27,14 @@ abstract public class ExerciseDialogFragment extends DialogFragment {
         ButterKnife.inject(this, view);
         String[] nums = {"0","875","75","675","5","375","25","125"};
 
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(999);
-        numberPicker.setValue(10);
+        weightNumberPicker.setMinValue(0);
+        weightNumberPicker.setMaxValue(999);
+        weightNumberPicker.setValue(10);
 
-        numberPicker2.setMinValue(0);
-        numberPicker2.setMaxValue(nums.length-1);
-        numberPicker2.setValue(0);
-        numberPicker2.setDisplayedValues(nums);
+        weightDecimalPlacesNumberPicker.setMinValue(0);
+        weightDecimalPlacesNumberPicker.setMaxValue(nums.length - 1);
+        weightDecimalPlacesNumberPicker.setValue(0);
+        weightDecimalPlacesNumberPicker.setDisplayedValues(nums);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)

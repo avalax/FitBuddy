@@ -33,4 +33,5 @@
     <string name="action_read_qrcode_failed">qrcode is not a fitbuddy workout</string>
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
+    <string name="decimal_point">,</string>
 </resources>
