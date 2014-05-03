@@ -23,13 +23,19 @@ public class BasicSetTest {
     }
 
     @Test
-    public void getReps_ShouldGetReps() throws Exception {
+    public void setWeight_shouldSetWeight() throws Exception {
+        set.setWeight(42.21);
+        assertThat(set.getWeight(), equalTo(42.21));
+    }
+
+    @Test
+    public void setReps_shouldSetReps() throws Exception {
         set.setReps(MAX_REPS);
         assertThat(set.getReps(), equalTo(MAX_REPS));
     }
 
 	@Test
-	public void getMaxReps_shouldGetMaxReps() throws Exception {
+	public void setMaxReps_shouldSetMaxReps() throws Exception {
 		assertThat(set.getMaxReps(),equalTo(MAX_REPS));
 	}
 

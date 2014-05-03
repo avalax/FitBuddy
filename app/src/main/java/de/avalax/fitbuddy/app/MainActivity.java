@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnPageChange;
-import de.avalax.fitbuddy.app.dialog.ExerciseDialogFragment;
+import de.avalax.fitbuddy.app.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Workout;
@@ -22,7 +22,7 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import javax.inject.Inject;
 import java.text.DecimalFormat;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int SWITCH_WORKOUT = 1;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity {
         actionBar.setBackgroundDrawable(null);
 
         this.position = 0;
-        this.decimalFormat = new DecimalFormat("###.#");
+        this.decimalFormat = new DecimalFormat("###.###");
         this.weightTitle = getResources().getString(R.string.title_weight);
         //TODO: 0 check, when workout has no exercise
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutSession));
@@ -114,18 +114,8 @@ public class MainActivity extends FragmentActivity {
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ExerciseDialogFragment editNameDialog = new ExerciseDialogFragment() {
-            @Override
-            public void onDialogNegativeClick() {
-                //TODO:
-            }
-
-            @Override
-            public void onDialogPositiveClick() {
-                //TODO:
-            }
-        };
-        editNameDialog.show(fm, "fragment_edit_name");
+        double weight = workoutSession.getWorkout().getExercise(position).getWeight();
+        EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
     }
 
     protected void updateWorkoutProgress(int exercisePosition) {
@@ -135,5 +125,11 @@ public class MainActivity extends FragmentActivity {
 
     private int calculateProgressbarHeight(double progess) {
         return (int) Math.round(progess * 100);
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
+        workoutSession.getWorkout().getExercise(position).getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
+        updatePage(position);
     }
 }

@@ -18,6 +18,11 @@ public class BasicSet implements Set {
     }
 
     @Override
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override
     public void setReps(int reps) {
         if (reps < 0) {
             this.reps = 0;
