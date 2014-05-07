@@ -22,7 +22,6 @@ public class EditWeightDialogFragment extends DialogFragment {
     private WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
 
     public interface DialogListener {
-
         public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment);
     }
 

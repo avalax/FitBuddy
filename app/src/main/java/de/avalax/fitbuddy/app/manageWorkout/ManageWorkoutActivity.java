@@ -27,7 +27,7 @@ import de.avalax.fitbuddy.app.WorkoutSession;
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditExerciseDialogFragment.DialogListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private boolean initializing;
     @Inject
@@ -188,5 +188,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onDialogDeleteClick(EditExerciseDialogFragment editWeightDialogFragment) {
+        //TODO: delete Exercise
+        //deleteExercise(position);
     }
 }

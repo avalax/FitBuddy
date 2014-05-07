@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.app.manageWorkout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,22 +61,7 @@ public class ExerciseListFragment extends ListFragment {
 
     private void editExercise(final int position) {
         Exercise exercise = manageWorkout.getWorkout().getExercise(position);
-        View view = getActivity().getLayoutInflater().inflate(R.layout.view_edit_exercise, null);
-        new AlertDialog.Builder(getActivity())
-                .setTitle(exercise.getName())
-                .setView(view)
-                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        deleteExercise(position);
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Toast.makeText(getActivity(), "save", 1000);
-                            }
-                        }
-                )
-                .show();
+        EditExerciseDialogFragment.newInstance(exercise).show(getFragmentManager(),"fragment_edit_exercise");
     }
 
     private void deleteExercise(int exercisePosition) {
