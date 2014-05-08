@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -158,8 +157,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void showNewWorkoutAltertDialog() {
+        //TODO: split into two actions and remove dialog
         final CharSequence[] items = {"Create a new workout", "Scan from QR-Code"};
-        final Activity activity = this;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add a workout");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -170,7 +169,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     initActionBar();
                     exerciseListFragment.initListView();
                 } else if (item == 1) {
-                    IntentIntegrator integrator = new IntentIntegrator(activity);
+                    IntentIntegrator integrator = new IntentIntegrator(ManageWorkoutActivity.this);
                     integrator.initiateScan();
                 }
             }
