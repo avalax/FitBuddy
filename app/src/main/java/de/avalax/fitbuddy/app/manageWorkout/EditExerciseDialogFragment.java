@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,39 +7,53 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import com.squareup.otto.Bus;
+import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseChangedEvent;
+import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.core.workout.Exercise;
+
+import javax.inject.Inject;
 
 public class EditExerciseDialogFragment extends DialogFragment {
 
     private static final String ARGS_EXERCISE = "exercise";
+    private static final String ARGS_POSITION = "position";
+    @Inject
+    protected Bus bus;
+
+    private int position;
     private Exercise exercise;
 
-    public interface DialogListener {
-        public void onDialogDeleteClick(EditExerciseDialogFragment editWeightDialogFragment);
-    }
-
-    DialogListener listener;
-
-    public static EditExerciseDialogFragment newInstance(Exercise exercise) {
+    public static EditExerciseDialogFragment newInstance(int position, Exercise exercise) {
         EditExerciseDialogFragment fragment = new EditExerciseDialogFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARGS_POSITION, position);
         args.putSerializable(ARGS_EXERCISE, exercise);
         fragment.setArguments(args);
         return fragment;
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
+        return view;
+    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            listener = (DialogListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement EditExerciseDialogFragment.DialogListener");
-        }
+    public void onResume() {
+        super.onResume();
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
     }
 
     @Override
@@ -50,6 +63,7 @@ public class EditExerciseDialogFragment extends DialogFragment {
         ButterKnife.inject(this, view);
 
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
+        this.position = getArguments().getInt(ARGS_POSITION);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
@@ -57,15 +71,14 @@ public class EditExerciseDialogFragment extends DialogFragment {
                 .setView(view)
                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        listener.onDialogDeleteClick(EditExerciseDialogFragment.this);
+                        bus.post(new ExerciseDeletedEvent(position, exercise));
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                EditExerciseDialogFragment.this.getDialog().cancel();
-                            }
-                        }
-                );
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        bus.post(new ExerciseChangedEvent(position, exercise));
+                    }
+                });
         return builder.create();
     }
 }

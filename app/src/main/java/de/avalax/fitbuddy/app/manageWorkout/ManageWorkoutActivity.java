@@ -19,21 +19,28 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutParseException;
 import de.avalax.fitbuddy.app.WorkoutSession;
+import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseChangedEvent;
+import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseDeletedEvent;
+import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditExerciseDialogFragment.DialogListener {
+public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private boolean initializing;
     @Inject
     protected SharedPreferences sharedPreferences;
     @Inject
     protected ManageWorkout manageWorkout;
+    @Inject
+    protected Bus bus;
     private int workoutPosition;
     private ExerciseListFragment exerciseListFragment;
 
@@ -57,6 +64,18 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, exerciseListFragment).commit();
         initActionBar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
     }
 
     @Override
@@ -190,9 +209,15 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 .show();
     }
 
-    @Override
-    public void onDialogDeleteClick(EditExerciseDialogFragment editWeightDialogFragment) {
-        //TODO: delete Exercise
-        //deleteExercise(position);
+    @Subscribe
+    public void onExerciseChanged(ExerciseChangedEvent event) {
+        manageWorkout.setExercise(event.position, event.exercise);
+        bus.post(new ExerciseListInvalidatedEvent());
+    }
+
+    @Subscribe
+    public void onExerciseDeleted(ExerciseDeletedEvent event) {
+        manageWorkout.deleteExercise(event.position);
+        bus.post(new ExerciseListInvalidatedEvent());
     }
 }

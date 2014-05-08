@@ -1,8 +1,10 @@
 package de.avalax.fitbuddy.app;
 
 import android.content.SharedPreferences;
+import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
+import de.avalax.fitbuddy.app.manageWorkout.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ExerciseListFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
@@ -17,7 +19,8 @@ import javax.inject.Singleton;
         ManageWorkoutActivity.class,
         CurrentExerciseFragment.class,
         ResultChartFragment.class,
-        ExerciseListFragment.class
+        ExerciseListFragment.class,
+        EditExerciseDialogFragment.class
 })
 public class FitbuddyModule {
     private final SharedPreferences sharedPreferences;
@@ -54,5 +57,11 @@ public class FitbuddyModule {
     @Singleton
     ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
         return new ManageWorkout(workoutSession, workoutDAO, workoutFactory);
+    }
+
+    @Provides
+    @Singleton
+    Bus provideBus() {
+        return new Bus();
     }
 }

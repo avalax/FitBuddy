@@ -3,9 +3,14 @@ package de.avalax.fitbuddy.app.manageWorkout;
 import android.view.View;
 import de.avalax.fitbuddy.app.WorkoutFactory;
 import de.avalax.fitbuddy.app.WorkoutSession;
+import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
+import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManageWorkout {
@@ -17,8 +22,6 @@ public class ManageWorkout {
     private WorkoutSession workoutSession;
 
     private boolean unsavedChanges;
-
-    private Integer exercisePosition;
 
     private Workout workout;
 
@@ -34,14 +37,6 @@ public class ManageWorkout {
 
     public int unsavedChangesVisibility() {
         return unsavedChanges ? View.VISIBLE : View.GONE;
-    }
-
-    public void setExercisePosition(Integer exercisePosition) {
-        this.exercisePosition = exercisePosition;
-    }
-
-    public Integer getExercisePosition() {
-        return exercisePosition;
     }
 
     public Workout getWorkout() {
@@ -89,5 +84,26 @@ public class ManageWorkout {
     public void undoUnsavedChanges() {
         //TODO: undo changes
         setUnsavedChanges(false);
+    }
+
+    public void deleteExercise(int position) {
+        //TODO: undo function remove exercise
+        workout.removeExercise(position);
+        setUnsavedChanges(true);
+    }
+
+    public void setExercise(int position, Exercise exercise) {
+        workout.setExercise(position,exercise);
+        setUnsavedChanges(false);
+    }
+
+    public void addNewExercise() {
+        //TODO: create a new exercise with better defaults
+        ArrayList<Set> sets = new ArrayList<>();
+        sets.add(new BasicSet(20,12));
+        sets.add(new BasicSet(20,12));
+        sets.add(new BasicSet(20,12));
+        Exercise exercise = new BasicExercise("new exercise", sets,0);
+        workout.addExercise(exercise);
     }
 }
