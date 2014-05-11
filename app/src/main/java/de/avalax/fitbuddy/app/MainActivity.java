@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions, menu);
+        inflater.inflate(R.menu.activity_main_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
         updatePage(this.position);
         return super.onCreateOptionsMenu(menu);
