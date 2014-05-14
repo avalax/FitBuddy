@@ -5,15 +5,13 @@
         android:drawable="@android:color/black"/>
 
     <item android:id="@android:id/progress">
-        <scale android:scaleWidth="100%">
-            <clip>
-                <shape>
-                    <gradient
-                        android:angle="0"
-                        android:endColor="#f7f7f7"
-                        android:startColor="#e8e8e8"/>
-                </shape>
-            </clip>
-        </scale>
+        <clip>
+            <shape>
+                <gradient
+                    android:angle="0"
+                    android:endColor="#f7f7f7"
+                    android:startColor="#e8e8e8"/>
+            </shape>
+        </clip>
     </item>
 </layer-list>
