@@ -8,10 +8,11 @@ import dagger.ObjectGraph;
 public class FitbuddyApplication extends Application {
     private ObjectGraph graph;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         SharedPreferences sharedPreferences = getSharedPreferences("de.avalax.fitbuddy", Context.MODE_PRIVATE);
-        graph = ObjectGraph.create(new FitbuddyModule(sharedPreferences));
+        graph = ObjectGraph.create(new FitbuddyModule(this, sharedPreferences));
     }
 
     public void inject(Object object) {

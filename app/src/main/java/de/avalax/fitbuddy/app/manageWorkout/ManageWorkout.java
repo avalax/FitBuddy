@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
+import android.content.Context;
 import android.view.View;
+import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutFactory;
 import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -9,12 +11,16 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
+import de.avalax.fitbuddy.datalayer.sqlite.WorkoutSQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManageWorkout {
 
+    private static final String WORKOUT_DB = "workout";
+    private static final int WORKOUT_DB_VERSION = 1;
+    private WorkoutSQLiteOpenHelper workoutSQLiteOpenHelper;
     private WorkoutFactory workoutFactory;
 
     private WorkoutDAO workoutDAO;
@@ -25,10 +31,13 @@ public class ManageWorkout {
 
     private Workout workout;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
+    public ManageWorkout(Context context, WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
         this.workoutSession = workoutSession;
         this.workoutDAO = workoutDAO;
         this.workoutFactory = workoutFactory;
+        this.workoutSQLiteOpenHelper = new WorkoutSQLiteOpenHelper(WORKOUT_DB, WORKOUT_DB_VERSION, context, R.raw.fitbuddy_db);
+        //TODO: use it ;)
+        workoutSQLiteOpenHelper.getReadableDatabase();
     }
 
     public void setUnsavedChanges(boolean unsavedChanges) {
@@ -93,17 +102,17 @@ public class ManageWorkout {
     }
 
     public void setExercise(int position, Exercise exercise) {
-        workout.setExercise(position,exercise);
+        workout.setExercise(position, exercise);
         setUnsavedChanges(false);
     }
 
     public void addNewExercise() {
         //TODO: create a new exercise with better defaults
         ArrayList<Set> sets = new ArrayList<>();
-        sets.add(new BasicSet(20,12));
-        sets.add(new BasicSet(20,12));
-        sets.add(new BasicSet(20,12));
-        Exercise exercise = new BasicExercise("new exercise", sets,0);
+        sets.add(new BasicSet(20, 12));
+        sets.add(new BasicSet(20, 12));
+        sets.add(new BasicSet(20, 12));
+        Exercise exercise = new BasicExercise("new exercise", sets, 0);
         workout.addExercise(exercise);
     }
 }
