@@ -18,9 +18,6 @@ import java.util.List;
 
 public class ManageWorkout {
 
-    private static final String WORKOUT_DB = "workout";
-    private static final int WORKOUT_DB_VERSION = 1;
-    private WorkoutSQLiteOpenHelper workoutSQLiteOpenHelper;
     private WorkoutFactory workoutFactory;
 
     private WorkoutDAO workoutDAO;
@@ -35,9 +32,6 @@ public class ManageWorkout {
         this.workoutSession = workoutSession;
         this.workoutDAO = workoutDAO;
         this.workoutFactory = workoutFactory;
-        this.workoutSQLiteOpenHelper = new WorkoutSQLiteOpenHelper(WORKOUT_DB, WORKOUT_DB_VERSION, context, R.raw.fitbuddy_db);
-        //TODO: use it ;)
-        workoutSQLiteOpenHelper.getReadableDatabase();
     }
 
     public void setUnsavedChanges(boolean unsavedChanges) {
