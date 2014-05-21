@@ -12,9 +12,20 @@ import java.util.List;
 public class BasicWorkout implements Workout {
     private LinkedList<Exercise> exercises;
     private String name;
+    private Long id;
 
     public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

@@ -71,10 +71,15 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @OnPageChange(R.id.pager)
     protected void updatePage(int position) {
         this.position = position;
-        setTitle(workoutSession.getWorkout().getExercise(position).getName());
-        if (menuItem != null) {
-            menuItem.setTitle(exerciseWeightText(position));
-            updateWorkoutProgress(position);
+        Workout workout = workoutSession.getWorkout();
+        if (workout == null || workout.getExerciseCount() == 0) {
+            switchWorkout();
+        } else {
+            setTitle(workout.getExercise(position).getName());
+            if (menuItem != null) {
+                menuItem.setTitle(exerciseWeightText(position));
+                updateWorkoutProgress(position);
+            }
         }
     }
 
@@ -91,9 +96,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_switch_workout) {
-            workoutSession.saveWorkout();
-            Intent intent = new Intent(this, ManageWorkoutActivity.class);
-            startActivityForResult(intent, SWITCH_WORKOUT);
+            switchWorkout();
         }
         if (item.getItemId() == R.id.action_change_weight) {
             showEditDialog();
@@ -131,5 +134,10 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         workoutSession.getWorkout().getExercise(position).getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
         updatePage(position);
+    }
+
+    private void switchWorkout() {
+        Intent intent = new Intent(this, ManageWorkoutActivity.class);
+        startActivityForResult(intent, SWITCH_WORKOUT);
     }
 }

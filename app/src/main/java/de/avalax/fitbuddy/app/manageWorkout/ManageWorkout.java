@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.content.Context;
 import android.view.View;
-import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.WorkoutFactory;
 import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Exercise;
@@ -11,10 +10,9 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
-import de.avalax.fitbuddy.datalayer.sqlite.WorkoutSQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeMap;
 
 public class ManageWorkout {
 
@@ -46,16 +44,16 @@ public class ManageWorkout {
         return workout;
     }
 
-    public void setWorkout(int position) {
+    public void setWorkout(long position) {
         unsavedChanges = false;
         this.workout = workoutDAO.load(position);
     }
 
-    public void switchWorkout(int position) {
-        workoutSession.switchWorkout(position);
+    public void switchWorkout() {
+        workoutSession.switchWorkout(workout.getId());
     }
 
-    public List<String> getWorkouts() {
+    public TreeMap<Long, String> getWorkouts() {
         return workoutDAO.getList();
     }
 
@@ -74,8 +72,8 @@ public class ManageWorkout {
     }
 
     public void deleteWorkout() {
-        //TODO: undo function remove workout
-        workoutDAO.remove(workout);
+        //TODO: undo function delete workout
+        workoutDAO.delete(workout);
         if (getWorkouts().size() - 1 >= 0) {
             setWorkout(getWorkouts().size() - 1);
         } else {
@@ -90,7 +88,7 @@ public class ManageWorkout {
     }
 
     public void deleteExercise(int position) {
-        //TODO: undo function remove exercise
+        //TODO: undo function delete exercise
         workout.removeExercise(position);
         setUnsavedChanges(true);
     }

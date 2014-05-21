@@ -10,6 +10,7 @@ import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class FakeWorkoutDAO implements WorkoutDAO {
 
@@ -29,11 +30,11 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public Workout load(int position) {
+    public Workout load(long position) {
         if (workouts.size() <= position) {
             throw new WorkoutNotAvailableException();
         }
-        return workouts.get(position);
+        return workouts.get((int) position);
     }
 
     private Workout fakeWorkoutOne() {
@@ -50,6 +51,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(new BasicExercise("Situps", createExerciseWithThreeSets(0, 30), 2.5));
         BasicWorkout workout = new BasicWorkout(exercises);
         workout.setName("fake workout one");
+        workout.setId(0L);
         return workout;
     }
 
@@ -64,22 +66,30 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(new BasicExercise("Rückenstrecker", createExerciseWithThreeSets(0, 12), 5));
         exercises.add(new BasicExercise("Crunches am Gerät", createExerciseWithThreeSets(45, 12), 5));
         BasicWorkout workout = new BasicWorkout(exercises);
+        workout.setId(1L);
         workout.setName("fake workout two");
         return workout;
     }
 
     @Override
-    public List<String> getList() {
-        List<String> workoutNames = new ArrayList<>();
+    public TreeMap<Long, String> getList() {
+        TreeMap<Long, String> workoutNames = new TreeMap<>();
+        long count = 0;
         for (Workout workout : workouts) {
-            workoutNames.add(workout.getName());
+            workoutNames.put(count, workout.getName());
+            count++;
         }
         return workoutNames;
     }
 
     @Override
-    public void remove(Workout workout) {
+    public void delete(Workout workout) {
         workouts.remove(workout);
+    }
+
+    @Override
+    public Workout getFirstWorkout() {
+        return fakeWorkoutOne();
     }
 
     private List<Set> createExerciseWithThreeSets(double weight, int reps) {

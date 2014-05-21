@@ -35,6 +35,14 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getId_shouldReturnId() throws Exception {
+        Long id = 42L;
+
+        exercise.setId(id);
+        assertThat(exercise.getId(), equalTo(id));
+    }
+
+    @Test
     public void getMaxSets_shouldReturnNumberOfSets() throws Exception {
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));

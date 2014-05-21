@@ -20,4 +20,7 @@ public interface Exercise extends Serializable {
     Set getCurrentSet();
 
     void incrementCurrentSet();
+
+    void setId(Long id);
+    Long getId();
 }

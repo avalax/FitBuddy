@@ -30,6 +30,7 @@ import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.TreeMap;
 
 public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
@@ -40,7 +41,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     protected ManageWorkout manageWorkout;
     @Inject
     protected Bus bus;
-    private int workoutPosition;
+    private long workoutPosition;
     private ExerciseListFragment exerciseListFragment;
 
     @Override
@@ -54,9 +55,9 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     private void init(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            workoutPosition = savedInstanceState.getInt(WORKOUT_POSITION);
+            workoutPosition = savedInstanceState.getLong(WORKOUT_POSITION);
         } else {
-            workoutPosition = sharedPreferences.getInt(WorkoutSession.LAST_WORKOUT_POSITION, 0);
+            workoutPosition = sharedPreferences.getLong(WorkoutSession.LAST_WORKOUT_POSITION, 1L);
         }
         manageWorkout.setWorkout(workoutPosition);
         exerciseListFragment = new ExerciseListFragment();
@@ -80,7 +81,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(WORKOUT_POSITION, workoutPosition);
+        savedInstanceState.putLong(WORKOUT_POSITION, workoutPosition);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
-            manageWorkout.switchWorkout(workoutPosition);
+            manageWorkout.switchWorkout();
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
@@ -138,15 +139,17 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 android.R.layout.simple_spinner_dropdown_item, getWorkouts());
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
-        actionBar.setSelectedNavigationItem(workoutPosition);
+        //TODO: select navigationItem
+        //actionBar.setSelectedNavigationItem(workoutPosition);
     }
 
     private String[] getWorkouts() {
-        List<String> workoutlist = manageWorkout.getWorkouts();
+        //FIXME: make it work with a map
+        TreeMap<Long, String> workoutlist = manageWorkout.getWorkouts();
         if (workoutlist.size() == workoutPosition) {
-            workoutlist.add(manageWorkout.getWorkout().getName());
+            workoutlist.put(null,manageWorkout.getWorkout().getName());
         }
-        return workoutlist.toArray(new String[workoutlist.size()]);
+        return workoutlist.values().toArray(new String[workoutlist.size()]);
     }
 
     private void switchWorkout(int position) {

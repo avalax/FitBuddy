@@ -92,7 +92,15 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getName_shouldReturnNameFromExercise() throws Exception {
+    public void getId_shouldReturnId() throws Exception {
+        Long id = 42L;
+
+        workout.setId(id);
+        assertThat(workout.getId(), equalTo(id));
+    }
+
+    @Test
+    public void getName_shouldReturnName() throws Exception {
         String name = "NameOfWorkout";
 
         workout.setName(name);

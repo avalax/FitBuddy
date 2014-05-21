@@ -10,6 +10,7 @@ import de.avalax.fitbuddy.app.manageWorkout.ExerciseListFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
+import de.avalax.fitbuddy.datalayer.FakeWorkoutDAO;
 import de.avalax.fitbuddy.datalayer.SqliteWorkoutDAO;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
@@ -41,7 +42,8 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutDAO provideWorkoutDAO() {
-        return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
+        return new FakeWorkoutDAO();
+        //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
     }
 
     @Provides

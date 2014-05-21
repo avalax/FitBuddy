@@ -2,11 +2,16 @@ package de.avalax.fitbuddy.datalayer;
 
 import de.avalax.fitbuddy.core.workout.Workout;
 
-import java.util.List;
+import java.util.TreeMap;
 
 public interface WorkoutDAO {
     void save(Workout workout);
-    Workout load(int position);
-    List<String> getList();
-    void remove(Workout workout);
+
+    Workout load(long position);
+
+    TreeMap<Long, String> getList();
+
+    void delete(Workout workout);
+
+    Workout getFirstWorkout();
 }

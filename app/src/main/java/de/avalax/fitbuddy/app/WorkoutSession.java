@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.app;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 import de.avalax.fitbuddy.datalayer.WorkoutNotAvailableException;
@@ -17,26 +18,29 @@ public class WorkoutSession {
     public WorkoutSession(SharedPreferences sharedPreferences, WorkoutDAO workoutDAO) {
         this.sharedPreferences = sharedPreferences;
         this.workoutDAO = workoutDAO;
-        int workoutPosition = sharedPreferences.getInt(LAST_WORKOUT_POSITION, 0);
+        long workoutPosition = sharedPreferences.getLong(LAST_WORKOUT_POSITION, 1L);
         try {
             this.workout = workoutDAO.load(workoutPosition);
         } catch (WorkoutNotAvailableException wnae) {
-            //TODO: tooltip that workout was changed
-            switchWorkout(0);
+            Log.d("WorkoutNotAvailableException", wnae.getMessage(), wnae);
+        }
+        if (this.workout == null) {
+            this.workout = workoutDAO.getFirstWorkout();
+            switchWorkout(this.workout.getId());
         }
     }
 
-    public void saveWorkout() {
-        workoutDAO.save(workout);
+    public void saveWorkoutSession() {
+        //TODO: save workout session
     }
 
     public Workout getWorkout() {
         return workout;
     }
 
-    public void switchWorkout(int position) {
+    public void switchWorkout(long position) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(LAST_WORKOUT_POSITION, position);
+        editor.putLong(LAST_WORKOUT_POSITION, position);
         workout = workoutDAO.load(position);
         editor.commit();
     }

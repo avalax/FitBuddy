@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface Workout  extends Serializable {
+    Long getId();
+    void setId(Long id);
     Exercise getExercise(int index);
     int getExerciseCount();
     int getReps(int index);
@@ -14,7 +16,6 @@ public interface Workout  extends Serializable {
     void setName(String name);
     String getName();
     double getProgress(int index);
-    //TODO: move to WorkoutDAO
     void addExerciseBefore(int index, Exercise exercise);
     void addExerciseAfter(int index, Exercise exercise);
     void setExercise(int index, Exercise exercise);

@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
+import java.util.TreeMap;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -43,7 +43,7 @@ public class FakeWorkoutDAOTest {
 
     @Test
     public void testGetList_shouldReturnAListOfWorkouts() throws Exception {
-        List<String> workouts = workoutDAO.getList();
+        TreeMap<Long, String> workouts = workoutDAO.getList();
 
         assertThat(workouts.size(), is(2));
     }
@@ -51,7 +51,7 @@ public class FakeWorkoutDAOTest {
     @Test
     public void testRemove_shouldDoNothingWhenWorkoutIsUnknown() throws Exception {
         Workout workout = mock(Workout.class);
-        workoutDAO.remove(workout);
+        workoutDAO.delete(workout);
 
         assertThat(workoutDAO.getList().size(), is(2));
     }
@@ -61,9 +61,9 @@ public class FakeWorkoutDAOTest {
         Workout workoutToDelete = workoutDAO.load(0);
         Workout workout = workoutDAO.load(1);
 
-        workoutDAO.remove(workoutToDelete);
+        workoutDAO.delete(workoutToDelete);
 
-        assertThat(workout,equalTo(workoutDAO.load(0)));
+        assertThat(workout, equalTo(workoutDAO.load(0)));
         assertThat(workoutDAO.getList().size(), is(1));
     }
 }

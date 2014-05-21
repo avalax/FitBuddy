@@ -13,6 +13,7 @@ public class BasicExercise implements Exercise {
     private double weightRaise;
     private Tendency tendency;
     private int setNumber;
+    private Long id;
 
     public BasicExercise(String name, List<Set> sets, double weightRaise) {
         this.name = name;
@@ -92,6 +93,16 @@ public class BasicExercise implements Exercise {
 
     public void incrementCurrentSet() {
         setCurrentSet(setNumber + 1);
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         Workout workout = workoutSession.getWorkout();
-        return workout.getExerciseCount();
+        return workout != null ? workout.getExerciseCount() : 0;
     }
 
     @Override
