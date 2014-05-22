@@ -58,16 +58,17 @@ public class ManageWorkout {
     }
 
     public void createNewWorkout() {
-        Workout workout = workoutFactory.createNew();
+        workout = workoutFactory.createNew();
         workoutDAO.save(workout);
-        setWorkout(workoutDAO.getList().size() - 1);
+        unsavedChanges = false;
     }
 
     public void createWorkoutFromJson(String json) {
         Workout workoutFromJson = workoutFactory.createFromJson(json);
         if (workoutFromJson != null) {
+            workout = workoutFromJson;
             workoutDAO.save(workoutFromJson);
-            setWorkout(workoutDAO.getList().size() - 1);
+            unsavedChanges = false;
         }
     }
 
@@ -89,6 +90,7 @@ public class ManageWorkout {
 
     public void deleteExercise(int position) {
         //TODO: undo function delete exercise
+        workoutDAO.deleteExercise(workout.getExercise(position));
         workout.removeExercise(position);
         setUnsavedChanges(true);
     }
@@ -106,5 +108,9 @@ public class ManageWorkout {
         sets.add(new BasicSet(20, 12));
         Exercise exercise = new BasicExercise("new exercise", sets, 0);
         workout.addExercise(exercise);
+        workoutDAO.saveExercise(workout, exercise);
+        for (Set set :sets) {
+            workoutDAO.saveSet(exercise,set);
+        }
     }
 }

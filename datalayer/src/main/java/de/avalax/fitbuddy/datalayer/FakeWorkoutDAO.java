@@ -30,6 +30,26 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
+    public void saveExercise(Workout workout, Exercise exercise) {
+        // FAKE
+    }
+
+    @Override
+    public void deleteExercise(Exercise exercise) {
+        // FAKE
+    }
+
+    @Override
+    public void saveSet(Exercise exercise, Set set) {
+        // FAKE
+    }
+
+    @Override
+    public void deleteSet(Set set) {
+        // FAKE
+    }
+
+    @Override
     public Workout load(long position) {
         if (workouts.size() <= position) {
             throw new WorkoutNotAvailableException();

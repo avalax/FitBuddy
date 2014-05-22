@@ -18,6 +18,15 @@ public class BasicSetTest {
     }
 
     @Test
+         public void getId_shouldReturnId() throws Exception {
+        Long id = 42L;
+
+        set.setId(id);
+
+        assertThat(set.getId(), equalTo(id));
+    }
+
+    @Test
     public void getWeight_shouldGetWeight() throws Exception {
         assertThat(set.getWeight(),equalTo(12.5));
     }

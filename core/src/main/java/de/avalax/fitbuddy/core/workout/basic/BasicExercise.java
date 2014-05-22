@@ -106,6 +106,11 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
+    public List<Set> getSets() {
+        return sets;
+    }
+
+    @Override
     public double getWeight() {
         return getCurrentSet().getWeight();
     }

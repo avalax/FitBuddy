@@ -29,7 +29,6 @@ import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.TreeMap;
 
 public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
@@ -146,9 +145,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private String[] getWorkouts() {
         //FIXME: make it work with a map
         TreeMap<Long, String> workoutlist = manageWorkout.getWorkouts();
-        if (workoutlist.size() == workoutPosition) {
-            workoutlist.put(null,manageWorkout.getWorkout().getName());
-        }
         return workoutlist.values().toArray(new String[workoutlist.size()]);
     }
 
@@ -182,6 +178,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void createWorkoutFromJson(String jsonString) {
+        //TODO: persistence
         try {
             manageWorkout.createWorkoutFromJson(jsonString);
             workoutPosition = manageWorkout.getWorkouts().size() - 1;

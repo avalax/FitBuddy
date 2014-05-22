@@ -43,6 +43,11 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getSets_shouldReturnSets() throws Exception {
+        assertThat(exercise.getSets(), equalTo(sets));
+    }
+
+    @Test
     public void getMaxSets_shouldReturnNumberOfSets() throws Exception {
         sets.add(mock(Set.class));
         sets.add(mock(Set.class));

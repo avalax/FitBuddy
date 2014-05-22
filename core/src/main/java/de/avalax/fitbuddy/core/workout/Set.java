@@ -8,4 +8,6 @@ public interface Set extends Serializable {
     void setReps(int reps);
     int getMaxReps();
     void setWeight(double weight);
+    Long getId();
+    void setId(Long id);
 }

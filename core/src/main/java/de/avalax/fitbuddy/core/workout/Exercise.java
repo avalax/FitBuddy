@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.core.workout;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Exercise extends Serializable {
     String getName();
@@ -23,4 +24,6 @@ public interface Exercise extends Serializable {
 
     void setId(Long id);
     Long getId();
+
+    List<Set> getSets();
 }

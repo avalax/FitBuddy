@@ -6,6 +6,7 @@ public class BasicSet implements Set {
     private double weight;
     private int reps;
     private int maxReps;
+    private Long id;
 
     public BasicSet(double weight, int maxReps) {
         this.weight = weight;
@@ -20,6 +21,17 @@ public class BasicSet implements Set {
     @Override
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+
+        this.id = id;
     }
 
     @Override
