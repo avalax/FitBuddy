@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.jakewharton</groupId>
             <artifactId>butterknife</artifactId>
-            <version>5.0.1</version>
+            <version>5.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.squareup</groupId>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>android-integration</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
