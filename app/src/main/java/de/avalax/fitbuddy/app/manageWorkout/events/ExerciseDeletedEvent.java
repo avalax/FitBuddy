@@ -1,15 +1,13 @@
 package de.avalax.fitbuddy.app.manageWorkout.events;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.ExerciseId;
 
 public class ExerciseDeletedEvent {
 
-    public final int position;
-
     public final Exercise exercise;
 
-    public ExerciseDeletedEvent(int position, Exercise exercise) {
-        this.position = position;
+    public ExerciseDeletedEvent(Exercise exercise) {
         this.exercise = exercise;
     }
 }

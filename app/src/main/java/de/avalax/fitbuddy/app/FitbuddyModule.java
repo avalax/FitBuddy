@@ -42,8 +42,8 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutDAO provideWorkoutDAO() {
-        //return new FakeWorkoutDAO();
-        return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
+        return new FakeWorkoutDAO();
+        //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
     }
 
     @Provides

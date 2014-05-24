@@ -1,19 +1,20 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Tendency;
-import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.ExerciseNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
@@ -30,6 +31,34 @@ public class BasicWorkoutTest {
         exerciseIndex = 0;
         exercises = new LinkedList<>();
         workout = new BasicWorkout(exercises);
+    }
+
+    @Test
+    public void testSameIdentity() throws Exception {
+        Workout a1 = new BasicWorkout(exercises);
+        a1.setId(new WorkoutId(42));
+        Workout a2 = new BasicWorkout(exercises);
+        a2.setId(new WorkoutId(42));
+        Assert.assertThat(a1, equalTo(a2));
+        Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
+    }
+
+    @Test
+    public void testDifferentIdentity() throws Exception {
+        Workout a1 = new BasicWorkout(exercises);
+        a1.setId(new WorkoutId(21));
+        Workout a2 = new BasicWorkout(exercises);
+        a2.setId(new WorkoutId(42));
+        Assert.assertThat(a1, not(equalTo(a2)));
+        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+    }
+
+    @Test
+    public void testDifferentIdentityWithNoId() throws Exception {
+        Workout a1 = new BasicWorkout(exercises);
+        Workout a2 = new BasicWorkout(exercises);
+        Assert.assertThat(a1, not(equalTo(a2)));
+        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
 
     @Test
@@ -93,7 +122,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void getId_shouldReturnId() throws Exception {
-        Long id = 42L;
+        WorkoutId id = new WorkoutId(42);
 
         workout.setId(id);
         assertThat(workout.getId(), equalTo(id));
@@ -105,6 +134,14 @@ public class BasicWorkoutTest {
 
         workout.setName(name);
         assertThat(workout.getName(), equalTo(name));
+    }
+
+    @Test
+    public void toString_shouldReturnName() throws Exception {
+        String name = "NameOfWorkout";
+
+        workout.setName(name);
+        assertThat(workout.toString(), equalTo(name));
     }
 
     @Test
@@ -180,32 +217,38 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void setExercise_shouldAddExerciseAtPosition() throws Exception {
-        Exercise exercise = mock(Exercise.class);
+    public void replaceExercise_shouldNotAddExerciseAtPosition() throws Exception {
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exercise.setId(new ExerciseId(42));
 
-        workout.setExercise(exerciseIndex, exercise);
+        workout.replaceExercise(exercise);
 
-        assertThat(exercises.size(), is(1));
-        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
+        assertThat(exercises.size(), is(0));
     }
 
     @Test
     public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(mock(Exercise.class));
+        Exercise exerciseToReplace = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exerciseToReplace.setId(new ExerciseId(42));
+        BasicExercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exercise.setId(new ExerciseId(42));
+        exercises.add(exercise);
 
-        workout.setExercise(exerciseIndex, exercise);
+        workout.replaceExercise(exerciseToReplace);
 
         assertThat(exercises.size(), is(1));
-        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
+        assertThat(workout.getExercise(exerciseIndex), equalTo(exerciseToReplace));
     }
 
     @Test
     public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
-        exercises.add(mock(Exercise.class));
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exercise.setId(new ExerciseId(42));
+        exercises.add(exercise);
 
-        workout.removeExercise(exerciseIndex);
+        boolean exerciseRemoved = workout.removeExercise(exercise);
 
+        assertThat(exerciseRemoved, equalTo(true));
         assertThat(exercises.size(), is(0));
     }
 
@@ -213,9 +256,10 @@ public class BasicWorkoutTest {
     public void removeExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
-        exercises.add(mock(Exercise.class));
+        Exercise exerciseToDelete = mock(Exercise.class);
+        exercises.add(exerciseToDelete);
 
-        workout.removeExercise(1);
+        workout.removeExercise(exerciseToDelete);
 
         assertThat(exercises.size(), is(1));
         assertThat(exercises.get(0), equalTo(exercise));
@@ -223,11 +267,14 @@ public class BasicWorkoutTest {
 
     @Test
     public void removeExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(mock(Exercise.class));
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exercise.setId(new ExerciseId(42));
+        Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        exerciseToDelete.setId(new ExerciseId(42));
+        exercises.add(exerciseToDelete);
         exercises.add(exercise);
 
-        workout.removeExercise(0);
+        workout.removeExercise(exerciseToDelete);
 
         assertThat(exercises.size(), is(1));
         assertThat(exercises.get(0), equalTo(exercise));
@@ -235,7 +282,8 @@ public class BasicWorkoutTest {
 
     @Test
     public void removeExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-        workout.removeExercise(0);
+        boolean b = workout.removeExercise(mock(Exercise.class));
+        assertThat(b, equalTo(false));
     }
 
     public class givenAnExerciseProgress {
@@ -267,12 +315,10 @@ public class BasicWorkoutTest {
 
             assertThat(workout.getProgress(1), equalTo(0.75));
         }
-
-
     }
 
     @Test
     public void getExercises_shouldReturnExercises() throws Exception {
-        assertThat(exercises,is(workout.getExercises()));
+        assertThat(exercises, is(workout.getExercises()));
     }
 }

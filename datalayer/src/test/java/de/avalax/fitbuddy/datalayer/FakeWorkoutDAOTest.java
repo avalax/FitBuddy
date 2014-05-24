@@ -1,11 +1,13 @@
 package de.avalax.fitbuddy.datalayer;
 
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.WorkoutId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
 import java.util.TreeMap;
 
 import static org.hamcrest.core.Is.is;
@@ -31,39 +33,38 @@ public class FakeWorkoutDAOTest {
 
     @Test
     public void testLoad_shouldReturnAWorkout() throws Exception {
-        Workout workout = workoutDAO.load(1);
+        Workout workout = workoutDAO.load(new WorkoutId(1));
 
         assertThat(workout, instanceOf(Workout.class));
     }
 
     @Test(expected = WorkoutNotAvailableException.class)
     public void testLoad_shouldThrowExceptionWhenWorkoutNotFound() throws Exception {
-        workoutDAO.load(42);
+        workoutDAO.load(new WorkoutId(42));
     }
 
     @Test
     public void testGetList_shouldReturnAListOfWorkouts() throws Exception {
-        TreeMap<Long, String> workouts = workoutDAO.getList();
+        List<Workout> workouts = workoutDAO.getList();
 
         assertThat(workouts.size(), is(2));
     }
 
     @Test
     public void testRemove_shouldDoNothingWhenWorkoutIsUnknown() throws Exception {
-        Workout workout = mock(Workout.class);
-        workoutDAO.delete(workout);
+        workoutDAO.delete(new WorkoutId(123));
 
         assertThat(workoutDAO.getList().size(), is(2));
     }
 
     @Test
     public void testRemove_shouldRemoveWorkout() throws Exception {
-        Workout workoutToDelete = workoutDAO.load(0);
-        Workout workout = workoutDAO.load(1);
+        Workout workoutToDelete = workoutDAO.load(new WorkoutId(0));
+        Workout workout = workoutDAO.load(new WorkoutId(1));
 
-        workoutDAO.delete(workoutToDelete);
+        workoutDAO.delete(workoutToDelete.getId());
 
-        assertThat(workout, equalTo(workoutDAO.load(0)));
+        assertThat(workout, equalTo(workoutDAO.load(new WorkoutId(0))));
         assertThat(workoutDAO.getList().size(), is(1));
     }
 }

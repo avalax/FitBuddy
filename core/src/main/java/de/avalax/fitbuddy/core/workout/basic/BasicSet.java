@@ -1,12 +1,13 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
 import de.avalax.fitbuddy.core.workout.Set;
+import de.avalax.fitbuddy.core.workout.SetId;
 
 public class BasicSet implements Set {
     private double weight;
     private int reps;
     private int maxReps;
-    private Long id;
+    private SetId id;
 
     public BasicSet(double weight, int maxReps) {
         this.weight = weight;
@@ -24,12 +25,12 @@ public class BasicSet implements Set {
     }
 
     @Override
-    public Long getId() {
+    public SetId getId() {
         return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(SetId id) {
 
         this.id = id;
     }
@@ -53,5 +54,22 @@ public class BasicSet implements Set {
     @Override
     public int getMaxReps() {
         return this.maxReps;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (id == null) {
+            return super.equals(o);
+        }
+        return o instanceof BasicSet && id.equals(((BasicSet) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return super.hashCode();
+        }
+        return id.hashCode();
     }
 }

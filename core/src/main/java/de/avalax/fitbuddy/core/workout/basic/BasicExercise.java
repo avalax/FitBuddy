@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.ExerciseId;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
@@ -13,7 +14,7 @@ public class BasicExercise implements Exercise {
     private double weightRaise;
     private Tendency tendency;
     private int setNumber;
-    private Long id;
+    private ExerciseId id;
 
     public BasicExercise(String name, List<Set> sets, double weightRaise) {
         this.name = name;
@@ -96,12 +97,12 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(ExerciseId id) {
         this.id = id;
     }
 
     @Override
-    public Long getId() {
+    public ExerciseId getId() {
         return id;
     }
 
@@ -149,5 +150,21 @@ public class BasicExercise implements Exercise {
             return 0;
         }
         return weight - weightRaise;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (id == null) {
+            return super.equals(o);
+        }
+        return o instanceof BasicExercise && id.equals(((BasicExercise) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return super.hashCode();
+        }
+        return id.hashCode();
     }
 }

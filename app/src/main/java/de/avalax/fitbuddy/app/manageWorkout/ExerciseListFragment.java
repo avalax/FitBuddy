@@ -64,7 +64,7 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Exercise exercise = manageWorkout.getWorkout().getExercise(position);
-        EditExerciseDialogFragment.newInstance(position, exercise).show(getFragmentManager(), "fragment_edit_exercise");
+        EditExerciseDialogFragment.newInstance(exercise).show(getFragmentManager(), "fragment_edit_exercise");
     }
 
     @OnClick(R.id.button_undo)

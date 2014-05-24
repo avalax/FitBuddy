@@ -1,8 +1,6 @@
 package de.avalax.fitbuddy.datalayer;
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
@@ -10,7 +8,6 @@ import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 
 public class FakeWorkoutDAO implements WorkoutDAO {
 
@@ -30,31 +27,31 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public void saveExercise(Workout workout, Exercise exercise) {
+    public void saveExercise(WorkoutId id, Exercise exercise) {
         // FAKE
     }
 
     @Override
-    public void deleteExercise(Exercise exercise) {
+    public void deleteExercise(ExerciseId id) {
         // FAKE
     }
 
     @Override
-    public void saveSet(Exercise exercise, Set set) {
+    public void saveSet(ExerciseId id, Set set) {
         // FAKE
     }
 
     @Override
-    public void deleteSet(Set set) {
+    public void deleteSet(SetId id) {
         // FAKE
     }
 
     @Override
-    public Workout load(long position) {
-        if (workouts.size() <= position) {
+    public Workout load(WorkoutId id) {
+        if (workouts.size() <= id.getId()) {
             throw new WorkoutNotAvailableException();
         }
-        return workouts.get((int) position);
+        return workouts.get((int) id.getId());
     }
 
     private Workout fakeWorkoutOne() {
@@ -71,7 +68,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(new BasicExercise("Situps", createExerciseWithThreeSets(0, 30), 2.5));
         BasicWorkout workout = new BasicWorkout(exercises);
         workout.setName("fake workout one");
-        workout.setId(0L);
+        workout.setId(new WorkoutId(0));
         return workout;
     }
 
@@ -86,25 +83,36 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(new BasicExercise("Rückenstrecker", createExerciseWithThreeSets(0, 12), 5));
         exercises.add(new BasicExercise("Crunches am Gerät", createExerciseWithThreeSets(45, 12), 5));
         BasicWorkout workout = new BasicWorkout(exercises);
-        workout.setId(1L);
+        workout.setId(new WorkoutId(1));
         workout.setName("fake workout two");
         return workout;
     }
 
     @Override
-    public TreeMap<Long, String> getList() {
-        TreeMap<Long, String> workoutNames = new TreeMap<>();
-        long count = 0;
+    public List<Workout> getList() {
+        List<Workout> workoutList = new ArrayList<>();
+
         for (Workout workout : workouts) {
-            workoutNames.put(count, workout.getName());
-            count++;
+            Workout w = new BasicWorkout(new LinkedList<Exercise>());
+            w.setId(workout.getId());
+            w.setName(workout.getName());
+            workoutList.add(w);
         }
-        return workoutNames;
+        return workoutList;
     }
 
     @Override
-    public void delete(Workout workout) {
-        workouts.remove(workout);
+    public void delete(WorkoutId id) {
+        Workout toDelete = null;
+        for (Workout workout : workouts) {
+            if (id.equals(workout.getId())) {
+                toDelete = workout;
+                break;
+            }
+        }
+        if (toDelete != null) {
+            workouts.remove(toDelete);
+        }
     }
 
     @Override

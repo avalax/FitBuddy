@@ -7,12 +7,13 @@ import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.WorkoutId;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.List;
 
 public class ManageWorkout {
 
@@ -44,16 +45,16 @@ public class ManageWorkout {
         return workout;
     }
 
-    public void setWorkout(long position) {
+    public void setWorkout(WorkoutId id) {
         unsavedChanges = false;
-        this.workout = workoutDAO.load(position);
+        this.workout = workoutDAO.load(id);
     }
 
     public void switchWorkout() {
         workoutSession.switchWorkout(workout.getId());
     }
 
-    public TreeMap<Long, String> getWorkouts() {
+    public List<Workout> getWorkouts() {
         return workoutDAO.getList();
     }
 
@@ -74,9 +75,9 @@ public class ManageWorkout {
 
     public void deleteWorkout() {
         //TODO: undo function delete workout
-        workoutDAO.delete(workout);
+        workoutDAO.delete(workout.getId());
         if (getWorkouts().size() - 1 >= 0) {
-            setWorkout(getWorkouts().size() - 1);
+            setWorkout(getWorkouts().get(getWorkouts().size() - 1).getId());
         } else {
             createNewWorkout();
         }
@@ -88,15 +89,15 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void deleteExercise(int position) {
+    public void deleteExercise(Exercise exercise) {
         //TODO: undo function delete exercise
-        workoutDAO.deleteExercise(workout.getExercise(position));
-        workout.removeExercise(position);
+        workoutDAO.deleteExercise(exercise.getId());
+        workout.removeExercise(exercise);
         setUnsavedChanges(true);
     }
 
-    public void setExercise(int position, Exercise exercise) {
-        workout.setExercise(position, exercise);
+    public void replaceExercise(Exercise exercise) {
+        workout.replaceExercise(exercise);
         setUnsavedChanges(false);
     }
 
@@ -108,9 +109,6 @@ public class ManageWorkout {
         sets.add(new BasicSet(20, 12));
         Exercise exercise = new BasicExercise("new exercise", sets, 0);
         workout.addExercise(exercise);
-        workoutDAO.saveExercise(workout, exercise);
-        for (Set set :sets) {
-            workoutDAO.saveSet(exercise,set);
-        }
+        workoutDAO.saveExercise(workout.getId(), exercise);
     }
 }

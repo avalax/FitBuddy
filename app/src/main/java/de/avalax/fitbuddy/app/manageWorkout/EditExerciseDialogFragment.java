@@ -21,17 +21,15 @@ import javax.inject.Inject;
 public class EditExerciseDialogFragment extends DialogFragment {
 
     private static final String ARGS_EXERCISE = "exercise";
-    private static final String ARGS_POSITION = "position";
+
     @Inject
     protected Bus bus;
 
-    private int position;
     private Exercise exercise;
 
-    public static EditExerciseDialogFragment newInstance(int position, Exercise exercise) {
+    public static EditExerciseDialogFragment newInstance(Exercise exercise) {
         EditExerciseDialogFragment fragment = new EditExerciseDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARGS_POSITION, position);
         args.putSerializable(ARGS_EXERCISE, exercise);
         fragment.setArguments(args);
         return fragment;
@@ -63,7 +61,6 @@ public class EditExerciseDialogFragment extends DialogFragment {
         ButterKnife.inject(this, view);
 
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
-        this.position = getArguments().getInt(ARGS_POSITION);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
@@ -71,12 +68,12 @@ public class EditExerciseDialogFragment extends DialogFragment {
                 .setView(view)
                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        bus.post(new ExerciseDeletedEvent(position, exercise));
+                        bus.post(new ExerciseDeletedEvent(exercise));
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        bus.post(new ExerciseChangedEvent(position, exercise));
+                        bus.post(new ExerciseChangedEvent(exercise));
                     }
                 });
         return builder.create();

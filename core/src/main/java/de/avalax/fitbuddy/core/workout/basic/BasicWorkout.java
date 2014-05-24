@@ -1,9 +1,6 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Tendency;
-import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.ExerciseNotAvailableException;
 
 import java.util.LinkedList;
@@ -12,19 +9,19 @@ import java.util.List;
 public class BasicWorkout implements Workout {
     private LinkedList<Exercise> exercises;
     private String name;
-    private Long id;
+    private WorkoutId id;
 
     public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
     }
 
     @Override
-    public Long getId() {
+    public WorkoutId getId() {
         return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(WorkoutId id) {
         this.id = id;
     }
 
@@ -84,20 +81,16 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setExercise(int index, Exercise exercise) {
-        if (isIndexOutOfBounds(index)) {
-            exercises.add(exercise);
-        } else {
-            exercises.set(index, exercise);
+    public void replaceExercise(Exercise exercise) {
+        int indexOf = exercises.indexOf(exercise);
+        if (indexOf >= 0) {
+            exercises.set(indexOf, exercise);
         }
     }
 
     @Override
-    public void removeExercise(int index) {
-        if (isIndexOutOfBounds(index)) {
-            return;
-        }
-        exercises.remove(index);
+    public boolean removeExercise(Exercise exercise) {
+        return exercises.remove(exercise);
     }
 
     @Override
@@ -120,6 +113,7 @@ public class BasicWorkout implements Workout {
         return getExercise(index).getReps();
     }
 
+
     private boolean isIndexOutOfBounds(int index) {
         return isIndexNegative(index) || isIndexGreaterEqualThan(index);
     }
@@ -130,5 +124,26 @@ public class BasicWorkout implements Workout {
 
     private boolean isIndexNegative(int index) {
         return index < 0;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (id == null) {
+            return super.equals(o);
+        }
+        return o instanceof BasicWorkout && id.equals(((BasicWorkout) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return super.hashCode();
+        }
+        return id.hashCode();
     }
 }

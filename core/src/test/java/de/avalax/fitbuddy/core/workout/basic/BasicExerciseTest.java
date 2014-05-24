@@ -1,11 +1,10 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Tendency;
+import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +12,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
@@ -30,13 +30,41 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void testSameIdentity() throws Exception {
+        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
+        a1.setId(new ExerciseId(42));
+        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        a2.setId(new ExerciseId(42));
+        Assert.assertThat(a1, equalTo(a2));
+        Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
+    }
+
+    @Test
+    public void testDifferentIdentity() throws Exception {
+        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
+        a1.setId(new ExerciseId(21));
+        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        a2.setId(new ExerciseId(42));
+        Assert.assertThat(a1, not(equalTo(a2)));
+        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+    }
+
+    @Test
+    public void testDifferentIdentityWithNoId() throws Exception {
+        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Assert.assertThat(a1, not(equalTo(a2)));
+        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+    }
+
+    @Test
     public void getName_shouldReturnNameBankdrücken() throws Exception {
         assertThat(exercise.getName(), equalTo("Bankdrücken"));
     }
 
     @Test
     public void getId_shouldReturnId() throws Exception {
-        Long id = 42L;
+        ExerciseId id = new ExerciseId(42);
 
         exercise.setId(id);
         assertThat(exercise.getId(), equalTo(id));

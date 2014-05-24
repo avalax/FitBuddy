@@ -112,6 +112,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
             viewPager.setCurrentItem(0, true);
+            updatePage(0);
         }
     }
 

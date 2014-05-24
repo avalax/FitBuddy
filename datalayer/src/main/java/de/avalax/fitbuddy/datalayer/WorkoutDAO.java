@@ -1,27 +1,26 @@
 package de.avalax.fitbuddy.datalayer;
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.*;
 
+import java.util.List;
 import java.util.TreeMap;
 
 public interface WorkoutDAO {
     void save(Workout workout);
 
-    void saveExercise(Workout workout, Exercise exercise);
+    void saveExercise(WorkoutId id, Exercise exercise);
 
-    void deleteExercise(Exercise exercise);
+    void deleteExercise(ExerciseId id);
 
-    void saveSet(Exercise exercise, Set set);
+    void saveSet(ExerciseId id, Set set);
 
-    void deleteSet(Set set);
+    void deleteSet(SetId id);
 
-    Workout load(long position);
+    Workout load(WorkoutId id);
 
-    TreeMap<Long, String> getList();
+    List<Workout> getList();
 
-    void delete(Workout workout);
+    void delete(WorkoutId id);
 
     Workout getFirstWorkout();
 }

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.app;
 
 import android.content.SharedPreferences;
 import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.WorkoutId;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -28,7 +29,7 @@ public class WorkoutSessionTest {
         editor = mock(SharedPreferences.Editor.class);
         long lastPosition = 21L;
         when(sharedPreferences.getLong(WorkoutSession.LAST_WORKOUT_POSITION, 1L)).thenReturn(lastPosition);
-        when(workoutDAO.load(lastPosition)).thenReturn(workout);
+        when(workoutDAO.load(new WorkoutId(lastPosition))).thenReturn(workout);
         when(sharedPreferences.edit()).thenReturn(editor);
         workoutSession = new WorkoutSession(sharedPreferences, workoutDAO);
     }
@@ -50,9 +51,9 @@ public class WorkoutSessionTest {
     public void testSwitchWorkout_shouldSwitchToWorkoutFromWorkoutDAO() throws Exception {
         long position = 42;
         Workout loadedWorkout = mock(Workout.class);
-        when(workoutDAO.load(position)).thenReturn(loadedWorkout);
+        when(workoutDAO.load(new WorkoutId(position))).thenReturn(loadedWorkout);
 
-        workoutSession.switchWorkout(position);
+        workoutSession.switchWorkout(new WorkoutId(position));
         verify(editor).putLong(WorkoutSession.LAST_WORKOUT_POSITION, position);
         verify(editor).commit();
         assertThat(workoutSession.getWorkout(), is(loadedWorkout));

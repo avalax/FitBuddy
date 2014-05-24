@@ -27,9 +27,11 @@ import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseChangedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
+import de.avalax.fitbuddy.core.workout.Workout;
+import de.avalax.fitbuddy.core.workout.WorkoutId;
 
 import javax.inject.Inject;
-import java.util.TreeMap;
+import java.util.List;
 
 public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
@@ -40,8 +42,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     protected ManageWorkout manageWorkout;
     @Inject
     protected Bus bus;
-    private long workoutPosition;
     private ExerciseListFragment exerciseListFragment;
+    private List<Workout> workoutList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +55,18 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void init(Bundle savedInstanceState) {
+        long workoutPosition;
         if (savedInstanceState != null) {
             workoutPosition = savedInstanceState.getLong(WORKOUT_POSITION);
         } else {
             workoutPosition = sharedPreferences.getLong(WorkoutSession.LAST_WORKOUT_POSITION, 1L);
         }
-        manageWorkout.setWorkout(workoutPosition);
+        manageWorkout.setWorkout(new WorkoutId(workoutPosition));
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, exerciseListFragment).commit();
         initActionBar();
+        initActionNavigationBar();
     }
 
     @Override
@@ -80,7 +84,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putLong(WORKOUT_POSITION, workoutPosition);
+        savedInstanceState.putLong(WORKOUT_POSITION, manageWorkout.getWorkout().getId().getId());
     }
 
     @Override
@@ -112,7 +116,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
-            initActionBar();
+            initActionNavigationBar();
             exerciseListFragment.initListView();
         }
         return true;
@@ -133,25 +137,31 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
-
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, getWorkouts());
-
-        actionBar.setListNavigationCallbacks(spinnerAdapter, this);
-        //TODO: select navigationItem
-        //actionBar.setSelectedNavigationItem(workoutPosition);
     }
 
-    private String[] getWorkouts() {
-        //FIXME: make it work with a map
-        TreeMap<Long, String> workoutlist = manageWorkout.getWorkouts();
-        return workoutlist.values().toArray(new String[workoutlist.size()]);
+    private void initActionNavigationBar() {
+
+        ActionBar actionBar = getActionBar();
+        initializing = true;
+        workoutList = getWorkouts();
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, workoutList);
+
+        actionBar.setListNavigationCallbacks(spinnerAdapter, this);
+        for (int i = 0; i < workoutList.size(); i++) {
+            if (workoutList.get(i).getId().equals(manageWorkout.getWorkout().getId())) {
+                actionBar.setSelectedNavigationItem(i);
+            }
+        }
+    }
+
+    private List<Workout> getWorkouts() {
+        return manageWorkout.getWorkouts();
     }
 
     private void switchWorkout(int position) {
-        manageWorkout.setWorkout(position);
-        workoutPosition = position;
-        initActionBar();
+        manageWorkout.setWorkout(workoutList.get(position).getId());
+        initActionNavigationBar();
         exerciseListFragment.initListView();
     }
 
@@ -164,8 +174,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
                     manageWorkout.createNewWorkout();
-                    workoutPosition = manageWorkout.getWorkouts().size() - 1;
-                    initActionBar();
+                    initActionNavigationBar();
                     exerciseListFragment.initListView();
                 } else if (item == 1) {
                     IntentIntegrator integrator = new IntentIntegrator(ManageWorkoutActivity.this);
@@ -181,8 +190,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         //TODO: persistence
         try {
             manageWorkout.createWorkoutFromJson(jsonString);
-            workoutPosition = manageWorkout.getWorkouts().size() - 1;
-            initActionBar();
+            initActionNavigationBar();
             exerciseListFragment.initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
@@ -201,7 +209,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (!manageWorkout.getWorkout().getName().equals(input.getText().toString())) {
                             manageWorkout.getWorkout().setName(input.getText().toString());
-                            initActionBar();
+                            initActionNavigationBar();
                         }
                     }
                 })
@@ -210,13 +218,13 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     @Subscribe
     public void onExerciseChanged(ExerciseChangedEvent event) {
-        manageWorkout.setExercise(event.position, event.exercise);
+        manageWorkout.replaceExercise(event.exercise);
         bus.post(new ExerciseListInvalidatedEvent());
     }
 
     @Subscribe
     public void onExerciseDeleted(ExerciseDeletedEvent event) {
-        manageWorkout.deleteExercise(event.position);
+        manageWorkout.deleteExercise(event.exercise);
         bus.post(new ExerciseListInvalidatedEvent());
     }
 }
