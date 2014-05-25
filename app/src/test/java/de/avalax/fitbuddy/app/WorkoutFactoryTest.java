@@ -3,14 +3,11 @@ package de.avalax.fitbuddy.app;
 import de.avalax.fitbuddy.core.workout.Workout;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
 public class WorkoutFactoryTest {
     private WorkoutFactory workoutFactory;
 
@@ -25,7 +22,7 @@ public class WorkoutFactoryTest {
     }
 
     @Test(expected = WorkoutParseException.class)
-         public void emtpyString_shouldThrowWorkoutParseException() throws Exception {
+    public void emtpyString_shouldThrowWorkoutParseException() throws Exception {
         workoutFactory.createFromJson("");
     }
 
