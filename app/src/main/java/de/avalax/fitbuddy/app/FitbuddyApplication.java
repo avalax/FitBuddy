@@ -12,7 +12,7 @@ public class FitbuddyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SharedPreferences sharedPreferences = getSharedPreferences("de.avalax.fitbuddy", Context.MODE_PRIVATE);
-        graph = ObjectGraph.create(new FitbuddyModule(this, sharedPreferences));
+        graph = ObjectGraph.create(new FitbuddyModule(sharedPreferences));
     }
 
     public void inject(Object object) {

@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
-import android.content.Context;
 import android.view.View;
 import de.avalax.fitbuddy.app.WorkoutFactory;
 import de.avalax.fitbuddy.app.WorkoutSession;
@@ -27,7 +26,7 @@ public class ManageWorkout {
 
     private Workout workout;
 
-    public ManageWorkout(Context context, WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
         this.workoutSession = workoutSession;
         this.workoutDAO = workoutDAO;
         this.workoutFactory = workoutFactory;
