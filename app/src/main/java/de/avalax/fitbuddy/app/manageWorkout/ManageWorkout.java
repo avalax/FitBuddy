@@ -32,7 +32,7 @@ public class ManageWorkout {
         this.workoutFactory = workoutFactory;
     }
 
-    public void setUnsavedChanges(boolean unsavedChanges) {
+    private void setUnsavedChanges(boolean unsavedChanges) {
         this.unsavedChanges = unsavedChanges;
     }
 
