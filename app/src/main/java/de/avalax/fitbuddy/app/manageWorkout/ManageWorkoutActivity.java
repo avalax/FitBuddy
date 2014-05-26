@@ -140,7 +140,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void initActionNavigationBar() {
-
         ActionBar actionBar = getActionBar();
         initializing = true;
         workoutList = getWorkouts();
@@ -148,6 +147,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 android.R.layout.simple_spinner_dropdown_item, workoutList);
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
+        selectNavigationItem();
+    }
+
+    private void selectNavigationItem() {
+        ActionBar actionBar = getActionBar();
         for (int i = 0; i < workoutList.size(); i++) {
             if (workoutList.get(i).getId().equals(manageWorkout.getWorkout().getId())) {
                 actionBar.setSelectedNavigationItem(i);
@@ -161,7 +165,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     private void switchWorkout(int position) {
         manageWorkout.setWorkout(workoutList.get(position).getId());
-        initActionNavigationBar();
         exerciseListFragment.initListView();
     }
 
