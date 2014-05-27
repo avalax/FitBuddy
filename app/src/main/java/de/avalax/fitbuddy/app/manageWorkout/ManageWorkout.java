@@ -1,22 +1,21 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
 import android.view.View;
+import de.avalax.fitbuddy.app.ExerciseFactory;
 import de.avalax.fitbuddy.app.WorkoutFactory;
 import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.WorkoutId;
-import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
-import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageWorkout {
 
     private WorkoutFactory workoutFactory;
+
+    private ExerciseFactory exerciseFactory;
 
     private WorkoutDAO workoutDAO;
 
@@ -25,11 +24,13 @@ public class ManageWorkout {
     private boolean unsavedChanges;
 
     private Workout workout;
+    private Workout deletedWorkout;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
         this.workoutDAO = workoutDAO;
         this.workoutFactory = workoutFactory;
+        this.exerciseFactory = exerciseFactory;
     }
 
     private void setUnsavedChanges(boolean unsavedChanges) {
@@ -45,7 +46,6 @@ public class ManageWorkout {
     }
 
     public void setWorkout(WorkoutId id) {
-        unsavedChanges = false;
         this.workout = workoutDAO.load(id);
     }
 
@@ -60,7 +60,6 @@ public class ManageWorkout {
     public void createNewWorkout() {
         workout = workoutFactory.createNew();
         workoutDAO.save(workout);
-        unsavedChanges = false;
     }
 
     public void createWorkoutFromJson(String json) {
@@ -75,16 +74,19 @@ public class ManageWorkout {
     public void deleteWorkout() {
         //TODO: undo function delete workout
         workoutDAO.delete(workout.getId());
-        if (getWorkouts().size() - 1 >= 0) {
-            setWorkout(getWorkouts().get(getWorkouts().size() - 1).getId());
-        } else {
-            createNewWorkout();
-        }
+        setUnsavedChanges(workout);
+    }
+
+    private void setUnsavedChanges(Workout workout) {
+        deletedWorkout = workout;
         setUnsavedChanges(true);
     }
 
     public void undoUnsavedChanges() {
-        //TODO: undo changes
+        if (hasDeletedWorkout()) {
+            workoutDAO.save(deletedWorkout);
+            deletedWorkout = null;
+        }
         setUnsavedChanges(false);
     }
 
@@ -101,13 +103,12 @@ public class ManageWorkout {
     }
 
     public void addNewExercise() {
-        //TODO: create a new exercise with better defaults
-        ArrayList<Set> sets = new ArrayList<>();
-        sets.add(new BasicSet(20, 12));
-        sets.add(new BasicSet(20, 12));
-        sets.add(new BasicSet(20, 12));
-        Exercise exercise = new BasicExercise("new exercise", sets, 0);
+        Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
         workoutDAO.saveExercise(workout.getId(), exercise);
+    }
+
+    protected boolean hasDeletedWorkout() {
+        return deletedWorkout != null;
     }
 }

@@ -70,6 +70,7 @@ public class ExerciseListFragment extends ListFragment {
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
         manageWorkout.undoUnsavedChanges();
+        //TODO: distinguish between undo workout and undo exercise
         bus.post(new ExerciseListInvalidatedEvent());
     }
 

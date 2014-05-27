@@ -116,6 +116,12 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
+            List<Workout> workouts = manageWorkout.getWorkouts();
+            if (workouts.size() == 0) {
+                manageWorkout.createNewWorkout();
+            }
+            //TODO: refactor this to mangageWorkout.loadFirstWorkout()
+            manageWorkout.setWorkout(manageWorkout.getWorkouts().get(0).getId());
             initActionNavigationBar();
             exerciseListFragment.initListView();
         }

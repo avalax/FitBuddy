@@ -8,13 +8,14 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
-import java.util.TreeMap;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,7 +29,7 @@ public class FakeWorkoutDAOTest {
 
         workoutDAO.save(workout);
 
-        verifyNoMoreInteractions(workout);
+        verify(workout).setId(any(WorkoutId.class));
     }
 
     @Test
@@ -64,7 +65,7 @@ public class FakeWorkoutDAOTest {
 
         workoutDAO.delete(workoutToDelete.getId());
 
-        assertThat(workout, equalTo(workoutDAO.load(new WorkoutId(0))));
+        assertThat(workout, equalTo(workoutDAO.load(new WorkoutId(1))));
         assertThat(workoutDAO.getList().size(), is(1));
     }
 }

@@ -23,6 +23,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     public void save(Workout workout) {
         if (!workouts.contains(workout)) {
             workouts.add(workout);
+            workout.setId(new WorkoutId((long) (Math.random() * 100000)));
         }
     }
 
@@ -48,10 +49,12 @@ public class FakeWorkoutDAO implements WorkoutDAO {
 
     @Override
     public Workout load(WorkoutId id) {
-        if (workouts.size() <= id.getId()) {
-            throw new WorkoutNotAvailableException();
+        for (Workout workout : workouts) {
+            if (workout.getId().equals(id)) {
+                return workout;
+            }
         }
-        return workouts.get((int) id.getId());
+        throw new WorkoutNotAvailableException();
     }
 
     private Workout fakeWorkoutOne() {
