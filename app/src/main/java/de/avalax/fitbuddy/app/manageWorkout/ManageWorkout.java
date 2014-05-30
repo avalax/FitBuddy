@@ -25,6 +25,7 @@ public class ManageWorkout {
 
     private Workout workout;
     private Workout deletedWorkout;
+    private Exercise deletedExercise;
 
     public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
@@ -57,7 +58,7 @@ public class ManageWorkout {
         return workoutDAO.getList();
     }
 
-    public void createNewWorkout() {
+    public void createWorkout() {
         workout = workoutFactory.createNew();
         workoutDAO.save(workout);
     }
@@ -72,8 +73,8 @@ public class ManageWorkout {
     }
 
     public void deleteWorkout() {
-        //TODO: undo function delete workout
         workoutDAO.delete(workout.getId());
+        deletedExercise = null;
         setUnsavedChanges(workout);
     }
 
@@ -82,19 +83,27 @@ public class ManageWorkout {
         setUnsavedChanges(true);
     }
 
-    public void undoUnsavedChanges() {
-        if (hasDeletedWorkout()) {
+    public void setUnsavedChanges(Exercise exercise) {
+        this.deletedExercise = exercise;
+        setUnsavedChanges(true);
+    }
+
+    public void undoDeleteAction() {
+        if (hasDeletedExercise()) {
+            workoutDAO.saveExercise(workout.getId(), deletedExercise);
+        } else if (hasDeletedWorkout()) {
             workoutDAO.save(deletedWorkout);
-            deletedWorkout = null;
         }
+        deletedWorkout = null;
+        deletedExercise = null;
         setUnsavedChanges(false);
     }
 
     public void deleteExercise(Exercise exercise) {
-        //TODO: undo function delete exercise
         workoutDAO.deleteExercise(exercise.getId());
         workout.removeExercise(exercise);
-        setUnsavedChanges(true);
+        setUnsavedChanges(exercise);
+        deletedWorkout = null;
     }
 
     public void replaceExercise(Exercise exercise) {
@@ -102,7 +111,7 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void addNewExercise() {
+    public void createExercise() {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
         workoutDAO.saveExercise(workout.getId(), exercise);
@@ -110,5 +119,9 @@ public class ManageWorkout {
 
     protected boolean hasDeletedWorkout() {
         return deletedWorkout != null;
+    }
+
+    protected boolean hasDeletedExercise() {
+        return deletedExercise != null;
     }
 }

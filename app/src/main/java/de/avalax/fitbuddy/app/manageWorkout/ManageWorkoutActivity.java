@@ -118,7 +118,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             manageWorkout.deleteWorkout();
             List<Workout> workouts = manageWorkout.getWorkouts();
             if (workouts.size() == 0) {
-                manageWorkout.createNewWorkout();
+                manageWorkout.createWorkout();
             }
             //TODO: refactor this to mangageWorkout.loadFirstWorkout()
             manageWorkout.setWorkout(manageWorkout.getWorkouts().get(0).getId());
@@ -182,7 +182,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                    manageWorkout.createNewWorkout();
+                    manageWorkout.createWorkout();
                     initActionNavigationBar();
                     exerciseListFragment.initListView();
                 } else if (item == 1) {

@@ -69,14 +69,13 @@ public class ExerciseListFragment extends ListFragment {
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
-        manageWorkout.undoUnsavedChanges();
-        //TODO: distinguish between undo workout and undo exercise
+        manageWorkout.undoDeleteAction();
         bus.post(new ExerciseListInvalidatedEvent());
     }
 
     @OnClick(android.R.id.empty)
     protected void addExercise() {
-        manageWorkout.addNewExercise();
+        manageWorkout.createExercise();
         bus.post(new ExerciseListInvalidatedEvent());
     }
 
