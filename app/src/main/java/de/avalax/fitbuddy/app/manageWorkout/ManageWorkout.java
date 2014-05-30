@@ -90,6 +90,7 @@ public class ManageWorkout {
 
     public void undoDeleteAction() {
         if (hasDeletedExercise()) {
+            workout.addExercise(deletedExercise);
             workoutDAO.saveExercise(workout.getId(), deletedExercise);
         } else if (hasDeletedWorkout()) {
             workoutDAO.save(deletedWorkout);

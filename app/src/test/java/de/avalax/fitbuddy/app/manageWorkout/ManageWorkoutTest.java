@@ -120,6 +120,7 @@ public class ManageWorkoutTest {
                 manageWorkout.undoDeleteAction();
 
                 verify(workoutDAO).saveExercise(workout.getId(),exercise);
+                verify(workout).addExercise(exercise);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
             }
