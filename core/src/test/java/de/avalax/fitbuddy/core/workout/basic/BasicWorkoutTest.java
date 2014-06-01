@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.ExerciseNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -199,7 +198,7 @@ public class BasicWorkoutTest {
         Exercise exercise = mock(Exercise.class);
         exercises.add(mock(Exercise.class));
 
-        workout.addExerciseBefore(exerciseIndex, exercise);
+        workout.addExercise(exerciseIndex, exercise);
 
         assertThat(exercises.size(), is(2));
         assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
@@ -246,9 +245,9 @@ public class BasicWorkoutTest {
         exercise.setId(new ExerciseId(42));
         exercises.add(exercise);
 
-        boolean exerciseRemoved = workout.removeExercise(exercise);
+        boolean isDeleted = workout.deleteExercise(exercise);
 
-        assertThat(exerciseRemoved, equalTo(true));
+        assertThat(isDeleted, equalTo(true));
         assertThat(exercises.size(), is(0));
     }
 
@@ -259,7 +258,7 @@ public class BasicWorkoutTest {
         Exercise exerciseToDelete = mock(Exercise.class);
         exercises.add(exerciseToDelete);
 
-        workout.removeExercise(exerciseToDelete);
+        workout.deleteExercise(exerciseToDelete);
 
         assertThat(exercises.size(), is(1));
         assertThat(exercises.get(0), equalTo(exercise));
@@ -274,7 +273,7 @@ public class BasicWorkoutTest {
         exercises.add(exerciseToDelete);
         exercises.add(exercise);
 
-        workout.removeExercise(exerciseToDelete);
+        workout.deleteExercise(exerciseToDelete);
 
         assertThat(exercises.size(), is(1));
         assertThat(exercises.get(0), equalTo(exercise));
@@ -282,7 +281,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void removeExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-        boolean b = workout.removeExercise(mock(Exercise.class));
+        boolean b = workout.deleteExercise(mock(Exercise.class));
         assertThat(b, equalTo(false));
     }
 

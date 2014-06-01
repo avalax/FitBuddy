@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -14,7 +15,9 @@ import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
+import de.avalax.fitbuddy.app.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.WorkoutId;
 
 import javax.inject.Inject;
 
@@ -40,13 +43,18 @@ public class ExerciseListFragment extends ListFragment {
         //TODO: setdata using adapter.setData(data);
         setListAdapter(new ExerciseAdapter(getActivity(), R.layout.item_exercise, manageWorkout.getWorkout().getExercises()));
         footer.setVisibility(manageWorkout.unsavedChangesVisibility());
+        TextView unsavedChangesTextView = (TextView) footer.findViewById(R.id.unsavedChangesTextView);
+        if (manageWorkout.hasDeletedExercise()) {
+            unsavedChangesTextView.setText(R.string.has_deleted_exercise);
+        } else if (manageWorkout.hasDeletedWorkout()) {
+            unsavedChangesTextView.setText(R.string.has_deleted_workout);
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerForContextMenu(getListView());
-        footer.setVisibility(manageWorkout.unsavedChangesVisibility());
     }
 
     @Override
@@ -69,8 +77,13 @@ public class ExerciseListFragment extends ListFragment {
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
-        manageWorkout.undoDeleteAction();
-        bus.post(new ExerciseListInvalidatedEvent());
+        if (manageWorkout.hasDeletedExercise()) {
+            manageWorkout.undoDeleteExercise();
+            bus.post(new ExerciseListInvalidatedEvent());
+        } else if (manageWorkout.hasDeletedWorkout()) {
+            manageWorkout.undoDeleteWorkout();
+            bus.post(new WorkoutListInvalidatedEvent());
+        }
     }
 
     @OnClick(android.R.id.empty)

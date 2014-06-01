@@ -27,6 +27,7 @@ import de.avalax.fitbuddy.app.WorkoutSession;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseChangedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
+import de.avalax.fitbuddy.app.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.WorkoutId;
 
@@ -99,7 +100,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         if (initializing) {
             initializing = false;
         } else {
-            switchWorkout(itemPosition);
+            WorkoutId workoutId = workoutList.get(itemPosition).getId();
+            switchWorkout(workoutId);
         }
         return true;
     }
@@ -169,8 +171,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         return manageWorkout.getWorkouts();
     }
 
-    private void switchWorkout(int position) {
-        manageWorkout.setWorkout(workoutList.get(position).getId());
+    private void switchWorkout(WorkoutId workoutId) {
+        manageWorkout.setWorkout(workoutId);
         exerciseListFragment.initListView();
     }
 
@@ -196,14 +198,13 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void createWorkoutFromJson(String jsonString) {
-        //TODO: persistence
         try {
             manageWorkout.createWorkoutFromJson(jsonString);
             initActionNavigationBar();
             exerciseListFragment.initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
-            Log.d("reading of qrcode failed", wpe.getMessage());
+            Log.d("reading of qrcode failed", wpe.getMessage(), wpe);
             toast.show();
         }
     }
@@ -235,5 +236,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     public void onExerciseDeleted(ExerciseDeletedEvent event) {
         manageWorkout.deleteExercise(event.exercise);
         bus.post(new ExerciseListInvalidatedEvent());
+    }
+
+    @Subscribe
+    public void onWorkoutListInvalidated(WorkoutListInvalidatedEvent event) {
+        initActionNavigationBar();
+        exerciseListFragment.initListView();
     }
 }

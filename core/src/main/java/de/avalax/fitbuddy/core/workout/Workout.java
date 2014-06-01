@@ -16,10 +16,10 @@ public interface Workout extends Serializable {
     void setName(String name);
     String getName();
     double getProgress(int index);
-    void addExerciseBefore(int index, Exercise exercise);
+    void addExercise(int index, Exercise exercise);
     void addExerciseAfter(int index, Exercise exercise);
     void replaceExercise(Exercise exercise);
-    boolean removeExercise(Exercise exercise);
+    boolean deleteExercise(Exercise exercise);
     void addExercise(Exercise exercise);
     List<Exercise> getExercises();
 }

@@ -34,4 +34,7 @@
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
     <string name="decimal_point">,</string>
+    <string name="unsaved_changes">unsaved changes</string>
+    <string name="has_deleted_workout">workout deleted</string>
+    <string name="has_deleted_exercise">exercise deleted</string>
 </resources>

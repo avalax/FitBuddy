@@ -71,7 +71,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void addExerciseBefore(int index, Exercise exercise) {
+    public void addExercise(int index, Exercise exercise) {
         exercises.add(index, exercise);
     }
 
@@ -89,7 +89,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public boolean removeExercise(Exercise exercise) {
+    public boolean deleteExercise(Exercise exercise) {
         return exercises.remove(exercise);
     }
 

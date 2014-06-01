@@ -16,12 +16,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+
+import java.util.LinkedList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(HierarchicalContextRunner.class)
 public class ManageWorkoutTest {
@@ -34,8 +35,8 @@ public class ManageWorkoutTest {
     private ExerciseFactory exerciseFactory;
     @Mock
     private WorkoutSession workoutSession;
-    @Mock
-    private Workout workout;
+    @Spy
+    private Workout workout = new BasicWorkout(new LinkedList<Exercise>());
     @InjectMocks
     private ManageWorkout manageWorkout;
     @Mock
@@ -44,6 +45,7 @@ public class ManageWorkoutTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        workout.setId(new WorkoutId(123456));
     }
 
     @Test
@@ -66,11 +68,12 @@ public class ManageWorkoutTest {
         assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
     }
 
-    public class workoutManipulation {
+    public class givenAWorkoutWithOneExercise {
         @Before
         public void setUp() throws Exception {
             when(workoutDAO.load(new WorkoutId(42))).thenReturn(workout);
             when(workout.getId()).thenReturn(new WorkoutId(42));
+            workout.addExercise(exercise);
 
             manageWorkout.setWorkout(new WorkoutId(42));
         }
@@ -80,16 +83,19 @@ public class ManageWorkoutTest {
             manageWorkout.deleteWorkout();
 
             verify(workoutDAO).delete(new WorkoutId(42));
+            assertThat(manageWorkout.getWorkout(), equalTo(null));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
             assertThat(manageWorkout.hasDeletedWorkout(), equalTo(true));
         }
 
         @Test
-        public void undoDeleteAction_shouldReinsertTheWorkoutToThePersistence() throws Exception {
+        public void undoDeleteWorkout_shouldReinsertTheWorkoutToThePersistence() throws Exception {
             manageWorkout.deleteWorkout();
-            manageWorkout.undoDeleteAction();
+
+            manageWorkout.undoDeleteWorkout();
 
             verify(workoutDAO).save(workout);
+            assertThat(manageWorkout.getWorkout(), equalTo(workout));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
             assertThat(manageWorkout.hasDeletedWorkout(), equalTo(false));
         }
@@ -108,25 +114,37 @@ public class ManageWorkoutTest {
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
                 manageWorkout.deleteExercise(exercise);
 
-                verify(workout).removeExercise(exercise);
+                verify(workout).deleteExercise(exercise);
                 verify(workoutDAO).deleteExercise(exercise.getId());
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(true));
             }
 
             @Test
-            public void undoDeleteAction_shouldReinsertTheExerciseToThePersistence() throws Exception {
+            public void undoDeleteExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 manageWorkout.deleteExercise(exercise);
-                manageWorkout.undoDeleteAction();
+                manageWorkout.undoDeleteExercise();
 
-                verify(workoutDAO).saveExercise(workout.getId(),exercise);
+                verify(workoutDAO).saveExercise(workout.getId(), exercise);
                 verify(workout).addExercise(exercise);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
             }
 
             @Test
-            public void undoDeleteActionAfterDeleteAnWorkoutAndExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
+            public void undoDeleteExercise_shouldReinsertTheExerciseAtOldPosition() throws Exception {
+                Exercise exerciseToRestore = mock(Exercise.class);
+                workout.addExercise(exerciseToRestore);
+                workout.addExercise(mock(Exercise.class));
+
+                manageWorkout.deleteExercise(exerciseToRestore);
+                manageWorkout.undoDeleteExercise();
+
+                assertThat(workout.getExercise(1), equalTo(exerciseToRestore));
+            }
+
+            @Test
+            public void undoDeleteExerciseAfterDeleteAnWorkoutAndExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 Workout deletedWorkout = mock(Workout.class);
                 when(deletedWorkout.getId()).thenReturn(new WorkoutId(21));
                 when(workoutFactory.createNew()).thenReturn(deletedWorkout);
@@ -138,20 +156,19 @@ public class ManageWorkoutTest {
                 manageWorkout.setWorkout(workout.getId());
                 manageWorkout.deleteExercise(exercise);
                 assertThat(manageWorkout.hasDeletedWorkout(), equalTo(false));
-
-                manageWorkout.undoDeleteAction();
+                manageWorkout.undoDeleteExercise();
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
             }
 
             @Test
-            public void undoDeleteActionAfterDeleteAnExerciseAndWorkout_shouldReinsertTheWorkoutToThePersistence() throws Exception {
+            public void undoDeleteWorkoutAfterDeleteAnExerciseAndWorkout_shouldReinsertTheWorkoutToThePersistence() throws Exception {
                 manageWorkout.deleteExercise(exercise);
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(true));
 
                 manageWorkout.deleteWorkout();
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
 
-                manageWorkout.undoDeleteAction();
+                manageWorkout.undoDeleteWorkout();
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
             }
         }

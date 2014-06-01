@@ -14,9 +14,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FakeWorkoutDAOTest {
@@ -24,12 +22,22 @@ public class FakeWorkoutDAOTest {
     private FakeWorkoutDAO workoutDAO;
 
     @Test
-    public void testSave_shouldDoNothing() throws Exception {
+    public void testSave_shouldGenerateNewId() throws Exception {
         Workout workout = mock(Workout.class);
 
         workoutDAO.save(workout);
 
         verify(workout).setId(any(WorkoutId.class));
+    }
+
+    @Test
+    public void testSave_shouldKeepId() throws Exception {
+        Workout workout = mock(Workout.class);
+        WorkoutId workoutId = new WorkoutId(42);
+        when(workout.getId()).thenReturn(workoutId);
+        workoutDAO.save(workout);
+
+        assertThat(workout.getId(), equalTo(workoutId));
     }
 
     @Test
