@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.app.manageWorkout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -14,10 +15,10 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.manageWorkout.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.app.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.app.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.WorkoutId;
 
 import javax.inject.Inject;
 
@@ -72,7 +73,9 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Exercise exercise = manageWorkout.getWorkout().getExercise(position);
-        EditExerciseDialogFragment.newInstance(exercise).show(getFragmentManager(), "fragment_edit_exercise");
+        Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+        intent.putExtra("exercise", exercise);
+        startActivity(intent);
     }
 
     @OnClick(R.id.button_undo)

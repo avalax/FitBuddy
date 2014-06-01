@@ -4,11 +4,11 @@ import android.content.SharedPreferences;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
-import de.avalax.fitbuddy.app.manageWorkout.EditExerciseDialogFragment;
+import de.avalax.fitbuddy.app.manageWorkout.editExercise.EditExerciseActivity;
+import de.avalax.fitbuddy.app.manageWorkout.editExercise.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ExerciseListFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkoutActivity;
-import de.avalax.fitbuddy.app.resultChart.ResultChartFragment;
 import de.avalax.fitbuddy.datalayer.FakeWorkoutDAO;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
@@ -18,8 +18,8 @@ import javax.inject.Singleton;
         MainActivity.class,
         ManageWorkoutActivity.class,
         CurrentExerciseFragment.class,
-        ResultChartFragment.class,
         ExerciseListFragment.class,
+        EditExerciseActivity.class,
         EditExerciseDialogFragment.class
 })
 public class FitbuddyModule {

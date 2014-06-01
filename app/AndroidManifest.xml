@@ -2,13 +2,13 @@
 <manifest
     package="de.avalax.fitbuddy.app"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="1.0.0-SNAPSHOT"
-    android:installLocation="auto">
+    android:versionName="1.0.0-SNAPSHOT">
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="19"/>
     <application
         android:name=".FitbuddyApplication"
         android:allowBackup="true"
@@ -17,11 +17,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".manageWorkout.ManageWorkoutActivity" />
+        <activity android:name=".manageWorkout.ManageWorkoutActivity"/>
+        <activity android:name=".manageWorkout.editExercise.EditExerciseActivity"/>
     </application>
 
 </manifest>
