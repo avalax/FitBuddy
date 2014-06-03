@@ -109,9 +109,10 @@ public class ManageWorkout {
     public void deleteExercise(Exercise exercise) {
         workoutDAO.deleteExercise(exercise.getId());
         int index = workout.getExercises().indexOf(exercise);
-        workout.deleteExercise(exercise);
-        setUnsavedChanges(index,exercise);
-        deletedWorkout = null;
+        if (workout.deleteExercise(exercise)) {
+            setUnsavedChanges(index,exercise);
+            deletedWorkout = null;
+        }
     }
 
     public void replaceExercise(Exercise exercise) {

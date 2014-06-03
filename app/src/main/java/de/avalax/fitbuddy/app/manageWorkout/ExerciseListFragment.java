@@ -75,7 +75,7 @@ public class ExerciseListFragment extends ListFragment {
         Exercise exercise = manageWorkout.getWorkout().getExercise(position);
         Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
         intent.putExtra("exercise", exercise);
-        startActivity(intent);
+        getActivity().startActivityForResult(intent, ManageWorkoutActivity.EDIT_EXERCISE);
     }
 
     @OnClick(R.id.button_undo)

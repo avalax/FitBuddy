@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -252,7 +253,7 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void removeExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
+    public void deleteExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
         Exercise exerciseToDelete = mock(Exercise.class);
@@ -265,7 +266,21 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void removeExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
+    public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
+        ExerciseId id = new ExerciseId(42);
+        Exercise exercise = new BasicExercise("orginal",new ArrayList<Set>(),0);
+        exercise.setId(id);
+        exercises.add(exercise);
+        Exercise clonedExercise = new BasicExercise("clone",new ArrayList<Set>(),0);
+        clonedExercise.setId(new ExerciseId(id.getId()));
+
+        workout.deleteExercise(clonedExercise);
+
+        assertThat(exercises.size(), is(0));
+    }
+
+    @Test
+    public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
         Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
         exercise.setId(new ExerciseId(42));
         Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList(), 0.0);

@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+    public static final int EDIT_EXERCISE = 2;
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private boolean initializing;
     @Inject
@@ -132,7 +133,9 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == EDIT_EXERCISE && resultCode == RESULT_OK) {
+            exerciseListFragment.initListView();
+        }
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
             createWorkoutFromJson(scanResult.getContents());
