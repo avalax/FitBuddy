@@ -11,10 +11,8 @@ import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.Workout;
 
 import javax.inject.Inject;
-import java.util.List;
 
 public class EditExerciseActivity extends FragmentActivity {
 
@@ -47,6 +45,18 @@ public class EditExerciseActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_exercise) {
             manageWorkout.deleteExercise(exercise);
+            setResult(RESULT_OK);
+            finish();
+        } else if (item.getItemId() == R.id.action_save_exercise) {
+            manageWorkout.replaceExercise(exercise);
+            setResult(RESULT_OK);
+            finish();
+        } else if (item.getItemId() == R.id.action_add_exercise) {
+            manageWorkout.createExerciseBefore(exercise);
+            setResult(RESULT_OK);
+            finish();
+        } else if (item.getItemId() == R.id.action_add_exercise_after) {
+            manageWorkout.createExerciseAfter(exercise);
             setResult(RESULT_OK);
             finish();
         }

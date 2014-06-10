@@ -195,4 +195,10 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         database.close();
         return workout;
     }
+
+    @Override
+    public void saveExercise(WorkoutId id, Exercise exercise, int position) {
+        //TODO: save Exercise @position
+        saveExercise(id,exercise);
+    }
 }

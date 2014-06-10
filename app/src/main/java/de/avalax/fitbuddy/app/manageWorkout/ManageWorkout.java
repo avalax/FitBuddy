@@ -110,7 +110,7 @@ public class ManageWorkout {
         workoutDAO.deleteExercise(exercise.getId());
         int index = workout.getExercises().indexOf(exercise);
         if (workout.deleteExercise(exercise)) {
-            setUnsavedChanges(index,exercise);
+            setUnsavedChanges(index, exercise);
             deletedWorkout = null;
         }
     }
@@ -124,6 +124,20 @@ public class ManageWorkout {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
         workoutDAO.saveExercise(workout.getId(), exercise);
+    }
+
+    public void createExerciseBefore(Exercise exercise) {
+        Exercise newExercise = exerciseFactory.createNew();
+        List<Exercise> exercises = workout.getExercises();
+        workout.addExercise(exercises.indexOf(exercise), newExercise);
+        workoutDAO.saveExercise(workout.getId(), newExercise,exercises.indexOf(newExercise));
+    }
+
+    public void createExerciseAfter(Exercise exercise) {
+        Exercise newExercise = exerciseFactory.createNew();
+        List<Exercise> exercises = workout.getExercises();
+        workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
+        workoutDAO.saveExercise(workout.getId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public boolean hasDeletedWorkout() {

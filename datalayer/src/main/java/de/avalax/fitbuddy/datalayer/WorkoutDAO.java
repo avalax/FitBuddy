@@ -23,4 +23,6 @@ public interface WorkoutDAO {
     void delete(WorkoutId id);
 
     Workout getFirstWorkout();
+
+    void saveExercise(WorkoutId id, Exercise exercise, int position);
 }

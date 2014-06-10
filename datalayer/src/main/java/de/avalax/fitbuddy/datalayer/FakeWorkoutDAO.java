@@ -35,6 +35,11 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
+    public void saveExercise(WorkoutId id, Exercise exercise, int position) {
+        // FAKE
+    }
+
+    @Override
     public void deleteExercise(ExerciseId id) {
         // FAKE
     }

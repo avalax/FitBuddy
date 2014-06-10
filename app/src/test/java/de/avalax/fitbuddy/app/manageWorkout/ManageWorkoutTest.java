@@ -109,6 +109,30 @@ public class ManageWorkoutTest {
             verify(workoutDAO).saveExercise(workout.getId(), exercise);
         }
 
+        @Test
+        public void createExerciseAfter_shouldPlaceTheExerciseAfterTheGiven() throws Exception {
+            Exercise exerciseAfter = mock(Exercise.class);
+            when(exerciseFactory.createNew()).thenReturn(exerciseAfter);
+
+            manageWorkout.createExerciseAfter(exercise);
+
+            assertThat(workout.getExerciseCount(),equalTo(2));
+            assertThat(workout.getExercise(1),equalTo(exerciseAfter));
+            verify(workoutDAO).saveExercise(workout.getId(), exerciseAfter, 1);
+        }
+
+        @Test
+        public void createExerciseBefore_shouldPlaceTheExerciseBeforeTheGiven() throws Exception {
+            Exercise exerciseAfter = mock(Exercise.class);
+            when(exerciseFactory.createNew()).thenReturn(exerciseAfter);
+
+            manageWorkout.createExerciseBefore(exercise);
+
+            assertThat(workout.getExerciseCount(),equalTo(2));
+            assertThat(workout.getExercise(0),equalTo(exerciseAfter));
+            verify(workoutDAO).saveExercise(workout.getId(), exerciseAfter, 0);
+        }
+
         public class exerciseManipulation {
             @Test
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
