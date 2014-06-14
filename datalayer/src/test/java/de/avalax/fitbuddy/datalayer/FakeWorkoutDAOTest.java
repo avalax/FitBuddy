@@ -1,5 +1,7 @@
 package de.avalax.fitbuddy.datalayer;
 
+import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.ExerciseId;
 import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.WorkoutId;
 import org.junit.Test;
@@ -28,6 +30,24 @@ public class FakeWorkoutDAOTest {
         workoutDAO.save(workout);
 
         verify(workout).setId(any(WorkoutId.class));
+    }
+
+    @Test
+    public void testSaveExercise_shouldGenerateNewId() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+
+        workoutDAO.saveExercise(new WorkoutId(1), exercise);
+
+        verify(exercise).setId(any(ExerciseId.class));
+    }
+
+    @Test
+    public void testSaveExerciseWithPosition_shouldGenerateNewId() throws Exception {
+        Exercise exercise = mock(Exercise.class);
+
+        workoutDAO.saveExercise(new WorkoutId(1), exercise, 1);
+
+        verify(exercise).setId(any(ExerciseId.class));
     }
 
     @Test
