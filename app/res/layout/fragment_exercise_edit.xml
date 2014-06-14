@@ -28,7 +28,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
-                android:text="Change exercise name"
+                android:text="Exercise name"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -66,7 +66,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
-                android:text="Weight of sets"
+                android:text="Weight"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -103,7 +103,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
-                android:text="Number of sets"
+                android:text="Sets"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -140,7 +140,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
-                android:text="Repetitions of a set"
+                android:text="Repetitions"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView

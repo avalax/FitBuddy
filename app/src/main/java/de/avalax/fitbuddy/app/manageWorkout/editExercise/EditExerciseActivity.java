@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.app.manageWorkout.editExercise;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,17 +8,21 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.core.workout.Exercise;
+import de.avalax.fitbuddy.core.workout.Set;
 
 import javax.inject.Inject;
 
-public class EditExerciseActivity extends FragmentActivity {
+public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
 
     @Inject
     protected ManageWorkout manageWorkout;
 
     private Exercise exercise;
+
+    private EditExerciseDialogFragment editExerciseDialogFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,9 +31,9 @@ public class EditExerciseActivity extends FragmentActivity {
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
-        Fragment fragment = EditExerciseDialogFragment.newInstance(exercise);
+        editExerciseDialogFragment = EditExerciseDialogFragment.newInstance(exercise);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment).commit();
+                .replace(R.id.fragment_container, editExerciseDialogFragment).commit();
         getActionBar().setTitle(exercise.getName());
     }
 
@@ -61,5 +64,14 @@ public class EditExerciseActivity extends FragmentActivity {
             finish();
         }
         return true;
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
+        double weight = editWeightDialogFragment.getWeight();
+        for (Set set : exercise.getSets()) {
+            set.setWeight(weight);
+        }
+        editExerciseDialogFragment.init();
     }
 }
