@@ -23,20 +23,32 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     public void save(Workout workout) {
         if (!workouts.contains(workout)) {
             workouts.add(workout);
-            if (workout.getId() == null) {
-                workout.setId(new WorkoutId((long) (Math.random() * 100000)));
-            }
+            setFakedWorkoutId(workout);
         }
     }
 
     @Override
     public void saveExercise(WorkoutId id, Exercise exercise) {
-        // FAKE
+        setFakedExerciseId(exercise);
     }
 
     @Override
     public void saveExercise(WorkoutId id, Exercise exercise, int position) {
-        // FAKE
+        setFakedExerciseId(exercise);
+    }
+
+    private void setFakedWorkoutId(Workout workout) {
+        if (workout.getId() == null) {
+            long workoutId = (long) (Math.random() * 10000000);
+            workout.setId(new WorkoutId(workoutId));
+        }
+    }
+
+    private void setFakedExerciseId(Exercise exercise) {
+        if (exercise.getId() == null) {
+            long exercise_id = (long) (Math.random() * 10000000);
+            exercise.setId(new ExerciseId(exercise_id));
+        }
     }
 
     @Override
