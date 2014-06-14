@@ -8,7 +8,7 @@
     <string name="title_result">result of %1s</string>
     <string name="title_weight">%1$skg</string>
     <string name="title_exercise_with_weight">%1$s: %2$skg</string>
-    <string name="new_exercise_name">"new exercise"</string>
+    <string name="new_exercise_name">new exercise</string>
     <string name="edit_weight_title">weight - %1s</string>
     <string name="edit_effort_title">"effort - %1s"</string>
     <string name="edit_confirmation_title">save - %1s</string>
@@ -37,4 +37,7 @@
     <string name="unsaved_changes">unsaved changes</string>
     <string name="has_deleted_workout">workout deleted</string>
     <string name="has_deleted_exercise">exercise deleted</string>
+    <string name="dialog_change_sets">change sets</string>
+    <string name="dialog_change_reps">change reps</string>
+    <string name="dialog_change_name">change name</string>
 </resources>

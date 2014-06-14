@@ -8,14 +8,20 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.app.FitbuddyApplication;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.dialog.EditNameDialogFragment;
+import de.avalax.fitbuddy.app.dialog.EditRepsDialogFragment;
+import de.avalax.fitbuddy.app.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.app.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.app.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.Set;
+import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
+public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
 
     @Inject
     protected ManageWorkout manageWorkout;
@@ -73,5 +79,35 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             set.setWeight(weight);
         }
         editExerciseDialogFragment.init();
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment) {
+        int setCount = editSetsDialogFragment.getSets();
+        int maxReps = exercise.getMaxReps();
+        double weight = exercise.getWeight();
+        List<Set> sets = new ArrayList<>();
+        for (int i = 0; i < setCount; i++) {
+            sets.add(new BasicSet(weight, maxReps));
+        }
+        exercise.setSets(sets);
+        editExerciseDialogFragment.init();
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
+        int reps = editRepsDialogFragment.getReps();
+        for (Set set : exercise.getSets()) {
+            set.setMaxReps(reps);
+        }
+        editExerciseDialogFragment.init();
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment) {
+        String name = editNameDialogFragment.getName();
+        exercise.setName(name);
+        editExerciseDialogFragment.init();
+        getActionBar().setTitle(exercise.getName());
     }
 }

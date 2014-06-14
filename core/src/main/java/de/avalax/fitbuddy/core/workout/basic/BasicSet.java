@@ -56,6 +56,11 @@ public class BasicSet implements Set {
         return this.maxReps;
     }
 
+    @Override
+    public void setMaxReps(int maxReps) {
+        this.maxReps = maxReps;
+    }
+
 
     @Override
     public boolean equals(Object o) {

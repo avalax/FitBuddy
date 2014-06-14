@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +74,21 @@ public class BasicExerciseTest {
     @Test
     public void getSets_shouldReturnSets() throws Exception {
         assertThat(exercise.getSets(), equalTo(sets));
+    }
+
+    @Test
+     public void setSets_shouldSetSets() throws Exception {
+        List<Set> sets = new ArrayList<>();
+        exercise.setSets(sets);
+        assertThat(exercise.getSets(), equalTo(sets));
+        assertThat(exercise.getSetNumber(), equalTo(1));
+    }
+
+    @Test
+    public void setName_shouldSetName() throws Exception {
+        String name = "newName";
+        exercise.setName(name);
+        assertThat(exercise.getName(), equalTo(name));
     }
 
     @Test

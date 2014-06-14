@@ -12,6 +12,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.app.R;
+import de.avalax.fitbuddy.app.dialog.EditNameDialogFragment;
+import de.avalax.fitbuddy.app.dialog.EditRepsDialogFragment;
+import de.avalax.fitbuddy.app.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.app.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.core.workout.Exercise;
 
@@ -59,7 +62,9 @@ public class EditExerciseDialogFragment extends Fragment {
 
     @OnClick(R.id.exerciseName)
     protected void changeName() {
-        Toast.makeText(getActivity(), "changeName", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        String name = exercise.getName();
+        EditNameDialogFragment.newInstance(name).show(fm, "fragment_edit_name");
     }
 
 
@@ -67,16 +72,20 @@ public class EditExerciseDialogFragment extends Fragment {
     protected void changeWeight() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         double weight = exercise.getWeight();
-        EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
+        EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
     }
 
     @OnClick(R.id.exerciseSets)
     protected void changeSets() {
-        Toast.makeText(getActivity(), "changeSets", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        int sets = exercise.getMaxSets();
+        EditSetsDialogFragment.newInstance(sets).show(fm, "fragment_edit_sets");
     }
 
     @OnClick(R.id.exerciseReps)
     protected void changeReps() {
-        Toast.makeText(getActivity(), "changeReps", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        int reps = exercise.getMaxReps();
+        EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
     }
 }

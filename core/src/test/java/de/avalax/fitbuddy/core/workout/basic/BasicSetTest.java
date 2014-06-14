@@ -77,9 +77,15 @@ public class BasicSetTest {
     }
 
 	@Test
-	public void setMaxReps_shouldSetMaxReps() throws Exception {
-		assertThat(set.getMaxReps(),equalTo(MAX_REPS));
-	}
+         public void setMaxRepsOnInit_shouldSetMaxReps() throws Exception {
+        assertThat(set.getMaxReps(),equalTo(MAX_REPS));
+    }
+
+    @Test
+    public void setMaxReps_shouldSetMaxReps() throws Exception {
+        set.setMaxReps(42);
+        assertThat(set.getMaxReps(),equalTo(42));
+    }
 
     @Test
     public void setReps_shouldShouldSetToZeroReps() throws Exception {

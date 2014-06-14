@@ -9,8 +9,8 @@ import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 import java.util.List;
 
 public class BasicExercise implements Exercise {
-    private final String name;
-    private final List<Set> sets;
+    private String name;
+    private List<Set> sets;
     private double weightRaise;
     private Tendency tendency;
     private int setNumber;
@@ -109,6 +109,17 @@ public class BasicExercise implements Exercise {
     @Override
     public List<Set> getSets() {
         return sets;
+    }
+
+    @Override
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
+        this.setNumber = 1;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
