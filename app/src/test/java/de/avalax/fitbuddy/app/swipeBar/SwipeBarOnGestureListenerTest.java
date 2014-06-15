@@ -6,12 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class SwipeBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;

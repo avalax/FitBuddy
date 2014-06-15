@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.datalayer;
+package de.avalax.fitbuddy.app.repository;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
-import de.avalax.fitbuddy.datalayer.sqlite.WorkoutSQLiteOpenHelper;
+import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
 import java.util.*;
 
