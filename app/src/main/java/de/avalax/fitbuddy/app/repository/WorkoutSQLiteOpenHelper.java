@@ -22,16 +22,16 @@ public class WorkoutSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        Log.d(getDatabaseName(),"Create new database");
-        insertFromFile(database,context,createRessourceId);
+        Log.d(getDatabaseName(), "Create new database");
+        insertFromFile(database, context, createRessourceId);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        Log.d(getDatabaseName(),"Upgrade from v"+ oldVersion + " to v" + newVersion);
+        Log.d(getDatabaseName(), "Upgrade from v" + oldVersion + " to v" + newVersion);
     }
 
-    public void insertFromFile(SQLiteDatabase database,Context context, int resourceId) {
+    private void insertFromFile(SQLiteDatabase database, Context context, int resourceId) {
         try {
             InputStream insertsStream = context.getResources().openRawResource(resourceId);
             BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
@@ -41,7 +41,7 @@ public class WorkoutSQLiteOpenHelper extends SQLiteOpenHelper {
             }
             insertReader.close();
         } catch (IOException e) {
-            Log.e(getDatabaseName(),e.getMessage(),e);
+            Log.e(getDatabaseName(), e.getMessage(), e);
         }
     }
 }

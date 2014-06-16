@@ -7,7 +7,6 @@ import de.avalax.fitbuddy.core.workout.Workout;
 import de.avalax.fitbuddy.core.workout.WorkoutId;
 import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -57,7 +56,6 @@ public class SqliteWorkoutDAOTest {
     }
 
     @Test
-    @Ignore("only open database once and provide close options for lifecycle")
     public void loadWorkoutId_shouldReturnWorkoutWithWorkoutId() {
         Workout workout = new BasicWorkout(new LinkedList<Exercise>());
         sqliteWorkoutDAO.save(workout);

@@ -6,13 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.avalax.fitbuddy.core.workout.*;
-import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.basic.BasicExercise;
 import de.avalax.fitbuddy.core.workout.basic.BasicSet;
 import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
 import de.avalax.fitbuddy.datalayer.WorkoutDAO;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SqliteWorkoutDAO implements WorkoutDAO {
     private static final String WORKOUT_DB = "workout";
@@ -28,13 +29,13 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
         if (workout.getId() == null) {
             workout.setId(new WorkoutId(database.insert("workout", null, getContentValues(workout))));
-            for (Exercise exercise : workout.getExercises()) {
-                saveExercise(workout.getId(), exercise);
-            }
         } else {
             database.update("workout", getContentValues(workout), "id=?", new String[]{String.valueOf(workout.getId())});
         }
         database.close();
+        for (Exercise exercise : workout.getExercises()) {
+            saveExercise(workout.getId(), exercise);
+        }
     }
 
     @Override
@@ -42,13 +43,13 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
         if (exercise.getId() == null) {
             exercise.setId(new ExerciseId(database.insert("exercise", null, getContentValues(id, exercise))));
-            for (Set set: exercise.getSets()) {
-                saveSet(exercise.getId(), set);
-            }
         } else {
             database.update("exercise", getContentValues(id, exercise), "id=?", new String[]{String.valueOf(id.getId())});
         }
         database.close();
+        for (Set set : exercise.getSets()) {
+            saveSet(exercise.getId(), set);
+        }
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
             return;
         }
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("exercise", "id=?", new String[] {String.valueOf(id.getId())});
+        int deleteCount = database.delete("exercise", "id=?", new String[]{String.valueOf(id.getId())});
         Log.d("delete exercise with id" + id.getId(), String.valueOf(deleteCount));
         database.close();
     }
@@ -79,7 +80,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
             return;
         }
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("sets", "id=?", new String[] {String.valueOf(id.getId())});
+        int deleteCount = database.delete("sets", "id=?", new String[]{String.valueOf(id.getId())});
         Log.d("delete set with id" + id.getId(), String.valueOf(deleteCount));
         database.close();
     }
@@ -101,7 +102,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
-        values.put("name", workout.getName());
+        values.put("name", workout.getName() != null ? workout.getName() : "");
         return values;
     }
 
@@ -114,6 +115,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (cursor.getCount() == 1 && cursor.moveToFirst()) {
             workout = createWorkout(database, cursor);
         }
+        cursor.close();
         database.close();
         return workout;
     }
@@ -140,6 +142,8 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
                 exercises.add(exercise);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        database.close();
     }
 
     private void addSets(SQLiteDatabase database, ExerciseId exerciseId, List<Set> sets) {
@@ -152,6 +156,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
                 sets.add(set);
             } while (cursor.moveToNext());
         }
+        cursor.close();
     }
 
     @Override
@@ -168,6 +173,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
                 workoutList.add(workout);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         database.close();
         return workoutList;
     }
@@ -192,6 +198,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             workout = createWorkout(database, cursor);
         }
+        cursor.close();
         database.close();
         return workout;
     }
@@ -199,6 +206,6 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public void saveExercise(WorkoutId id, Exercise exercise, int position) {
         //TODO: save Exercise @position
-        saveExercise(id,exercise);
+        saveExercise(id, exercise);
     }
 }
