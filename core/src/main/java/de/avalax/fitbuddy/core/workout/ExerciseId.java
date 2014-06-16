@@ -3,11 +3,6 @@ package de.avalax.fitbuddy.core.workout;
 import java.io.Serializable;
 
 public class ExerciseId implements Serializable {
-
-    public long getId() {
-        return id;
-    }
-
     private long id;
 
     public ExerciseId(long id) {
@@ -22,5 +17,10 @@ public class ExerciseId implements Serializable {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }

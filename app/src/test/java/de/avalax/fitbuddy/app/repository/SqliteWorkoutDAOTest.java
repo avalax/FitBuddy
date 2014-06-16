@@ -64,4 +64,17 @@ public class SqliteWorkoutDAOTest {
         Workout loadedWorkout = sqliteWorkoutDAO.load(workoutId);
         assertThat(loadedWorkout.getId(), equalTo(workoutId));
     }
+
+    @Test
+    public void saveWorkout_shouldUpdateName() {
+        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        sqliteWorkoutDAO.save(workout);
+        WorkoutId workoutId = workout.getId();
+
+        Workout loadedWorkout = sqliteWorkoutDAO.load(workoutId);
+        loadedWorkout.setName("new name");
+        sqliteWorkoutDAO.save(loadedWorkout);
+        Workout reloadedWorkout = sqliteWorkoutDAO.load(workoutId);
+        assertThat(reloadedWorkout.getName(), equalTo("new name"));
+    }
 }

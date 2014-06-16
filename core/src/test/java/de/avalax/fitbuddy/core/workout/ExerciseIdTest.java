@@ -12,4 +12,10 @@ public class ExerciseIdTest {
         assertThat(new ExerciseId(42),equalTo(new ExerciseId(42)));
         assertThat(new ExerciseId(42).hashCode(),equalTo(new ExerciseId(42).hashCode()));
     }
+
+    @Test
+    public void testToString_shouldReturnId() throws Exception {
+        assertThat((new ExerciseId(42)).toString(),equalTo("42"));
+        assertThat(new ExerciseId(21).toString(),equalTo("21"));
+    }
 }

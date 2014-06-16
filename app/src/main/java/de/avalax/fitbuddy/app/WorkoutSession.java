@@ -19,7 +19,8 @@ public class WorkoutSession {
     public WorkoutSession(SharedPreferences sharedPreferences, WorkoutDAO workoutDAO) {
         this.sharedPreferences = sharedPreferences;
         this.workoutDAO = workoutDAO;
-        WorkoutId workoutId = new WorkoutId(sharedPreferences.getLong(LAST_WORKOUT_POSITION, 1L));
+        String workoutIdString = sharedPreferences.getString(LAST_WORKOUT_POSITION, "1");
+        WorkoutId workoutId = new WorkoutId(Long.valueOf(workoutIdString));
         try {
             this.workout = workoutDAO.load(workoutId);
         } catch (WorkoutNotAvailableException wnae) {
@@ -41,7 +42,7 @@ public class WorkoutSession {
 
     public void switchWorkout(WorkoutId id) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(LAST_WORKOUT_POSITION, id.getId());
+        editor.putString(LAST_WORKOUT_POSITION, id.toString());
         workout = workoutDAO.load(id);
         editor.commit();
     }

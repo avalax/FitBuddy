@@ -30,7 +30,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (workout.getId() == null) {
             workout.setId(new WorkoutId(database.insert("workout", null, getContentValues(workout))));
         } else {
-            database.update("workout", getContentValues(workout), "id=?", new String[]{String.valueOf(workout.getId())});
+            database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getId().toString()});
         }
         database.close();
         for (Exercise exercise : workout.getExercises()) {
@@ -44,7 +44,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (exercise.getId() == null) {
             exercise.setId(new ExerciseId(database.insert("exercise", null, getContentValues(id, exercise))));
         } else {
-            database.update("exercise", getContentValues(id, exercise), "id=?", new String[]{String.valueOf(id.getId())});
+            database.update("exercise", getContentValues(id, exercise), "id=?", new String[]{id.toString()});
         }
         database.close();
         for (Set set : exercise.getSets()) {
@@ -58,8 +58,8 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
             return;
         }
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("exercise", "id=?", new String[]{String.valueOf(id.getId())});
-        Log.d("delete exercise with id" + id.getId(), String.valueOf(deleteCount));
+        int deleteCount = database.delete("exercise", "id=?", new String[]{id.toString()});
+        Log.d("delete exercise with id" + id, String.valueOf(deleteCount));
         database.close();
     }
 
@@ -80,14 +80,14 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
             return;
         }
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("sets", "id=?", new String[]{String.valueOf(id.getId())});
-        Log.d("delete set with id" + id.getId(), String.valueOf(deleteCount));
+        int deleteCount = database.delete("sets", "id=?", new String[]{id.toString()});
+        Log.d("delete set with id" + id, String.valueOf(deleteCount));
         database.close();
     }
 
     private ContentValues getContentValues(ExerciseId id, Set set) {
         ContentValues values = new ContentValues();
-        values.put("exercise_id", id.getId());
+        values.put("exercise_id", id.toString());
         values.put("weight", set.getWeight());
         values.put("reps", set.getMaxReps());
         return values;
@@ -95,7 +95,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     private ContentValues getContentValues(WorkoutId id, Exercise exercise) {
         ContentValues values = new ContentValues();
-        values.put("workout_id", id.getId());
+        values.put("workout_id", id.toString());
         values.put("name", exercise.getName());
         return values;
     }
@@ -111,7 +111,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         Workout workout = null;
         SQLiteDatabase database = workoutSQLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
-                "id=?", new String[]{String.valueOf(id.getId())}, null, null, null);
+                "id=?", new String[]{id.toString()}, null, null, null);
         if (cursor.getCount() == 1 && cursor.moveToFirst()) {
             workout = createWorkout(database, cursor);
         }

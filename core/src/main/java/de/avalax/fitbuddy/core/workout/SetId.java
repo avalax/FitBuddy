@@ -4,10 +4,6 @@ import java.io.Serializable;
 
 public class SetId implements Serializable {
 
-    public long getId() {
-        return id;
-    }
-
     private long id;
 
     public SetId(long id) {
@@ -22,5 +18,10 @@ public class SetId implements Serializable {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }

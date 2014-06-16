@@ -57,13 +57,13 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void init(Bundle savedInstanceState) {
-        long workoutPosition;
+        String workoutPosition;
         if (savedInstanceState != null) {
-            workoutPosition = savedInstanceState.getLong(WORKOUT_POSITION);
+            workoutPosition = savedInstanceState.getString(WORKOUT_POSITION);
         } else {
-            workoutPosition = sharedPreferences.getLong(WorkoutSession.LAST_WORKOUT_POSITION, 1L);
+            workoutPosition = sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1");
         }
-        manageWorkout.setWorkout(new WorkoutId(workoutPosition));
+        manageWorkout.setWorkout(new WorkoutId(Long.valueOf(workoutPosition)));
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, exerciseListFragment).commit();
@@ -86,7 +86,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putLong(WORKOUT_POSITION, manageWorkout.getWorkout().getId().getId());
+        savedInstanceState.putString(WORKOUT_POSITION, manageWorkout.getWorkout().getId().toString());
     }
 
     @Override
