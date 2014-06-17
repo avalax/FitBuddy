@@ -135,11 +135,11 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     private void addExercises(SQLiteDatabase database, WorkoutId workoutId, LinkedList<Exercise> exercises) {
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
-                "workout_id=?", new String[]{String.valueOf(workoutId)}, null, null, null);
+                "workout_id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 List<Set> sets = new ArrayList<>();
-                Exercise exercise = new BasicExercise(cursor.getString(1), sets, 0.0);
+                Exercise exercise = new BasicExercise(cursor.getString(1), sets);
                 exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
                 addSets(database, exercise.getExerciseId(), sets);
                 exercises.add(exercise);

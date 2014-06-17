@@ -145,17 +145,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void setTendency_shouldSetTendencyInExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        exercises.add(mock(Exercise.class));
-
-        workout.setTendency(exerciseIndex, Tendency.NEUTRAL);
-
-        verify(exercise).setTendency(Tendency.NEUTRAL);
-    }
-
-    @Test
     public void incrementSet_shouldIncrementSetFromExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
@@ -218,7 +207,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void replaceExercise_shouldNotAddExerciseAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
         exercise.setExerciseId(new ExerciseId("42"));
 
         workout.replaceExercise(exercise);
@@ -228,10 +217,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
-        Exercise exerciseToReplace = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        Exercise exerciseToReplace = new BasicExercise("", Collections.<Set>emptyList());
         ExerciseId exerciseId = new ExerciseId("42");
         exerciseToReplace.setExerciseId(exerciseId);
-        BasicExercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        BasicExercise exercise = new BasicExercise("", Collections.<Set>emptyList());
         exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
 
@@ -243,7 +232,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
         exercise.setExerciseId(new ExerciseId("42"));
         exercises.add(exercise);
 
@@ -269,10 +258,10 @@ public class BasicWorkoutTest {
     @Test
     public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
         ExerciseId exerciseId = new ExerciseId("42");
-        Exercise exercise = new BasicExercise("orginal",new ArrayList<Set>(),0);
+        Exercise exercise = new BasicExercise("orginal",new ArrayList<Set>());
         exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
-        Exercise clonedExercise = new BasicExercise("clone",new ArrayList<Set>(),0);
+        Exercise clonedExercise = new BasicExercise("clone",new ArrayList<Set>());
         clonedExercise.setExerciseId(new ExerciseId(exerciseId));
 
         workout.deleteExercise(clonedExercise);
@@ -282,10 +271,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
         ExerciseId exerciseId = new ExerciseId("42");
         exercise.setExerciseId(exerciseId);
-        Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
+        Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList());
         exerciseToDelete.setExerciseId(exerciseId);
         exercises.add(exerciseToDelete);
         exercises.add(exercise);

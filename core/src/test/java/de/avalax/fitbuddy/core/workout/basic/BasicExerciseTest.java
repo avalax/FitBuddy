@@ -26,15 +26,15 @@ public class BasicExerciseTest {
     @Before
     public void setUp() throws Exception {
         sets = new ArrayList<>();
-        exercise = new BasicExercise("Bankdrücken", sets, 2.5);
+        exercise = new BasicExercise("Bankdrücken", sets);
     }
 
     @Test
     public void testSameIdentity() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a1 = new BasicExercise("Bankdrücken", sets);
         ExerciseId exerciseId = new ExerciseId("42");
         a1.setExerciseId(exerciseId);
-        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a2 = new BasicExercise("Bankdrücken", sets);
         a2.setExerciseId(exerciseId);
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
@@ -42,9 +42,9 @@ public class BasicExerciseTest {
 
     @Test
     public void testDifferentIdentity() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a1 = new BasicExercise("Bankdrücken", sets);
         a1.setExerciseId(new ExerciseId("21"));
-        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a2 = new BasicExercise("Bankdrücken", sets);
         a2.setExerciseId(new ExerciseId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
@@ -52,8 +52,8 @@ public class BasicExerciseTest {
 
     @Test
     public void testDifferentIdentityWithNoId() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
-        Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
+        Exercise a1 = new BasicExercise("Bankdrücken", sets);
+        Exercise a2 = new BasicExercise("Bankdrücken", sets);
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -109,18 +109,6 @@ public class BasicExerciseTest {
         sets.add(set);
 
         assertThat(exercise.getMaxReps(), equalTo(maxReps));
-    }
-
-    @Test
-    public void getTendency_shouldReturnTendencyNeutralOnCreation() throws Exception {
-        assertThat(exercise.getTendency(), equalTo(Tendency.NEUTRAL));
-    }
-
-    @Test
-    public void getTendency_shouldReturnTendencyPlus() throws Exception {
-        exercise.setTendency(Tendency.PLUS);
-
-        assertThat(exercise.getTendency(), equalTo(Tendency.PLUS));
     }
 
     @Test
@@ -201,45 +189,6 @@ public class BasicExerciseTest {
         assertThat(exercise.getWeight(), equalTo(50.0));
     }
 
-    @Test
-    public void getWeightRaise_shouldGetWeightRaise() throws Exception {
-        exercise = new BasicExercise("NeutralTendency", sets, 5.0);
-
-        assertThat(exercise.getWeightRaise(), equalTo(5.0));
-    }
-
-    @Test
-    public void getWeightRaise_shouldGetWeightRaiseForNeutralTendency() throws Exception {
-        exercise = new BasicExercise("NeutralTendency", sets, 5.0);
-        Set set = mock(Set.class);
-        sets.add(set);
-
-        when(set.getWeight()).thenReturn(2.5);
-
-        assertThat(exercise.getWeightRaise(Tendency.NEUTRAL), equalTo(2.5));
-    }
-
-    @Test
-    public void getWeightRaise_shouldGetWeightRaiseForPositiveTendency() {
-        exercise = createExercise(2.5, 5.0);
-
-        assertThat(exercise.getWeightRaise(Tendency.PLUS), equalTo(7.5));
-    }
-
-    @Test
-    public void getWeightRaise_shouldGetWeightRaiseForMinusTendency() {
-        exercise = createExercise(15.0, 5.0);
-
-        assertThat(exercise.getWeightRaise(Tendency.MINUS), equalTo(10.0));
-    }
-
-    @Test
-    public void getWeightRaise_shouldGetWeightRaiseForMinusTendencyWhenRaiseWouldBeNegative() {
-        exercise = createExercise(2.5, 5.0);
-
-        assertThat(exercise.getWeightRaise(Tendency.MINUS), equalTo(0.0));
-    }
-
     @Test(expected = SetNotAvailableException.class)
     public void getCurrentSet_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
         exercise.getCurrentSet();
@@ -310,15 +259,5 @@ public class BasicExerciseTest {
             exercise.setCurrentSet(2);
             assertThat(exercise.getProgress(), equalTo(0.75));
         }
-    }
-
-    private Exercise createExercise(double weight, double weightRaise) {
-        Exercise exercise = new BasicExercise("MinusTendency", sets, weightRaise);
-        Set set = mock(Set.class);
-        sets.add(set);
-
-        when(set.getWeight()).thenReturn(weight);
-
-        return exercise;
     }
 }

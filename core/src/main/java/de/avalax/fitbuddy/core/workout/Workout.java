@@ -10,7 +10,6 @@ public interface Workout extends Serializable {
     int getExerciseCount();
     int getReps(int index);
     void setReps(int index, int reps);
-    void setTendency(int index, Tendency tendency);
     void incrementSet(int index);
     Set getCurrentSet(int index);
     void setName(String name);

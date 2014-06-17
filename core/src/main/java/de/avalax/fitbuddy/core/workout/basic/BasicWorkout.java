@@ -39,11 +39,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setTendency(int index, Tendency tendency) {
-        getExercise(index).setTendency(tendency);
-    }
-
-    @Override
     public void incrementSet(int index) {
         getExercise(index).incrementCurrentSet();
     }

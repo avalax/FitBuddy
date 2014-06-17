@@ -30,8 +30,7 @@ public class WorkoutFactory {
                     int maxReps =  (int)((double) exercise.get(1));
                     sets.add(new BasicSet(weight, maxReps));
                 }
-                //TODO: weightRaise is not 0
-                exercices.add(new BasicExercise((String)exercise.get(0),sets,0));
+                exercices.add(new BasicExercise((String)exercise.get(0),sets));
             }
             BasicWorkout workout = new BasicWorkout(exercices);
             workout.setName((String)s.get(0));

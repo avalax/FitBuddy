@@ -3,7 +3,6 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.Exercise;
 import de.avalax.fitbuddy.core.workout.ExerciseId;
 import de.avalax.fitbuddy.core.workout.Set;
-import de.avalax.fitbuddy.core.workout.Tendency;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 
 import java.util.List;
@@ -11,17 +10,13 @@ import java.util.List;
 public class BasicExercise implements Exercise {
     private String name;
     private List<Set> sets;
-    private double weightRaise;
-    private Tendency tendency;
     private int setNumber;
     private ExerciseId exerciseId;
 
-    public BasicExercise(String name, List<Set> sets, double weightRaise) {
+    public BasicExercise(String name, List<Set> sets) {
         this.name = name;
         this.sets = sets;
-        this.weightRaise = weightRaise;
         this.setNumber = 1;
-        this.tendency = Tendency.NEUTRAL;
     }
 
     @Override
@@ -37,16 +32,6 @@ public class BasicExercise implements Exercise {
     @Override
     public int getSetNumber() {
         return setNumber;
-    }
-
-    @Override
-    public Tendency getTendency() {
-        return tendency;
-    }
-
-    @Override
-    public void setTendency(Tendency tendency) {
-        this.tendency = tendency;
     }
 
     @Override
@@ -127,40 +112,12 @@ public class BasicExercise implements Exercise {
         return getCurrentSet().getWeight();
     }
 
-    @Override
-    public double getWeightRaise() {
-        return weightRaise;
-    }
-
-    @Override
-    public double getWeightRaise(Tendency tendency) {
-        double weight = getCurrentSet().getWeight();
-        if (tendency == Tendency.PLUS) {
-            return getPlusTendencyWeight(weight);
-        }
-        if (tendency == Tendency.MINUS) {
-            return getMinusTendencyWeight(weight);
-        }
-        return weight;
-    }
-
     private boolean isIndexGreaterEqualThan(int index) {
         return index >= sets.size();
     }
 
     private boolean isIndexNegative(int index) {
         return index < 0;
-    }
-
-    private double getPlusTendencyWeight(double weight) {
-        return weight + weightRaise;
-    }
-
-    private double getMinusTendencyWeight(double weight) {
-        if (weight - weightRaise < 0) {
-            return 0;
-        }
-        return weight - weightRaise;
     }
 
     @Override

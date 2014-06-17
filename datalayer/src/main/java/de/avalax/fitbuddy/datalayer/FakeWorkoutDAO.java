@@ -79,38 +79,38 @@ public class FakeWorkoutDAO implements WorkoutDAO {
 
     private Workout fakeWorkoutOne() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        exercises.add(createExercise("1", "Bankdrücken", createThreeSets(70, 12), 5));
-        exercises.add(createExercise("2", "Schrägbankdrücken", createThreeSets(40, 10), 5));
-        exercises.add(createExercise("3", "Butterfly", createThreeSets(60, 15), 5));
-        exercises.add(createExercise("4", "Liegestütze", createThreeSets(0, 30), 12.5));
-        exercises.add(createExercise("5", "Lat-Ziehen hinter den Nacken", createThreeSets(50, 12), 5));
-        exercises.add(createExercise("6", "Hochziehen der Langhantel mit enger Handstellung", createThreeSets(10, 12), 2.5));
-        exercises.add(createExercise("7", "Klimmzüge", createThreeSets(60, 8), 5));
-        exercises.add(createExercise("8", "Hammercurls", createThreeSets(30, 20), 2.5));
-        exercises.add(createExercise("9", "Larry Scoot Armbeugen", createThreeSets(30, 12), 2.5));
-        exercises.add(createExercise("10", "Situps", createThreeSets(0, 30), 2.5));
+        exercises.add(createExercise("1", "Bankdrücken", createThreeSets(70, 12)));
+        exercises.add(createExercise("2", "Schrägbankdrücken", createThreeSets(40, 10)));
+        exercises.add(createExercise("3", "Butterfly", createThreeSets(60, 15)));
+        exercises.add(createExercise("4", "Liegestütze", createThreeSets(0, 30)));
+        exercises.add(createExercise("5", "Lat-Ziehen hinter den Nacken", createThreeSets(50, 12)));
+        exercises.add(createExercise("6", "Hochziehen der Langhantel mit enger Handstellung", createThreeSets(10, 12)));
+        exercises.add(createExercise("7", "Klimmzüge", createThreeSets(60, 8)));
+        exercises.add(createExercise("8", "Hammercurls", createThreeSets(30, 20)));
+        exercises.add(createExercise("9", "Larry Scoot Armbeugen", createThreeSets(30, 12)));
+        exercises.add(createExercise("10", "Situps", createThreeSets(0, 30)));
         BasicWorkout workout = new BasicWorkout(exercises);
         workout.setName("fake workout one");
         workout.setWorkoutId(new WorkoutId("1"));
         return workout;
     }
 
-    private BasicExercise createExercise(String id, String name, List<Set> sets, double weightRaise) {
-        BasicExercise exercise = new BasicExercise(name, sets, weightRaise);
+    private BasicExercise createExercise(String id, String name, List<Set> sets) {
+        BasicExercise exercise = new BasicExercise(name, sets);
         exercise.setExerciseId(new ExerciseId(id));
         return exercise;
     }
 
     private Workout fakeWorkoutTwo() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        exercises.add(createExercise("1", "Bankdrücken", createThreeSets(50, 12), 5));
-        exercises.add(createExercise("2", "KH-Rudern", createThreeSets(10, 12), 2.5));
-        exercises.add(createExercise("3", "KH-Latissimus", createThreeSets(10, 12), 2.5));
-        exercises.add(createExercise("4", "Triceps am hohen Block", createThreeSets(25, 12), 5));
-        exercises.add(createExercise("5", "Ausfallschritte", createThreeSets(2, 12), 2));
-        exercises.add(createExercise("6", "KH-Nackendrücken", createThreeSets(15, 12), 2.5));
-        exercises.add(createExercise("7", "Rückenstrecker", createThreeSets(0, 12), 5));
-        exercises.add(createExercise("8", "Crunches am Gerät", createThreeSets(45, 12), 5));
+        exercises.add(createExercise("1", "Bankdrücken", createThreeSets(50, 12)));
+        exercises.add(createExercise("2", "KH-Rudern", createThreeSets(10, 12)));
+        exercises.add(createExercise("3", "KH-Latissimus", createThreeSets(10, 12)));
+        exercises.add(createExercise("4", "Triceps am hohen Block", createThreeSets(25, 12)));
+        exercises.add(createExercise("5", "Ausfallschritte", createThreeSets(2, 12)));
+        exercises.add(createExercise("6", "KH-Nackendrücken", createThreeSets(15, 12)));
+        exercises.add(createExercise("7", "Rückenstrecker", createThreeSets(0, 12)));
+        exercises.add(createExercise("8", "Crunches am Gerät", createThreeSets(45, 12)));
         BasicWorkout workout = new BasicWorkout(exercises);
         workout.setWorkoutId(new WorkoutId("2"));
         workout.setName("fake workout two");

@@ -14,6 +14,6 @@ public class ExerciseFactory {
         sets.add(new BasicSet(20, 12));
         sets.add(new BasicSet(20, 12));
         sets.add(new BasicSet(20, 12));
-        return new BasicExercise("new exercise", sets, 0);
+        return new BasicExercise("new exercise", sets);
     }
 }

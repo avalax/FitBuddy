@@ -8,10 +8,6 @@ public interface Exercise extends Serializable {
 
     double getWeight();
 
-    double getWeightRaise();
-
-    double getWeightRaise(Tendency plus);
-
     int getMaxSets();
 
     int getSetNumber();
@@ -23,10 +19,6 @@ public interface Exercise extends Serializable {
     int getMaxReps();
 
     double getProgress();
-
-    void setTendency(Tendency tendency);
-
-    Tendency getTendency();
 
     void setCurrentSet(int setNumber);
 
