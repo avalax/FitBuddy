@@ -27,24 +27,25 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public void save(Workout workout) {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        if (workout.getId() == null) {
-            workout.setId(new WorkoutId(database.insert("workout", null, getContentValues(workout))));
+        if (workout.getWorkoutId() == null) {
+            long id = database.insert("workout", null, getContentValues(workout));
+            workout.setId(new WorkoutId(String.valueOf(id)));
         } else {
-            database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getId().toString()});
+            database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getWorkoutId().id()});
         }
         database.close();
         for (Exercise exercise : workout.getExercises()) {
-            saveExercise(workout.getId(), exercise);
+            saveExercise(workout.getWorkoutId(), exercise);
         }
     }
 
     @Override
-    public void saveExercise(WorkoutId id, Exercise exercise) {
+    public void saveExercise(WorkoutId workoutId, Exercise exercise) {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
         if (exercise.getId() == null) {
-            exercise.setId(new ExerciseId(database.insert("exercise", null, getContentValues(id, exercise))));
+            exercise.setId(new ExerciseId(database.insert("exercise", null, getContentValues(workoutId, exercise))));
         } else {
-            database.update("exercise", getContentValues(id, exercise), "id=?", new String[]{id.toString()});
+            database.update("exercise", getContentValues(workoutId, exercise), "id=?", new String[]{workoutId.id()});
         }
         database.close();
         for (Set set : exercise.getSets()) {
@@ -93,9 +94,9 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         return values;
     }
 
-    private ContentValues getContentValues(WorkoutId id, Exercise exercise) {
+    private ContentValues getContentValues(WorkoutId workoutId, Exercise exercise) {
         ContentValues values = new ContentValues();
-        values.put("workout_id", id.toString());
+        values.put("workout_id", workoutId.id());
         values.put("name", exercise.getName());
         return values;
     }
@@ -107,11 +108,11 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public Workout load(WorkoutId id) {
+    public Workout load(WorkoutId workoutId) {
         Workout workout = null;
         SQLiteDatabase database = workoutSQLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
-                "id=?", new String[]{id.toString()}, null, null, null);
+                "id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.getCount() == 1 && cursor.moveToFirst()) {
             workout = createWorkout(database, cursor);
         }
@@ -124,9 +125,9 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         Workout workout;
         LinkedList<Exercise> exercises = new LinkedList<>();
         workout = new BasicWorkout(exercises);
-        workout.setId(new WorkoutId(cursor.getLong(0)));
+        workout.setId(new WorkoutId(cursor.getString(0)));
         workout.setName(cursor.getString(1));
-        addExercises(database, workout.getId(), exercises);
+        addExercises(database, workout.getWorkoutId(), exercises);
         return workout;
     }
 
@@ -168,7 +169,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (cursor.moveToFirst()) {
             do {
                 BasicWorkout workout = new BasicWorkout(new LinkedList<Exercise>());
-                workout.setId(new WorkoutId(cursor.getLong(0)));
+                workout.setId(new WorkoutId(cursor.getString(0)));
                 workout.setName(cursor.getString(1));
                 workoutList.add(workout);
             } while (cursor.moveToNext());

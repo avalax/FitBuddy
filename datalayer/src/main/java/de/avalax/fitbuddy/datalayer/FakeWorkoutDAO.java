@@ -8,6 +8,7 @@ import de.avalax.fitbuddy.core.workout.basic.BasicWorkout;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class FakeWorkoutDAO implements WorkoutDAO {
 
@@ -38,9 +39,9 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     }
 
     private void setFakedWorkoutId(Workout workout) {
-        if (workout.getId() == null) {
-            long workoutId = (long) (Math.random() * 10000000);
-            workout.setId(new WorkoutId(workoutId));
+        if (workout.getWorkoutId() == null) {
+            UUID uuid = UUID.randomUUID();
+            workout.setId(new WorkoutId(uuid.toString()));
         }
     }
 
@@ -69,7 +70,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     @Override
     public Workout load(WorkoutId id) {
         for (Workout workout : workouts) {
-            if (workout.getId().equals(id)) {
+            if (workout.getWorkoutId().equals(id)) {
                 return workout;
             }
         }
@@ -90,7 +91,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(createExercise(10, "Situps", createThreeSets(0, 30), 2.5));
         BasicWorkout workout = new BasicWorkout(exercises);
         workout.setName("fake workout one");
-        workout.setId(new WorkoutId(0));
+        workout.setId(new WorkoutId("1"));
         return workout;
     }
 
@@ -111,7 +112,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
         exercises.add(createExercise(7, "Rückenstrecker", createThreeSets(0, 12), 5));
         exercises.add(createExercise(8, "Crunches am Gerät", createThreeSets(45, 12), 5));
         BasicWorkout workout = new BasicWorkout(exercises);
-        workout.setId(new WorkoutId(1));
+        workout.setId(new WorkoutId("2"));
         workout.setName("fake workout two");
         return workout;
     }
@@ -122,7 +123,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
 
         for (Workout workout : workouts) {
             Workout w = new BasicWorkout(new LinkedList<Exercise>());
-            w.setId(workout.getId());
+            w.setId(workout.getWorkoutId());
             w.setName(workout.getName());
             workoutList.add(w);
         }
@@ -133,7 +134,7 @@ public class FakeWorkoutDAO implements WorkoutDAO {
     public void delete(WorkoutId id) {
         Workout toDelete = null;
         for (Workout workout : workouts) {
-            if (id.equals(workout.getId())) {
+            if (id.equals(workout.getWorkoutId())) {
                 toDelete = workout;
                 break;
             }

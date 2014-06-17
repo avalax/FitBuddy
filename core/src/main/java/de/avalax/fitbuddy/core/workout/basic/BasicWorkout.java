@@ -16,7 +16,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public WorkoutId getId() {
+    public WorkoutId getWorkoutId() {
         return id;
     }
 

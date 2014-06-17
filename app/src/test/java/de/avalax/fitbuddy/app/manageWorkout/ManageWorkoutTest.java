@@ -45,7 +45,7 @@ public class ManageWorkoutTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        workout.setId(new WorkoutId(123456));
+        workout.setId(new WorkoutId("123456"));
     }
 
     @Test
@@ -69,20 +69,22 @@ public class ManageWorkoutTest {
     }
 
     public class givenAWorkoutWithOneExercise {
+        private WorkoutId workoutId;
         @Before
         public void setUp() throws Exception {
-            when(workoutDAO.load(new WorkoutId(42))).thenReturn(workout);
-            when(workout.getId()).thenReturn(new WorkoutId(42));
+            workoutId = new WorkoutId("42");
+            when(workoutDAO.load(workoutId)).thenReturn(workout);
+            when(workout.getWorkoutId()).thenReturn(workoutId);
             workout.addExercise(exercise);
 
-            manageWorkout.setWorkout(new WorkoutId(42));
+            manageWorkout.setWorkout(workoutId);
         }
 
         @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
             manageWorkout.deleteWorkout();
 
-            verify(workoutDAO).delete(new WorkoutId(42));
+            verify(workoutDAO).delete(workoutId);
             assertThat(manageWorkout.getWorkout(), equalTo(null));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
             assertThat(manageWorkout.hasDeletedWorkout(), equalTo(true));
@@ -106,7 +108,7 @@ public class ManageWorkoutTest {
 
             manageWorkout.createExercise();
 
-            verify(workoutDAO).saveExercise(workout.getId(), exercise);
+            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exercise);
         }
 
         @Test
@@ -118,7 +120,7 @@ public class ManageWorkoutTest {
 
             assertThat(workout.getExerciseCount(),equalTo(2));
             assertThat(workout.getExercise(1),equalTo(exerciseAfter));
-            verify(workoutDAO).saveExercise(workout.getId(), exerciseAfter, 1);
+            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exerciseAfter, 1);
         }
 
         @Test
@@ -130,7 +132,7 @@ public class ManageWorkoutTest {
 
             assertThat(workout.getExerciseCount(),equalTo(2));
             assertThat(workout.getExercise(0),equalTo(exerciseAfter));
-            verify(workoutDAO).saveExercise(workout.getId(), exerciseAfter, 0);
+            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exerciseAfter, 0);
         }
 
         public class exerciseManipulation {
@@ -149,7 +151,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exercise);
                 manageWorkout.undoDeleteExercise();
 
-                verify(workoutDAO).saveExercise(workout.getId(), exercise);
+                verify(workoutDAO).saveExercise(workout.getWorkoutId(), exercise);
                 verify(workout).addExercise(exercise);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
@@ -170,14 +172,14 @@ public class ManageWorkoutTest {
             @Test
             public void undoDeleteExerciseAfterDeleteAnWorkoutAndExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 Workout deletedWorkout = mock(Workout.class);
-                when(deletedWorkout.getId()).thenReturn(new WorkoutId(21));
+                when(deletedWorkout.getWorkoutId()).thenReturn(new WorkoutId("21"));
                 when(workoutFactory.createNew()).thenReturn(deletedWorkout);
                 manageWorkout.createWorkout();
 
                 manageWorkout.deleteWorkout();
                 assertThat(manageWorkout.hasDeletedWorkout(), equalTo(true));
 
-                manageWorkout.setWorkout(workout.getId());
+                manageWorkout.setWorkout(workout.getWorkoutId());
                 manageWorkout.deleteExercise(exercise);
                 assertThat(manageWorkout.hasDeletedWorkout(), equalTo(false));
                 manageWorkout.undoDeleteExercise();

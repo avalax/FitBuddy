@@ -52,7 +52,7 @@ public class ManageWorkout {
     }
 
     public void switchWorkout() {
-        workoutSession.switchWorkout(workout.getId());
+        workoutSession.switchWorkout(workout.getWorkoutId());
     }
 
     public List<Workout> getWorkouts() {
@@ -74,7 +74,7 @@ public class ManageWorkout {
     }
 
     public void deleteWorkout() {
-        workoutDAO.delete(workout.getId());
+        workoutDAO.delete(workout.getWorkoutId());
         deletedExercise = null;
         setUnsavedChanges(workout);
         workout = null;
@@ -93,7 +93,7 @@ public class ManageWorkout {
 
     public void undoDeleteExercise() {
         workout.addExercise(deletedExerciseIndex, deletedExercise);
-        workoutDAO.saveExercise(workout.getId(), deletedExercise);
+        workoutDAO.saveExercise(workout.getWorkoutId(), deletedExercise);
         deletedExerciseIndex = null;
         deletedExercise = null;
         setUnsavedChanges(false);
@@ -123,21 +123,21 @@ public class ManageWorkout {
     public void createExercise() {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
-        workoutDAO.saveExercise(workout.getId(), exercise);
+        workoutDAO.saveExercise(workout.getWorkoutId(), exercise);
     }
 
     public void createExerciseBefore(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExercise(exercises.indexOf(exercise), newExercise);
-        workoutDAO.saveExercise(workout.getId(), newExercise,exercises.indexOf(newExercise));
+        workoutDAO.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public void createExerciseAfter(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
-        workoutDAO.saveExercise(workout.getId(), newExercise,exercises.indexOf(newExercise));
+        workoutDAO.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public boolean hasDeletedWorkout() {

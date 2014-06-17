@@ -36,9 +36,9 @@ public class BasicWorkoutTest {
     @Test
     public void testSameIdentity() throws Exception {
         Workout a1 = new BasicWorkout(exercises);
-        a1.setId(new WorkoutId(42));
+        a1.setId(new WorkoutId("42"));
         Workout a2 = new BasicWorkout(exercises);
-        a2.setId(new WorkoutId(42));
+        a2.setId(new WorkoutId("42"));
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
     }
@@ -46,9 +46,9 @@ public class BasicWorkoutTest {
     @Test
     public void testDifferentIdentity() throws Exception {
         Workout a1 = new BasicWorkout(exercises);
-        a1.setId(new WorkoutId(21));
+        a1.setId(new WorkoutId("21"));
         Workout a2 = new BasicWorkout(exercises);
-        a2.setId(new WorkoutId(42));
+        a2.setId(new WorkoutId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -122,10 +122,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void getId_shouldReturnId() throws Exception {
-        WorkoutId id = new WorkoutId(42);
+        WorkoutId id = new WorkoutId("42");
 
         workout.setId(id);
-        assertThat(workout.getId(), equalTo(id));
+        assertThat(workout.getWorkoutId(), equalTo(id));
     }
 
     @Test

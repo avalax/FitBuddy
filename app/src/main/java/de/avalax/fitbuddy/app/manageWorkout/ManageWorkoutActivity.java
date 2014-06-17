@@ -57,13 +57,13 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void init(Bundle savedInstanceState) {
-        String workoutPosition;
+        String lastWorkouId;
         if (savedInstanceState != null) {
-            workoutPosition = savedInstanceState.getString(WORKOUT_POSITION);
+            lastWorkouId = savedInstanceState.getString(WORKOUT_POSITION);
         } else {
-            workoutPosition = sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1");
+            lastWorkouId = sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1");
         }
-        manageWorkout.setWorkout(new WorkoutId(Long.valueOf(workoutPosition)));
+        manageWorkout.setWorkout(new WorkoutId(lastWorkouId));
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, exerciseListFragment).commit();
@@ -86,7 +86,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(WORKOUT_POSITION, manageWorkout.getWorkout().getId().toString());
+        savedInstanceState.putString(WORKOUT_POSITION, manageWorkout.getWorkout().getWorkoutId().id());
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         if (initializing) {
             initializing = false;
         } else {
-            WorkoutId workoutId = workoutList.get(itemPosition).getId();
+            WorkoutId workoutId = workoutList.get(itemPosition).getWorkoutId();
             switchWorkout(workoutId);
         }
         return true;
@@ -124,7 +124,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 manageWorkout.createWorkout();
             }
             //TODO: refactor this to mangageWorkout.loadFirstWorkout()
-            manageWorkout.setWorkout(manageWorkout.getWorkouts().get(0).getId());
+            manageWorkout.setWorkout(manageWorkout.getWorkouts().get(0).getWorkoutId());
             initActionNavigationBar();
             exerciseListFragment.initListView();
         }
@@ -164,7 +164,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private void selectNavigationItem() {
         ActionBar actionBar = getActionBar();
         for (int i = 0; i < workoutList.size(); i++) {
-            if (workoutList.get(i).getId().equals(manageWorkout.getWorkout().getId())) {
+            if (workoutList.get(i).getWorkoutId().equals(manageWorkout.getWorkout().getWorkoutId())) {
                 actionBar.setSelectedNavigationItem(i);
             }
         }

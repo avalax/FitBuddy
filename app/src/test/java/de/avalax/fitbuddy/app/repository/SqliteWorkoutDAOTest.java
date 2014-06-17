@@ -34,24 +34,24 @@ public class SqliteWorkoutDAOTest {
     public void saveUnpersistedWorkout_shouldAssignNewWorkoutId() {
         Workout workout = new BasicWorkout(new LinkedList<Exercise>());
 
-        assertThat(workout.getId(), nullValue());
+        assertThat(workout.getWorkoutId(), nullValue());
         sqliteWorkoutDAO.save(workout);
-        assertThat(workout.getId(), any(WorkoutId.class));
+        assertThat(workout.getWorkoutId(), any(WorkoutId.class));
     }
 
     @Test
     public void savePersistedWorkout_shouldKeepWorkoutId() {
         Workout workout = new BasicWorkout(new LinkedList<Exercise>());
         sqliteWorkoutDAO.save(workout);
-        WorkoutId workoutId = workout.getId();
+        WorkoutId workoutId = workout.getWorkoutId();
 
         sqliteWorkoutDAO.save(workout);
-        assertThat(workout.getId(), equalTo(workoutId));
+        assertThat(workout.getWorkoutId(), equalTo(workoutId));
     }
 
     @Test
     public void loadUnknownWorkoutId_shouldReturnNullValue() {
-        Workout workout = sqliteWorkoutDAO.load(new WorkoutId(21));
+        Workout workout = sqliteWorkoutDAO.load(new WorkoutId("21"));
         assertThat(workout, nullValue());
     }
 
@@ -59,17 +59,17 @@ public class SqliteWorkoutDAOTest {
     public void loadWorkoutId_shouldReturnWorkoutWithWorkoutId() {
         Workout workout = new BasicWorkout(new LinkedList<Exercise>());
         sqliteWorkoutDAO.save(workout);
-        WorkoutId workoutId = workout.getId();
+        WorkoutId workoutId = workout.getWorkoutId();
 
         Workout loadedWorkout = sqliteWorkoutDAO.load(workoutId);
-        assertThat(loadedWorkout.getId(), equalTo(workoutId));
+        assertThat(loadedWorkout.getWorkoutId(), equalTo(workoutId));
     }
 
     @Test
     public void saveWorkout_shouldUpdateName() {
         Workout workout = new BasicWorkout(new LinkedList<Exercise>());
         sqliteWorkoutDAO.save(workout);
-        WorkoutId workoutId = workout.getId();
+        WorkoutId workoutId = workout.getWorkoutId();
 
         Workout loadedWorkout = sqliteWorkoutDAO.load(workoutId);
         loadedWorkout.setName("new name");
