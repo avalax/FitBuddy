@@ -29,7 +29,7 @@ public class FakeWorkoutDAOTest {
 
         workoutDAO.save(workout);
 
-        verify(workout).setId(any(WorkoutId.class));
+        verify(workout).setWorkoutId(any(WorkoutId.class));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class FakeWorkoutDAOTest {
 
         workoutDAO.saveExercise(new WorkoutId("1"), exercise);
 
-        verify(exercise).setId(any(ExerciseId.class));
+        verify(exercise).setExerciseId(any(ExerciseId.class));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class FakeWorkoutDAOTest {
 
         workoutDAO.saveExercise(new WorkoutId("1"), exercise, 1);
 
-        verify(exercise).setId(any(ExerciseId.class));
+        verify(exercise).setExerciseId(any(ExerciseId.class));
     }
 
     @Test

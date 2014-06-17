@@ -97,12 +97,12 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setId(ExerciseId id) {
+    public void setExerciseId(ExerciseId id) {
         this.id = id;
     }
 
     @Override
-    public ExerciseId getId() {
+    public ExerciseId getExerciseId() {
         return id;
     }
 

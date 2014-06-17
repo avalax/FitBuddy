@@ -21,7 +21,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setId(WorkoutId id) {
+    public void setWorkoutId(WorkoutId id) {
         this.id = id;
     }
 

@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.core.workout.basic;
 import de.avalax.fitbuddy.core.workout.*;
 import de.avalax.fitbuddy.core.workout.exceptions.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +32,10 @@ public class BasicExerciseTest {
     @Test
     public void testSameIdentity() throws Exception {
         Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
-        a1.setId(new ExerciseId(42));
+        ExerciseId exerciseId = new ExerciseId("42");
+        a1.setExerciseId(exerciseId);
         Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
-        a2.setId(new ExerciseId(42));
+        a2.setExerciseId(exerciseId);
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
     }
@@ -43,9 +43,9 @@ public class BasicExerciseTest {
     @Test
     public void testDifferentIdentity() throws Exception {
         Exercise a1 = new BasicExercise("Bankdrücken", sets, 2.5);
-        a1.setId(new ExerciseId(21));
+        a1.setExerciseId(new ExerciseId("21"));
         Exercise a2 = new BasicExercise("Bankdrücken", sets, 2.5);
-        a2.setId(new ExerciseId(42));
+        a2.setExerciseId(new ExerciseId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -65,10 +65,10 @@ public class BasicExerciseTest {
 
     @Test
     public void getId_shouldReturnId() throws Exception {
-        ExerciseId id = new ExerciseId(42);
+        ExerciseId exerciseId = new ExerciseId("42");
 
-        exercise.setId(id);
-        assertThat(exercise.getId(), equalTo(id));
+        exercise.setExerciseId(exerciseId);
+        assertThat(exercise.getExerciseId(), equalTo(exerciseId));
     }
 
     @Test

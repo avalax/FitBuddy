@@ -45,7 +45,7 @@ public class ManageWorkoutTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        workout.setId(new WorkoutId("123456"));
+        workout.setWorkoutId(new WorkoutId("123456"));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exercise);
 
                 verify(workout).deleteExercise(exercise);
-                verify(workoutDAO).deleteExercise(exercise.getId());
+                verify(workoutDAO).deleteExercise(exercise.getExerciseId());
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(true));
             }

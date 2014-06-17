@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Workout extends Serializable {
     WorkoutId getWorkoutId();
-    void setId(WorkoutId id);
+    void setWorkoutId(WorkoutId id);
     Exercise getExercise(int index);
     int getExerciseCount();
     int getReps(int index);

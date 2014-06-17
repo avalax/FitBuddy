@@ -36,9 +36,9 @@ public class BasicWorkoutTest {
     @Test
     public void testSameIdentity() throws Exception {
         Workout a1 = new BasicWorkout(exercises);
-        a1.setId(new WorkoutId("42"));
+        a1.setWorkoutId(new WorkoutId("42"));
         Workout a2 = new BasicWorkout(exercises);
-        a2.setId(new WorkoutId("42"));
+        a2.setWorkoutId(new WorkoutId("42"));
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
     }
@@ -46,9 +46,9 @@ public class BasicWorkoutTest {
     @Test
     public void testDifferentIdentity() throws Exception {
         Workout a1 = new BasicWorkout(exercises);
-        a1.setId(new WorkoutId("21"));
+        a1.setWorkoutId(new WorkoutId("21"));
         Workout a2 = new BasicWorkout(exercises);
-        a2.setId(new WorkoutId("42"));
+        a2.setWorkoutId(new WorkoutId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -124,7 +124,7 @@ public class BasicWorkoutTest {
     public void getId_shouldReturnId() throws Exception {
         WorkoutId id = new WorkoutId("42");
 
-        workout.setId(id);
+        workout.setWorkoutId(id);
         assertThat(workout.getWorkoutId(), equalTo(id));
     }
 
@@ -219,7 +219,7 @@ public class BasicWorkoutTest {
     @Test
     public void replaceExercise_shouldNotAddExerciseAtPosition() throws Exception {
         Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exercise.setId(new ExerciseId(42));
+        exercise.setExerciseId(new ExerciseId("42"));
 
         workout.replaceExercise(exercise);
 
@@ -229,9 +229,10 @@ public class BasicWorkoutTest {
     @Test
     public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
         Exercise exerciseToReplace = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exerciseToReplace.setId(new ExerciseId(42));
+        ExerciseId exerciseId = new ExerciseId("42");
+        exerciseToReplace.setExerciseId(exerciseId);
         BasicExercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exercise.setId(new ExerciseId(42));
+        exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
 
         workout.replaceExercise(exerciseToReplace);
@@ -243,7 +244,7 @@ public class BasicWorkoutTest {
     @Test
     public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
         Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exercise.setId(new ExerciseId(42));
+        exercise.setExerciseId(new ExerciseId("42"));
         exercises.add(exercise);
 
         boolean isDeleted = workout.deleteExercise(exercise);
@@ -267,12 +268,12 @@ public class BasicWorkoutTest {
 
     @Test
     public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
-        ExerciseId id = new ExerciseId(42);
+        ExerciseId exerciseId = new ExerciseId("42");
         Exercise exercise = new BasicExercise("orginal",new ArrayList<Set>(),0);
-        exercise.setId(id);
+        exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
         Exercise clonedExercise = new BasicExercise("clone",new ArrayList<Set>(),0);
-        clonedExercise.setId(new ExerciseId(Long.valueOf(id.toString())));
+        clonedExercise.setExerciseId(new ExerciseId(exerciseId));
 
         workout.deleteExercise(clonedExercise);
 
@@ -282,9 +283,10 @@ public class BasicWorkoutTest {
     @Test
     public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
         Exercise exercise = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exercise.setId(new ExerciseId(42));
+        ExerciseId exerciseId = new ExerciseId("42");
+        exercise.setExerciseId(exerciseId);
         Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList(), 0.0);
-        exerciseToDelete.setId(new ExerciseId(42));
+        exerciseToDelete.setExerciseId(exerciseId);
         exercises.add(exerciseToDelete);
         exercises.add(exercise);
 

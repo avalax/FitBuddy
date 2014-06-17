@@ -29,7 +29,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
         if (workout.getWorkoutId() == null) {
             long id = database.insert("workout", null, getContentValues(workout));
-            workout.setId(new WorkoutId(String.valueOf(id)));
+            workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
         } else {
             database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getWorkoutId().id()});
         }
@@ -42,14 +42,15 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public void saveExercise(WorkoutId workoutId, Exercise exercise) {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        if (exercise.getId() == null) {
-            exercise.setId(new ExerciseId(database.insert("exercise", null, getContentValues(workoutId, exercise))));
+        if (exercise.getExerciseId() == null) {
+            long id = database.insert("exercise", null, getContentValues(workoutId, exercise));
+            exercise.setExerciseId(new ExerciseId(String.valueOf(id)));
         } else {
             database.update("exercise", getContentValues(workoutId, exercise), "id=?", new String[]{workoutId.id()});
         }
         database.close();
         for (Set set : exercise.getSets()) {
-            saveSet(exercise.getId(), set);
+            saveSet(exercise.getExerciseId(), set);
         }
     }
 
@@ -125,7 +126,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         Workout workout;
         LinkedList<Exercise> exercises = new LinkedList<>();
         workout = new BasicWorkout(exercises);
-        workout.setId(new WorkoutId(cursor.getString(0)));
+        workout.setWorkoutId(new WorkoutId(cursor.getString(0)));
         workout.setName(cursor.getString(1));
         addExercises(database, workout.getWorkoutId(), exercises);
         return workout;
@@ -138,8 +139,8 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
             do {
                 List<Set> sets = new ArrayList<>();
                 Exercise exercise = new BasicExercise(cursor.getString(1), sets, 0.0);
-                exercise.setId(new ExerciseId(cursor.getLong(0)));
-                addSets(database, exercise.getId(), sets);
+                exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
+                addSets(database, exercise.getExerciseId(), sets);
                 exercises.add(exercise);
             } while (cursor.moveToNext());
         }
@@ -169,7 +170,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (cursor.moveToFirst()) {
             do {
                 BasicWorkout workout = new BasicWorkout(new LinkedList<Exercise>());
-                workout.setId(new WorkoutId(cursor.getString(0)));
+                workout.setWorkoutId(new WorkoutId(cursor.getString(0)));
                 workout.setName(cursor.getString(1));
                 workoutList.add(workout);
             } while (cursor.moveToNext());
