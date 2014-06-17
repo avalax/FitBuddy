@@ -3,25 +3,32 @@ package de.avalax.fitbuddy.core.workout;
 import java.io.Serializable;
 
 public class SetId implements Serializable {
+    private String id;
 
-    private long id;
-
-    public SetId(long id) {
+    public SetId(String id) {
         this.id = id;
+    }
+
+    public SetId(SetId SetId) {
+        this(SetId.id());
+    }
+
+    public String id() {
+        return id;
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof SetId && id == ((SetId) o).id;
+        return o instanceof SetId && id.equals(((SetId) o).id);
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return id.hashCode();
     }
 
     @Override
     public String toString() {
-        return String.valueOf(id);
+        return "SetId [id=" + id + "]";
     }
 }

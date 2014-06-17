@@ -1,8 +1,6 @@
 package de.avalax.fitbuddy.core.workout.basic;
 
 
-import de.avalax.fitbuddy.core.workout.Exercise;
-import de.avalax.fitbuddy.core.workout.ExerciseId;
 import de.avalax.fitbuddy.core.workout.Set;
 import de.avalax.fitbuddy.core.workout.SetId;
 import org.junit.Assert;
@@ -25,9 +23,9 @@ public class BasicSetTest {
     @Test
     public void testSameIdentity() throws Exception {
         Set a1 = new BasicSet(12.5, MAX_REPS);
-        a1.setId(new SetId(42));
+        a1.setId(new SetId("42"));
         Set a2 = new BasicSet(12.5, MAX_REPS);
-        a2.setId(new SetId(42));
+        a2.setId(new SetId("42"));
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
     }
@@ -35,9 +33,9 @@ public class BasicSetTest {
     @Test
     public void testDifferentIdentity() throws Exception {
         Set a1 = new BasicSet(12.5, MAX_REPS);
-        a1.setId(new SetId(21));
+        a1.setId(new SetId("21"));
         Set a2 = new BasicSet(12.5, MAX_REPS);
-        a2.setId(new SetId(42));
+        a2.setId(new SetId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -52,11 +50,11 @@ public class BasicSetTest {
 
     @Test
          public void getId_shouldReturnId() throws Exception {
-        SetId id = new SetId(42);
+        SetId setId = new SetId("42");
 
-        set.setId(id);
+        set.setId(setId);
 
-        assertThat(set.getId(), equalTo(id));
+        assertThat(set.getSetId(), equalTo(setId));
     }
 
     @Test

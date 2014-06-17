@@ -55,23 +55,24 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     }
 
     @Override
-    public void deleteExercise(ExerciseId id) {
-        if (id == null) {
+    public void deleteExercise(ExerciseId exerciseId) {
+        if (exerciseId == null) {
             return;
         }
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("exercise", "id=?", new String[]{id.toString()});
-        Log.d("delete exercise with id" + id, String.valueOf(deleteCount));
+        int deleteCount = database.delete("exercise", "id=?", new String[]{exerciseId.id()});
+        Log.d("delete exercise with id" + exerciseId, String.valueOf(deleteCount));
         database.close();
     }
 
     @Override
-    public void saveSet(ExerciseId id, Set set) {
+    public void saveSet(ExerciseId exerciseId, Set set) {
         SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
-        if (set.getId() == null) {
-            set.setId(new SetId(database.insert("sets", null, getContentValues(id, set))));
+        if (set.getSetId() == null) {
+            long id = database.insert("sets", null, getContentValues(exerciseId, set));
+            set.setId(new SetId(String.valueOf(id)));
         } else {
-            database.update("sets", getContentValues(id, set), "id=?", new String[]{String.valueOf(set.getId())});
+            database.update("sets", getContentValues(exerciseId, set), "id=?", new String[]{set.getSetId().id()});
         }
         database.close();
     }
@@ -87,9 +88,9 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         database.close();
     }
 
-    private ContentValues getContentValues(ExerciseId id, Set set) {
+    private ContentValues getContentValues(ExerciseId exerciseId, Set set) {
         ContentValues values = new ContentValues();
-        values.put("exercise_id", id.toString());
+        values.put("exercise_id", exerciseId.id());
         values.put("weight", set.getWeight());
         values.put("reps", set.getMaxReps());
         return values;
@@ -150,11 +151,11 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     private void addSets(SQLiteDatabase database, ExerciseId exerciseId, List<Set> sets) {
         Cursor cursor = database.query("sets", new String[]{"id", "weight", "reps"},
-                "exercise_id=?", new String[]{String.valueOf(exerciseId)}, null, null, null);
+                "exercise_id=?", new String[]{exerciseId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Set set = new BasicSet(cursor.getDouble(1), cursor.getInt(2));
-                set.setId(new SetId(cursor.getLong(0)));
+                set.setId(new SetId(cursor.getString(0)));
                 sets.add(set);
             } while (cursor.moveToNext());
         }

@@ -7,7 +7,7 @@ public class BasicSet implements Set {
     private double weight;
     private int reps;
     private int maxReps;
-    private SetId id;
+    private SetId setId;
 
     public BasicSet(double weight, int maxReps) {
         this.weight = weight;
@@ -25,14 +25,14 @@ public class BasicSet implements Set {
     }
 
     @Override
-    public SetId getId() {
-        return id;
+    public SetId getSetId() {
+        return setId;
     }
 
     @Override
-    public void setId(SetId id) {
+    public void setId(SetId setId) {
 
-        this.id = id;
+        this.setId = setId;
     }
 
     @Override
@@ -64,17 +64,17 @@ public class BasicSet implements Set {
 
     @Override
     public boolean equals(Object o) {
-        if (id == null) {
+        if (setId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicSet && id.equals(((BasicSet) o).id);
+        return o instanceof BasicSet && setId.equals(((BasicSet) o).setId);
     }
 
     @Override
     public int hashCode() {
-        if (id == null) {
+        if (setId == null) {
             return super.hashCode();
         }
-        return id.hashCode();
+        return setId.hashCode();
     }
 }

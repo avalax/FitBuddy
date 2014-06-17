@@ -34,7 +34,7 @@ public interface Exercise extends Serializable {
 
     void incrementCurrentSet();
 
-    void setExerciseId(ExerciseId id);
+    void setExerciseId(ExerciseId exerciseId);
 
     ExerciseId getExerciseId();
 

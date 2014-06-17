@@ -9,6 +9,6 @@ public interface Set extends Serializable {
     int getMaxReps();
     void setMaxReps(int reps);
     void setWeight(double weight);
-    SetId getId();
-    void setId(SetId id);
+    SetId getSetId();
+    void setId(SetId setId);
 }

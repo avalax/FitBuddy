@@ -14,7 +14,7 @@ public class BasicExercise implements Exercise {
     private double weightRaise;
     private Tendency tendency;
     private int setNumber;
-    private ExerciseId id;
+    private ExerciseId exerciseId;
 
     public BasicExercise(String name, List<Set> sets, double weightRaise) {
         this.name = name;
@@ -97,13 +97,13 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setExerciseId(ExerciseId id) {
-        this.id = id;
+    public void setExerciseId(ExerciseId exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     @Override
     public ExerciseId getExerciseId() {
-        return id;
+        return exerciseId;
     }
 
     @Override
@@ -165,17 +165,17 @@ public class BasicExercise implements Exercise {
 
     @Override
     public boolean equals(Object o) {
-        if (id == null) {
+        if (exerciseId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicExercise && id.equals(((BasicExercise) o).id);
+        return o instanceof BasicExercise && exerciseId.equals(((BasicExercise) o).exerciseId);
     }
 
     @Override
     public int hashCode() {
-        if (id == null) {
+        if (exerciseId == null) {
             return super.hashCode();
         }
-        return id.hashCode();
+        return exerciseId.hashCode();
     }
 }

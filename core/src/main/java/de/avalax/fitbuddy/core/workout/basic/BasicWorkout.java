@@ -9,7 +9,7 @@ import java.util.List;
 public class BasicWorkout implements Workout {
     private LinkedList<Exercise> exercises;
     private String name;
-    private WorkoutId id;
+    private WorkoutId workoutId;
 
     public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
@@ -17,12 +17,12 @@ public class BasicWorkout implements Workout {
 
     @Override
     public WorkoutId getWorkoutId() {
-        return id;
+        return workoutId;
     }
 
     @Override
-    public void setWorkoutId(WorkoutId id) {
-        this.id = id;
+    public void setWorkoutId(WorkoutId workoutId) {
+        this.workoutId = workoutId;
     }
 
     @Override
@@ -133,17 +133,17 @@ public class BasicWorkout implements Workout {
 
     @Override
     public boolean equals(Object o) {
-        if (id == null) {
+        if (workoutId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicWorkout && id.equals(((BasicWorkout) o).id);
+        return o instanceof BasicWorkout && workoutId.equals(((BasicWorkout) o).workoutId);
     }
 
     @Override
     public int hashCode() {
-        if (id == null) {
+        if (workoutId == null) {
             return super.hashCode();
         }
-        return id.hashCode();
+        return workoutId.hashCode();
     }
 }
