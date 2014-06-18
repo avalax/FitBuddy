@@ -1,6 +1,6 @@
 ![Logo FitBuddy](https://raw.github.com/avalax/FitBuddy/master/doc/about/logo-fitbuddy.png)
 ==========
-[![Build Status](https://travis-ci.org/avalax/FitBuddy.png?branch=master)](https://travis-ci.org/avalax/FitBuddy)
+[![Build Status](https://travis-ci.org/avalax/FitBuddy.png?branch=master)](https://travis-ci.org/avalax/FitBuddy) [![Coverage Status](https://img.shields.io/coveralls/avalax/FitBuddy.svg)](https://coveralls.io/r/avalax/FitBuddy)
 
 FitBuddy is an Android (>= 4.0 (API level 14)) application to measure your workout.
 
