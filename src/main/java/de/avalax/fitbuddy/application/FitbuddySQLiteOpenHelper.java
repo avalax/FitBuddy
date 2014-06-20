@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.port.adapter.persistence;
+package de.avalax.fitbuddy.application;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class WorkoutSQLiteOpenHelper extends SQLiteOpenHelper {
+public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
+    private static final String FITBUDDY_DB = "fitbuddy";
     private Context context;
     private int createRessourceId;
 
-    public WorkoutSQLiteOpenHelper(String name, int version, Context context, int createRessourceId) {
-        super(context, name, null, version);
+    public FitbuddySQLiteOpenHelper(int version, Context context, int createRessourceId) {
+        super(context, FITBUDDY_DB, null, version);
         this.context = context;
         this.createRessourceId = createRessourceId;
     }

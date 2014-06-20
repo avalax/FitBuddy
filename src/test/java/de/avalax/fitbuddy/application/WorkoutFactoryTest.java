@@ -1,6 +1,6 @@
 package de.avalax.fitbuddy.application;
 
-import de.avalax.fitbuddy.domain.model.Workout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import org.junit.Before;
 import org.junit.Test;
 

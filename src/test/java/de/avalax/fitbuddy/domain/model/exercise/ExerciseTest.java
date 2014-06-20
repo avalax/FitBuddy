@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model;
+package de.avalax.fitbuddy.domain.model.exercise;
 
 
 import org.junit.Test;
@@ -14,6 +14,6 @@ public class ExerciseTest {
     @Test
     public void Exercise_ShouldBeSerializable() throws Exception {
         Exercise exercise = mock(Exercise.class);
-        assertThat(exercise,instanceOf(Serializable.class));
+        assertThat(exercise, instanceOf(Serializable.class));
     }
 }

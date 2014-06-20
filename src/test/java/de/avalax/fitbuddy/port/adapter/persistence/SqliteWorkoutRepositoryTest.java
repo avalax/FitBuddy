@@ -1,11 +1,12 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
+import de.avalax.fitbuddy.application.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
-import de.avalax.fitbuddy.domain.model.basic.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,14 +21,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
-public class SqliteWorkoutDAOTest {
+public class SqliteWorkoutRepositoryTest {
 
-    private SqliteWorkoutDAO sqliteWorkoutDAO;
+    private SqliteWorkoutRepository sqliteWorkoutDAO;
 
     @Before
     public void setUp() throws Exception {
         ManageWorkoutActivity manageWorkoutActivity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
-        sqliteWorkoutDAO = new SqliteWorkoutDAO(manageWorkoutActivity, R.raw.fitbuddy_db);
+        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper(1, manageWorkoutActivity, R.raw.fitbuddy_db);
+        sqliteWorkoutDAO = new SqliteWorkoutRepository(sqLiteOpenHelper);
     }
 
     @Test

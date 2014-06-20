@@ -1,9 +1,9 @@
 package de.avalax.fitbuddy.application;
 
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.basic.BasicExercise;
-import de.avalax.fitbuddy.domain.model.basic.BasicSet;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,4 @@
-package de.avalax.fitbuddy.domain.model.basic;
-
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.SetId;
+package de.avalax.fitbuddy.domain.model.set;
 
 public class BasicSet implements Set {
     private double weight;

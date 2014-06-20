@@ -4,11 +4,11 @@ import android.view.View;
 import de.avalax.fitbuddy.application.ExerciseFactory;
 import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
-import de.avalax.fitbuddy.domain.model.basic.BasicWorkout;
-import de.avalax.fitbuddy.port.adapter.persistence.WorkoutDAO;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class ManageWorkoutTest {
 
     @Mock
-    private WorkoutDAO workoutDAO;
+    private WorkoutRepository workoutRepository;
     @Mock
     private WorkoutFactory workoutFactory;
     @Mock
@@ -57,23 +57,24 @@ public class ManageWorkoutTest {
     public void createWorkout_shouldPersistTheCreatedWorkout() throws Exception {
         when(workoutFactory.createNew()).thenReturn(workout);
         manageWorkout.createWorkout();
-        verify(workoutDAO).save(workout);
+        verify(workoutRepository).save(workout);
     }
 
     @Test
     public void createWorkoutFromJson_shouldPersistTheCreatedWorkout() throws Exception {
         when(workoutFactory.createFromJson("jsonstring")).thenReturn(workout);
         manageWorkout.createWorkoutFromJson("jsonstring");
-        verify(workoutDAO).save(workout);
+        verify(workoutRepository).save(workout);
         assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
     }
 
     public class givenAWorkoutWithOneExercise {
         private WorkoutId workoutId;
+
         @Before
         public void setUp() throws Exception {
             workoutId = new WorkoutId("42");
-            when(workoutDAO.load(workoutId)).thenReturn(workout);
+            when(workoutRepository.load(workoutId)).thenReturn(workout);
             when(workout.getWorkoutId()).thenReturn(workoutId);
             workout.addExercise(exercise);
 
@@ -84,7 +85,7 @@ public class ManageWorkoutTest {
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
             manageWorkout.deleteWorkout();
 
-            verify(workoutDAO).delete(workoutId);
+            verify(workoutRepository).delete(workoutId);
             assertThat(manageWorkout.getWorkout(), equalTo(null));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
             assertThat(manageWorkout.hasDeletedWorkout(), equalTo(true));
@@ -96,7 +97,7 @@ public class ManageWorkoutTest {
 
             manageWorkout.undoDeleteWorkout();
 
-            verify(workoutDAO).save(workout);
+            verify(workoutRepository).save(workout);
             assertThat(manageWorkout.getWorkout(), equalTo(workout));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
             assertThat(manageWorkout.hasDeletedWorkout(), equalTo(false));
@@ -108,7 +109,7 @@ public class ManageWorkoutTest {
 
             manageWorkout.createExercise();
 
-            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exercise);
+            verify(workoutRepository).saveExercise(workout.getWorkoutId(), exercise);
         }
 
         @Test
@@ -118,9 +119,9 @@ public class ManageWorkoutTest {
 
             manageWorkout.createExerciseAfter(exercise);
 
-            assertThat(workout.getExerciseCount(),equalTo(2));
-            assertThat(workout.getExercise(1),equalTo(exerciseAfter));
-            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exerciseAfter, 1);
+            assertThat(workout.getExerciseCount(), equalTo(2));
+            assertThat(workout.getExercise(1), equalTo(exerciseAfter));
+            verify(workoutRepository).saveExercise(workout.getWorkoutId(), exerciseAfter, 1);
         }
 
         @Test
@@ -130,9 +131,9 @@ public class ManageWorkoutTest {
 
             manageWorkout.createExerciseBefore(exercise);
 
-            assertThat(workout.getExerciseCount(),equalTo(2));
-            assertThat(workout.getExercise(0),equalTo(exerciseAfter));
-            verify(workoutDAO).saveExercise(workout.getWorkoutId(), exerciseAfter, 0);
+            assertThat(workout.getExerciseCount(), equalTo(2));
+            assertThat(workout.getExercise(0), equalTo(exerciseAfter));
+            verify(workoutRepository).saveExercise(workout.getWorkoutId(), exerciseAfter, 0);
         }
 
         public class exerciseManipulation {
@@ -141,7 +142,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exercise);
 
                 verify(workout).deleteExercise(exercise);
-                verify(workoutDAO).deleteExercise(exercise.getExerciseId());
+                verify(workoutRepository).deleteExercise(exercise.getExerciseId());
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(true));
             }
@@ -151,7 +152,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exercise);
                 manageWorkout.undoDeleteExercise();
 
-                verify(workoutDAO).saveExercise(workout.getWorkoutId(), exercise);
+                verify(workoutRepository).saveExercise(workout.getWorkoutId(), exercise);
                 verify(workout).addExercise(exercise);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));

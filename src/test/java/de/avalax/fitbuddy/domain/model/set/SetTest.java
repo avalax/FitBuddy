@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model;
+package de.avalax.fitbuddy.domain.model.set;
 
 import org.junit.Test;
 
@@ -12,6 +12,6 @@ public class SetTest {
     @Test
     public void Set_ShouldBeSerializable() throws Exception {
         Set set = mock(Set.class);
-        assertThat(set,instanceOf(Serializable.class));
+        assertThat(set, instanceOf(Serializable.class));
     }
 }

@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model;
+package de.avalax.fitbuddy.domain.model.set;
 
 import java.io.Serializable;
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.domain.model.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 import java.text.DecimalFormat;
 import java.util.List;

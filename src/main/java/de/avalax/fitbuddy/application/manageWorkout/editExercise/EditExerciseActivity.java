@@ -13,9 +13,9 @@ import de.avalax.fitbuddy.application.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkout;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.basic.BasicSet;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

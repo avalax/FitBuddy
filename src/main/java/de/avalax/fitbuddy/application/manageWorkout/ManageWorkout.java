@@ -4,10 +4,10 @@ import android.view.View;
 import de.avalax.fitbuddy.application.ExerciseFactory;
 import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
-import de.avalax.fitbuddy.port.adapter.persistence.WorkoutDAO;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ManageWorkout {
 
     private ExerciseFactory exerciseFactory;
 
-    private WorkoutDAO workoutDAO;
+    private WorkoutRepository workoutRepository;
 
     private WorkoutSession workoutSession;
 
@@ -28,9 +28,9 @@ public class ManageWorkout {
     private Exercise deletedExercise;
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutDAO workoutDAO, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
-        this.workoutDAO = workoutDAO;
+        this.workoutRepository = workoutRepository;
         this.workoutFactory = workoutFactory;
         this.exerciseFactory = exerciseFactory;
     }
@@ -48,7 +48,7 @@ public class ManageWorkout {
     }
 
     public void setWorkout(WorkoutId id) {
-        this.workout = workoutDAO.load(id);
+        this.workout = workoutRepository.load(id);
     }
 
     public void switchWorkout() {
@@ -56,25 +56,25 @@ public class ManageWorkout {
     }
 
     public List<Workout> getWorkouts() {
-        return workoutDAO.getList();
+        return workoutRepository.getList();
     }
 
     public void createWorkout() {
         workout = workoutFactory.createNew();
-        workoutDAO.save(workout);
+        workoutRepository.save(workout);
     }
 
     public void createWorkoutFromJson(String json) {
         Workout workoutFromJson = workoutFactory.createFromJson(json);
         if (workoutFromJson != null) {
             workout = workoutFromJson;
-            workoutDAO.save(workoutFromJson);
+            workoutRepository.save(workoutFromJson);
             unsavedChanges = false;
         }
     }
 
     public void deleteWorkout() {
-        workoutDAO.delete(workout.getWorkoutId());
+        workoutRepository.delete(workout.getWorkoutId());
         deletedExercise = null;
         setUnsavedChanges(workout);
         workout = null;
@@ -93,7 +93,7 @@ public class ManageWorkout {
 
     public void undoDeleteExercise() {
         workout.addExercise(deletedExerciseIndex, deletedExercise);
-        workoutDAO.saveExercise(workout.getWorkoutId(), deletedExercise);
+        workoutRepository.saveExercise(workout.getWorkoutId(), deletedExercise);
         deletedExerciseIndex = null;
         deletedExercise = null;
         setUnsavedChanges(false);
@@ -101,13 +101,13 @@ public class ManageWorkout {
 
     public void undoDeleteWorkout() {
         workout = deletedWorkout;
-        workoutDAO.save(deletedWorkout);
+        workoutRepository.save(deletedWorkout);
         deletedWorkout = null;
         setUnsavedChanges(false);
     }
 
     public void deleteExercise(Exercise exercise) {
-        workoutDAO.deleteExercise(exercise.getExerciseId());
+        workoutRepository.deleteExercise(exercise.getExerciseId());
         int index = workout.getExercises().indexOf(exercise);
         if (workout.deleteExercise(exercise)) {
             setUnsavedChanges(index, exercise);
@@ -123,21 +123,21 @@ public class ManageWorkout {
     public void createExercise() {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
-        workoutDAO.saveExercise(workout.getWorkoutId(), exercise);
+        workoutRepository.saveExercise(workout.getWorkoutId(), exercise);
     }
 
     public void createExerciseBefore(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExercise(exercises.indexOf(exercise), newExercise);
-        workoutDAO.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        workoutRepository.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public void createExerciseAfter(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
-        workoutDAO.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        workoutRepository.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public boolean hasDeletedWorkout() {

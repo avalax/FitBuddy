@@ -1,31 +1,35 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import de.avalax.fitbuddy.domain.model.*;
-import de.avalax.fitbuddy.domain.model.basic.BasicExercise;
-import de.avalax.fitbuddy.domain.model.basic.BasicSet;
-import de.avalax.fitbuddy.domain.model.basic.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetId;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SqliteWorkoutDAO implements WorkoutDAO {
-    private static final String WORKOUT_DB = "workout";
-    private static final int WORKOUT_DB_VERSION = 1;
-    private WorkoutSQLiteOpenHelper workoutSQLiteOpenHelper;
+public class SqliteWorkoutRepository implements WorkoutRepository {
+    private SQLiteOpenHelper sqLiteOpenHelper;
 
-    public SqliteWorkoutDAO(Context context, int createRessourceId) {
-        this.workoutSQLiteOpenHelper = new WorkoutSQLiteOpenHelper(WORKOUT_DB, WORKOUT_DB_VERSION, context, createRessourceId);
+    public SqliteWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+        this.sqLiteOpenHelper = sqLiteOpenHelper;
     }
 
     @Override
     public void save(Workout workout) {
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (workout.getWorkoutId() == null) {
             long id = database.insert("workout", null, getContentValues(workout));
             workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
@@ -40,7 +44,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     @Override
     public void saveExercise(WorkoutId workoutId, Exercise exercise) {
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (exercise.getExerciseId() == null) {
             long id = database.insert("exercise", null, getContentValues(workoutId, exercise));
             exercise.setExerciseId(new ExerciseId(String.valueOf(id)));
@@ -58,7 +62,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (exerciseId == null) {
             return;
         }
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         int deleteCount = database.delete("exercise", "id=?", new String[]{exerciseId.id()});
         Log.d("delete exercise with id" + exerciseId, String.valueOf(deleteCount));
         database.close();
@@ -66,7 +70,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
 
     @Override
     public void saveSet(ExerciseId exerciseId, Set set) {
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (set.getSetId() == null) {
             long id = database.insert("sets", null, getContentValues(exerciseId, set));
             set.setId(new SetId(String.valueOf(id)));
@@ -81,7 +85,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (id == null) {
             return;
         }
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         int deleteCount = database.delete("sets", "id=?", new String[]{id.toString()});
         Log.d("delete set with id" + id, String.valueOf(deleteCount));
         database.close();
@@ -111,7 +115,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public Workout load(WorkoutId workoutId) {
         Workout workout = null;
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getReadableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 "id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.getCount() == 1 && cursor.moveToFirst()) {
@@ -164,7 +168,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public List<Workout> getList() {
         List<Workout> workoutList = new ArrayList<>();
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getReadableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
@@ -185,7 +189,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
         if (id == null) {
             return;
         }
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getWritableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         int deleteCount = database.delete("workout", "id=" + id, null);
         Log.d("delete workout with id " + id, String.valueOf(deleteCount));
         database.close();
@@ -194,7 +198,7 @@ public class SqliteWorkoutDAO implements WorkoutDAO {
     @Override
     public Workout getFirstWorkout() {
         Workout workout = null;
-        SQLiteDatabase database = workoutSQLiteOpenHelper.getReadableDatabase();
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {

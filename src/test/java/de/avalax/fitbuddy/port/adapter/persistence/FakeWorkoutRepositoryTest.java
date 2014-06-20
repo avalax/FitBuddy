@@ -1,9 +1,10 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.ExerciseId;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotAvailableException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,9 +20,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FakeWorkoutDAOTest {
+public class FakeWorkoutRepositoryTest {
     @InjectMocks
-    private FakeWorkoutDAO workoutDAO;
+    private FakeWorkoutRepository workoutDAO;
 
     @Test
     public void testSave_shouldGenerateNewId() throws Exception {

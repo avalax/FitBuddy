@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model.exceptions;
+package de.avalax.fitbuddy.domain.model.set;
 
 public class SetNotAvailableException extends RuntimeException {
 }

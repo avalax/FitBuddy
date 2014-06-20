@@ -10,8 +10,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.application.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.application.swipeBar.VerticalProgressbarView;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import javax.inject.Inject;
 

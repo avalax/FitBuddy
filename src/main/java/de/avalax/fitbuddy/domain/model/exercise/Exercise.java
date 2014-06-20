@@ -1,4 +1,6 @@
-package de.avalax.fitbuddy.domain.model;
+package de.avalax.fitbuddy.domain.model.exercise;
+
+import de.avalax.fitbuddy.domain.model.set.Set;
 
 import java.io.Serializable;
 import java.util.List;

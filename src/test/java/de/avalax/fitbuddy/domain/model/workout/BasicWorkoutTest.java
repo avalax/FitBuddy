@@ -1,8 +1,11 @@
-package de.avalax.fitbuddy.domain.model.basic;
+package de.avalax.fitbuddy.domain.model.workout;
 
 
-import de.avalax.fitbuddy.domain.model.*;
-import de.avalax.fitbuddy.domain.model.exceptions.ExerciseNotAvailableException;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -258,10 +261,10 @@ public class BasicWorkoutTest {
     @Test
     public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
         ExerciseId exerciseId = new ExerciseId("42");
-        Exercise exercise = new BasicExercise("orginal",new ArrayList<Set>());
+        Exercise exercise = new BasicExercise("orginal", new ArrayList<Set>());
         exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
-        Exercise clonedExercise = new BasicExercise("clone",new ArrayList<Set>());
+        Exercise clonedExercise = new BasicExercise("clone", new ArrayList<Set>());
         clonedExercise.setExerciseId(new ExerciseId(exerciseId));
 
         workout.deleteExercise(clonedExercise);

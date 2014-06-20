@@ -1,16 +1,16 @@
-package de.avalax.fitbuddy.domain.model;
+package de.avalax.fitbuddy.domain.model.workout;
 
 import java.io.Serializable;
 
-public class ExerciseId implements Serializable {
+public class WorkoutId implements Serializable {
     private String id;
 
-    public ExerciseId(String id) {
+    public WorkoutId(String id) {
         this.id = id;
     }
 
-    public ExerciseId(ExerciseId exerciseId) {
-        this(exerciseId.id());
+    public WorkoutId(WorkoutId workoutId) {
+        this(workoutId.id());
     }
 
     public String id() {
@@ -19,7 +19,7 @@ public class ExerciseId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof ExerciseId && id.equals(((ExerciseId) o).id);
+        return o instanceof WorkoutId && id.equals(((WorkoutId) o).id);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class ExerciseId implements Serializable {
 
     @Override
     public String toString() {
-        return "ExerciseId [id=" + id + "]";
+        return "WorkoutId [id="+id+"]";
     }
 }

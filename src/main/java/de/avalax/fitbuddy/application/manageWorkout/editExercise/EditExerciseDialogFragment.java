@@ -15,7 +15,7 @@ import de.avalax.fitbuddy.application.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditWeightDialogFragment;
-import de.avalax.fitbuddy.domain.model.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 public class EditExerciseDialogFragment extends Fragment {
 

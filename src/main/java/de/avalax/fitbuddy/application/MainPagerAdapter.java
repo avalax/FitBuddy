@@ -3,9 +3,9 @@ package de.avalax.fitbuddy.application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.exceptions.ExerciseNotAvailableException;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     protected WorkoutSession workoutSession;

@@ -18,7 +18,7 @@ import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
-import de.avalax.fitbuddy.domain.model.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 import javax.inject.Inject;
 

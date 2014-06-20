@@ -1,9 +1,7 @@
-package de.avalax.fitbuddy.domain.model.basic;
+package de.avalax.fitbuddy.domain.model.exercise;
 
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.ExerciseId;
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.exceptions.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
 import java.util.List;
 

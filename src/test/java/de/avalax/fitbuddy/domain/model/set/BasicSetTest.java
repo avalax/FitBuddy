@@ -1,8 +1,6 @@
-package de.avalax.fitbuddy.domain.model.basic;
+package de.avalax.fitbuddy.domain.model.set;
 
 
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.SetId;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +47,7 @@ public class BasicSetTest {
     }
 
     @Test
-         public void getId_shouldReturnId() throws Exception {
+    public void getId_shouldReturnId() throws Exception {
         SetId setId = new SetId("42");
 
         set.setId(setId);
@@ -59,7 +57,7 @@ public class BasicSetTest {
 
     @Test
     public void getWeight_shouldGetWeight() throws Exception {
-        assertThat(set.getWeight(),equalTo(12.5));
+        assertThat(set.getWeight(), equalTo(12.5));
     }
 
     @Test
@@ -74,28 +72,28 @@ public class BasicSetTest {
         assertThat(set.getReps(), equalTo(MAX_REPS));
     }
 
-	@Test
-         public void setMaxRepsOnInit_shouldSetMaxReps() throws Exception {
-        assertThat(set.getMaxReps(),equalTo(MAX_REPS));
+    @Test
+    public void setMaxRepsOnInit_shouldSetMaxReps() throws Exception {
+        assertThat(set.getMaxReps(), equalTo(MAX_REPS));
     }
 
     @Test
     public void setMaxReps_shouldSetMaxReps() throws Exception {
         set.setMaxReps(42);
-        assertThat(set.getMaxReps(),equalTo(42));
+        assertThat(set.getMaxReps(), equalTo(42));
     }
 
     @Test
     public void setReps_shouldShouldSetToZeroReps() throws Exception {
         set.setReps(-1);
 
-        assertThat(set.getReps(),equalTo(0));
+        assertThat(set.getReps(), equalTo(0));
     }
 
     @Test
     public void setReps_shouldSetToMaxRepsWhenGreaterThenMaxReps() throws Exception {
         set.setReps(MAX_REPS + 1);
 
-        assertThat(set.getReps(),equalTo(MAX_REPS));
+        assertThat(set.getReps(), equalTo(MAX_REPS));
     }
 }

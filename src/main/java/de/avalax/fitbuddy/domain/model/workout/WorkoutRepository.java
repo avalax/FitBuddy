@@ -1,10 +1,13 @@
-package de.avalax.fitbuddy.port.adapter.persistence;
+package de.avalax.fitbuddy.domain.model.workout;
 
-import de.avalax.fitbuddy.domain.model.*;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetId;
 
 import java.util.List;
 
-public interface WorkoutDAO {
+public interface WorkoutRepository {
     void save(Workout workout);
 
     void saveExercise(WorkoutId id, Exercise exercise);

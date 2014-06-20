@@ -1,12 +1,12 @@
 package de.avalax.fitbuddy.application;
 
 import com.google.gson.Gson;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Set;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.basic.BasicExercise;
-import de.avalax.fitbuddy.domain.model.basic.BasicSet;
-import de.avalax.fitbuddy.domain.model.basic.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

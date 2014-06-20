@@ -28,8 +28,8 @@ import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseChangedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import javax.inject.Inject;
 import java.util.List;

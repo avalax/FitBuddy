@@ -1,8 +1,8 @@
-package de.avalax.fitbuddy.domain.model.basic;
+package de.avalax.fitbuddy.domain.model.exercise;
 
 
-import de.avalax.fitbuddy.domain.model.*;
-import de.avalax.fitbuddy.domain.model.exceptions.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -77,7 +77,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-     public void setSets_shouldSetSets() throws Exception {
+    public void setSets_shouldSetSets() throws Exception {
         List<Set> sets = new ArrayList<>();
         exercise.setSets(sets);
         assertThat(exercise.getSets(), equalTo(sets));

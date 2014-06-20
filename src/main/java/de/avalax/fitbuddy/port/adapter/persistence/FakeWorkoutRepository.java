@@ -1,20 +1,27 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import de.avalax.fitbuddy.domain.model.*;
-import de.avalax.fitbuddy.domain.model.basic.BasicExercise;
-import de.avalax.fitbuddy.domain.model.basic.BasicSet;
-import de.avalax.fitbuddy.domain.model.basic.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetId;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotAvailableException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class FakeWorkoutDAO implements WorkoutDAO {
+public class FakeWorkoutRepository implements WorkoutRepository {
 
     private ArrayList<Workout> workouts;
 
-    public FakeWorkoutDAO() {
+    public FakeWorkoutRepository() {
         workouts = new ArrayList<>();
         workouts.add(fakeWorkoutOne());
         workouts.add(fakeWorkoutTwo());

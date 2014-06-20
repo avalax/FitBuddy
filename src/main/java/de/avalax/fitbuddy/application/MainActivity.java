@@ -16,8 +16,8 @@ import butterknife.InjectView;
 import butterknife.OnPageChange;
 import de.avalax.fitbuddy.application.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
-import de.avalax.fitbuddy.domain.model.Exercise;
-import de.avalax.fitbuddy.domain.model.Workout;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;

@@ -1,9 +1,9 @@
 package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
-import de.avalax.fitbuddy.domain.model.Workout;
-import de.avalax.fitbuddy.domain.model.WorkoutId;
-import de.avalax.fitbuddy.port.adapter.persistence.WorkoutDAO;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,22 +16,22 @@ import static org.mockito.Mockito.*;
 public class WorkoutSessionTest {
     WorkoutSession workoutSession;
 
-    WorkoutDAO workoutDAO;
+    WorkoutRepository workoutRepository;
 
     private Workout workout;
     private SharedPreferences.Editor editor;
 
     @Before
     public void setUp() throws Exception {
-        workoutDAO = mock(WorkoutDAO.class);
+        workoutRepository = mock(WorkoutRepository.class);
         workout = mock(Workout.class);
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
         editor = mock(SharedPreferences.Editor.class);
         String id = "21";
         when(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1")).thenReturn(id);
-        when(workoutDAO.load(new WorkoutId(id))).thenReturn(workout);
+        when(workoutRepository.load(new WorkoutId(id))).thenReturn(workout);
         when(sharedPreferences.edit()).thenReturn(editor);
-        workoutSession = new WorkoutSession(sharedPreferences, workoutDAO);
+        workoutSession = new WorkoutSession(sharedPreferences, workoutRepository);
     }
 
     @Test
@@ -44,14 +44,14 @@ public class WorkoutSessionTest {
     public void testSaveWorkout_shouldCallWorkoutDAOSaveAndLoadNewWorkout() throws Exception {
         workoutSession.saveWorkoutSession();
 
-        verify(workoutDAO).save(workout);
+        verify(workoutRepository).save(workout);
     }
 
     @Test
     public void testSwitchWorkout_shouldSwitchToWorkoutFromWorkoutDAO() throws Exception {
         WorkoutId workoutId = new WorkoutId("42");
         Workout loadedWorkout = mock(Workout.class);
-        when(workoutDAO.load(workoutId)).thenReturn(loadedWorkout);
+        when(workoutRepository.load(workoutId)).thenReturn(loadedWorkout);
 
         workoutSession.switchWorkout(workoutId);
         verify(editor).putString(WorkoutSession.LAST_WORKOUT_POSITION, workoutId.id());
