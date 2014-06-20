@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import de.avalax.fitbuddy.application.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -21,15 +20,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
-public class SqliteWorkoutRepositoryTest {
+public class SQLiteWorkoutRepositoryTest {
 
-    private SqliteWorkoutRepository sqliteWorkoutDAO;
+    private SQLiteWorkoutRepository sqliteWorkoutDAO;
 
     @Before
     public void setUp() throws Exception {
         ManageWorkoutActivity manageWorkoutActivity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper(1, manageWorkoutActivity, R.raw.fitbuddy_db);
-        sqliteWorkoutDAO = new SqliteWorkoutRepository(sqLiteOpenHelper);
+        sqliteWorkoutDAO = new SQLiteWorkoutRepository(sqLiteOpenHelper);
     }
 
     @Test

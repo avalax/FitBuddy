@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.application.ExerciseFactory;
 import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -19,6 +20,8 @@ public class ManageWorkout {
 
     private WorkoutRepository workoutRepository;
 
+    private ExerciseRepository exerciseRepository;
+
     private WorkoutSession workoutSession;
 
     private boolean unsavedChanges;
@@ -28,9 +31,10 @@ public class ManageWorkout {
     private Exercise deletedExercise;
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository,WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
+        this.exerciseRepository = exerciseRepository;
         this.workoutFactory = workoutFactory;
         this.exerciseFactory = exerciseFactory;
     }
@@ -93,7 +97,7 @@ public class ManageWorkout {
 
     public void undoDeleteExercise() {
         workout.addExercise(deletedExerciseIndex, deletedExercise);
-        workoutRepository.saveExercise(workout.getWorkoutId(), deletedExercise);
+        exerciseRepository.save(workout.getWorkoutId(), deletedExercise);
         deletedExerciseIndex = null;
         deletedExercise = null;
         setUnsavedChanges(false);
@@ -107,7 +111,7 @@ public class ManageWorkout {
     }
 
     public void deleteExercise(Exercise exercise) {
-        workoutRepository.deleteExercise(exercise.getExerciseId());
+        exerciseRepository.delete(exercise.getExerciseId());
         int index = workout.getExercises().indexOf(exercise);
         if (workout.deleteExercise(exercise)) {
             setUnsavedChanges(index, exercise);
@@ -123,21 +127,21 @@ public class ManageWorkout {
     public void createExercise() {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
-        workoutRepository.saveExercise(workout.getWorkoutId(), exercise);
+        exerciseRepository.save(workout.getWorkoutId(), exercise);
     }
 
     public void createExerciseBefore(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExercise(exercises.indexOf(exercise), newExercise);
-        workoutRepository.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        exerciseRepository.save(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public void createExerciseAfter(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
-        workoutRepository.saveExercise(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        exerciseRepository.save(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
     }
 
     public boolean hasDeletedWorkout() {

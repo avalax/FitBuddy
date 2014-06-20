@@ -8,8 +8,10 @@ import de.avalax.fitbuddy.application.manageWorkout.ExerciseListFragment;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.application.manageWorkout.editExercise.EditExerciseActivity;
-import de.avalax.fitbuddy.port.adapter.persistence.FakeWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.FakeExerciseRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.FakeWorkoutRepository;
 
 import javax.inject.Singleton;
 
@@ -35,8 +37,15 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutRepository provideWorkoutDAO() {
+    WorkoutRepository provideWorkoutRepository() {
         return new FakeWorkoutRepository();
+        //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
+    }
+
+    @Provides
+    @Singleton
+    ExerciseRepository provideExerciseRepository() {
+        return new FakeExerciseRepository();
         //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
     }
 
@@ -60,8 +69,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
-        return new ManageWorkout(workoutSession, workoutRepository, workoutFactory, exerciseFactory);
+    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, workoutFactory, exerciseFactory);
     }
 
     @Provides

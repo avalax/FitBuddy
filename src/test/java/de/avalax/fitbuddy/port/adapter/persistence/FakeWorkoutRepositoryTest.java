@@ -1,7 +1,5 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotAvailableException;
@@ -22,33 +20,15 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class FakeWorkoutRepositoryTest {
     @InjectMocks
-    private FakeWorkoutRepository workoutDAO;
+    private FakeWorkoutRepository workoutRepository;
 
     @Test
     public void testSave_shouldGenerateNewId() throws Exception {
         Workout workout = mock(Workout.class);
 
-        workoutDAO.save(workout);
+        workoutRepository.save(workout);
 
         verify(workout).setWorkoutId(any(WorkoutId.class));
-    }
-
-    @Test
-    public void testSaveExercise_shouldGenerateNewId() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-
-        workoutDAO.saveExercise(new WorkoutId("1"), exercise);
-
-        verify(exercise).setExerciseId(any(ExerciseId.class));
-    }
-
-    @Test
-    public void testSaveExerciseWithPosition_shouldGenerateNewId() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-
-        workoutDAO.saveExercise(new WorkoutId("1"), exercise, 1);
-
-        verify(exercise).setExerciseId(any(ExerciseId.class));
     }
 
     @Test
@@ -56,45 +36,45 @@ public class FakeWorkoutRepositoryTest {
         Workout workout = mock(Workout.class);
         WorkoutId workoutId = new WorkoutId("42");
         when(workout.getWorkoutId()).thenReturn(workoutId);
-        workoutDAO.save(workout);
+        workoutRepository.save(workout);
 
         assertThat(workout.getWorkoutId(), equalTo(workoutId));
     }
 
     @Test
     public void testLoad_shouldReturnAWorkout() throws Exception {
-        Workout workout = workoutDAO.load(new WorkoutId("1"));
+        Workout workout = workoutRepository.load(new WorkoutId("1"));
 
         assertThat(workout, instanceOf(Workout.class));
     }
 
     @Test(expected = WorkoutNotAvailableException.class)
     public void testLoad_shouldThrowExceptionWhenWorkoutNotFound() throws Exception {
-        workoutDAO.load(new WorkoutId("42"));
+        workoutRepository.load(new WorkoutId("42"));
     }
 
     @Test
     public void testGetList_shouldReturnAListOfWorkouts() throws Exception {
-        List<Workout> workouts = workoutDAO.getList();
+        List<Workout> workouts = workoutRepository.getList();
 
         assertThat(workouts.size(), is(2));
     }
 
     @Test
     public void testRemove_shouldDoNothingWhenWorkoutIsUnknown() throws Exception {
-        workoutDAO.delete(new WorkoutId("123"));
+        workoutRepository.delete(new WorkoutId("123"));
 
-        assertThat(workoutDAO.getList().size(), is(2));
+        assertThat(workoutRepository.getList().size(), is(2));
     }
 
     @Test
     public void testRemove_shouldRemoveWorkout() throws Exception {
-        Workout workoutToDelete = workoutDAO.load(new WorkoutId("1"));
-        Workout workout = workoutDAO.load(new WorkoutId("2"));
+        Workout workoutToDelete = workoutRepository.load(new WorkoutId("1"));
+        Workout workout = workoutRepository.load(new WorkoutId("2"));
 
-        workoutDAO.delete(workoutToDelete.getWorkoutId());
+        workoutRepository.delete(workoutToDelete.getWorkoutId());
 
-        assertThat(workout, equalTo(workoutDAO.load(new WorkoutId("2"))));
-        assertThat(workoutDAO.getList().size(), is(1));
+        assertThat(workout, equalTo(workoutRepository.load(new WorkoutId("2"))));
+        assertThat(workoutRepository.getList().size(), is(1));
     }
 }

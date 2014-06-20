@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.application;
+package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
