@@ -12,8 +12,7 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import java.util.ArrayList;
@@ -22,9 +21,11 @@ import java.util.List;
 
 public class SQLiteExerciseRepository implements ExerciseRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
+    private SetRepository setRepository;
 
-    public SQLiteExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    public SQLiteExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper, SetRepository setRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
+        this.setRepository = setRepository;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         }
         database.close();
         for (Set set : exercise.getSets()) {
-            //saveSet(exercise.getExerciseId(), set);
+            setRepository.save(exercise.getExerciseId(), set);
         }
     }
 
@@ -53,38 +54,10 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         database.close();
     }
 
-    private ContentValues getContentValues(ExerciseId exerciseId, Set set) {
-        ContentValues values = new ContentValues();
-        values.put("exercise_id", exerciseId.id());
-        values.put("weight", set.getWeight());
-        values.put("reps", set.getMaxReps());
-        return values;
-    }
-
-    private ContentValues getContentValues(WorkoutId workoutId, Exercise exercise) {
-        ContentValues values = new ContentValues();
-        values.put("workout_id", workoutId.id());
-        values.put("name", exercise.getName());
-        return values;
-    }
-
-    private ContentValues getContentValues(Workout workout) {
-        ContentValues values = new ContentValues();
-        values.put("name", workout.getName() != null ? workout.getName() : "");
-        return values;
-    }
-
-    private Workout createWorkout(SQLiteDatabase database, Cursor cursor) {
-        Workout workout;
+    @Override
+    public LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId) {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        workout = new BasicWorkout(exercises);
-        workout.setWorkoutId(new WorkoutId(cursor.getString(0)));
-        workout.setName(cursor.getString(1));
-        addExercises(database, workout.getWorkoutId(), exercises);
-        return workout;
-    }
-
-    private void addExercises(SQLiteDatabase database, WorkoutId workoutId, LinkedList<Exercise> exercises) {
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
                 "workout_id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
@@ -98,6 +71,14 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         }
         cursor.close();
         database.close();
+        return exercises;
+    }
+
+    private ContentValues getContentValues(WorkoutId workoutId, Exercise exercise) {
+        ContentValues values = new ContentValues();
+        values.put("workout_id", workoutId.id());
+        values.put("name", exercise.getName());
+        return values;
     }
 
     private void addSets(SQLiteDatabase database, ExerciseId exerciseId, List<Set> sets) {
@@ -118,5 +99,22 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     public void save(WorkoutId id, Exercise exercise, int position) {
         //TODO: save Exercise @position
         save(id, exercise);
+    }
+
+    @Override
+    public Exercise load(ExerciseId exerciseId) {
+        Exercise exercise = null;
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
+        Cursor cursor = database.query("exercise", new String[]{"id", "name"},
+                "id=?", new String[]{exerciseId.id()}, null, null, null);
+        if (cursor.moveToFirst()) {
+                List<Set> sets = new ArrayList<>();
+                exercise = new BasicExercise(cursor.getString(1), sets);
+                exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
+                addSets(database, exercise.getExerciseId(), sets);
+        }
+        cursor.close();
+        database.close();
+        return exercise;
     }
 }

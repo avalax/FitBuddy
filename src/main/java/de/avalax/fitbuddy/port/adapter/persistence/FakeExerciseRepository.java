@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class FakeExerciseRepository implements ExerciseRepository {
@@ -28,5 +29,15 @@ public class FakeExerciseRepository implements ExerciseRepository {
     @Override
     public void delete(ExerciseId id) {
         // FAKE
+    }
+
+    @Override
+    public Exercise load(ExerciseId exerciseId) {
+        return null;
+    }
+
+    @Override
+    public LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId) {
+        return new LinkedList<>();
     }
 }

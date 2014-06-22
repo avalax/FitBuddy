@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.ArrayList;
@@ -14,9 +14,11 @@ import java.util.List;
 
 public class SQLiteWorkoutRepository implements WorkoutRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
+    private ExerciseRepository exerciseRepository;
 
-    public SQLiteWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    public SQLiteWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, ExerciseRepository exerciseRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
+        this.exerciseRepository = exerciseRepository;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         }
         database.close();
         for (Exercise exercise : workout.getExercises()) {
-            //saveExercise(workout.getWorkoutId(), exercise);
+            exerciseRepository.save(workout.getWorkoutId(), exercise);
         }
     }
 
@@ -46,21 +48,20 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 "id=?", new String[]{workoutId.id()}, null, null, null);
-        if (cursor.getCount() == 1 && cursor.moveToFirst()) {
-            workout = createWorkout(database, cursor);
+        if (cursor.moveToFirst()) {
+            workout = createWorkout(cursor);
         }
         cursor.close();
         database.close();
         return workout;
     }
 
-    private Workout createWorkout(SQLiteDatabase database, Cursor cursor) {
-        Workout workout;
-        LinkedList<Exercise> exercises = new LinkedList<>();
-        workout = new BasicWorkout(exercises);
-        workout.setWorkoutId(new WorkoutId(cursor.getString(0)));
+    private Workout createWorkout(Cursor cursor) {
+        WorkoutId workoutId = new WorkoutId(cursor.getString(0));
+        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        Workout workout = new BasicWorkout(exercises);
+        workout.setWorkoutId(workoutId);
         workout.setName(cursor.getString(1));
-        //addExercises(database, workout.getWorkoutId(), exercises);
         return workout;
     }
 
@@ -89,8 +90,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("workout", "id=" + id, null);
-        Log.d("delete workout with id " + id, String.valueOf(deleteCount));
+        database.delete("workout", "id=" + id.id(), null);
         database.close();
     }
 
@@ -101,7 +101,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            workout = createWorkout(database, cursor);
+            workout = createWorkout(cursor);
         }
         cursor.close();
         database.close();
