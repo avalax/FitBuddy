@@ -1,7 +1,7 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 
 import java.util.LinkedList;
@@ -124,7 +124,10 @@ public class BasicWorkout implements Workout {
 
     @Override
     public String toString() {
-        return name;
+        if (workoutId == null) {
+            return "BasicWorkout [name="+name + "]";
+        }
+        return "BasicWorkout [name="+name + ", workoutId=" + workoutId.toString() + "]";
     }
 
     @Override

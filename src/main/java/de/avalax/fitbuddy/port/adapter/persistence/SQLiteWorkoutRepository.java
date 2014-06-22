@@ -6,10 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -68,17 +65,17 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public List<Workout> getList() {
-        List<Workout> workoutList = new ArrayList<>();
+    public List<WorkoutListEntry> getWorkoutList() {
+        List<WorkoutListEntry> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                BasicWorkout workout = new BasicWorkout(new LinkedList<Exercise>());
-                workout.setWorkoutId(new WorkoutId(cursor.getString(0)));
-                workout.setName(cursor.getString(1));
-                workoutList.add(workout);
+                WorkoutId workoutId = new WorkoutId(cursor.getString(0));
+                String name = cursor.getString(1);
+                WorkoutListEntry entry = new WorkoutListEntry(workoutId, name);
+                workoutList.add(entry);
             } while (cursor.moveToNext());
         }
         cursor.close();

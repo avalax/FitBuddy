@@ -140,11 +140,14 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void toString_shouldReturnName() throws Exception {
+    public void toString_shouldReturnWorkoutInformations() throws Exception {
         String name = "NameOfWorkout";
 
         workout.setName(name);
-        assertThat(workout.toString(), equalTo(name));
+        assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + "]"));
+        WorkoutId workoutId = new WorkoutId("42");
+        workout.setWorkoutId(workoutId);
+        assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
     }
 
     @Test

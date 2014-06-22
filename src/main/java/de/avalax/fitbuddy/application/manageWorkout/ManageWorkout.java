@@ -8,6 +8,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import java.util.List;
@@ -59,8 +60,8 @@ public class ManageWorkout {
         workoutSession.switchWorkout(workout.getWorkoutId());
     }
 
-    public List<Workout> getWorkouts() {
-        return workoutRepository.getList();
+    public List<WorkoutListEntry> getWorkoutList() {
+        return workoutRepository.getWorkoutList();
     }
 
     public void createWorkout() {

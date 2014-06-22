@@ -28,8 +28,8 @@ import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseChangedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseDeletedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Inject
     protected Bus bus;
     private ExerciseListFragment exerciseListFragment;
-    private List<Workout> workoutList;
+    private List<WorkoutListEntry> workoutList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,12 +119,12 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
-            List<Workout> workouts = manageWorkout.getWorkouts();
+            List<WorkoutListEntry> workouts = manageWorkout.getWorkoutList();
             if (workouts.size() == 0) {
                 manageWorkout.createWorkout();
             }
             //TODO: refactor this to mangageWorkout.loadFirstWorkout()
-            manageWorkout.setWorkout(manageWorkout.getWorkouts().get(0).getWorkoutId());
+            manageWorkout.setWorkout(manageWorkout.getWorkoutList().get(0).getWorkoutId());
             initActionNavigationBar();
             exerciseListFragment.initListView();
         }
@@ -153,7 +153,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private void initActionNavigationBar() {
         ActionBar actionBar = getActionBar();
         initializing = true;
-        workoutList = getWorkouts();
+        workoutList = manageWorkout.getWorkoutList();
         SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, workoutList);
 
@@ -168,10 +168,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 actionBar.setSelectedNavigationItem(i);
             }
         }
-    }
-
-    private List<Workout> getWorkouts() {
-        return manageWorkout.getWorkouts();
     }
 
     private void switchWorkout(WorkoutId workoutId) {

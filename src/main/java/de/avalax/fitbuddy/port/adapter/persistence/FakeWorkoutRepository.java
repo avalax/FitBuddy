@@ -7,10 +7,7 @@ import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class FakeWorkoutRepository implements WorkoutRepository {
 
@@ -88,14 +85,12 @@ public class FakeWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public List<Workout> getList() {
-        List<Workout> workoutList = new ArrayList<>();
+    public List<WorkoutListEntry> getWorkoutList() {
+        List<WorkoutListEntry> workoutList = new ArrayList<>();
 
         for (Workout workout : workouts) {
-            Workout w = new BasicWorkout(new LinkedList<Exercise>());
-            w.setWorkoutId(workout.getWorkoutId());
-            w.setName(workout.getName());
-            workoutList.add(w);
+            WorkoutListEntry entry = new WorkoutListEntry(workout.getWorkoutId(),workout.getName());
+            workoutList.add(entry);
         }
         return workoutList;
     }

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotAvailableException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +56,7 @@ public class FakeWorkoutRepositoryTest {
 
     @Test
     public void testGetList_shouldReturnAListOfWorkouts() throws Exception {
-        List<Workout> workouts = workoutRepository.getList();
+        List<WorkoutListEntry> workouts = workoutRepository.getWorkoutList();
 
         assertThat(workouts.size(), is(2));
     }
@@ -64,7 +65,7 @@ public class FakeWorkoutRepositoryTest {
     public void testRemove_shouldDoNothingWhenWorkoutIsUnknown() throws Exception {
         workoutRepository.delete(new WorkoutId("123"));
 
-        assertThat(workoutRepository.getList().size(), is(2));
+        assertThat(workoutRepository.getWorkoutList().size(), is(2));
     }
 
     @Test
@@ -75,6 +76,6 @@ public class FakeWorkoutRepositoryTest {
         workoutRepository.delete(workoutToDelete.getWorkoutId());
 
         assertThat(workout, equalTo(workoutRepository.load(new WorkoutId("2"))));
-        assertThat(workoutRepository.getList().size(), is(1));
+        assertThat(workoutRepository.getWorkoutList().size(), is(1));
     }
 }
