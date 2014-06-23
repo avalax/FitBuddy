@@ -93,18 +93,4 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         database.delete("workout", "id=" + id.id(), null);
         database.close();
     }
-
-    @Override
-    public Workout getFirstWorkout() {
-        Workout workout = null;
-        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("workout", new String[]{"id", "name"},
-                null, null, null, null, null);
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            workout = createWorkout(cursor);
-        }
-        cursor.close();
-        database.close();
-        return workout;
-    }
 }

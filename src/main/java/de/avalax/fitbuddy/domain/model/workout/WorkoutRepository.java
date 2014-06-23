@@ -10,6 +10,4 @@ public interface WorkoutRepository {
     List<WorkoutListEntry> getWorkoutList();
 
     void delete(WorkoutId id);
-
-    Workout getFirstWorkout();
 }

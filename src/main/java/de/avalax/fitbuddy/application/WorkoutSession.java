@@ -2,12 +2,12 @@ package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotAvailableException;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.*;
 
 import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 public class WorkoutSession {
     public static final String LAST_WORKOUT_POSITION = "lastWorkoutPosition";
@@ -27,7 +27,13 @@ public class WorkoutSession {
             Log.d("WorkoutNotAvailableException", wnae.getMessage(), wnae);
         }
         if (this.workout == null) {
-            this.workout = workoutRepository.getFirstWorkout();
+            List<WorkoutListEntry> workoutList = workoutRepository.getWorkoutList();
+            if (workoutList.size() > 0) {
+                this.workout = workoutRepository.load(workoutList.get(0).getWorkoutId());
+            } else {
+                this.workout = new BasicWorkout(new LinkedList<Exercise>());
+                workoutRepository.save(this.workout);
+            }
             switchWorkout(this.workout.getWorkoutId());
         }
     }

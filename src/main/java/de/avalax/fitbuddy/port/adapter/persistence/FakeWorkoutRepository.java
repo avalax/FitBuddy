@@ -109,11 +109,6 @@ public class FakeWorkoutRepository implements WorkoutRepository {
         }
     }
 
-    @Override
-    public Workout getFirstWorkout() {
-        return fakeWorkoutOne();
-    }
-
     private List<Set> createThreeSets(double weight, int reps) {
         List<Set> sets = new ArrayList<>();
         sets.add(new BasicSet(weight, reps));
