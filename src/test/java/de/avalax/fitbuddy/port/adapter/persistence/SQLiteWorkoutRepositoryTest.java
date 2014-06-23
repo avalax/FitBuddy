@@ -7,6 +7,7 @@ import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,10 +20,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -43,7 +42,8 @@ public class SQLiteWorkoutRepositoryTest {
     public void setUp() throws Exception {
         Activity activity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteWorkoutRepositoryTest", 1, activity, R.raw.fitbuddy_db);
-        exerciseRepository = mock(ExerciseRepository.class);
+        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
+        exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
     }
 
@@ -69,13 +69,15 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        BasicExercise exercise = new BasicExercise("exercise", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise("exercise", new ArrayList<Set>());
         exercises.add(exercise);
         Workout workout = new BasicWorkout(exercises);
 
         workoutRepository.save(workout);
 
-        verify(exerciseRepository).save(workout.getWorkoutId(), exercise);
+        LinkedList<Exercise> loadedExercises = exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId());
+        assertThat(loadedExercises.size(), equalTo(1));
+        assertThat(loadedExercises.get(0), equalTo(exercise));
     }
 
     @Test
@@ -103,7 +105,6 @@ public class SQLiteWorkoutRepositoryTest {
         exercises.add(exercise2);
         Workout workout = new BasicWorkout(exercises);
         workoutRepository.save(workout);
-        when(exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId())).thenReturn(exercises);
         WorkoutId workoutId = workout.getWorkoutId();
 
         Workout loadedWorkout = workoutRepository.load(workoutId);

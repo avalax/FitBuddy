@@ -25,10 +25,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -57,7 +55,7 @@ public class SQLiteExerciseRepositoryTest {
     public void setUp() throws Exception {
         Activity activity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteExerciseRepositoryTest", 1, activity, R.raw.fitbuddy_db);
-        setRepository = mock(SetRepository.class);
+        setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
 
         createWorkout(sqLiteOpenHelper);
@@ -91,7 +89,9 @@ public class SQLiteExerciseRepositoryTest {
 
         exerciseRepository.save(workoutId, exercise);
 
-        verify(setRepository).save(exercise.getExerciseId(), set);
+        List<Set> loadedSets = setRepository.allSetsBelongsTo(exercise.getExerciseId());
+        assertThat(loadedSets.size(), equalTo(1));
+        assertThat(loadedSets.get(0), equalTo(set));
     }
 
     @Test
@@ -118,7 +118,6 @@ public class SQLiteExerciseRepositoryTest {
         Exercise exercise = new BasicExercise("name", sets);
 
         exerciseRepository.save(workoutId, exercise);
-        when(setRepository.allSetsBelongsTo(exercise.getExerciseId())).thenReturn(sets);
         ExerciseId exerciseId = exercise.getExerciseId();
 
         Exercise loadedExercise = exerciseRepository.load(exerciseId);
@@ -149,7 +148,6 @@ public class SQLiteExerciseRepositoryTest {
         Exercise exercise = new BasicExercise("name", sets);
 
         exerciseRepository.save(workoutId, exercise);
-        when(setRepository.allSetsBelongsTo(exercise.getExerciseId())).thenReturn(sets);
 
         LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         assertThat(exercises.get(0).getSets().size(), equalTo(2));
