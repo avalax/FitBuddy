@@ -31,7 +31,9 @@ public class WorkoutSession {
             if (workoutList.size() > 0) {
                 this.workout = workoutRepository.load(workoutList.get(0).getWorkoutId());
             } else {
+                //TODO: Factory method
                 this.workout = new BasicWorkout(new LinkedList<Exercise>());
+                this.workout.setName("new workout");
                 workoutRepository.save(this.workout);
             }
             switchWorkout(this.workout.getWorkoutId());

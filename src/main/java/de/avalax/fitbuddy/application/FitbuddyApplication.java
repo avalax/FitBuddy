@@ -13,7 +13,7 @@ public class FitbuddyApplication extends Application {
         super.onCreate();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        graph = ObjectGraph.create(new FitbuddyModule(sharedPreferences));
+        graph = ObjectGraph.create(new FitbuddyModule(this, sharedPreferences));
     }
 
     public void inject(Object object) {

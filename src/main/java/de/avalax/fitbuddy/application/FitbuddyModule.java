@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.application;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -9,9 +11,12 @@ import de.avalax.fitbuddy.application.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.application.manageWorkout.editExercise.EditExerciseActivity;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-import de.avalax.fitbuddy.port.adapter.persistence.FakeExerciseRepository;
-import de.avalax.fitbuddy.port.adapter.persistence.FakeWorkoutRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 
 import javax.inject.Singleton;
 
@@ -23,9 +28,11 @@ import javax.inject.Singleton;
         EditExerciseActivity.class
 })
 public class FitbuddyModule {
+    private Context context;
     private SharedPreferences sharedPreferences;
 
-    public FitbuddyModule(SharedPreferences sharedPreferences) {
+    public FitbuddyModule(Context context, SharedPreferences sharedPreferences) {
+        this.context = context;
         this.sharedPreferences = sharedPreferences;
     }
 
@@ -37,16 +44,23 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutRepository provideWorkoutRepository() {
-        return new FakeWorkoutRepository();
-        //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
+    SQLiteOpenHelper provideSQLiteOpenHelper() {
+        return new FitbuddySQLiteOpenHelper("fitbuddy", 1, context, R.raw.fitbuddy_db);
     }
 
     @Provides
     @Singleton
-    ExerciseRepository provideExerciseRepository() {
-        return new FakeExerciseRepository();
-        //return new SqliteWorkoutDAO(context, R.raw.fitbuddy_db);
+    WorkoutRepository provideWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, ExerciseRepository exerciseRepository) {
+        //return new FakeWorkoutRepository();
+        return new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
+    }
+
+    @Provides
+    @Singleton
+    ExerciseRepository provideExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+        //return new FakeExerciseRepository();
+        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
+        return new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
     }
 
     @Provides
