@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
+import android.app.Activity;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
@@ -40,8 +41,8 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        ManageWorkoutActivity manageWorkoutActivity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
-        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper(1, manageWorkoutActivity, R.raw.fitbuddy_db);
+        Activity activity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
+        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteWorkoutRepositoryTest", 1, activity, R.raw.fitbuddy_db);
         exerciseRepository = mock(ExerciseRepository.class);
         workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
     }
@@ -107,7 +108,7 @@ public class SQLiteWorkoutRepositoryTest {
 
         Workout loadedWorkout = workoutRepository.load(workoutId);
 
-        assertThat(loadedWorkout.getExercises().size(),equalTo(2));
+        assertThat(loadedWorkout.getExercises().size(), equalTo(2));
         assertThat(loadedWorkout.getExercises().get(0), equalTo(exercise1));
         assertThat(loadedWorkout.getExercises().get(1), equalTo(exercise2));
     }

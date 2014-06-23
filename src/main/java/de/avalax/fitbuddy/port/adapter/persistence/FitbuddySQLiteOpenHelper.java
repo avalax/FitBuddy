@@ -11,12 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
-    private static final String FITBUDDY_DB = "fitbuddy";
     private Context context;
     private int createRessourceId;
 
-    public FitbuddySQLiteOpenHelper(int version, Context context, int createRessourceId) {
-        super(context, FITBUDDY_DB, null, version);
+    public FitbuddySQLiteOpenHelper(String name,int version, Context context, int createRessourceId) {
+        super(context, name, null, version);
         this.context = context;
         this.createRessourceId = createRessourceId;
     }
