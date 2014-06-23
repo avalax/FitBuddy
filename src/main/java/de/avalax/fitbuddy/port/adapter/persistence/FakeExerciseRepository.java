@@ -32,11 +32,6 @@ public class FakeExerciseRepository implements ExerciseRepository {
     }
 
     @Override
-    public Exercise load(ExerciseId exerciseId) {
-        return null;
-    }
-
-    @Override
     public LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId) {
         return new LinkedList<>();
     }

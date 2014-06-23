@@ -83,20 +83,4 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         //TODO: save Exercise @position
         save(id, exercise);
     }
-
-    @Override
-    public Exercise load(ExerciseId exerciseId) {
-        Exercise exercise = null;
-        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("exercise", new String[]{"id", "name"},
-                "id=?", new String[]{exerciseId.id()}, null, null, null);
-        if (cursor.moveToFirst()) {
-            List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
-            exercise = new BasicExercise(cursor.getString(1), sets);
-            exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
-        }
-        cursor.close();
-        database.close();
-        return exercise;
-    }
 }

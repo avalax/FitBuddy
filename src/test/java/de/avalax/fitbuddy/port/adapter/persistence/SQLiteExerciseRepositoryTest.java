@@ -95,35 +95,9 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
-    public void loadByUnknownExerciseId_shouldReturnNullValue() {
-        Exercise exercise = exerciseRepository.load(new ExerciseId("21"));
-        assertThat(exercise, nullValue());
-    }
-
-    @Test
-    public void loadByExerciseId_shouldReturnExerciseWithExerciseId() {
-        ExerciseId exerciseId = createExercise("name");
-
-        Exercise loadExercise = exerciseRepository.load(exerciseId);
-        assertThat(loadExercise.getExerciseId(), equalTo(exerciseId));
-    }
-
-    @Test
-    public void loadByExerciseId_shouldReturnExerciseWithSets() {
-        ArrayList<Set> sets = new ArrayList<>();
-        Set set1 = new BasicSet(42, 12);
-        sets.add(set1);
-        Set set2 = new BasicSet(40, 10);
-        sets.add(set2);
-        Exercise exercise = new BasicExercise("name", sets);
-
-        exerciseRepository.save(workoutId, exercise);
-        ExerciseId exerciseId = exercise.getExerciseId();
-
-        Exercise loadedExercise = exerciseRepository.load(exerciseId);
-        assertThat(loadedExercise.getSets().size(), equalTo(2));
-        assertThat(loadedExercise.getSets().get(0), equalTo(set1));
-        assertThat(loadedExercise.getSets().get(1), equalTo(set2));
+    public void loadByUnknownWorkoutId_shouldReturnNullValue() {
+        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(new WorkoutId("21"));
+        assertThat(exercises.size(), equalTo(0));
     }
 
     @Test
@@ -161,6 +135,6 @@ public class SQLiteExerciseRepositoryTest {
 
         exerciseRepository.delete(exerciseId);
 
-        assertThat(exerciseRepository.load(exerciseId), nullValue());
+        assertThat(exerciseRepository.allExercisesBelongsTo(workoutId).size(), equalTo(0));
     }
 }

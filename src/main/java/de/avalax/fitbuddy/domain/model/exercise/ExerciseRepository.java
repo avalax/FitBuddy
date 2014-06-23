@@ -9,8 +9,6 @@ public interface ExerciseRepository {
 
     void save(WorkoutId id, Exercise exercise, int position);
 
-    Exercise load(ExerciseId exerciseId);
-
     void delete(ExerciseId id);
 
     LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId);
