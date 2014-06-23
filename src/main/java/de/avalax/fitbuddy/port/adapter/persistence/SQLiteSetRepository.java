@@ -9,6 +9,8 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 
+import java.util.List;
+
 public class SQLiteSetRepository implements SetRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
 
@@ -34,9 +36,14 @@ public class SQLiteSetRepository implements SetRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("sets", "id=?", new String[]{id.toString()});
+        int deleteCount = database.delete("sets", "id=?", new String[]{id.id()});
         Log.d("delete set with id" + id, String.valueOf(deleteCount));
         database.close();
+    }
+
+    @Override
+    public List<Set> allSetsBelongsTo(ExerciseId exerciseId) {
+        return null;
     }
 
     private ContentValues getContentValues(ExerciseId exerciseId, Set set) {

@@ -30,6 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -66,7 +67,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void savePersistedExercise_shouldKeepExerciseId() {
-        Exercise exercise = new BasicExercise("nam", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
         exerciseRepository.save(workoutId, exercise);
         ExerciseId exerciseId = exercise.getExerciseId();
 
@@ -79,7 +80,7 @@ public class SQLiteExerciseRepositoryTest {
         List<Set> sets = new ArrayList<>();
         Set set = new BasicSet(42, 12);
         sets.add(set);
-        Exercise exercise = new BasicExercise("nam", sets);
+        Exercise exercise = new BasicExercise("name", sets);
 
         exerciseRepository.save(workoutId, exercise);
 
@@ -103,18 +104,22 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
-    @Ignore("assertSets")
     public void loadByExerciseId_shouldReturnExerciseWithSets() {
         ArrayList<Set> sets = new ArrayList<>();
-        sets.add(new BasicSet(42, 12));
-        sets.add(new BasicSet(40, 10));
+        Set set1 = new BasicSet(42, 12);
+        sets.add(set1);
+        Set set2 = new BasicSet(40, 10);
+        sets.add(set2);
         Exercise exercise = new BasicExercise("name", sets);
 
         exerciseRepository.save(workoutId, exercise);
+        when(setRepository.allSetsBelongsTo(exercise.getExerciseId())).thenReturn(sets);
         ExerciseId exerciseId = exercise.getExerciseId();
 
-        Exercise loadExercise = exerciseRepository.load(exerciseId);
-        assertThat(loadExercise.getExerciseId(), equalTo(exerciseId));
+        Exercise loadedExercise = exerciseRepository.load(exerciseId);
+        assertThat(loadedExercise.getSets().size(), equalTo(2));
+        assertThat(loadedExercise.getSets().get(0), equalTo(set1));
+        assertThat(loadedExercise.getSets().get(1), equalTo(set2));
     }
 
     @Test

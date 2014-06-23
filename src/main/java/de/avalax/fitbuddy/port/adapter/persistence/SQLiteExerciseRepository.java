@@ -108,10 +108,9 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
                 "id=?", new String[]{exerciseId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
-                List<Set> sets = new ArrayList<>();
+                List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
                 exercise = new BasicExercise(cursor.getString(1), sets);
                 exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
-                addSets(database, exercise.getExerciseId(), sets);
         }
         cursor.close();
         database.close();
