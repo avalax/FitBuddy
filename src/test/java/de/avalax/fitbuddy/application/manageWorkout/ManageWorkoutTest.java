@@ -112,7 +112,7 @@ public class ManageWorkoutTest {
 
             manageWorkout.createExercise();
 
-            verify(exerciseRepository).save(workout.getWorkoutId(), exercise);
+            verify(exerciseRepository).save(workout.getWorkoutId(), 1, exercise);
         }
 
         @Test
@@ -124,7 +124,7 @@ public class ManageWorkoutTest {
 
             assertThat(workout.getExerciseCount(), equalTo(2));
             assertThat(workout.getExercise(1), equalTo(exerciseAfter));
-            verify(exerciseRepository).save(workout.getWorkoutId(), exerciseAfter, 1);
+            verify(exerciseRepository).save(workout.getWorkoutId(), 1, exerciseAfter);
         }
 
         @Test
@@ -136,7 +136,7 @@ public class ManageWorkoutTest {
 
             assertThat(workout.getExerciseCount(), equalTo(2));
             assertThat(workout.getExercise(0), equalTo(exerciseAfter));
-            verify(exerciseRepository).save(workout.getWorkoutId(), exerciseAfter, 0);
+            verify(exerciseRepository).save(workout.getWorkoutId(), 0, exerciseAfter);
         }
 
         public class exerciseManipulation {
@@ -155,7 +155,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exercise);
                 manageWorkout.undoDeleteExercise();
 
-                verify(exerciseRepository).save(workout.getWorkoutId(), exercise);
+                verify(exerciseRepository).save(workout.getWorkoutId(), 0, exercise);
                 verify(workout).addExercise(exercise);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));

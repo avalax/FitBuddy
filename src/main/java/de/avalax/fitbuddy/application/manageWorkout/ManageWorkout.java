@@ -32,7 +32,7 @@ public class ManageWorkout {
     private Exercise deletedExercise;
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository,WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
@@ -98,7 +98,7 @@ public class ManageWorkout {
 
     public void undoDeleteExercise() {
         workout.addExercise(deletedExerciseIndex, deletedExercise);
-        exerciseRepository.save(workout.getWorkoutId(), deletedExercise);
+        exerciseRepository.save(workout.getWorkoutId(), deletedExerciseIndex, deletedExercise);
         deletedExerciseIndex = null;
         deletedExercise = null;
         setUnsavedChanges(false);
@@ -128,21 +128,21 @@ public class ManageWorkout {
     public void createExercise() {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
-        exerciseRepository.save(workout.getWorkoutId(), exercise);
+        exerciseRepository.save(workout.getWorkoutId(), workout.getExerciseCount() - 1, exercise);
     }
 
     public void createExerciseBefore(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExercise(exercises.indexOf(exercise), newExercise);
-        exerciseRepository.save(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        exerciseRepository.save(workout.getWorkoutId(), exercises.indexOf(newExercise), newExercise);
     }
 
     public void createExerciseAfter(Exercise exercise) {
         Exercise newExercise = exerciseFactory.createNew();
         List<Exercise> exercises = workout.getExercises();
         workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
-        exerciseRepository.save(workout.getWorkoutId(), newExercise,exercises.indexOf(newExercise));
+        exerciseRepository.save(workout.getWorkoutId(), exercises.indexOf(newExercise), newExercise);
     }
 
     public boolean hasDeletedWorkout() {

@@ -31,8 +31,9 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getWorkoutId().id()});
         }
         database.close();
-        for (Exercise exercise : workout.getExercises()) {
-            exerciseRepository.save(workout.getWorkoutId(), exercise);
+        List<Exercise> exercises = workout.getExercises();
+        for (int i = 0; i < exercises.size(); i++) {
+            exerciseRepository.save(workout.getWorkoutId(), i, exercises.get(i));
         }
     }
 

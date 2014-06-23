@@ -10,12 +10,7 @@ import java.util.UUID;
 
 public class FakeExerciseRepository implements ExerciseRepository {
     @Override
-    public void save(WorkoutId id, Exercise exercise) {
-        setExerciseId(exercise);
-    }
-
-    @Override
-    public void save(WorkoutId id, Exercise exercise, int position) {
+    public void save(WorkoutId id, int position, Exercise exercise) {
         setExerciseId(exercise);
     }
 

@@ -5,9 +5,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import java.util.LinkedList;
 
 public interface ExerciseRepository {
-    void save(WorkoutId id, Exercise exercise);
 
-    void save(WorkoutId id, Exercise exercise, int position);
+    void save(WorkoutId id, int position, Exercise exercise);
 
     void delete(ExerciseId id);
 

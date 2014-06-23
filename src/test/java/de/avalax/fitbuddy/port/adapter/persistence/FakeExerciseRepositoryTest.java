@@ -22,7 +22,7 @@ public class FakeExerciseRepositoryTest {
     public void testSave_shouldGenerateNewId() throws Exception {
         Exercise exercise = mock(Exercise.class);
 
-        exerciseRepository.save(new WorkoutId("1"), exercise);
+        exerciseRepository.save(new WorkoutId("1"), 0, exercise);
 
         verify(exercise).setExerciseId(any(ExerciseId.class));
     }
@@ -33,7 +33,7 @@ public class FakeExerciseRepositoryTest {
         ExerciseId exerciseId = new ExerciseId("42");
         when(exercise.getExerciseId()).thenReturn(exerciseId);
 
-        exerciseRepository.save(new WorkoutId("1"), exercise);
+        exerciseRepository.save(new WorkoutId("1"), 0, exercise);
 
         assertThat(exercise.getExerciseId(), equalTo(exerciseId));
     }
@@ -42,7 +42,7 @@ public class FakeExerciseRepositoryTest {
     public void testSaveWithPosition_shouldGenerateNewId() throws Exception {
         Exercise exercise = mock(Exercise.class);
 
-        exerciseRepository.save(new WorkoutId("1"), exercise, 1);
+        exerciseRepository.save(new WorkoutId("1"), 1, exercise);
 
         verify(exercise).setExerciseId(any(ExerciseId.class));
     }
