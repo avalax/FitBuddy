@@ -89,6 +89,11 @@ public class SQLiteSetRepositoryTest {
     }
 
     @Test
+    public void deleteSetWithNull_shouldDoNothing() throws Exception {
+        setRepository.delete(null);
+    }
+
+    @Test
     public void deleteSetBySetId_shouldRemoveItFromPersistence() throws Exception {
         double weight = 42;
         int maxReps = 12;

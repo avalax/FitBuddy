@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -39,8 +38,7 @@ public class SQLiteSetRepository implements SetRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        int deleteCount = database.delete("sets", "id=?", new String[]{id.id()});
-        Log.d("delete set with id" + id, String.valueOf(deleteCount));
+        database.delete("sets", "id=?", new String[]{id.id()});
         database.close();
     }
 

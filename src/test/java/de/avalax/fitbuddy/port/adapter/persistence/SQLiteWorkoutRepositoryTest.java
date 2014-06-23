@@ -149,6 +149,11 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
+    public void deleteWorkoutWithNull_shouldDoNothing() throws Exception {
+        workoutRepository.delete(null);
+    }
+
+    @Test
     public void deleteWorkoutByWorkoutId_shouldRemoveItFromPersistence() throws Exception {
         WorkoutId workoutId = createWorkout("workout1");
 

@@ -130,6 +130,11 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
+    public void deleteExerciseWithNull_shouldDoNothing() throws Exception {
+        exerciseRepository.delete(null);
+    }
+
+    @Test
     public void deleteExerciseByExerciseId_shouldRemoveItFromPersistence() throws Exception {
         ExerciseId exerciseId = createExercise("name");
 
