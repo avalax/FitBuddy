@@ -14,7 +14,6 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -25,12 +24,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -38,6 +35,12 @@ public class SQLiteExerciseRepositoryTest {
     private ExerciseRepository exerciseRepository;
     private SetRepository setRepository;
     private WorkoutId workoutId;
+
+    private ExerciseId createExercise(String name) {
+        Exercise exercise = new BasicExercise(name, new ArrayList<Set>());
+        exerciseRepository.save(workoutId, exercise);
+        return exercise.getExerciseId();
+    }
 
     private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
@@ -95,9 +98,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void loadByExerciseId_shouldReturnExerciseWithExerciseId() {
-        Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
-        exerciseRepository.save(workoutId, exercise);
-        ExerciseId exerciseId = exercise.getExerciseId();
+        ExerciseId exerciseId = createExercise("name");
 
         Exercise loadExercise = exerciseRepository.load(exerciseId);
         assertThat(loadExercise.getExerciseId(), equalTo(exerciseId));
@@ -123,16 +124,38 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
-    @Ignore("imlement loadAllExercisesBelongsTo_shouldReturnExercisesOfWorkout")
     public void loadAllExercisesBelongsTo_shouldReturnExercisesOfWorkout() throws Exception {
-        fail();
+        ExerciseId exerciseId1 = createExercise("name");
+        ExerciseId exerciseId2 = createExercise("name");
+
+        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+
+        assertThat(exercises.size(), equalTo(2));
+        assertThat(exercises.get(0).getExerciseId(), equalTo(exerciseId1));
+        assertThat(exercises.get(1).getExerciseId(), equalTo(exerciseId2));
+    }
+
+    @Test
+    public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
+        ArrayList<Set> sets = new ArrayList<>();
+        Set set1 = new BasicSet(42, 12);
+        sets.add(set1);
+        Set set2 = new BasicSet(40, 10);
+        sets.add(set2);
+        Exercise exercise = new BasicExercise("name", sets);
+
+        exerciseRepository.save(workoutId, exercise);
+        when(setRepository.allSetsBelongsTo(exercise.getExerciseId())).thenReturn(sets);
+
+        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        assertThat(exercises.get(0).getSets().size(), equalTo(2));
+        assertThat(exercises.get(0).getSets().get(0), equalTo(set1));
+        assertThat(exercises.get(0).getSets().get(1), equalTo(set2));
     }
 
     @Test
     public void deleteExerciseByExerciseId_shouldRemoveItFromPersistence() throws Exception {
-        Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
-        exerciseRepository.save(workoutId, exercise);
-        ExerciseId exerciseId = exercise.getExerciseId();
+        ExerciseId exerciseId = createExercise("name");
 
         exerciseRepository.delete(exerciseId);
 

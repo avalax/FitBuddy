@@ -1,14 +1,17 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteSetRepository implements SetRepository {
@@ -43,7 +46,20 @@ public class SQLiteSetRepository implements SetRepository {
 
     @Override
     public List<Set> allSetsBelongsTo(ExerciseId exerciseId) {
-        return null;
+        List<Set> sets = new ArrayList<>();
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
+        Cursor cursor = database.query("sets", new String[]{"id", "weight", "reps"},
+                "exercise_id=?", new String[]{exerciseId.id()}, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Set set = new BasicSet(cursor.getDouble(1), cursor.getInt(2));
+                set.setId(new SetId(cursor.getString(0)));
+                sets.add(set);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return sets;
     }
 
     private ContentValues getContentValues(ExerciseId exerciseId, Set set) {

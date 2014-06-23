@@ -9,13 +9,10 @@ import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,10 +59,10 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
                 "workout_id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                List<Set> sets = new ArrayList<>();
+                ExerciseId exerciseId = new ExerciseId(cursor.getString(0));
+                List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
                 Exercise exercise = new BasicExercise(cursor.getString(1), sets);
-                exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
-                addSets(database, exercise.getExerciseId(), sets);
+                exercise.setExerciseId(exerciseId);
                 exercises.add(exercise);
             } while (cursor.moveToNext());
         }
@@ -81,20 +78,6 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         return values;
     }
 
-    private void addSets(SQLiteDatabase database, ExerciseId exerciseId, List<Set> sets) {
-        Cursor cursor = database.query("sets", new String[]{"id", "weight", "reps"},
-                "exercise_id=?", new String[]{exerciseId.id()}, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Set set = new BasicSet(cursor.getDouble(1), cursor.getInt(2));
-                set.setId(new SetId(cursor.getString(0)));
-                sets.add(set);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-    }
-
-
     @Override
     public void save(WorkoutId id, Exercise exercise, int position) {
         //TODO: save Exercise @position
@@ -108,9 +91,9 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
                 "id=?", new String[]{exerciseId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
-                List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
-                exercise = new BasicExercise(cursor.getString(1), sets);
-                exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
+            List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
+            exercise = new BasicExercise(cursor.getString(1), sets);
+            exercise.setExerciseId(new ExerciseId(cursor.getString(0)));
         }
         cursor.close();
         database.close();
