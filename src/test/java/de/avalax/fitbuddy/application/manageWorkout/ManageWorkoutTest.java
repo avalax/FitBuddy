@@ -141,6 +141,15 @@ public class ManageWorkoutTest {
 
         public class exerciseManipulation {
             @Test
+            public void replaceExercise_shouldSaveExerciseToPersistence() throws Exception {
+                manageWorkout.replaceExercise(42, exercise);
+
+                verify(workout).replaceExercise(exercise);
+                verify(exerciseRepository).save(workout.getWorkoutId(), 42, exercise);
+                assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
+            }
+
+            @Test
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
                 manageWorkout.deleteExercise(exercise);
 

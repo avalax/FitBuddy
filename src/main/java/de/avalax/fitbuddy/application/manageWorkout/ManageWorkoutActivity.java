@@ -24,9 +24,6 @@ import de.avalax.fitbuddy.application.FitbuddyApplication;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.WorkoutParseException;
 import de.avalax.fitbuddy.application.WorkoutSession;
-import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseChangedEvent;
-import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseDeletedEvent;
-import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
@@ -223,18 +220,6 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     }
                 })
                 .show();
-    }
-
-    @Subscribe
-    public void onExerciseChanged(ExerciseChangedEvent event) {
-        manageWorkout.replaceExercise(event.exercise);
-        bus.post(new ExerciseListInvalidatedEvent());
-    }
-
-    @Subscribe
-    public void onExerciseDeleted(ExerciseDeletedEvent event) {
-        manageWorkout.deleteExercise(event.exercise);
-        bus.post(new ExerciseListInvalidatedEvent());
     }
 
     @Subscribe

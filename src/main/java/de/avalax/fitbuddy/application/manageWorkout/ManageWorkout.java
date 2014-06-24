@@ -120,8 +120,9 @@ public class ManageWorkout {
         }
     }
 
-    public void replaceExercise(Exercise exercise) {
+    public void replaceExercise(int position, Exercise exercise) {
         workout.replaceExercise(exercise);
+        exerciseRepository.save(workout.getWorkoutId(), position, exercise);
         setUnsavedChanges(false);
     }
 

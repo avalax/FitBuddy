@@ -14,8 +14,8 @@ import de.avalax.fitbuddy.application.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.application.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkout;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.set.Set;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     private Exercise exercise;
 
     private EditExerciseDialogFragment editExerciseDialogFragment;
+    private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        position = getIntent().getIntExtra("position", -1);
         editExerciseDialogFragment = EditExerciseDialogFragment.newInstance(exercise);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editExerciseDialogFragment).commit();
@@ -57,7 +59,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_save_exercise) {
-            manageWorkout.replaceExercise(exercise);
+            manageWorkout.replaceExercise(position, exercise);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise) {
