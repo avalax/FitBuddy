@@ -206,6 +206,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void editWorkoutName() {
+        //TODO: make a DialogFragment
         final EditText input = new EditText(this);
         input.setText(manageWorkout.getWorkout().getName());
         new AlertDialog.Builder(this)
@@ -214,7 +215,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (!manageWorkout.getWorkout().getName().equals(input.getText().toString())) {
-                            manageWorkout.getWorkout().setName(input.getText().toString());
+                            manageWorkout.changeName(input.getText().toString());
                             initActionNavigationBar();
                         }
                     }

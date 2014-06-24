@@ -85,6 +85,15 @@ public class ManageWorkoutTest {
         }
 
         @Test
+        public void changeWorkoutName_shouldSavePersistence() throws Exception {
+            String name = "new name";
+            manageWorkout.changeName(name);
+
+            verify(workout).setName(name);
+            verify(workoutRepository).save(workout);
+        }
+
+        @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
             manageWorkout.deleteWorkout();
 

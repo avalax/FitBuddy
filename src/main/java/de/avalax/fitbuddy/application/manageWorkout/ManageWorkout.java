@@ -153,4 +153,9 @@ public class ManageWorkout {
     public boolean hasDeletedExercise() {
         return deletedExercise != null;
     }
+
+    public void changeName(String name) {
+        workout.setName(name);
+        workoutRepository.save(workout);
+    }
 }
