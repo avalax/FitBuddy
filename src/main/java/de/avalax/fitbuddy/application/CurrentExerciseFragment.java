@@ -86,6 +86,7 @@ public class CurrentExerciseFragment extends Fragment {
         setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
         setViews(exercisePosition);
         updateWorkoutProgress(exercisePosition);
+        updatePage();
     }
 
     private void setReps(int moved) {
@@ -107,5 +108,9 @@ public class CurrentExerciseFragment extends Fragment {
 
     private void updateWorkoutProgress(int exercisePosition) {
         ((MainActivity) getActivity()).updateWorkoutProgress(exercisePosition);
+    }
+
+    private void updatePage() {
+        ((MainActivity) getActivity()).updatePage(exercisePosition);
     }
 }
