@@ -14,7 +14,7 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
     private Context context;
     private int createRessourceId;
 
-    public FitbuddySQLiteOpenHelper(String name,int version, Context context, int createRessourceId) {
+    public FitbuddySQLiteOpenHelper(String name, int version, Context context, int createRessourceId) {
         super(context, name, null, version);
         this.context = context;
         this.createRessourceId = createRessourceId;
@@ -28,7 +28,7 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
     }
-    
+
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.d(getDatabaseName(), "Create new database");
