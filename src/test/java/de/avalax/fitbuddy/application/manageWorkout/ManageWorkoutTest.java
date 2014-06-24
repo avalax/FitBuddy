@@ -5,7 +5,11 @@ import de.avalax.fitbuddy.application.ExerciseFactory;
 import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetId;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -14,12 +18,11 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -32,6 +35,8 @@ public class ManageWorkoutTest {
     private WorkoutRepository workoutRepository;
     @Mock
     private ExerciseRepository exerciseRepository;
+    @Mock
+    private SetRepository setRepository;
     @Mock
     private WorkoutFactory workoutFactory;
     @Mock
@@ -160,10 +165,13 @@ public class ManageWorkoutTest {
 
             @Test
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("42");
+                when(exercise.getExerciseId()).thenReturn(exerciseId);
+
                 manageWorkout.deleteExercise(exercise);
 
                 verify(workout).deleteExercise(exercise);
-                verify(exerciseRepository).delete(exercise.getExerciseId());
+                verify(exerciseRepository).delete(exerciseId);
                 assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.VISIBLE));
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(true));
             }
@@ -218,6 +226,28 @@ public class ManageWorkoutTest {
 
                 manageWorkout.undoDeleteWorkout();
                 assertThat(manageWorkout.hasDeletedExercise(), equalTo(false));
+            }
+
+            @Test
+            public void replaceSets_shouldDeleteOldSetsAndSaveNewSets() throws Exception {
+                SetId setIdToDelete = new SetId("42");
+                Set setToDelete = mock(Set.class);
+                ExerciseId exerciseId = new ExerciseId("21");
+                List<Set> setsToDelete = new ArrayList<>();
+                setsToDelete.add(setToDelete);
+                when(exercise.getExerciseId()).thenReturn(exerciseId);
+                when(setToDelete.getSetId()).thenReturn(setIdToDelete);
+                when(exercise.getSets()).thenReturn(setsToDelete);
+
+                List<Set> setsToAdd = new ArrayList<>();
+                Set setToAdd = mock(Set.class);
+                setsToAdd.add(setToAdd);
+
+                manageWorkout.replaceSets(exercise, setsToAdd);
+
+                InOrder inOrder = inOrder(setRepository);
+                inOrder.verify(setRepository).delete(setIdToDelete);
+                inOrder.verify(setRepository).save(exerciseId, setToAdd);
             }
         }
     }

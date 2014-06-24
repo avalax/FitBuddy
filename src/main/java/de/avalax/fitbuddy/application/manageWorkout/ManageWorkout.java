@@ -6,6 +6,8 @@ import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
@@ -23,6 +25,8 @@ public class ManageWorkout {
 
     private ExerciseRepository exerciseRepository;
 
+    private SetRepository setRepository;
+
     private WorkoutSession workoutSession;
 
     private boolean unsavedChanges;
@@ -32,10 +36,11 @@ public class ManageWorkout {
     private Exercise deletedExercise;
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
+        this.setRepository = setRepository;
         this.workoutFactory = workoutFactory;
         this.exerciseFactory = exerciseFactory;
     }
@@ -157,5 +162,15 @@ public class ManageWorkout {
     public void changeName(String name) {
         workout.setName(name);
         workoutRepository.save(workout);
+    }
+
+    public void replaceSets(Exercise exercise, List<Set> sets) {
+        for (Set set : exercise.getSets()) {
+            setRepository.delete(set.getSetId());
+        }
+        for (Set set : sets) {
+            setRepository.save(exercise.getExerciseId(), set);
+        }
+        exercise.setSets(sets);
     }
 }

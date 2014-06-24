@@ -51,16 +51,19 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutRepository provideWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, ExerciseRepository exerciseRepository) {
-        //return new FakeWorkoutRepository();
         return new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
     }
 
     @Provides
     @Singleton
-    ExerciseRepository provideExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
-        //return new FakeExerciseRepository();
-        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
+    ExerciseRepository provideExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper, SetRepository setRepository) {
         return new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
+    }
+
+    @Provides
+    @Singleton
+    SetRepository provideSetRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+        return new SQLiteSetRepository(sqLiteOpenHelper);
     }
 
     @Provides
@@ -83,8 +86,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
-        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, workoutFactory, exerciseFactory);
+    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
+        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutFactory, exerciseFactory);
     }
 
     @Provides

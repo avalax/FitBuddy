@@ -92,7 +92,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         for (int i = 0; i < setCount; i++) {
             sets.add(new BasicSet(weight, maxReps));
         }
-        exercise.setSets(sets);
+        manageWorkout.replaceSets(exercise, sets);
         editExerciseDialogFragment.init();
     }
 
