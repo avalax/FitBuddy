@@ -124,6 +124,9 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             manageWorkout.setWorkout(manageWorkout.getWorkoutList().get(0).getWorkoutId());
             initActionNavigationBar();
             exerciseListFragment.initListView();
+        } else if (item.getItemId() == R.id.action_add_exercise) {
+            manageWorkout.createExercise();
+            exerciseListFragment.initListView();
         }
         return true;
     }
