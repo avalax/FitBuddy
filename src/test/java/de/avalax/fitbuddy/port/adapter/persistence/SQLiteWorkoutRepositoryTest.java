@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -78,6 +79,23 @@ public class SQLiteWorkoutRepositoryTest {
         LinkedList<Exercise> loadedExercises = exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId());
         assertThat(loadedExercises.size(), equalTo(1));
         assertThat(loadedExercises.get(0), equalTo(exercise));
+    }
+
+    @Test
+    public void updateWorkout_shouldSaveTheCorrectEntity() {
+        WorkoutId workoutId1 = createWorkout("name1");
+        WorkoutId workoutId2 = createWorkout("name2");
+
+        Workout workout = workoutRepository.load(workoutId2);
+        workout.setName("newname2");
+        workoutRepository.save(workout);
+
+        Workout workout1 = workoutRepository.load(workoutId1);
+        Workout workout2 = workoutRepository.load(workoutId2);
+        assertThat(workout1.getWorkoutId(), equalTo(workoutId1));
+        assertThat(workout1.getName(), equalTo("name1"));
+        assertThat(workout2.getWorkoutId(), equalTo(workoutId2));
+        assertThat(workout2.getName(), equalTo("newname2"));
     }
 
     @Test

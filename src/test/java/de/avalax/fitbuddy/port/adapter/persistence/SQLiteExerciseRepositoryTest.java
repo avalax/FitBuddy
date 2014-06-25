@@ -81,6 +81,22 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
+    public void updateExercises_shouldSaveTheCorrectEntity() {
+        ExerciseId exerciseId1 = createExercise(0,"name1");
+        ExerciseId exerciseId2 = createExercise(1,"name2");
+
+        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        exercises.get(1).setName("newname2");
+        exerciseRepository.save(workoutId, 1, exercises.get(1));
+
+        LinkedList<Exercise> reloadedExercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        assertThat(reloadedExercises.get(0).getExerciseId(), equalTo(exerciseId1));
+        assertThat(reloadedExercises.get(0).getName(), equalTo("name1"));
+        assertThat(reloadedExercises.get(1).getExerciseId(), equalTo(exerciseId2));
+        assertThat(reloadedExercises.get(1).getName(), equalTo("newname2"));
+    }
+
+    @Test
     public void saveExercise_shouldAlsoSaveSets() {
         List<Set> sets = new ArrayList<>();
         Set set = new BasicSet(42, 12);

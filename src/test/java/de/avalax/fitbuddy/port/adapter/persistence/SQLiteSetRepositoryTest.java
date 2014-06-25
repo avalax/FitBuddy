@@ -89,6 +89,22 @@ public class SQLiteSetRepositoryTest {
     }
 
     @Test
+    public void updateSets_shouldSaveTheCorrectEntity() {
+        Set set1 = createSet(42, 12);
+        createSet(40, 10);
+
+        List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
+        Set loadedSet2 = sets.get(1);
+        loadedSet2.setWeight(100);
+
+        setRepository.save(exerciseId, loadedSet2);
+        List<Set> reloadedSets = setRepository.allSetsBelongsTo(exerciseId);
+
+        assertThat(reloadedSets.get(0).getWeight(), equalTo(set1.getWeight()));
+        assertThat(reloadedSets.get(1).getWeight(), equalTo(loadedSet2.getWeight()));
+    }
+
+    @Test
     public void deleteSetWithNull_shouldDoNothing() throws Exception {
         setRepository.delete(null);
     }

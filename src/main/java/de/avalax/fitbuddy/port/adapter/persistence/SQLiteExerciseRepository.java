@@ -61,7 +61,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             long id = database.insert("exercise", null, getContentValues(workoutId, position, exercise));
             exercise.setExerciseId(new ExerciseId(String.valueOf(id)));
         } else {
-            database.update("exercise", getContentValues(workoutId, position, exercise), "id=?", new String[]{workoutId.id()});
+            database.update("exercise", getContentValues(workoutId, position, exercise), "id=?", new String[]{exercise.getExerciseId().id()});
         }
         database.close();
         for (Set set : exercise.getSets()) {
