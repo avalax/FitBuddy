@@ -6,21 +6,23 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.application.FitbuddyApplication;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.editExercise.EditExerciseActivity;
-import de.avalax.fitbuddy.application.manageWorkout.events.ExerciseListInvalidatedEvent;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 public class ExerciseListFragment extends ListFragment {
     @Inject
@@ -42,7 +44,10 @@ public class ExerciseListFragment extends ListFragment {
 
     protected void initListView() {
         //TODO: setdata using adapter.setData(data);
-        setListAdapter(new ExerciseAdapter(getActivity(), R.layout.item_exercise, manageWorkout.getWorkout().getExercises()));
+        Workout workout = manageWorkout.getWorkout();
+        List<Exercise> exercises = workout != null ? workout.getExercises() : Collections.<Exercise>emptyList();
+        ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
+        setListAdapter(adapter);
         footer.setVisibility(manageWorkout.unsavedChangesVisibility());
         TextView unsavedChangesTextView = (TextView) footer.findViewById(R.id.unsavedChangesTextView);
         if (manageWorkout.hasDeletedExercise()) {
@@ -83,7 +88,7 @@ public class ExerciseListFragment extends ListFragment {
     protected void undoChanges() {
         if (manageWorkout.hasDeletedExercise()) {
             manageWorkout.undoDeleteExercise();
-            bus.post(new ExerciseListInvalidatedEvent());
+            initListView();
         } else if (manageWorkout.hasDeletedWorkout()) {
             manageWorkout.undoDeleteWorkout();
             bus.post(new WorkoutListInvalidatedEvent());
@@ -92,12 +97,11 @@ public class ExerciseListFragment extends ListFragment {
 
     @OnClick(android.R.id.empty)
     protected void addExercise() {
+        if (manageWorkout.getWorkout() == null) {
+            manageWorkout.createWorkout();
+            bus.post(new WorkoutListInvalidatedEvent());
+        }
         manageWorkout.createExercise();
-        bus.post(new ExerciseListInvalidatedEvent());
-    }
-
-    @Subscribe
-    public void onExerciseListInvalidated(ExerciseListInvalidatedEvent event) {
         initListView();
     }
 }

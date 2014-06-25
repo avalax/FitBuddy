@@ -63,6 +63,7 @@ public class ManageWorkout {
 
     public void switchWorkout() {
         workoutSession.switchWorkout(workout.getWorkoutId());
+        setUnsavedChanges(false);
     }
 
     public List<WorkoutListEntry> getWorkoutList() {
@@ -72,6 +73,7 @@ public class ManageWorkout {
     public void createWorkout() {
         workout = workoutFactory.createNew();
         workoutRepository.save(workout);
+        setUnsavedChanges(false);
     }
 
     public void createWorkoutFromJson(String json) {
@@ -79,11 +81,14 @@ public class ManageWorkout {
         if (workoutFromJson != null) {
             workout = workoutFromJson;
             workoutRepository.save(workoutFromJson);
-            unsavedChanges = false;
+            setUnsavedChanges(false);
         }
     }
 
     public void deleteWorkout() {
+        if (workout == null) {
+            return;
+        }
         workoutRepository.delete(workout.getWorkoutId());
         deletedExercise = null;
         setUnsavedChanges(workout);
@@ -135,6 +140,7 @@ public class ManageWorkout {
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
         exerciseRepository.save(workout.getWorkoutId(), workout.getExerciseCount() - 1, exercise);
+        setUnsavedChanges(false);
     }
 
     public void createExerciseBefore(Exercise exercise) {
@@ -142,6 +148,7 @@ public class ManageWorkout {
         List<Exercise> exercises = workout.getExercises();
         workout.addExercise(exercises.indexOf(exercise), newExercise);
         exerciseRepository.save(workout.getWorkoutId(), exercises.indexOf(newExercise), newExercise);
+        setUnsavedChanges(false);
     }
 
     public void createExerciseAfter(Exercise exercise) {
@@ -149,6 +156,7 @@ public class ManageWorkout {
         List<Exercise> exercises = workout.getExercises();
         workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
         exerciseRepository.save(workout.getWorkoutId(), exercises.indexOf(newExercise), newExercise);
+        setUnsavedChanges(false);
     }
 
     public boolean hasDeletedWorkout() {
@@ -162,6 +170,7 @@ public class ManageWorkout {
     public void changeName(String name) {
         workout.setName(name);
         workoutRepository.save(workout);
+        setUnsavedChanges(false);
     }
 
     public void replaceSets(Exercise exercise, List<Set> sets) {
@@ -172,5 +181,6 @@ public class ManageWorkout {
             setRepository.save(exercise.getExerciseId(), set);
         }
         exercise.setSets(sets);
+        setUnsavedChanges(false);
     }
 }

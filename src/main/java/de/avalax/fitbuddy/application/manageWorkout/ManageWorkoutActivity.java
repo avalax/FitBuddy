@@ -117,11 +117,10 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
             List<WorkoutListEntry> workouts = manageWorkout.getWorkoutList();
-            if (workouts.size() == 0) {
-                manageWorkout.createWorkout();
+            if (workouts.size() > 0) {
+                WorkoutId workoutId = workouts.get(0).getWorkoutId();
+                manageWorkout.setWorkout(workoutId);
             }
-            //TODO: refactor this to mangageWorkout.loadFirstWorkout()
-            manageWorkout.setWorkout(manageWorkout.getWorkoutList().get(0).getWorkoutId());
             initActionNavigationBar();
             exerciseListFragment.initListView();
         } else if (item.getItemId() == R.id.action_add_exercise) {
