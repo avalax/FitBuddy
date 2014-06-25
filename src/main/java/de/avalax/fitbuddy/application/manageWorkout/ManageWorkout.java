@@ -62,6 +62,9 @@ public class ManageWorkout {
     }
 
     public void switchWorkout() {
+        if (workout == null) {
+            return;
+        }
         workoutSession.switchWorkout(workout.getWorkoutId());
         setUnsavedChanges(false);
     }

@@ -114,6 +114,10 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         } else if (item.getItemId() == R.id.action_add_workout) {
             showNewWorkoutAltertDialog();
         } else if (item.getItemId() == R.id.action_change_workout_name) {
+            if (manageWorkout.getWorkout() == null) {
+                manageWorkout.createWorkout();
+                initActionNavigationBar();
+            }
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
             manageWorkout.deleteWorkout();
@@ -125,6 +129,10 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             initActionNavigationBar();
             exerciseListFragment.initListView();
         } else if (item.getItemId() == R.id.action_add_exercise) {
+            if (manageWorkout.getWorkout() == null) {
+                manageWorkout.createWorkout();
+                initActionNavigationBar();
+            }
             manageWorkout.createExercise();
             exerciseListFragment.initListView();
         }

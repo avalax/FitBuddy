@@ -78,13 +78,17 @@ public class ManageWorkoutTest {
     }
 
     @Test
-    public void deleteUnknwonWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
+    public void deleteUnknownWorkout_shouldDoNothing() throws Exception {
         manageWorkout.deleteWorkout();
 
         verifyNoMoreInteractions(workoutRepository);
-        assertThat(manageWorkout.getWorkout(), equalTo(null));
-        assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
-        assertThat(manageWorkout.hasDeletedWorkout(), equalTo(false));
+    }
+
+    @Test
+    public void switchWorkoutWithoutAWorkout_shouldNotChangeWorkout() throws Exception {
+        manageWorkout.switchWorkout();
+
+        verifyNoMoreInteractions(workoutSession);
     }
 
     public class givenAWorkoutWithOneExercise {
