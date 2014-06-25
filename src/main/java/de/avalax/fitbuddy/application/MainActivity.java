@@ -75,7 +75,9 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         if (workout == null || workout.getExerciseCount() == 0) {
             switchWorkout();
         } else {
-            setTitle(workout.getExercise(position).getName());
+            //TODO: 3x times - unnamed exercise from resources & move to a ui helper
+            Exercise exercise = workout.getExercise(position);
+            setTitle(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
             if (menuItem != null) {
                 menuItem.setTitle(exerciseWeightText(position));
                 updateWorkoutProgress(position);

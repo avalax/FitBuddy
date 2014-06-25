@@ -53,7 +53,8 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     protected void init() {
-        exerciseNameEditText.setText(exercise.getName());
+        //TODO: 3x times - unnamed exercise from resources & move to a ui helper
+        exerciseNameEditText.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
         exerciseWeightExitText.setText(String.valueOf(exercise.getWeight()));
         exerciseRepsTextView.setText(String.valueOf(exercise.getMaxReps()));
         exerciseSetsTextView.setText(String.valueOf(exercise.getMaxSets()));

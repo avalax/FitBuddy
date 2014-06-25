@@ -60,7 +60,7 @@ public class WorkoutFactoryTest {
     public void createNewWorkout_shouldReturnAnEmptyWorkout() throws Exception {
         Workout workout = workoutFactory.createNew();
 
-        assertThat(workout.getName(), equalTo("new workout"));
+        assertThat(workout.getName(), equalTo(""));
         assertThat(workout.getExerciseCount(), is(0));
     }
 }

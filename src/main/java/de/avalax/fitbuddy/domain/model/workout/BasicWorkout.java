@@ -14,6 +14,7 @@ public class BasicWorkout implements Workout {
 
     public BasicWorkout(LinkedList<Exercise> exercises) {
         this.exercises = exercises;
+        this.name = "";
     }
 
     @Override
@@ -51,7 +52,11 @@ public class BasicWorkout implements Workout {
 
     @Override
     public void setName(String name) {
-        this.name = name;
+        if (name == null) {
+            this.name = "";
+        } else {
+            this.name = name.trim();
+        }
     }
 
     @Override

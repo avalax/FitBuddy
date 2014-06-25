@@ -3,9 +3,7 @@ package de.avalax.fitbuddy.application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     protected WorkoutSession workoutSession;
@@ -24,17 +22,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         Workout workout = workoutSession.getWorkout();
         return workout != null ? workout.getExerciseCount() : 0;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        Workout workout = workoutSession.getWorkout();
-        try {
-            Exercise currentExercise = workout.getExercise(position);
-            return currentExercise.getName();
-        } catch (ExerciseNotAvailableException e) {
-            return "";
-        }
     }
 
     @Override

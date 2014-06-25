@@ -1,12 +1,12 @@
 package de.avalax.fitbuddy.application;
 
 import com.google.gson.Gson;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,15 +25,15 @@ public class WorkoutFactory {
             LinkedList<Exercise> exercices = new LinkedList<>();
             for (ArrayList exercise : exercises) {
                 List<Set> sets = new ArrayList<>();
-                for(int i=0;i<(double)exercise.get(2);i++) {
+                for (int i = 0; i < (double) exercise.get(2); i++) {
                     double weight = (double) exercise.get(3);
-                    int maxReps =  (int)((double) exercise.get(1));
+                    int maxReps = (int) ((double) exercise.get(1));
                     sets.add(new BasicSet(weight, maxReps));
                 }
-                exercices.add(new BasicExercise((String)exercise.get(0),sets));
+                exercices.add(new BasicExercise((String) exercise.get(0), sets));
             }
             BasicWorkout workout = new BasicWorkout(exercices);
-            workout.setName((String)s.get(0));
+            workout.setName((String) s.get(0));
             return workout;
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
@@ -42,8 +42,6 @@ public class WorkoutFactory {
 
     public Workout createNew() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        BasicWorkout workout = new BasicWorkout(exercises);
-        workout.setName("new workout");
-        return workout;
+        return new BasicWorkout(exercises);
     }
 }

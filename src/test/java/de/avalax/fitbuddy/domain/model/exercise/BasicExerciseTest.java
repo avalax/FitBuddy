@@ -85,10 +85,23 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void setNameNullValue_shouldSetNameToEmptyString() throws Exception {
+        exercise.setName(null);
+        assertThat(exercise.getName(), equalTo(""));
+    }
+
+    @Test
     public void setName_shouldSetName() throws Exception {
         String name = "newName";
         exercise.setName(name);
         assertThat(exercise.getName(), equalTo(name));
+    }
+
+    @Test
+    public void setNameWithSpace_shouldSetTrimedName() throws Exception {
+        String name = " newName ";
+        exercise.setName(name);
+        assertThat(exercise.getName(), equalTo("newName"));
     }
 
     @Test

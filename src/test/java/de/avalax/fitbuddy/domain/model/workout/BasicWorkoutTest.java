@@ -132,11 +132,24 @@ public class BasicWorkoutTest {
     }
 
     @Test
+    public void setNameNullValue_shouldSetNameToEmptyString() throws Exception {
+        workout.setName(null);
+        assertThat(workout.getName(), equalTo(""));
+    }
+
+    @Test
     public void getName_shouldReturnName() throws Exception {
         String name = "NameOfWorkout";
 
         workout.setName(name);
         assertThat(workout.getName(), equalTo(name));
+    }
+
+    @Test
+    public void setNameWithSpace_shouldSetTrimedName() throws Exception {
+        String name = " newName ";
+        workout.setName(name);
+        assertThat(workout.getName(), equalTo("newName"));
     }
 
     @Test

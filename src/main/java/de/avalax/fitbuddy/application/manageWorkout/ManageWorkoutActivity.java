@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SpinnerAdapter;
@@ -209,7 +210,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     private void editWorkoutName() {
         //TODO: make a DialogFragment
-        final EditText input = new EditText(this);
+        View view = getLayoutInflater().inflate(R.layout.fragment_edit_workout_name, null);
+        final EditText input = (EditText) view.findViewById(R.id.nameEditText);
         input.setText(manageWorkout.getWorkout().getName());
         new AlertDialog.Builder(this)
                 .setTitle("workout name")
