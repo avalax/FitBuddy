@@ -20,9 +20,9 @@ public class WorkoutFactory {
             throw new WorkoutParseException();
         }
         try {
-            ArrayList s = gson.fromJson(contents, ArrayList.class);
-            ArrayList<ArrayList> exercises = (ArrayList) s.get(1);
-            LinkedList<Exercise> exercices = new LinkedList<>();
+            List s = gson.fromJson(contents, ArrayList.class);
+            List<ArrayList> exercises = (ArrayList) s.get(1);
+            LinkedList<Exercise> exerciseList = new LinkedList<>();
             for (ArrayList exercise : exercises) {
                 List<Set> sets = new ArrayList<>();
                 for (int i = 0; i < (double) exercise.get(2); i++) {
@@ -30,11 +30,9 @@ public class WorkoutFactory {
                     int maxReps = (int) ((double) exercise.get(1));
                     sets.add(new BasicSet(weight, maxReps));
                 }
-                exercices.add(new BasicExercise((String) exercise.get(0), sets));
+                exerciseList.add(new BasicExercise((String) exercise.get(0), sets));
             }
-            BasicWorkout workout = new BasicWorkout(exercices);
-            workout.setName((String) s.get(0));
-            return workout;
+            return new BasicWorkout((String) s.get(0),exerciseList);
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
         }
@@ -42,6 +40,6 @@ public class WorkoutFactory {
 
     public Workout createNew() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        return new BasicWorkout(exercises);
+        return new BasicWorkout("", exercises);
     }
 }

@@ -12,8 +12,13 @@ public class BasicWorkout implements Workout {
     private String name;
     private WorkoutId workoutId;
 
-    public BasicWorkout(LinkedList<Exercise> exercises) {
+    public BasicWorkout(String name,LinkedList<Exercise> exercises) {
         this.exercises = exercises;
+        this.name = name;
+    }
+
+    public BasicWorkout() {
+        this.exercises = new LinkedList<>();
         this.name = "";
     }
 

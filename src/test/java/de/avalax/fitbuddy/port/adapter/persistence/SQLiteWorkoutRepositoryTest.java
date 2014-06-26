@@ -5,7 +5,6 @@ import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -33,7 +32,7 @@ public class SQLiteWorkoutRepositoryTest {
     private ExerciseRepository exerciseRepository;
 
     private WorkoutId createWorkout(String name) {
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
         workout.setName(name);
         workoutRepository.save(workout);
         return workout.getWorkoutId();
@@ -50,7 +49,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void saveUnpersistedWorkout_shouldAssignNewWorkoutId() {
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
 
         assertThat(workout.getWorkoutId(), nullValue());
         workoutRepository.save(workout);
@@ -59,7 +58,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void savePersistedWorkout_shouldKeepWorkoutId() {
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -72,7 +71,7 @@ public class SQLiteWorkoutRepositoryTest {
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise = new BasicExercise("exercise", new ArrayList<Set>());
         exercises.add(exercise);
-        Workout workout = new BasicWorkout(exercises);
+        Workout workout = new BasicWorkout("name",exercises);
 
         workoutRepository.save(workout);
 
@@ -106,7 +105,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithWorkoutId() {
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -121,7 +120,7 @@ public class SQLiteWorkoutRepositoryTest {
         exercises.add(exercise1);
         Exercise exercise2 = new BasicExercise("exercise2", new ArrayList<Set>());
         exercises.add(exercise2);
-        Workout workout = new BasicWorkout(exercises);
+        Workout workout = new BasicWorkout("name",exercises);
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -134,7 +133,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldUpdateName() {
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 

@@ -21,7 +21,6 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,7 +43,7 @@ public class ManageWorkoutTest {
     @Mock
     private WorkoutSession workoutSession;
     @Spy
-    private Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+    private Workout workout = new BasicWorkout();
     @InjectMocks
     private ManageWorkout manageWorkout;
     @Mock

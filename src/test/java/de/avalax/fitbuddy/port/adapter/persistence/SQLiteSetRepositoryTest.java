@@ -52,7 +52,7 @@ public class SQLiteSetRepositoryTest {
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
         exercises.add(exercise);
-        Workout workout = new BasicWorkout(exercises);
+        Workout workout = new BasicWorkout("name",exercises);
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();
     }

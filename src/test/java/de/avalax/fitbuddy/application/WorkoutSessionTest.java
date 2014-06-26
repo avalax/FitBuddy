@@ -31,7 +31,8 @@ public class WorkoutSessionTest {
         when(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1")).thenReturn(id);
         when(workoutRepository.load(new WorkoutId(id))).thenReturn(workout);
         when(sharedPreferences.edit()).thenReturn(editor);
-        workoutSession = new WorkoutSession(sharedPreferences, workoutRepository);
+        WorkoutFactory workoutFactory = new WorkoutFactory();
+        workoutSession = new WorkoutSession(sharedPreferences, workoutRepository, workoutFactory);
     }
 
     @Test

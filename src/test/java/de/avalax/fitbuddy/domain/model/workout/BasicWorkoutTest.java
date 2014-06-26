@@ -33,14 +33,14 @@ public class BasicWorkoutTest {
     public void setUp() throws Exception {
         exerciseIndex = 0;
         exercises = new LinkedList<>();
-        workout = new BasicWorkout(exercises);
+        workout = new BasicWorkout("",exercises);
     }
 
     @Test
     public void testSameIdentity() throws Exception {
-        Workout a1 = new BasicWorkout(exercises);
+        Workout a1 = new BasicWorkout();
         a1.setWorkoutId(new WorkoutId("42"));
-        Workout a2 = new BasicWorkout(exercises);
+        Workout a2 = new BasicWorkout();
         a2.setWorkoutId(new WorkoutId("42"));
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
@@ -48,9 +48,9 @@ public class BasicWorkoutTest {
 
     @Test
     public void testDifferentIdentity() throws Exception {
-        Workout a1 = new BasicWorkout(exercises);
+        Workout a1 = new BasicWorkout();
         a1.setWorkoutId(new WorkoutId("21"));
-        Workout a2 = new BasicWorkout(exercises);
+        Workout a2 = new BasicWorkout();
         a2.setWorkoutId(new WorkoutId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
@@ -58,8 +58,8 @@ public class BasicWorkoutTest {
 
     @Test
     public void testDifferentIdentityWithNoId() throws Exception {
-        Workout a1 = new BasicWorkout(exercises);
-        Workout a2 = new BasicWorkout(exercises);
+        Workout a1 = new BasicWorkout();
+        Workout a2 = new BasicWorkout();
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }

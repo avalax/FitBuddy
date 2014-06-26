@@ -46,7 +46,7 @@ public class SQLiteExerciseRepositoryTest {
 
     private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        Workout workout = new BasicWorkout(new LinkedList<Exercise>());
+        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         workoutId = workout.getWorkoutId();
     }
