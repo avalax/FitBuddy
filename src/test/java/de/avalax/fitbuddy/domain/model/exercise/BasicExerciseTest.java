@@ -81,7 +81,7 @@ public class BasicExerciseTest {
         List<Set> sets = new ArrayList<>();
         exercise.setSets(sets);
         assertThat(exercise.getSets(), equalTo(sets));
-        assertThat(exercise.getExerciseIndex(), equalTo(0));
+        assertThat(exercise.indexOfCurrentSet(), equalTo(0));
     }
 
     @Test
@@ -102,16 +102,6 @@ public class BasicExerciseTest {
         String name = " newName ";
         exercise.setName(name);
         assertThat(exercise.getName(), equalTo("newName"));
-    }
-
-    @Test
-    public void getMaxSets_shouldReturnNumberOfSets() throws Exception {
-        sets.add(mock(Set.class));
-        sets.add(mock(Set.class));
-        sets.add(mock(Set.class));
-        sets.add(mock(Set.class));
-
-        assertThat(exercise.getMaxSets(), equalTo(4));
     }
 
     @Test
@@ -174,7 +164,7 @@ public class BasicExerciseTest {
 
         exercise.setCurrentSet(-1);
 
-        assertThat(exercise.getExerciseIndex(), equalTo(0));
+        assertThat(exercise.indexOfCurrentSet(), equalTo(0));
     }
 
     @Test

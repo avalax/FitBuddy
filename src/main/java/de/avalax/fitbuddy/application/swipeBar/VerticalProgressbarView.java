@@ -47,8 +47,8 @@ public class VerticalProgressbarView extends FrameLayout {
     }
 
     public void updateProgressbar(Exercise exercise) {
-        String currentValueText = exercise.getMaxSets() > 0 ? String.valueOf(exercise.getExerciseIndex() + 1) : "0";
-        String maxValueText = String.valueOf(exercise.getMaxSets());
+        String currentValueText = exercise.getSets().size() > 0 ? String.valueOf(exercise.indexOfCurrentSet() + 1) : "0";
+        String maxValueText = String.valueOf(exercise.getSets().size());
         updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
 

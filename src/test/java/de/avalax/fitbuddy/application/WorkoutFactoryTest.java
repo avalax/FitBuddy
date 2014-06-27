@@ -52,7 +52,7 @@ public class WorkoutFactoryTest {
 
         assertThat(workout.getExerciseCount(), is(1));
         assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.getExercise(0).getMaxSets(), is(3));
+        assertThat(workout.getExercise(0).getSets().size(), is(3));
         assertThat(workout.getExercise(0).getMaxReps(), is(12));
     }
 

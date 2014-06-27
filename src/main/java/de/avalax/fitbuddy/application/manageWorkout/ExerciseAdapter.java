@@ -43,7 +43,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         holder.name.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
         holder.weight.setText(getWeightText(exercise.getWeight()));
         holder.reps.setText(String.valueOf(exercise.getMaxReps()));
-        holder.sets.setText(String.valueOf(exercise.getMaxSets()));
+        holder.sets.setText(String.valueOf(exercise.getSets().size()));
         return convertView;
     }
 

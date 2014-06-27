@@ -4,6 +4,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BasicExercise implements Exercise {
@@ -29,12 +30,7 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public int getMaxSets() {
-        return sets.size();
-    }
-
-    @Override
-    public int getExerciseIndex() {
+    public int indexOfCurrentSet() {
         return exerciseIndex;
     }
 
@@ -87,8 +83,8 @@ public class BasicExercise implements Exercise {
 
     @Override
     public double getProgress() {
-        double setsProgress = (exerciseIndex) / (double) getMaxSets();
-        double repsProgress = getReps() / (double) getMaxReps() / getMaxSets();
+        double setsProgress = (exerciseIndex) / (double) sets.size();
+        double repsProgress = getReps() / (double) getMaxReps() / sets.size();
         return setsProgress + repsProgress;
     }
 
@@ -104,7 +100,7 @@ public class BasicExercise implements Exercise {
 
     @Override
     public List<Set> getSets() {
-        return sets;
+        return Collections.unmodifiableList(sets);
     }
 
     @Override
