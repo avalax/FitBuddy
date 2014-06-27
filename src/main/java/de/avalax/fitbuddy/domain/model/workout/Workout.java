@@ -10,10 +10,8 @@ public interface Workout extends Serializable {
     WorkoutId getWorkoutId();
     void setWorkoutId(WorkoutId workoutId);
     Exercise getExercise(int index);
-    int getExerciseCount();
     int getReps(int index);
     void setReps(int index, int reps);
-    Set getCurrentSet(int index);
     void setName(String name);
     String getName();
     double getProgress(int index);

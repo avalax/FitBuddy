@@ -7,6 +7,8 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class WorkoutFactoryTest {
     private WorkoutFactory workoutFactory;
@@ -36,7 +38,7 @@ public class WorkoutFactoryTest {
         Workout workout = workoutFactory.createFromJson("[\"\",[]]");
 
         assertThat(workout.getName(), equalTo(""));
-        assertThat(workout.getExerciseCount(), is(0));
+        assertThat(workout.getExercises(), empty());
     }
 
     @Test
@@ -50,17 +52,17 @@ public class WorkoutFactoryTest {
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
         Workout workout = workoutFactory.createFromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
 
-        assertThat(workout.getExerciseCount(), is(1));
+        assertThat(workout.getExercises(), hasSize(1));
         assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.getExercise(0).getSets().size(), is(3));
+        assertThat(workout.getExercise(0).getSets(), hasSize(3));
         assertThat(workout.getExercise(0).getMaxReps(), is(12));
     }
 
     @Test
-    public void createNewWorkout_shouldReturnAnEmptyWorkout() throws Exception {
+    public void createNewWorkout_shouldReturnAWorkoutWithoutExercises() throws Exception {
         Workout workout = workoutFactory.createNew();
 
         assertThat(workout.getName(), equalTo(""));
-        assertThat(workout.getExerciseCount(), is(0));
+        assertThat(workout.getExercises(), empty());
     }
 }

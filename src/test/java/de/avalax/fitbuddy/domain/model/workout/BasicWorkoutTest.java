@@ -5,7 +5,6 @@ import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
-import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +16,8 @@ import java.util.LinkedList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 
@@ -63,15 +64,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getExerciseCount_shouldReturnCountOfExercises() throws Exception {
-        exercises.add(mock(Exercise.class));
-        exercises.add(mock(Exercise.class));
-        exercises.add(mock(Exercise.class));
-
-        assertThat(workout.getExerciseCount(), equalTo(exercises.size()));
-    }
-
-    @Test
     public void getExercise_shouldReturnFistExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
         exercises.add(exercise);
@@ -88,17 +80,6 @@ public class BasicWorkoutTest {
         exercises.add(exercise);
 
         assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
-    }
-
-    @Test
-    public void getCurrentSet_shouldReturnCurrentSet() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        Set set = mock(Set.class);
-
-        when(exercise.getCurrentSet()).thenReturn(set);
-
-        assertThat(workout.getCurrentSet(exerciseIndex), equalTo(set));
     }
 
     @Test
@@ -184,7 +165,7 @@ public class BasicWorkoutTest {
 
         workout.addExercise(exercise);
 
-        assertThat(exercises.size(), is(2));
+        assertThat(exercises, hasSize(2));
         assertThat(exercises.getLast(), equalTo(exercise));
     }
 
@@ -195,7 +176,7 @@ public class BasicWorkoutTest {
 
         workout.addExercise(exerciseIndex, exercise);
 
-        assertThat(exercises.size(), is(2));
+        assertThat(exercises, hasSize(2));
         assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
     }
 
@@ -206,7 +187,7 @@ public class BasicWorkoutTest {
 
         workout.addExerciseAfter(exerciseIndex, exercise);
 
-        assertThat(exercises.size(), is(2));
+        assertThat(exercises, hasSize(2));
         assertThat(workout.getExercise(exerciseIndex + 1), equalTo(exercise));
     }
 
@@ -217,7 +198,7 @@ public class BasicWorkoutTest {
 
         workout.replaceExercise(exercise);
 
-        assertThat(exercises.size(), is(0));
+        assertThat(exercises, empty());
     }
 
     @Test
@@ -231,7 +212,7 @@ public class BasicWorkoutTest {
 
         workout.replaceExercise(exerciseToReplace);
 
-        assertThat(exercises.size(), is(1));
+        assertThat(exercises, hasSize(1));
         assertThat(workout.getExercise(exerciseIndex), equalTo(exerciseToReplace));
     }
 
@@ -244,7 +225,7 @@ public class BasicWorkoutTest {
         boolean isDeleted = workout.deleteExercise(exercise);
 
         assertThat(isDeleted, equalTo(true));
-        assertThat(exercises.size(), is(0));
+        assertThat(exercises, empty());
     }
 
     @Test
@@ -256,7 +237,7 @@ public class BasicWorkoutTest {
 
         workout.deleteExercise(exerciseToDelete);
 
-        assertThat(exercises.size(), is(1));
+        assertThat(exercises, hasSize(1));
         assertThat(exercises.get(0), equalTo(exercise));
     }
 
@@ -271,7 +252,7 @@ public class BasicWorkoutTest {
 
         workout.deleteExercise(clonedExercise);
 
-        assertThat(exercises.size(), is(0));
+        assertThat(exercises, empty());
     }
 
     @Test
@@ -286,14 +267,13 @@ public class BasicWorkoutTest {
 
         workout.deleteExercise(exerciseToDelete);
 
-        assertThat(exercises.size(), is(1));
+        assertThat(exercises, hasSize(1));
         assertThat(exercises.get(0), equalTo(exercise));
     }
 
     @Test
     public void removeExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-        boolean b = workout.deleteExercise(mock(Exercise.class));
-        assertThat(b, equalTo(false));
+        assertThat(workout.deleteExercise(mock(Exercise.class)), equalTo(false));
     }
 
     public class givenAnExerciseProgress {

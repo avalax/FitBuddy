@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import java.text.DecimalFormat;
 
 public class MainActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
-    private static final int SWITCH_WORKOUT = 1;
+    private static final int MANAGE_WORKOUT = 1;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @Inject
@@ -72,8 +72,8 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     protected void updatePage(int position) {
         this.position = position;
         Workout workout = workoutSession.getWorkout();
-        if (workout == null || workout.getExerciseCount() == 0) {
-            switchWorkout();
+        if (workout == null || workout.getExercises().isEmpty()) {
+            startManageWorkoutActivity();
         } else {
             //TODO: 3x times - unnamed exercise from resources & move to a ui helper
             Exercise exercise = workout.getExercise(position);
@@ -98,7 +98,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_switch_workout) {
-            switchWorkout();
+            startManageWorkoutActivity();
         }
         if (item.getItemId() == R.id.action_change_weight) {
             showEditDialog();
@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == SWITCH_WORKOUT &&
+        if (requestCode == MANAGE_WORKOUT &&
                 resultCode == Activity.RESULT_OK) {
             viewPager.getAdapter().notifyDataSetChanged();
             viewPager.invalidate();
@@ -139,8 +139,8 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         updatePage(position);
     }
 
-    private void switchWorkout() {
+    private void startManageWorkoutActivity() {
         Intent intent = new Intent(this, ManageWorkoutActivity.class);
-        startActivityForResult(intent, SWITCH_WORKOUT);
+        startActivityForResult(intent, MANAGE_WORKOUT);
     }
 }

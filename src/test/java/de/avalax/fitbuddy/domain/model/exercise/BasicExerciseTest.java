@@ -36,8 +36,8 @@ public class BasicExerciseTest {
         a1.setExerciseId(exerciseId);
         Exercise a2 = new BasicExercise();
         a2.setExerciseId(exerciseId);
-        Assert.assertThat(a1, equalTo(a2));
-        Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
+        assertThat(a1, equalTo(a2));
+        assertThat(a1.hashCode(), equalTo(a2.hashCode()));
     }
 
     @Test
@@ -46,16 +46,16 @@ public class BasicExerciseTest {
         a1.setExerciseId(new ExerciseId("21"));
         Exercise a2 = new BasicExercise();
         a2.setExerciseId(new ExerciseId("42"));
-        Assert.assertThat(a1, not(equalTo(a2)));
-        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+        assertThat(a1, not(equalTo(a2)));
+        assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
 
     @Test
     public void testDifferentIdentityWithNoId() throws Exception {
         Exercise a1 = new BasicExercise();
         Exercise a2 = new BasicExercise();
-        Assert.assertThat(a1, not(equalTo(a2)));
-        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+        assertThat(a1, not(equalTo(a2)));
+        assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
 
     @Test

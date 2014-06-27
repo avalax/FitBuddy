@@ -140,9 +140,10 @@ public class ManageWorkout {
     }
 
     public void createExercise() {
+        //TODO: move to workout
         Exercise exercise = exerciseFactory.createNew();
         workout.addExercise(exercise);
-        exerciseRepository.save(workout.getWorkoutId(), workout.getExerciseCount() - 1, exercise);
+        exerciseRepository.save(workout.getWorkoutId(), workout.getExercises().size() - 1, exercise);
         setUnsavedChanges(false);
     }
 

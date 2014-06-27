@@ -2,8 +2,8 @@ package de.avalax.fitbuddy.domain.model.workout;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
-import de.avalax.fitbuddy.domain.model.set.Set;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class BasicWorkout implements Workout {
     private String name;
     private WorkoutId workoutId;
 
-    public BasicWorkout(String name,LinkedList<Exercise> exercises) {
+    public BasicWorkout(String name, LinkedList<Exercise> exercises) {
         this.exercises = exercises;
         this.name = name;
     }
@@ -46,11 +46,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Set getCurrentSet(int index) {
-        return getExercise(index).getCurrentSet();
-    }
-
-    @Override
     public void setName(String name) {
         if (name == null) {
             this.name = "";
@@ -67,8 +62,7 @@ public class BasicWorkout implements Workout {
     @Override
     public double getProgress(int index) {
         Exercise exercise = getExercise(index);
-
-        return (index + exercise.getProgress()) / getExerciseCount();
+        return (index + exercise.getProgress()) / exercises.size();
     }
 
     @Override
@@ -101,12 +95,7 @@ public class BasicWorkout implements Workout {
 
     @Override
     public List<Exercise> getExercises() {
-        return exercises;
-    }
-
-    @Override
-    public int getExerciseCount() {
-        return exercises.size();
+        return Collections.unmodifiableList(exercises);
     }
 
     @Override
@@ -130,9 +119,9 @@ public class BasicWorkout implements Workout {
     @Override
     public String toString() {
         if (workoutId == null) {
-            return "BasicWorkout [name="+name + "]";
+            return "BasicWorkout [name=" + name + "]";
         }
-        return "BasicWorkout [name="+name + ", workoutId=" + workoutId.toString() + "]";
+        return "BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]";
     }
 
     @Override
