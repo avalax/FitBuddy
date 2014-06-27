@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -31,10 +33,10 @@ public class BasicExerciseTest {
 
     @Test
     public void testSameIdentity() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets);
+        Exercise a1 = new BasicExercise();
         ExerciseId exerciseId = new ExerciseId("42");
         a1.setExerciseId(exerciseId);
-        Exercise a2 = new BasicExercise("Bankdrücken", sets);
+        Exercise a2 = new BasicExercise();
         a2.setExerciseId(exerciseId);
         Assert.assertThat(a1, equalTo(a2));
         Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
@@ -42,9 +44,9 @@ public class BasicExerciseTest {
 
     @Test
     public void testDifferentIdentity() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets);
+        Exercise a1 = new BasicExercise();
         a1.setExerciseId(new ExerciseId("21"));
-        Exercise a2 = new BasicExercise("Bankdrücken", sets);
+        Exercise a2 = new BasicExercise();
         a2.setExerciseId(new ExerciseId("42"));
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
@@ -52,8 +54,8 @@ public class BasicExerciseTest {
 
     @Test
     public void testDifferentIdentityWithNoId() throws Exception {
-        Exercise a1 = new BasicExercise("Bankdrücken", sets);
-        Exercise a2 = new BasicExercise("Bankdrücken", sets);
+        Exercise a1 = new BasicExercise();
+        Exercise a2 = new BasicExercise();
         Assert.assertThat(a1, not(equalTo(a2)));
         Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
     }
@@ -142,6 +144,16 @@ public class BasicExerciseTest {
     }
 
     @Test
+    public void getMaxReps() throws Exception {
+        assertThat(exercise.getMaxReps(), equalTo(0));
+    }
+
+    @Test
+    public void getReps() throws Exception {
+        assertThat(exercise.getReps(), equalTo(0));
+    }
+
+    @Test
     public void getCurrentSet_shouldReturnSecondSet() throws Exception {
         Set set = mock(Set.class);
 
@@ -151,6 +163,11 @@ public class BasicExerciseTest {
         exercise.setCurrentSet(2);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
+    }
+
+    @Test
+    public void setCurrentSetWithoutSets_shouldDoNothing() throws Exception {
+        exercise.setCurrentSet(sets.size() + 1);
     }
 
     @Test
@@ -170,16 +187,8 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void incrementCurrentSet_shouldIncrementToTheNextSet() throws Exception {
-        Set set = mock(Set.class);
-
-        sets.add(mock(Set.class));
-        sets.add(set);
-
-        exercise.incrementCurrentSet();
-
-        assertThat(exercise.getCurrentSet(), equalTo(set));
-        assertThat(exercise.getSetNumber(), equalTo(2));
+    public void setReps_withoutSetsShouldDoNothing() throws Exception {
+        exercise.setReps(12);
     }
 
     @Test
@@ -208,9 +217,8 @@ public class BasicExerciseTest {
     }
 
     public class givenAnExerciseProgress {
-        @Test(expected = SetNotAvailableException.class)
         public void withoutSets_shouldHaveZeroProgress() throws Exception {
-            exercise.getProgress();
+            assertThat(exercise.getProgress(), equalTo(0.0));
         }
 
         @Test

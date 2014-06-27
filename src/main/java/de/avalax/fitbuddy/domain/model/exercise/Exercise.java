@@ -22,11 +22,10 @@ public interface Exercise extends Serializable {
 
     double getProgress();
 
+    @Deprecated
     void setCurrentSet(int setNumber);
 
     Set getCurrentSet();
-
-    void incrementCurrentSet();
 
     void setExerciseId(ExerciseId exerciseId);
 

@@ -39,7 +39,8 @@ public class SQLiteExerciseRepositoryTest {
     private WorkoutId workoutId;
 
     private ExerciseId createExercise(int position, String name) {
-        Exercise exercise = new BasicExercise(name, new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
+        exercise.setName(name);
         exerciseRepository.save(workoutId, position, exercise);
         return exercise.getExerciseId();
     }

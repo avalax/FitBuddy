@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -33,7 +31,7 @@ public class BasicWorkoutTest {
     public void setUp() throws Exception {
         exerciseIndex = 0;
         exercises = new LinkedList<>();
-        workout = new BasicWorkout("",exercises);
+        workout = new BasicWorkout("", exercises);
     }
 
     @Test
@@ -163,18 +161,6 @@ public class BasicWorkoutTest {
         assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
     }
 
-    @Test
-    public void incrementSet_shouldIncrementSetFromExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        exercises.add(mock(Exercise.class));
-
-        workout.incrementSet(exerciseIndex);
-
-        verify(exercise).incrementCurrentSet();
-
-    }
-
     @Test(expected = ExerciseNotAvailableException.class)
     public void getExercise_shouldThrowExerciseNotAvailableExceptionWhenPositionIsGreaterThanExerciseCount() throws Exception {
         int nextExercisePosition = 1;
@@ -226,7 +212,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void replaceExercise_shouldNotAddExerciseAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
+        Exercise exercise = new BasicExercise();
         exercise.setExerciseId(new ExerciseId("42"));
 
         workout.replaceExercise(exercise);
@@ -236,10 +222,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
-        Exercise exerciseToReplace = new BasicExercise("", Collections.<Set>emptyList());
+        Exercise exerciseToReplace = new BasicExercise();
         ExerciseId exerciseId = new ExerciseId("42");
         exerciseToReplace.setExerciseId(exerciseId);
-        BasicExercise exercise = new BasicExercise("", Collections.<Set>emptyList());
+        BasicExercise exercise = new BasicExercise();
         exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
 
@@ -251,7 +237,7 @@ public class BasicWorkoutTest {
 
     @Test
     public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
+        Exercise exercise = new BasicExercise();
         exercise.setExerciseId(new ExerciseId("42"));
         exercises.add(exercise);
 
@@ -277,10 +263,10 @@ public class BasicWorkoutTest {
     @Test
     public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
         ExerciseId exerciseId = new ExerciseId("42");
-        Exercise exercise = new BasicExercise("orginal", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
         exercise.setExerciseId(exerciseId);
         exercises.add(exercise);
-        Exercise clonedExercise = new BasicExercise("clone", new ArrayList<Set>());
+        Exercise clonedExercise = new BasicExercise();
         clonedExercise.setExerciseId(new ExerciseId(exerciseId));
 
         workout.deleteExercise(clonedExercise);
@@ -290,10 +276,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
-        Exercise exercise = new BasicExercise("", Collections.<Set>emptyList());
+        Exercise exercise = new BasicExercise();
         ExerciseId exerciseId = new ExerciseId("42");
         exercise.setExerciseId(exerciseId);
-        Exercise exerciseToDelete = new BasicExercise("", Collections.<Set>emptyList());
+        Exercise exerciseToDelete = new BasicExercise();
         exerciseToDelete.setExerciseId(exerciseId);
         exercises.add(exerciseToDelete);
         exercises.add(exercise);

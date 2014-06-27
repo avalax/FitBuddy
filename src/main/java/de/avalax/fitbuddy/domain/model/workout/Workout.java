@@ -13,7 +13,6 @@ public interface Workout extends Serializable {
     int getExerciseCount();
     int getReps(int index);
     void setReps(int index, int reps);
-    void incrementSet(int index);
     Set getCurrentSet(int index);
     void setName(String name);
     String getName();

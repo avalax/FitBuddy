@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasicExercise implements Exercise {
@@ -10,6 +11,11 @@ public class BasicExercise implements Exercise {
     private List<Set> sets;
     private int setNumber;
     private ExerciseId exerciseId;
+
+    public BasicExercise() {
+        this.name = "";
+        this.sets = new ArrayList<>();
+    }
 
     public BasicExercise(String name, List<Set> sets) {
         this.name = name;
@@ -43,6 +49,9 @@ public class BasicExercise implements Exercise {
 
     @Override
     public void setCurrentSet(int setNumber) {
+        if (sets.isEmpty()) {
+            return;
+        }
         int index = setNumber - 1;
         if (isIndexGreaterEqualThan(index)) {
             this.setNumber = getMaxSets();
@@ -55,16 +64,25 @@ public class BasicExercise implements Exercise {
 
     @Override
     public int getReps() {
+        if (setNumber > sets.size()) {
+            return 0;
+        }
         return getCurrentSet().getReps();
     }
 
     @Override
     public void setReps(int reps) {
+        if (setNumber > sets.size()) {
+            return;
+        }
         getCurrentSet().setReps(reps);
     }
 
     @Override
     public int getMaxReps() {
+        if (setNumber > sets.size()) {
+            return 0;
+        }
         return getCurrentSet().getMaxReps();
     }
 
@@ -73,10 +91,6 @@ public class BasicExercise implements Exercise {
         double setsProgress = (setNumber - 1) / (double) getMaxSets();
         double repsProgress = getReps() / (double) getMaxReps() / getMaxSets();
         return setsProgress + repsProgress;
-    }
-
-    public void incrementCurrentSet() {
-        setCurrentSet(setNumber + 1);
     }
 
     @Override
@@ -111,6 +125,9 @@ public class BasicExercise implements Exercise {
 
     @Override
     public double getWeight() {
+        if (setNumber > sets.size()) {
+            return 0;
+        }
         return getCurrentSet().getWeight();
     }
 

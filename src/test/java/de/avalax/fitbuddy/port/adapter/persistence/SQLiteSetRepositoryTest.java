@@ -50,7 +50,7 @@ public class SQLiteSetRepositoryTest {
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         LinkedList<Exercise> exercises = new LinkedList<>();
-        Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
         exercises.add(exercise);
         Workout workout = new BasicWorkout("name",exercises);
         workoutRepository.save(workout);

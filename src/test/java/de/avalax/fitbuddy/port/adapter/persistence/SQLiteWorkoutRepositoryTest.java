@@ -69,7 +69,7 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        Exercise exercise = new BasicExercise("exercise", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
         exercises.add(exercise);
         Workout workout = new BasicWorkout("name",exercises);
 
@@ -116,9 +116,9 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() {
         LinkedList<Exercise> exercises = new LinkedList<>();
-        Exercise exercise1 = new BasicExercise("exercise1", new ArrayList<Set>());
+        Exercise exercise1 = new BasicExercise();
         exercises.add(exercise1);
-        Exercise exercise2 = new BasicExercise("exercise2", new ArrayList<Set>());
+        Exercise exercise2 = new BasicExercise();
         exercises.add(exercise2);
         Workout workout = new BasicWorkout("name",exercises);
         workoutRepository.save(workout);
