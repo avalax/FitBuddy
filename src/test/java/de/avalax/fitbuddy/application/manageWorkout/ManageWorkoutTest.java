@@ -156,7 +156,7 @@ public class ManageWorkoutTest {
             manageWorkout.createExerciseAfter(exercise);
 
             assertThat(workout.getExercises().size(), equalTo(2));
-            assertThat(workout.getExercise(1), equalTo(exerciseAfter));
+            assertThat(workout.getExercises(), hasItem(exerciseAfter));
             verify(exerciseRepository).save(workout.getWorkoutId(), 1, exerciseAfter);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
@@ -169,7 +169,7 @@ public class ManageWorkoutTest {
             manageWorkout.createExerciseBefore(exercise);
 
             assertThat(workout.getExercises().size(), equalTo(2));
-            assertThat(workout.getExercise(0), equalTo(exerciseAfter));
+            assertThat(workout.getExercises().get(0), equalTo(exerciseAfter));
             verify(exerciseRepository).save(workout.getWorkoutId(), 0, exerciseAfter);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
@@ -224,7 +224,7 @@ public class ManageWorkoutTest {
                 manageWorkout.deleteExercise(exerciseToRestore);
                 manageWorkout.undoDeleteExercise();
 
-                assertThat(workout.getExercise(1), equalTo(exerciseToRestore));
+                assertThat(workout.getExercises().get(1), equalTo(exerciseToRestore));
             }
 
             @Test

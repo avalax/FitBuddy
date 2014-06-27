@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
 public class BasicWorkoutTest {
@@ -64,25 +64,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getExercise_shouldReturnFistExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-
-        assertThat(workout.getExercise(0), equalTo(exercise));
-    }
-
-    @Test
-    public void getExercise_shouldReturnSecondExercise() throws Exception {
-        int exercisePosition = 1;
-        Exercise exercise = mock(Exercise.class);
-
-        exercises.add(mock(Exercise.class));
-        exercises.add(exercise);
-
-        assertThat(workout.getExercise(exercisePosition), equalTo(exercise));
-    }
-
-    @Test
     public void getId_shouldReturnId() throws Exception {
         WorkoutId id = new WorkoutId("42");
 
@@ -122,22 +103,6 @@ public class BasicWorkoutTest {
         assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
     }
 
-    @Test(expected = ExerciseNotAvailableException.class)
-    public void getExercise_shouldThrowExerciseNotAvailableExceptionWhenPositionIsGreaterThanExerciseCount() throws Exception {
-        int nextExercisePosition = 1;
-        exercises.add(mock(Exercise.class));
-
-        workout.getExercise(nextExercisePosition);
-    }
-
-    @Test(expected = ExerciseNotAvailableException.class)
-    public void getExercise_shouldThrowExceptionWhenSmallerThanExerciseCount() throws Exception {
-        int previousExercise = -1;
-        exercises.add(mock(Exercise.class));
-
-        workout.getExercise(previousExercise);
-    }
-
     @Test
     public void addExercise_shouldAddExercise() throws Exception {
         Exercise exercise = mock(Exercise.class);
@@ -157,7 +122,7 @@ public class BasicWorkoutTest {
         workout.addExercise(exerciseIndex, exercise);
 
         assertThat(exercises, hasSize(2));
-        assertThat(workout.getExercise(exerciseIndex), equalTo(exercise));
+        assertThat(workout.getExercises().get(exerciseIndex), equalTo(exercise));
     }
 
     @Test
@@ -168,7 +133,7 @@ public class BasicWorkoutTest {
         workout.addExerciseAfter(exerciseIndex, exercise);
 
         assertThat(exercises, hasSize(2));
-        assertThat(workout.getExercise(exerciseIndex + 1), equalTo(exercise));
+        assertThat(workout.getExercises().get(exerciseIndex + 1), equalTo(exercise));
     }
 
     @Test
@@ -193,7 +158,7 @@ public class BasicWorkoutTest {
         workout.replaceExercise(exerciseToReplace);
 
         assertThat(exercises, hasSize(1));
-        assertThat(workout.getExercise(exerciseIndex), equalTo(exerciseToReplace));
+        assertThat(workout.getExercises().get(exerciseIndex), equalTo(exerciseToReplace));
     }
 
     @Test

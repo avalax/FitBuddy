@@ -24,7 +24,7 @@ public class CurrentExerciseFragment extends Fragment {
     protected VerticalProgressbarView setsProgressBar;
     @Inject
     protected WorkoutSession workoutSession;
-    private int exercisePosition;
+    private int exerciseIndex;
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
         CurrentExerciseFragment fragment = new CurrentExerciseFragment();
@@ -38,7 +38,7 @@ public class CurrentExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        this.exercisePosition = getArguments().getInt(ARGS_EXERCISE_INDEX);
+        this.exerciseIndex = getArguments().getInt(ARGS_EXERCISE_INDEX);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         ButterKnife.inject(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
@@ -64,57 +64,57 @@ public class CurrentExerciseFragment extends Fragment {
             }
         });
 
-        setViews(exercisePosition);
+        setViews(exerciseIndex);
     }
 
     private int getMaxMoveForSets(Workout workout) {
-        return workout.getExercise(exercisePosition).getSets().size();
+        return workout.getExercises().get(exerciseIndex).getSets().size();
     }
 
     private int getMaxMoveForReps(Workout workout) {
-        return workout.getExercise(exercisePosition).getCurrentSet().getMaxReps();
+        return workout.getExercises().get(exerciseIndex).getCurrentSet().getMaxReps();
     }
 
     private void changeReps(int moved) {
         setReps(moved);
-        setViews(exercisePosition);
-        updateWorkoutProgress(exercisePosition);
+        setViews(exerciseIndex);
+        updateWorkoutProgress(exerciseIndex);
     }
 
     private void changeSets(int moved) {
         Workout workout = workoutSession.getWorkout();
-        setSet(workout.getExercise(exercisePosition).indexOfCurrentSet() + moved);
-        setViews(exercisePosition);
-        updateWorkoutProgress(exercisePosition);
+        setSet(workout.getExercises().get(exerciseIndex).indexOfCurrentSet() + moved);
+        setViews(exerciseIndex);
+        updateWorkoutProgress(exerciseIndex);
         updatePage();
     }
 
     private void setReps(int moved) {
         Workout workout = workoutSession.getWorkout();
-        Exercise exercise = workout.getExercise(exercisePosition);
+        Exercise exercise = workout.getExercises().get(exerciseIndex);
         //TODO: add to Set addRep, removeRep
         exercise.getCurrentSet().setReps(exercise.getCurrentSet().getReps() + moved);
     }
 
     private void setSet(int setNumber) {
         Workout workout = workoutSession.getWorkout();
-        workout.getExercise(exercisePosition).setCurrentSet(setNumber);
+        workout.getExercises().get(exerciseIndex).setCurrentSet(setNumber);
     }
 
-    private void setViews(int exercisePosition) {
+    private void setViews(int exerciseIndex) {
         Workout workout = workoutSession.getWorkout();
-        Exercise exercise = workout.getExercise(exercisePosition);
+        Exercise exercise = workout.getExercises().get(exerciseIndex);
         if (exercise.getSets().size() > 0) {
             repsProgressBar.updateProgressbar(exercise.getCurrentSet());
         }
         setsProgressBar.updateProgressbar(exercise);
     }
 
-    private void updateWorkoutProgress(int exercisePosition) {
-        ((MainActivity) getActivity()).updateWorkoutProgress(exercisePosition);
+    private void updateWorkoutProgress(int exerciseIndex) {
+        ((MainActivity) getActivity()).updateWorkoutProgress(exerciseIndex);
     }
 
     private void updatePage() {
-        ((MainActivity) getActivity()).updatePage(exercisePosition);
+        ((MainActivity) getActivity()).updatePage(exerciseIndex);
     }
 }

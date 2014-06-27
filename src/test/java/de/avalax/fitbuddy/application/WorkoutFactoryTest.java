@@ -54,9 +54,9 @@ public class WorkoutFactoryTest {
         Workout workout = workoutFactory.createFromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
 
         assertThat(workout.getExercises(), hasSize(1));
-        assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.getExercise(0).getSets(), hasSize(3));
-        assertThat(workout.getExercise(0).getCurrentSet().getMaxReps(), is(12));
+        assertThat(workout.getExercises().get(0).getName(), equalTo("bankdrücken"));
+        assertThat(workout.getExercises().get(0).getSets(), hasSize(3));
+        assertThat(workout.getExercises().get(0).getCurrentSet().getMaxReps(), is(12));
     }
 
     @Test

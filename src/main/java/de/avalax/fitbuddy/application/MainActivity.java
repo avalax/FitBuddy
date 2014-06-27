@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     private DecimalFormat decimalFormat;
     private String weightTitle;
     private MenuItem menuItem;
-    private int position;
+    private int index;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
-        updatePage(this.position);
+        updatePage(this.index);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setBackgroundDrawable(null);
 
-        this.position = 0;
+        this.index = 0;
         this.decimalFormat = new DecimalFormat("###.###");
         this.weightTitle = getResources().getString(R.string.title_weight);
         //TODO: 0 check, when workout has no exercise
@@ -69,24 +69,24 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     }
 
     @OnPageChange(R.id.pager)
-    protected void updatePage(int position) {
-        this.position = position;
+    protected void updatePage(int index) {
+        this.index = index;
         Workout workout = workoutSession.getWorkout();
         if (workout == null || workout.getExercises().isEmpty()) {
             startManageWorkoutActivity();
         } else {
             //TODO: 3x times - unnamed exercise from resources & move to a ui helper
-            Exercise exercise = workout.getExercise(position);
+            Exercise exercise = workout.getExercises().get(index);
             setTitle(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
             if (menuItem != null) {
-                menuItem.setTitle(exerciseWeightText(position));
-                updateWorkoutProgress(position);
+                menuItem.setTitle(exerciseWeightText(index));
+                updateWorkoutProgress(index);
             }
         }
     }
 
-    private String exerciseWeightText(int position) {
-        Exercise exercise = workoutSession.getWorkout().getExercise(position);
+    private String exerciseWeightText(int index) {
+        Exercise exercise = workoutSession.getWorkout().getExercises().get(index);
         double weight = exercise.getCurrentSet().getWeight();
         if (weight > 0) {
             return String.format(weightTitle, decimalFormat.format(weight));
@@ -120,13 +120,13 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        double weight = workoutSession.getWorkout().getExercise(position).getCurrentSet().getWeight();
+        double weight = workoutSession.getWorkout().getExercises().get(index).getCurrentSet().getWeight();
         EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
     }
 
-    protected void updateWorkoutProgress(int exercisePosition) {
+    protected void updateWorkoutProgress(int exerciseIndex) {
         Workout workout = workoutSession.getWorkout();
-        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exercisePosition)));
+        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exerciseIndex)));
     }
 
     private int calculateProgressbarHeight(double progess) {
@@ -135,8 +135,8 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     @Override
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
-        workoutSession.getWorkout().getExercise(position).getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
-        updatePage(position);
+        workoutSession.getWorkout().getExercises().get(index).getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
+        updatePage(index);
     }
 
     private void startManageWorkoutActivity() {

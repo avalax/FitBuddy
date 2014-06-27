@@ -14,7 +14,6 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ManageWorkout {

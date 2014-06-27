@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotAvailableException;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -33,14 +32,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise getExercise(int index) {
-        if (isIndexOutOfBounds(index)) {
-            throw new ExerciseNotAvailableException();
-        }
-        return exercises.get(index);
-    }
-
-    @Override
     public void setName(String name) {
         if (name == null) {
             this.name = "";
@@ -56,7 +47,7 @@ public class BasicWorkout implements Workout {
 
     @Override
     public double getProgress(int index) {
-        Exercise exercise = getExercise(index);
+        Exercise exercise = exercises.get(index);
         return (index + exercise.getProgress()) / exercises.size();
     }
 
@@ -91,18 +82,6 @@ public class BasicWorkout implements Workout {
     @Override
     public List<Exercise> getExercises() {
         return Collections.unmodifiableList(exercises);
-    }
-
-    private boolean isIndexOutOfBounds(int index) {
-        return isIndexNegative(index) || isIndexGreaterEqualThan(index);
-    }
-
-    private boolean isIndexGreaterEqualThan(int index) {
-        return index >= exercises.size();
-    }
-
-    private boolean isIndexNegative(int index) {
-        return index < 0;
     }
 
     @Override

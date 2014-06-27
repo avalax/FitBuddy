@@ -10,8 +10,6 @@ public interface Workout extends Serializable {
 
     void setWorkoutId(WorkoutId workoutId);
 
-    Exercise getExercise(int index);
-
     void setName(String name);
 
     String getName();
