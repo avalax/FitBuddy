@@ -47,7 +47,7 @@ public class VerticalProgressbarView extends FrameLayout {
     }
 
     public void updateProgressbar(Exercise exercise) {
-        String currentValueText = exercise.getMaxSets() > 0 ? String.valueOf(exercise.getSetNumber()) : "0";
+        String currentValueText = exercise.getMaxSets() > 0 ? String.valueOf(exercise.getExerciseIndex() + 1) : "0";
         String maxValueText = String.valueOf(exercise.getMaxSets());
         updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
@@ -67,6 +67,6 @@ public class VerticalProgressbarView extends FrameLayout {
 
     private int calculateProgressbarHeight(double currentValue, int maxValue) {
         double scale = currentValue / maxValue;
-        return (int)Math.round(scale * 10000);
+        return (int) Math.round(scale * 10000);
     }
 }

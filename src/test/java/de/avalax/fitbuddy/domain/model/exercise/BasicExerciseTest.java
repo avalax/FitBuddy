@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.domain.model.exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -83,7 +81,7 @@ public class BasicExerciseTest {
         List<Set> sets = new ArrayList<>();
         exercise.setSets(sets);
         assertThat(exercise.getSets(), equalTo(sets));
-        assertThat(exercise.getSetNumber(), equalTo(1));
+        assertThat(exercise.getExerciseIndex(), equalTo(0));
     }
 
     @Test
@@ -160,14 +158,14 @@ public class BasicExerciseTest {
         sets.add(mock(Set.class));
         sets.add(set);
 
-        exercise.setCurrentSet(2);
+        exercise.setCurrentSet(1);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
     }
 
     @Test
     public void setCurrentSetWithoutSets_shouldDoNothing() throws Exception {
-        exercise.setCurrentSet(sets.size() + 1);
+        exercise.setCurrentSet(1);
     }
 
     @Test
@@ -176,7 +174,7 @@ public class BasicExerciseTest {
 
         exercise.setCurrentSet(-1);
 
-        assertThat(exercise.getSetNumber(), equalTo(1));
+        assertThat(exercise.getExerciseIndex(), equalTo(0));
     }
 
     @Test
@@ -240,7 +238,7 @@ public class BasicExerciseTest {
         }
 
         @Test
-        public void oneSetWithMaxReps_shouldHaveHalfProgress() throws Exception {
+        public void oneSetWithHalfReps_shouldHaveHalfProgress() throws Exception {
             Set set = mock(Set.class);
             when(set.getMaxReps()).thenReturn(100);
             when(set.getReps()).thenReturn(50);
@@ -255,7 +253,7 @@ public class BasicExerciseTest {
             when(set.getMaxReps()).thenReturn(100);
             when(set.getReps()).thenReturn(0);
             sets.add(set);
-            exercise.setCurrentSet(2);
+            exercise.setCurrentSet(1);
             assertThat(exercise.getProgress(), equalTo(0.5));
         }
 
@@ -266,7 +264,7 @@ public class BasicExerciseTest {
             when(set.getMaxReps()).thenReturn(100);
             when(set.getReps()).thenReturn(100);
             sets.add(set);
-            exercise.setCurrentSet(2);
+            exercise.setCurrentSet(1);
             assertThat(exercise.getProgress(), equalTo(1.0));
         }
 
@@ -277,7 +275,7 @@ public class BasicExerciseTest {
             when(set.getMaxReps()).thenReturn(100);
             when(set.getReps()).thenReturn(50);
             sets.add(set);
-            exercise.setCurrentSet(2);
+            exercise.setCurrentSet(1);
             assertThat(exercise.getProgress(), equalTo(0.75));
         }
     }

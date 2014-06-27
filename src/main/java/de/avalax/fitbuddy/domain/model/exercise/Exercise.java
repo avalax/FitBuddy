@@ -12,7 +12,8 @@ public interface Exercise extends Serializable {
 
     int getMaxSets();
 
-    int getSetNumber();
+    @Deprecated
+    int getExerciseIndex();
 
     void setReps(int reps);
 

@@ -83,7 +83,7 @@ public class CurrentExerciseFragment extends Fragment {
 
     private void changeSets(int moved) {
         Workout workout = workoutSession.getWorkout();
-        setSet(workout.getExercise(exercisePosition).getSetNumber() + moved);
+        setSet(workout.getExercise(exercisePosition).getExerciseIndex() + moved);
         setViews(exercisePosition);
         updateWorkoutProgress(exercisePosition);
         updatePage();
