@@ -13,6 +13,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ManageWorkout {
@@ -177,14 +179,16 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void replaceSets(Exercise exercise, List<Set> sets) {
-        for (Set set : exercise.getSets()) {
+    public void replaceSets(Exercise exercise, List<Set> setToAdd) {
+        List<Set> setsToRemove = new ArrayList<>(exercise.getSets());
+        for (Set set : setsToRemove) {
             setRepository.delete(set.getSetId());
+            exercise.removeSet(set);
         }
-        for (Set set : sets) {
+        for (Set set : setToAdd) {
             setRepository.save(exercise.getExerciseId(), set);
+            exercise.addSet(set);
         }
-        exercise.setSets(sets);
         setUnsavedChanges(false);
     }
 }

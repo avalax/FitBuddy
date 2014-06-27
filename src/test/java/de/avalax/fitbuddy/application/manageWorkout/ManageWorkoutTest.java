@@ -4,6 +4,7 @@ import android.view.View;
 import de.avalax.fitbuddy.application.ExerciseFactory;
 import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 
@@ -255,15 +258,13 @@ public class ManageWorkoutTest {
 
             @Test
             public void replaceSets_shouldDeleteOldSetsAndSaveNewSets() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("21");
+                Exercise exercise = new BasicExercise();
+                exercise.setExerciseId(exerciseId);
                 SetId setIdToDelete = new SetId("42");
                 Set setToDelete = mock(Set.class);
-                ExerciseId exerciseId = new ExerciseId("21");
-                List<Set> setsToDelete = new ArrayList<>();
-                setsToDelete.add(setToDelete);
-                when(exercise.getExerciseId()).thenReturn(exerciseId);
                 when(setToDelete.getSetId()).thenReturn(setIdToDelete);
-                when(exercise.getSets()).thenReturn(setsToDelete);
-
+                exercise.addSet(setToDelete);
                 List<Set> setsToAdd = new ArrayList<>();
                 Set setToAdd = mock(Set.class);
                 setsToAdd.add(setToAdd);
@@ -273,6 +274,8 @@ public class ManageWorkoutTest {
                 InOrder inOrder = inOrder(setRepository);
                 inOrder.verify(setRepository).delete(setIdToDelete);
                 inOrder.verify(setRepository).save(exerciseId, setToAdd);
+                assertThat(exercise.getSets(), hasSize(1));
+                assertThat(exercise.getSets(), hasItem(setToAdd));
             }
         }
     }

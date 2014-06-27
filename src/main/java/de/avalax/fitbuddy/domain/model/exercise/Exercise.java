@@ -23,7 +23,9 @@ public interface Exercise extends Serializable {
 
     List<Set> getSets();
 
-    void setSets(List<Set> sets);
-
     void setName(String name);
+
+    void addSet(Set set);
+
+    void removeSet(Set set);
 }

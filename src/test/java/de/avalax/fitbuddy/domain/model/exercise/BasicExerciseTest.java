@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -77,11 +78,22 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void setSets_shouldSetSets() throws Exception {
-        List<Set> sets = new ArrayList<>();
-        exercise.setSets(sets);
-        assertThat(exercise.getSets(), equalTo(sets));
-        assertThat(exercise.indexOfCurrentSet(), equalTo(0));
+    public void addSet_shouldAddSetToSets() throws Exception {
+        Set set = mock(Set.class);
+
+        exercise.addSet(set);
+
+        List<Set> sets = exercise.getSets();
+        assertThat(sets.get(sets.size() - 1), equalTo(set));
+    }
+
+    @Test
+    public void removeSet_shouldRemoveSetFromSets() throws Exception {
+        Set set = mock(Set.class);
+
+        exercise.addSet(set);
+        exercise.removeSet(set);
+        assertThat(sets, not(hasItem(set)));
     }
 
     @Test

@@ -81,18 +81,22 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setSets(List<Set> sets) {
-        this.sets = sets;
-        this.exerciseIndex = 0;
-    }
-
-    @Override
     public void setName(String name) {
         if (name == null) {
             this.name = "";
         } else {
             this.name = name.trim();
         }
+    }
+
+    @Override
+    public void addSet(Set set) {
+        sets.add(set);
+    }
+
+    @Override
+    public void removeSet(Set set) {
+        sets.remove(set);
     }
 
     private boolean isIndexGreaterEqualThan(int index) {
