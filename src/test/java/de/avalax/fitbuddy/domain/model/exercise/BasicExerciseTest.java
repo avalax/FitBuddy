@@ -189,16 +189,6 @@ public class BasicExerciseTest {
         verify(set).setReps(12);
     }
 
-    @Test
-    public void getWeight_shouldReturnWeightOfCurrentSet() throws Exception {
-        Set set = mock(Set.class);
-        sets.add(set);
-
-        when(set.getWeight()).thenReturn(50.0);
-
-        assertThat(exercise.getWeight(), equalTo(50.0));
-    }
-
     @Test(expected = SetNotAvailableException.class)
     public void getCurrentSet_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
         exercise.getCurrentSet();

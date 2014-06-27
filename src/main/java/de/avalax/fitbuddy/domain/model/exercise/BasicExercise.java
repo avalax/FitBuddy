@@ -118,14 +118,6 @@ public class BasicExercise implements Exercise {
         }
     }
 
-    @Override
-    public double getWeight() {
-        if (isIndexGreaterEqualThan(exerciseIndex)) {
-            return 0;
-        }
-        return getCurrentSet().getWeight();
-    }
-
     private boolean isIndexGreaterEqualThan(int index) {
         return index >= sets.size();
     }

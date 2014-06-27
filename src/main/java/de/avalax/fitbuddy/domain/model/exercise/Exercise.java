@@ -8,8 +8,6 @@ import java.util.List;
 public interface Exercise extends Serializable {
     String getName();
 
-    double getWeight();
-
     int indexOfCurrentSet();
 
     void setReps(int reps);

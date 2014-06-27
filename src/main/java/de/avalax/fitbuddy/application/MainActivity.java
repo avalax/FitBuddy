@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     private String exerciseWeightText(int position) {
         Exercise exercise = workoutSession.getWorkout().getExercise(position);
-        double weight = exercise.getWeight();
+        double weight = exercise.getCurrentSet().getWeight();
         if (weight > 0) {
             return String.format(weightTitle, decimalFormat.format(weight));
         } else {
@@ -120,7 +120,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        double weight = workoutSession.getWorkout().getExercise(position).getWeight();
+        double weight = workoutSession.getWorkout().getExercise(position).getCurrentSet().getWeight();
         EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
     }
 

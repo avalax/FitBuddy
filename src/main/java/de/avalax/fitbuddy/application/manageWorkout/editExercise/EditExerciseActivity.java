@@ -87,7 +87,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment) {
         int setCount = editSetsDialogFragment.getSets();
         int maxReps = exercise.getMaxReps();
-        double weight = exercise.getWeight();
+        double weight = exercise.getCurrentSet().getWeight();
         List<Set> sets = new ArrayList<>();
         for (int i = 0; i < setCount; i++) {
             sets.add(new BasicSet(weight, maxReps));

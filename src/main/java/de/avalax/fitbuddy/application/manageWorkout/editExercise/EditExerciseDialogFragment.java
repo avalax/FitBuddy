@@ -55,7 +55,7 @@ public class EditExerciseDialogFragment extends Fragment {
     protected void init() {
         //TODO: 3x times - unnamed exercise from resources & move to a ui helper
         exerciseNameEditText.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
-        exerciseWeightExitText.setText(String.valueOf(exercise.getWeight()));
+        exerciseWeightExitText.setText(String.valueOf(exercise.getCurrentSet().getWeight()));
         exerciseRepsTextView.setText(String.valueOf(exercise.getMaxReps()));
         exerciseSetsTextView.setText(String.valueOf(exercise.getSets().size()));
     }
@@ -71,7 +71,7 @@ public class EditExerciseDialogFragment extends Fragment {
     @OnClick(R.id.exerciseWeight)
     protected void changeWeight() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        double weight = exercise.getWeight();
+        double weight = exercise.getCurrentSet().getWeight();
         EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
     }
 

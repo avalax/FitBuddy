@@ -41,7 +41,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         Exercise exercise = exercises.get(position);
         //TODO: 3x times - unnamed exercise from resources & move to a ui helper
         holder.name.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
-        holder.weight.setText(getWeightText(exercise.getWeight()));
+        holder.weight.setText(getWeightText(exercise.getCurrentSet().getWeight()));
         holder.reps.setText(String.valueOf(exercise.getMaxReps()));
         holder.sets.setText(String.valueOf(exercise.getSets().size()));
         return convertView;
