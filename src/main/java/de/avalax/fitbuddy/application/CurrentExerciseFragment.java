@@ -72,7 +72,7 @@ public class CurrentExerciseFragment extends Fragment {
     }
 
     private int getMaxMoveForReps(Workout workout) {
-        return workout.getExercise(exercisePosition).getMaxReps();
+        return workout.getExercise(exercisePosition).getCurrentSet().getMaxReps();
     }
 
     private void changeReps(int moved) {

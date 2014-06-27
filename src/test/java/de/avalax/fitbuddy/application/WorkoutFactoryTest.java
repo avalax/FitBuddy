@@ -50,12 +50,13 @@ public class WorkoutFactoryTest {
 
     @Test
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
+        //TODO: remove weightRaise
         Workout workout = workoutFactory.createFromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
 
         assertThat(workout.getExercises(), hasSize(1));
         assertThat(workout.getExercise(0).getName(), equalTo("bankdrücken"));
         assertThat(workout.getExercise(0).getSets(), hasSize(3));
-        assertThat(workout.getExercise(0).getMaxReps(), is(12));
+        assertThat(workout.getExercise(0).getCurrentSet().getMaxReps(), is(12));
     }
 
     @Test

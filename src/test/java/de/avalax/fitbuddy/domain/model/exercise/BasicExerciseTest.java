@@ -105,16 +105,6 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void getMaxReps_shouldReturnMaxRepsFromCurrentSet() throws Exception {
-        Set set = mock(Set.class);
-        int maxReps = 12;
-        when(set.getMaxReps()).thenReturn(maxReps);
-        sets.add(set);
-
-        assertThat(exercise.getMaxReps(), equalTo(maxReps));
-    }
-
-    @Test
     public void getReps_shouldReturnRepsFromSet() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
@@ -129,11 +119,6 @@ public class BasicExerciseTest {
         sets.add(set);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
-    }
-
-    @Test
-    public void getMaxReps() throws Exception {
-        assertThat(exercise.getMaxReps(), equalTo(0));
     }
 
     @Test

@@ -14,8 +14,6 @@ public interface Exercise extends Serializable {
 
     int getReps();
 
-    int getMaxReps();
-
     double getProgress();
 
     @Deprecated
