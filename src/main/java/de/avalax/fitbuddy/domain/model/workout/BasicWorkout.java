@@ -41,11 +41,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setReps(int index, int reps) {
-        getExercise(index).setReps(reps);
-    }
-
-    @Override
     public void setName(String name) {
         if (name == null) {
             this.name = "";
@@ -97,12 +92,6 @@ public class BasicWorkout implements Workout {
     public List<Exercise> getExercises() {
         return Collections.unmodifiableList(exercises);
     }
-
-    @Override
-    public int getReps(int index) {
-        return getExercise(index).getReps();
-    }
-
 
     private boolean isIndexOutOfBounds(int index) {
         return isIndexNegative(index) || isIndexGreaterEqualThan(index);

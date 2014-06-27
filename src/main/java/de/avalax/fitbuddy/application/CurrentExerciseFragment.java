@@ -92,7 +92,8 @@ public class CurrentExerciseFragment extends Fragment {
     private void setReps(int moved) {
         Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercise(exercisePosition);
-        exercise.setReps(exercise.getReps() + moved);
+        //TODO: add to Set addRep, removeRep
+        exercise.getCurrentSet().setReps(exercise.getCurrentSet().getReps() + moved);
     }
 
     private void setSet(int setNumber) {

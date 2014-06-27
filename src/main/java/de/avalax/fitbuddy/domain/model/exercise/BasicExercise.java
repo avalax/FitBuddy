@@ -58,25 +58,10 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public int getReps() {
-        if (isIndexGreaterEqualThan(exerciseIndex)) {
-            return 0;
-        }
-        return getCurrentSet().getReps();
-    }
-
-    @Override
-    public void setReps(int reps) {
-        if (isIndexGreaterEqualThan(exerciseIndex)) {
-            return;
-        }
-        getCurrentSet().setReps(reps);
-    }
-
-    @Override
     public double getProgress() {
         double setsProgress = (exerciseIndex) / (double) sets.size();
-        double repsProgress = getReps() / (double) getCurrentSet().getMaxReps() / sets.size();
+        //TODO: add getProgress to Set
+        double repsProgress = getCurrentSet().getReps() / (double) getCurrentSet().getMaxReps() / sets.size();
         return setsProgress + repsProgress;
     }
 

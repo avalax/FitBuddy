@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.domain.model.exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,8 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
 public class BasicExerciseTest {
@@ -105,25 +105,11 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void getReps_shouldReturnRepsFromSet() throws Exception {
-        Set set = mock(Set.class);
-        sets.add(set);
-        when(set.getReps()).thenReturn(12);
-
-        assertThat(exercise.getReps(), equalTo(12));
-    }
-
-    @Test
     public void getCurrentSet_shouldReturnCurrentSetOnStartup() throws Exception {
         Set set = mock(Set.class);
         sets.add(set);
 
         assertThat(exercise.getCurrentSet(), equalTo(set));
-    }
-
-    @Test
-    public void getReps() throws Exception {
-        assertThat(exercise.getReps(), equalTo(0));
     }
 
     @Test
@@ -157,21 +143,6 @@ public class BasicExerciseTest {
         sets.add(mock(Set.class));
 
         exercise.setCurrentSet(sets.size() + 1);
-    }
-
-    @Test
-    public void setReps_withoutSetsShouldDoNothing() throws Exception {
-        exercise.setReps(12);
-    }
-
-    @Test
-    public void setReps_shouldCallSetRepsForCurrentSet() throws Exception {
-        Set set = mock(Set.class);
-        sets.add(set);
-
-        exercise.setReps(12);
-
-        verify(set).setReps(12);
     }
 
     @Test(expected = SetNotAvailableException.class)

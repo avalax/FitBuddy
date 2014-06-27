@@ -83,26 +83,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void setReps_shouldSetRepsTo12() throws Exception {
-
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-
-        workout.setReps(exerciseIndex, 12);
-
-        verify(exercise).setReps(12);
-    }
-
-    @Test
-    public void getReps_shouldReturnRepsFromExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(exercise);
-        when(exercise.getReps()).thenReturn(12);
-
-        assertThat(workout.getReps(exerciseIndex), equalTo(12));
-    }
-
-    @Test
     public void getId_shouldReturnId() throws Exception {
         WorkoutId id = new WorkoutId("42");
 

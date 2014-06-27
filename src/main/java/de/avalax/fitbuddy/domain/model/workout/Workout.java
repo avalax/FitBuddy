@@ -12,10 +12,6 @@ public interface Workout extends Serializable {
 
     Exercise getExercise(int index);
 
-    int getReps(int index);
-
-    void setReps(int index, int reps);
-
     void setName(String name);
 
     String getName();

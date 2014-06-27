@@ -10,14 +10,10 @@ public interface Exercise extends Serializable {
 
     int indexOfCurrentSet();
 
-    void setReps(int reps);
-
-    int getReps();
-
     double getProgress();
 
     @Deprecated
-    void setCurrentSet(int setNumber);
+    void setCurrentSet(int index);
 
     Set getCurrentSet();
 
