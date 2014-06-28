@@ -45,16 +45,19 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
 
     @Override
     public Workout load(WorkoutId workoutId) {
-        Workout workout = null;
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
                 "id=?", new String[]{workoutId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
-            workout = createWorkout(cursor);
+            Workout workout = createWorkout(cursor);
+            cursor.close();
+            database.close();
+            return workout;
+        } else {
+            cursor.close();
+            database.close();
+            throw new WorkoutNotAvailableException();
         }
-        cursor.close();
-        database.close();
-        return workout;
     }
 
     private Workout createWorkout(Cursor cursor) {

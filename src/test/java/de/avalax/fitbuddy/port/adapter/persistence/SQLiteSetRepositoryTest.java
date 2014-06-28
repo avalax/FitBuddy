@@ -1,8 +1,7 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import android.app.Activity;
+import android.content.Context;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
@@ -21,7 +20,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,15 +42,15 @@ public class SQLiteSetRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        Activity activity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
-        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, activity, R.raw.fitbuddy_db);
+        Context context = Robolectric.application.getApplicationContext();
+        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
         setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise = new BasicExercise();
         exercises.add(exercise);
-        Workout workout = new BasicWorkout("name",exercises);
+        Workout workout = new BasicWorkout("name", exercises);
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();
     }

@@ -1,12 +1,10 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
-import android.app.Activity;
+import android.content.Context;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import org.junit.Before;
@@ -16,7 +14,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,8 +37,8 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        Activity activity = Robolectric.buildActivity(ManageWorkoutActivity.class).create().get();
-        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteWorkoutRepositoryTest", 1, activity, R.raw.fitbuddy_db);
+        Context context = Robolectric.application.getApplicationContext();
+        FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteWorkoutRepositoryTest", 1, context, R.raw.fitbuddy_db);
         SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
@@ -71,7 +68,7 @@ public class SQLiteWorkoutRepositoryTest {
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise = new BasicExercise();
         exercises.add(exercise);
-        Workout workout = new BasicWorkout("name",exercises);
+        Workout workout = new BasicWorkout("name", exercises);
 
         workoutRepository.save(workout);
 
@@ -97,10 +94,9 @@ public class SQLiteWorkoutRepositoryTest {
         assertThat(workout2.getName(), equalTo("newname2"));
     }
 
-    @Test
-    public void loadByUnknownWorkoutId_shouldReturnNullValue() {
-        Workout workout = workoutRepository.load(new WorkoutId("21"));
-        assertThat(workout, nullValue());
+    @Test(expected = WorkoutNotAvailableException.class)
+    public void loadByUnknownWorkoutId_shouldThrowException() {
+        workoutRepository.load(new WorkoutId("21"));
     }
 
     @Test
@@ -120,7 +116,7 @@ public class SQLiteWorkoutRepositoryTest {
         exercises.add(exercise1);
         Exercise exercise2 = new BasicExercise();
         exercises.add(exercise2);
-        Workout workout = new BasicWorkout("name",exercises);
+        Workout workout = new BasicWorkout("name", exercises);
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -170,12 +166,12 @@ public class SQLiteWorkoutRepositoryTest {
         workoutRepository.delete(null);
     }
 
-    @Test
+    @Test(expected = WorkoutNotAvailableException.class)
     public void deleteWorkoutByWorkoutId_shouldRemoveItFromPersistence() throws Exception {
         WorkoutId workoutId = createWorkout("workout1");
 
         workoutRepository.delete(workoutId);
 
-        assertThat(workoutRepository.load(workoutId), nullValue());
+        workoutRepository.load(workoutId);
     }
 }

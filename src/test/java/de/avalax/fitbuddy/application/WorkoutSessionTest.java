@@ -1,62 +1,69 @@
 package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowPreferenceManager;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
+@Config(emulateSdk = 18)
+@RunWith(RobolectricTestRunner.class)
 public class WorkoutSessionTest {
     WorkoutSession workoutSession;
 
     WorkoutRepository workoutRepository;
 
-    private Workout workout;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+
+    private String lastWorkoutId;
 
     @Before
     public void setUp() throws Exception {
+        lastWorkoutId = "21";
         workoutRepository = mock(WorkoutRepository.class);
-        workout = mock(Workout.class);
-        SharedPreferences sharedPreferences = mock(SharedPreferences.class);
-        editor = mock(SharedPreferences.Editor.class);
-        String id = "21";
-        when(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1")).thenReturn(id);
-        when(workoutRepository.load(new WorkoutId(id))).thenReturn(workout);
-        when(sharedPreferences.edit()).thenReturn(editor);
+        sharedPreferences = ShadowPreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext());
+        sharedPreferences.edit().putString(WorkoutSession.LAST_WORKOUT_ID, lastWorkoutId).commit();
+        WorkoutId workoutId = new WorkoutId(lastWorkoutId);
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
+        when(workoutRepository.load(workoutId)).thenReturn(workout);
         WorkoutFactory workoutFactory = new WorkoutFactory();
         workoutSession = new WorkoutSession(sharedPreferences, workoutRepository, workoutFactory);
     }
 
     @Test
-    public void shouldInitialzeWithWorkoutFromWorkoutDAO() {
-        assertThat(workoutSession.getWorkout(), equalTo(workout));
+    public void afterInitialization_shouldReturnWorkoutWithLastWorkoutId() {
+        assertThat(workoutSession.getWorkout().getWorkoutId().id(), equalTo(lastWorkoutId));
     }
 
     @Test
-    @Ignore("Add a workoutSessionDAO")
-    public void testSaveWorkout_shouldCallWorkoutDAOSaveAndLoadNewWorkout() throws Exception {
+    @Ignore("Add a workoutSessionRepository")
+    public void testSaveWorkout_shouldSaveWorkoutToRepository() throws Exception {
         workoutSession.saveWorkoutSession();
-
-        verify(workoutRepository).save(workout);
     }
 
     @Test
-    public void testSwitchWorkout_shouldSwitchToWorkoutFromWorkoutDAO() throws Exception {
+    public void switchWorkout_shouldLoadAndSetWorkoutFromRepository() throws Exception {
         WorkoutId workoutId = new WorkoutId("42");
         Workout loadedWorkout = mock(Workout.class);
         when(workoutRepository.load(workoutId)).thenReturn(loadedWorkout);
 
         workoutSession.switchWorkout(workoutId);
-        verify(editor).putString(WorkoutSession.LAST_WORKOUT_POSITION, workoutId.id());
-        verify(editor).commit();
+
+        assertThat(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_ID, "-1"),equalTo(workoutId.id()));
         assertThat(workoutSession.getWorkout(), is(loadedWorkout));
     }
 }
