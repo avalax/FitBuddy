@@ -59,7 +59,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         if (savedInstanceState != null) {
             lastWorkouId = savedInstanceState.getString(WORKOUT_POSITION);
         } else {
-            lastWorkouId = sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_POSITION, "1");
+            lastWorkouId = sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_ID, "1");
         }
         manageWorkout.setWorkout(new WorkoutId(lastWorkouId));
         exerciseListFragment = new ExerciseListFragment();
