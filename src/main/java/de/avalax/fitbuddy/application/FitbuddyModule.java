@@ -80,14 +80,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    ExerciseFactory provideExerciseFactory() {
-        return new ExerciseFactory();
-    }
-
-    @Provides
-    @Singleton
-    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory, ExerciseFactory exerciseFactory) {
-        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutFactory, exerciseFactory);
+    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory) {
+        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutFactory);
     }
 
     @Provides

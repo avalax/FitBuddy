@@ -24,7 +24,7 @@ public interface Workout extends Serializable {
 
     boolean deleteExercise(Exercise exercise);
 
-    void addExercise(Exercise exercise);
+    void addExercise();
 
     List<Exercise> getExercises();
 }

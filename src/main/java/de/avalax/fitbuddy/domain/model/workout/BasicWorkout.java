@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 import java.util.Collections;
@@ -75,8 +76,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void addExercise(Exercise exercise) {
-        exercises.add(exercise);
+    public void addExercise() {
+        exercises.add(new BasicExercise());
     }
 
     @Override

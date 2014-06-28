@@ -105,13 +105,10 @@ public class BasicWorkoutTest {
 
     @Test
     public void addExercise_shouldAddExercise() throws Exception {
-        Exercise exercise = mock(Exercise.class);
-        exercises.add(mock(Exercise.class));
+        assertThat(exercises, hasSize(0));
+        workout.addExercise();
 
-        workout.addExercise(exercise);
-
-        assertThat(exercises, hasSize(2));
-        assertThat(exercises.getLast(), equalTo(exercise));
+        assertThat(exercises, hasSize(1));
     }
 
     @Test
