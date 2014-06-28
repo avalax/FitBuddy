@@ -97,7 +97,7 @@ public class BasicWorkout implements Workout {
         if (workoutId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicWorkout && workoutId.equals(((BasicWorkout) o).workoutId);
+        return o instanceof Workout && workoutId.equals(((Workout) o).getWorkoutId());
     }
 
     @Override

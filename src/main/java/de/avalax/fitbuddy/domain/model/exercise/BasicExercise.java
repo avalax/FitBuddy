@@ -112,7 +112,7 @@ public class BasicExercise implements Exercise {
         if (exerciseId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicExercise && exerciseId.equals(((BasicExercise) o).exerciseId);
+        return o instanceof Exercise && exerciseId.equals(((Exercise) o).getExerciseId());
     }
 
     @Override

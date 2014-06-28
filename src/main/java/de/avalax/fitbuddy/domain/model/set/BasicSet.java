@@ -64,7 +64,7 @@ public class BasicSet implements Set {
         if (setId == null) {
             return super.equals(o);
         }
-        return o instanceof BasicSet && setId.equals(((BasicSet) o).setId);
+        return o instanceof Set && setId.equals(((Set) o).getSetId());
     }
 
     @Override
