@@ -1,12 +1,8 @@
 package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.workout.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -51,12 +47,6 @@ public class WorkoutSessionTest {
     }
 
     @Test
-    @Ignore("Add a workoutSessionRepository")
-    public void testSaveWorkout_shouldSaveWorkoutToRepository() throws Exception {
-        workoutSession.saveWorkoutSession();
-    }
-
-    @Test
     public void switchWorkout_shouldLoadAndSetWorkoutFromRepository() throws Exception {
         WorkoutId workoutId = new WorkoutId("42");
         Workout loadedWorkout = mock(Workout.class);
@@ -66,5 +56,15 @@ public class WorkoutSessionTest {
 
         assertThat(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_ID, "-1"), equalTo(workoutId.id()));
         assertThat(workoutSession.getWorkout(), is(loadedWorkout));
+    }
+
+    @Test
+    public void switchWorkout_shouldHandleWorkoutNotFoundException() throws Exception {
+        WorkoutId workoutId = new WorkoutId("42");
+        when(workoutRepository.load(workoutId)).thenThrow(new WorkoutNotFoundException());
+
+        workoutSession.switchWorkoutById(workoutId);
+
+        assertThat(sharedPreferences.getString(WorkoutSession.LAST_WORKOUT_ID, "-1"), equalTo(lastWorkoutId));
     }
 }

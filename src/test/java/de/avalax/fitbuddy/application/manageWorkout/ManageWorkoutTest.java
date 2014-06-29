@@ -71,6 +71,14 @@ public class ManageWorkoutTest {
     }
 
     @Test
+    public void getWorkoutList_shouldWorkoutListFromRepository() throws Exception {
+        List<WorkoutListEntry> workoutListEntries = new ArrayList<>();
+        when(workoutRepository.getWorkoutList()).thenReturn(workoutListEntries);
+        List<WorkoutListEntry> workoutList = manageWorkout.getWorkoutList();
+        assertThat(workoutList, equalTo(workoutListEntries));
+    }
+
+    @Test
     public void createWorkout_shouldPersistTheCreatedWorkout() throws Exception {
         Workout newWorkout = manageWorkout.createWorkout();
         verify(workoutRepository).save(newWorkout);

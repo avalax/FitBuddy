@@ -28,18 +28,14 @@ public class WorkoutSession {
     }
 
     public void switchWorkoutById(WorkoutId workoutId) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(LAST_WORKOUT_ID, workoutId.id());
         try {
             workout = workoutRepository.load(workoutId);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(LAST_WORKOUT_ID, workoutId.id());
             editor.commit();
         } catch (WorkoutNotFoundException wnfe) {
             Log.d("WorkoutSession", wnfe.getMessage(), wnfe);
         }
-    }
-
-    public void saveWorkoutSession() {
-        //TODO: save workout session
     }
 
     public Workout getWorkout() {

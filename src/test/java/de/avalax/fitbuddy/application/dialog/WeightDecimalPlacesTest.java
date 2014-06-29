@@ -56,6 +56,7 @@ public class WeightDecimalPlacesTest {
 
     @Test
     public void testGetPosition() throws Exception {
+        assertPosition(-1, 0);
         assertPosition(0.0, 0);
         assertPosition(0.125, 1);
         assertPosition(0.25, 2);
