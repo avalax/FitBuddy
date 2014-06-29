@@ -6,13 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import butterknife.ButterKnife;
@@ -23,13 +22,15 @@ import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.application.FitbuddyApplication;
 import de.avalax.fitbuddy.application.R;
 import de.avalax.fitbuddy.application.WorkoutSession;
+import de.avalax.fitbuddy.application.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditNameDialogFragment.DialogListener {
+
     public static final int EDIT_EXERCISE = 2;
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private boolean initializing;
@@ -232,22 +233,19 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void editWorkoutName() {
-        //TODO: make a DialogFragment
-        View view = getLayoutInflater().inflate(R.layout.fragment_edit_workout_name, null);
-        final EditText input = (EditText) view.findViewById(R.id.nameEditText);
-        input.setText(manageWorkout.getWorkout().getName());
-        new AlertDialog.Builder(this)
-                .setTitle("workout name")
-                .setView(input)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (!manageWorkout.getWorkout().getName().equals(input.getText().toString())) {
-                            manageWorkout.changeName(input.getText().toString());
-                            initActionNavigationBar();
-                        }
-                    }
-                })
-                .show();
+        FragmentManager fm = getSupportFragmentManager();
+        String name = manageWorkout.getWorkout().getName();
+        String hint = getResources().getString(R.string.new_workout_name);
+        EditNameDialogFragment.newInstance(name,hint).show(fm, "fragment_edit_name");
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment) {
+        String name = editNameDialogFragment.getName();
+        if (!manageWorkout.getWorkout().getName().equals(name)) {
+            manageWorkout.changeName(name);
+            initActionNavigationBar();
+        }
     }
 
     @Subscribe

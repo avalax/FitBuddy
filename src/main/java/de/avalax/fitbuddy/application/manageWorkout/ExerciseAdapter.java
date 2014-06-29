@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     private List<Exercise> exercises;
-    DecimalFormat decimalFormat;
+    private DecimalFormat decimalFormat;
 
     public ExerciseAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
         super(context, textViewResourceId, exercises);

@@ -16,6 +16,7 @@ import de.avalax.fitbuddy.application.R;
 public class EditNameDialogFragment extends DialogFragment {
 
     private static final String ARGS_NAME = "name";
+    private static final String ARGS_HINT = "hint";
 
     private String name;
 
@@ -28,10 +29,11 @@ public class EditNameDialogFragment extends DialogFragment {
 
     DialogListener listener;
 
-    public static EditNameDialogFragment newInstance(String name) {
+    public static EditNameDialogFragment newInstance(String name, String hint) {
         EditNameDialogFragment fragment = new EditNameDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_NAME, name);
+        args.putString(ARGS_HINT, hint);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,6 +59,7 @@ public class EditNameDialogFragment extends DialogFragment {
         this.name = getArguments().getString(ARGS_NAME);
 
         nameEditText.setText(name);
+        nameEditText.setHint(getArguments().getString(ARGS_HINT));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
