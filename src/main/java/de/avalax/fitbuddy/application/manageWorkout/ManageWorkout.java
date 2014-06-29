@@ -1,30 +1,25 @@
 package de.avalax.fitbuddy.application.manageWorkout;
 
 import android.view.View;
-import de.avalax.fitbuddy.application.WorkoutFactory;
 import de.avalax.fitbuddy.application.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManageWorkout {
 
-    private WorkoutFactory workoutFactory;
-
     private WorkoutRepository workoutRepository;
 
     private ExerciseRepository exerciseRepository;
 
     private SetRepository setRepository;
+    private WorkoutService workoutService;
 
     private WorkoutSession workoutSession;
 
@@ -35,12 +30,12 @@ public class ManageWorkout {
     private Exercise deletedExercise;
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory) {
+    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.setRepository = setRepository;
-        this.workoutFactory = workoutFactory;
+        this.workoutService = workoutService;
     }
 
     private void setUnsavedChanges(boolean unsavedChanges) {
@@ -55,13 +50,13 @@ public class ManageWorkout {
         return workout;
     }
 
-    public void setWorkout(WorkoutId id) {
+    public void setWorkout(WorkoutId id) throws WorkoutNotFoundException {
         this.workout = workoutRepository.load(id);
     }
 
-    public void switchWorkout() {
+    public void switchWorkout() throws WorkoutNotFoundException{
         if (workout == null) {
-            return;
+            throw new WorkoutNotFoundException();
         }
         workoutSession.switchWorkoutById(workout.getWorkoutId());
         setUnsavedChanges(false);
@@ -71,14 +66,15 @@ public class ManageWorkout {
         return workoutRepository.getWorkoutList();
     }
 
-    public void createWorkout() {
-        workout = workoutFactory.createNew();
+    public Workout createWorkout() {
+        workout = new BasicWorkout();
         workoutRepository.save(workout);
         setUnsavedChanges(false);
+        return workout;
     }
 
-    public void createWorkoutFromJson(String json) {
-        Workout workoutFromJson = workoutFactory.createFromJson(json);
+    public void createWorkoutFromJson(String json) throws WorkoutParseException{
+        Workout workoutFromJson = workoutService.fromJson(json);
         if (workoutFromJson != null) {
             workout = workoutFromJson;
             workoutRepository.save(workoutFromJson);

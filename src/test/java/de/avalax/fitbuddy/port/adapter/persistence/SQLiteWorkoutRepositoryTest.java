@@ -45,7 +45,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveUnpersistedWorkout_shouldAssignNewWorkoutId() {
+    public void saveUnpersistedWorkout_shouldAssignNewWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
 
         assertThat(workout.getWorkoutId(), nullValue());
@@ -54,7 +54,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void savePersistedWorkout_shouldKeepWorkoutId() {
+    public void savePersistedWorkout_shouldKeepWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
@@ -64,7 +64,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveWorkout_shouldAlsoSaveExercises() {
+    public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise = new BasicExercise();
         exercises.add(exercise);
@@ -78,7 +78,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void updateWorkout_shouldSaveTheCorrectEntity() {
+    public void updateWorkout_shouldSaveTheCorrectEntity() throws Exception {
         WorkoutId workoutId1 = createWorkout("name1");
         WorkoutId workoutId2 = createWorkout("name2");
 
@@ -95,17 +95,17 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test(expected = WorkoutNotFoundException.class)
-    public void loadWithNullInstance_shouldThrowWorkoutNotFoundException() {
+    public void loadWithNullInstance_shouldThrowWorkoutNotFoundException() throws Exception {
         workoutRepository.load(null);
     }
 
     @Test(expected = WorkoutNotFoundException.class)
-    public void loadByUnknownWorkoutId_shouldThrowWorkoutNotFoundException() {
+    public void loadByUnknownWorkoutId_shouldThrowWorkoutNotFoundException() throws Exception {
         workoutRepository.load(new WorkoutId("21"));
     }
 
     @Test
-    public void loadByWorkoutId_shouldReturnWorkoutWithWorkoutId() {
+    public void loadByWorkoutId_shouldReturnWorkoutWithWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
@@ -115,7 +115,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void loadByWorkoutId_shouldReturnWorkoutWithExercises() {
+    public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
         LinkedList<Exercise> exercises = new LinkedList<>();
         Exercise exercise1 = new BasicExercise();
         exercises.add(exercise1);
@@ -133,7 +133,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveWorkout_shouldUpdateName() {
+    public void saveWorkout_shouldUpdateName() throws Exception {
         Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();

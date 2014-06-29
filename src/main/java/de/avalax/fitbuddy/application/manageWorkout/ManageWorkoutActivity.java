@@ -22,12 +22,9 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.application.FitbuddyApplication;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.application.WorkoutParseException;
 import de.avalax.fitbuddy.application.WorkoutSession;
 import de.avalax.fitbuddy.application.manageWorkout.events.WorkoutListInvalidatedEvent;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -65,8 +62,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             manageWorkout.setWorkout(workoutId);
         } catch (WorkoutNotFoundException wnfe) {
             Log.d("MangeWorkoutActivity", wnfe.getMessage(), wnfe);
-            manageWorkout.createWorkout();
-            workoutSession.switchWorkoutById(manageWorkout.getWorkout().getWorkoutId());
+            Workout workout = manageWorkout.createWorkout();
+            workoutSession.switchWorkoutById(workout.getWorkoutId());
         }
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
@@ -134,7 +131,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             List<WorkoutListEntry> workouts = manageWorkout.getWorkoutList();
             if (workouts.size() > 0) {
                 WorkoutId workoutId = workouts.get(0).getWorkoutId();
-                manageWorkout.setWorkout(workoutId);
+                try {
+                    manageWorkout.setWorkout(workoutId);
+                } catch (WorkoutNotFoundException wnfw) {
+                    Log.d("MangeWorkoutActivity", wnfw.getMessage(), wnfw);
+                }
             }
             initActionNavigationBar();
             exerciseListFragment.initListView();
@@ -189,8 +190,12 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void switchWorkout(WorkoutId workoutId) {
-        manageWorkout.setWorkout(workoutId);
-        exerciseListFragment.initListView();
+        try {
+            manageWorkout.setWorkout(workoutId);
+            exerciseListFragment.initListView();
+        } catch (WorkoutNotFoundException wnfe) {
+            Log.d("ManageWorkoutActivity", wnfe.getMessage(), wnfe);
+        }
     }
 
     private void showNewWorkoutAltertDialog() {

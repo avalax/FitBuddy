@@ -5,7 +5,7 @@ import java.util.List;
 public interface WorkoutRepository {
     void save(Workout workout);
 
-    Workout load(WorkoutId id);
+    Workout load(WorkoutId id) throws WorkoutNotFoundException;
 
     List<WorkoutListEntry> getWorkoutList();
 

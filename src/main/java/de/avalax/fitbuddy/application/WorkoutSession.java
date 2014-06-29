@@ -1,8 +1,10 @@
 package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import javax.inject.Inject;
@@ -19,7 +21,7 @@ public class WorkoutSession {
         this.workoutRepository = workoutRepository;
     }
 
-    public void switchToLastLoadedWorkout() {
+    public void switchToLastLoadedWorkout() throws WorkoutNotFoundException {
         String lastWorkoutId = sharedPreferences.getString(LAST_WORKOUT_ID, "1");
         WorkoutId workoutId = new WorkoutId(lastWorkoutId);
         this.workout = workoutRepository.load(workoutId);
@@ -28,8 +30,12 @@ public class WorkoutSession {
     public void switchWorkoutById(WorkoutId workoutId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(LAST_WORKOUT_ID, workoutId.id());
-        workout = workoutRepository.load(workoutId);
-        editor.commit();
+        try {
+            workout = workoutRepository.load(workoutId);
+            editor.commit();
+        } catch (WorkoutNotFoundException wnfe) {
+            Log.d("WorkoutSession", wnfe.getMessage(), wnfe);
+        }
     }
 
     public void saveWorkoutSession() {

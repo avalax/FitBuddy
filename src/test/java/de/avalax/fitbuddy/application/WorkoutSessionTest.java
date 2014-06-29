@@ -1,7 +1,10 @@
 package de.avalax.fitbuddy.application;
 
 import android.content.SharedPreferences;
-import de.avalax.fitbuddy.domain.model.workout.*;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -42,7 +45,7 @@ public class WorkoutSessionTest {
     }
 
     @Test
-    public void switchToLastWorkout_shouldReturnWorkoutWithLastWorkoutId() {
+    public void switchToLastWorkout_shouldReturnWorkoutWithLastWorkoutId() throws Exception {
         workoutSession.switchToLastLoadedWorkout();
         assertThat(workoutSession.getWorkout().getWorkoutId().id(), equalTo(lastWorkoutId));
     }

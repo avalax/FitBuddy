@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.application;
+package de.avalax.fitbuddy.port.adapter.service;
 
 import com.google.gson.Gson;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
@@ -7,15 +7,16 @@ import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorkoutFactory {
+public class JsonInWorkoutAdapter {
     Gson gson = new Gson();
 
-    public Workout createFromJson(String contents) {
+    public Workout createFromJson(String contents) throws WorkoutParseException {
         if (contents == null || contents.isEmpty()) {
             throw new WorkoutParseException();
         }
@@ -32,14 +33,9 @@ public class WorkoutFactory {
                 }
                 exerciseList.add(new BasicExercise((String) exercise.get(0), sets));
             }
-            return new BasicWorkout((String) s.get(0),exerciseList);
+            return new BasicWorkout((String) s.get(0), exerciseList);
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
         }
-    }
-
-    public Workout createNew() {
-        LinkedList<Exercise> exercises = new LinkedList<>();
-        return new BasicWorkout("", exercises);
     }
 }

@@ -13,10 +13,13 @@ import de.avalax.fitbuddy.application.manageWorkout.editExercise.EditExerciseAct
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
 import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
+import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
+import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
 
 import javax.inject.Singleton;
 
@@ -74,14 +77,15 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutFactory provideWorkoutFactory() {
-        return new WorkoutFactory();
+    WorkoutService provideWorkoutService() {
+        JsonInWorkoutAdapter jsonInWorkoutAdapter = new JsonInWorkoutAdapter();
+        return new TranslatingWorkoutService(jsonInWorkoutAdapter);
     }
 
     @Provides
     @Singleton
-    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutFactory workoutFactory) {
-        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutFactory);
+    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
+        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutService);
     }
 
     @Provides

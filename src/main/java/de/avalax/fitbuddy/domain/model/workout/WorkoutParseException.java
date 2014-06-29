@@ -1,6 +1,6 @@
-package de.avalax.fitbuddy.application;
+package de.avalax.fitbuddy.domain.model.workout;
 
-public class WorkoutParseException extends RuntimeException {
+public class WorkoutParseException extends Exception {
     public WorkoutParseException() {
         super();
     }

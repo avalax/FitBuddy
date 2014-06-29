@@ -44,7 +44,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public Workout load(WorkoutId workoutId) {
+    public Workout load(WorkoutId workoutId) throws WorkoutNotFoundException {
         if (workoutId == null) {
             throw new WorkoutNotFoundException();
         }
