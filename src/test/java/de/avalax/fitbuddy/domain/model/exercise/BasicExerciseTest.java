@@ -163,6 +163,7 @@ public class BasicExerciseTest {
     }
 
     public class givenAnExerciseProgress {
+        @Test
         public void withoutSets_shouldHaveZeroProgress() throws Exception {
             assertThat(exercise.getProgress(), equalTo(0.0));
         }

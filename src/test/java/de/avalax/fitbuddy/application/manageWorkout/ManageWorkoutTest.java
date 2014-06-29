@@ -180,7 +180,7 @@ public class ManageWorkoutTest {
         @Test
         public void switchWorkout_shouldSetWorkout() throws Exception {
             manageWorkout.switchWorkout();
-            verify(workoutSession).switchWorkout(workoutId);
+            verify(workoutSession).switchWorkoutById(workoutId);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 

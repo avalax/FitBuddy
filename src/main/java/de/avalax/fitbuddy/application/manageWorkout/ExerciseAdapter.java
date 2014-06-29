@@ -40,14 +40,30 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
 
         Exercise exercise = exercises.get(position);
         //TODO: 3x times - unnamed exercise from resources & move to a ui helper
-        holder.name.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
-        holder.weight.setText(getWeightText(exercise.getCurrentSet().getWeight()));
-        holder.reps.setText(String.valueOf(exercise.getCurrentSet().getMaxReps()));
-        holder.sets.setText(String.valueOf(exercise.getSets().size()));
+        holder.name.setText(getNameText(exercise));
+        holder.weight.setText(getWeightText(exercise));
+        holder.reps.setText(getMaxRepsText(exercise));
+        holder.sets.setText(getSetsText(exercise));
         return convertView;
     }
 
-    private CharSequence getWeightText(double weight) {
+    private String getNameText(Exercise exercise) {
+        return exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise";
+    }
+
+    private String getSetsText(Exercise exercise) {
+        return exercise.getSets().isEmpty() ? "0" : String.valueOf(exercise.getSets().size());
+    }
+
+    private String getMaxRepsText(Exercise exercise) {
+        return exercise.getSets().isEmpty() ? "0" : String.valueOf(exercise.getCurrentSet().getMaxReps());
+    }
+
+    private String getWeightText(Exercise exercise) {
+        if (exercise.getSets().isEmpty()) {
+            return "-";
+        }
+        double weight = exercise.getCurrentSet().getWeight();
         if (weight > 0) {
             return decimalFormat.format(weight);
         } else {

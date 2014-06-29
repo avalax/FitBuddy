@@ -72,7 +72,11 @@ public class CurrentExerciseFragment extends Fragment {
     }
 
     private int getMaxMoveForReps(Workout workout) {
-        return workout.getExercises().get(exerciseIndex).getCurrentSet().getMaxReps();
+        Exercise exercise = workout.getExercises().get(exerciseIndex);
+        if (exercise.getSets().isEmpty()) {
+            return 0;
+        }
+        return exercise.getCurrentSet().getMaxReps();
     }
 
     private void changeReps(int moved) {
@@ -92,6 +96,9 @@ public class CurrentExerciseFragment extends Fragment {
     private void setReps(int moved) {
         Workout workout = workoutSession.getWorkout();
         Exercise exercise = workout.getExercises().get(exerciseIndex);
+        if (exercise.getSets().isEmpty()) {
+            return;
+        }
         //TODO: add to Set addRep, removeRep
         exercise.getCurrentSet().setReps(exercise.getCurrentSet().getReps() + moved);
     }

@@ -59,9 +59,14 @@ public class BasicExercise implements Exercise {
 
     @Override
     public double getProgress() {
-        double setsProgress = (exerciseIndex) / (double) sets.size();
+        if (sets.isEmpty()) {
+            return 0;
+        }
         //TODO: add getProgress to Set
-        double repsProgress = getCurrentSet().getReps() / (double) getCurrentSet().getMaxReps() / sets.size();
+        int reps = getCurrentSet().getReps();
+        double maxReps = getCurrentSet().getMaxReps();
+        double repsProgress = reps / maxReps / sets.size();
+        double setsProgress = (exerciseIndex) / (double) sets.size();
         return setsProgress + repsProgress;
     }
 

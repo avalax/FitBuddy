@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
-    protected WorkoutSession workoutSession;
+    private WorkoutSession workoutSession;
 
     public MainPagerAdapter(FragmentManager fm, WorkoutSession workoutSession) {
         super(fm);

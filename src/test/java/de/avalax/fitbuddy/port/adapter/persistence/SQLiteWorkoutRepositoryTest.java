@@ -94,8 +94,13 @@ public class SQLiteWorkoutRepositoryTest {
         assertThat(workout2.getName(), equalTo("newname2"));
     }
 
-    @Test(expected = WorkoutNotAvailableException.class)
-    public void loadByUnknownWorkoutId_shouldThrowException() {
+    @Test(expected = WorkoutNotFoundException.class)
+    public void loadWithNullInstance_shouldThrowWorkoutNotFoundException() {
+        workoutRepository.load(null);
+    }
+
+    @Test(expected = WorkoutNotFoundException.class)
+    public void loadByUnknownWorkoutId_shouldThrowWorkoutNotFoundException() {
         workoutRepository.load(new WorkoutId("21"));
     }
 
@@ -166,7 +171,7 @@ public class SQLiteWorkoutRepositoryTest {
         workoutRepository.delete(null);
     }
 
-    @Test(expected = WorkoutNotAvailableException.class)
+    @Test(expected = WorkoutNotFoundException.class)
     public void deleteWorkoutByWorkoutId_shouldRemoveItFromPersistence() throws Exception {
         WorkoutId workoutId = createWorkout("workout1");
 

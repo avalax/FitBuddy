@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import de.avalax.fitbuddy.application.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.application.manageWorkout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;
@@ -62,7 +64,12 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         this.index = 0;
         this.decimalFormat = new DecimalFormat("###.###");
         this.weightTitle = getResources().getString(R.string.title_weight);
-        //TODO: 0 check, when workout has no exercise
+        try {
+            workoutSession.switchToLastLoadedWorkout();
+        } catch (WorkoutNotFoundException wnfe) {
+            Log.d("MainActivity", wnfe.getMessage(), wnfe);
+            startManageWorkoutActivity();
+        }
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutSession));
 
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
@@ -86,7 +93,11 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     }
 
     private String exerciseWeightText(int index) {
+        //TODO: helper method
         Exercise exercise = workoutSession.getWorkout().getExercises().get(index);
+        if (exercise.getSets().isEmpty()) {
+            return "-";
+        }
         double weight = exercise.getCurrentSet().getWeight();
         if (weight > 0) {
             return String.format(weightTitle, decimalFormat.format(weight));
@@ -120,7 +131,11 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        double weight = workoutSession.getWorkout().getExercises().get(index).getCurrentSet().getWeight();
+        Exercise exercise = workoutSession.getWorkout().getExercises().get(index);
+        if (exercise.getSets().isEmpty()) {
+            return;
+        }
+        double weight = exercise.getCurrentSet().getWeight();
         EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
     }
 
