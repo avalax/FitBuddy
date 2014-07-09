@@ -100,7 +100,7 @@ public class BasicExerciseTest {
         assertThat(exercise.toString(), equalTo("BasicExercise [name=" + name + ", exerciseId=" + exerciseId.toString() + "]"));
     }
 
-    class givenAnExerciseWithSets {
+    public class givenAnExerciseWithSets {
         private List<Set> sets;
 
         @Before
