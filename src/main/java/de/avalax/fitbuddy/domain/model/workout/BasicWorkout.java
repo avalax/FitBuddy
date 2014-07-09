@@ -3,22 +3,22 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class BasicWorkout implements Workout {
-    private LinkedList<Exercise> exercises;
+    private List<Exercise> exercises;
     private String name;
     private WorkoutId workoutId;
 
-    public BasicWorkout(String name, LinkedList<Exercise> exercises) {
+    public BasicWorkout(String name, List<Exercise> exercises) {
         this.exercises = exercises;
         this.name = name;
     }
 
     public BasicWorkout() {
-        this.exercises = new LinkedList<>();
+        this.exercises = new ArrayList<>();
         this.name = "";
     }
 

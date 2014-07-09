@@ -27,7 +27,7 @@ public class BasicSet implements Set {
     }
 
     @Override
-    public void setId(SetId setId) {
+    public void setSetId(SetId setId) {
 
         this.setId = setId;
     }
@@ -73,5 +73,13 @@ public class BasicSet implements Set {
             return super.hashCode();
         }
         return setId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        if (setId == null) {
+            return "BasicSet [weight=" + weight + ", maxReps=" + maxReps + "]";
+        }
+        return "BasicSet [weight=" + weight + ", maxReps=" + maxReps + ", setId=" + setId + "]";
     }
 }

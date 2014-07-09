@@ -20,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -55,11 +54,11 @@ public class ManageWorkoutTest {
 
     private Workout workout;
 
-    private LinkedList<Exercise> exercises;
+    private List<Exercise> exercises;
 
     @Before
     public void setUp() throws Exception {
-        exercises = new LinkedList<>();
+        exercises = new ArrayList<>();
         workout = new BasicWorkout("", exercises);
         MockitoAnnotations.initMocks(this);
         workout.setWorkoutId(new WorkoutId("123456"));

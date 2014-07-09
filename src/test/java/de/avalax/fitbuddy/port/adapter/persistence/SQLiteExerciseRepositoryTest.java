@@ -21,7 +21,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -85,11 +84,11 @@ public class SQLiteExerciseRepositoryTest {
         ExerciseId exerciseId1 = createExercise(0, "name1");
         ExerciseId exerciseId2 = createExercise(1, "name2");
 
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         exercises.get(1).setName("newname2");
         exerciseRepository.save(workoutId, 1, exercises.get(1));
 
-        LinkedList<Exercise> reloadedExercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> reloadedExercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         assertThat(reloadedExercises.get(0).getExerciseId(), equalTo(exerciseId1));
         assertThat(reloadedExercises.get(0).getName(), equalTo("name1"));
         assertThat(reloadedExercises.get(1).getExerciseId(), equalTo(exerciseId2));
@@ -112,7 +111,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void loadByUnknownWorkoutId_shouldReturnNullValue() {
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(new WorkoutId("21"));
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(new WorkoutId("21"));
         assertThat(exercises.size(), equalTo(0));
     }
 
@@ -121,7 +120,7 @@ public class SQLiteExerciseRepositoryTest {
         ExerciseId exerciseId1 = createExercise(1, "name");
         ExerciseId exerciseId2 = createExercise(2, "name");
 
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
 
         assertThat(exercises.size(), equalTo(2));
         assertThat(exercises.get(0).getExerciseId(), equalTo(exerciseId1));
@@ -139,7 +138,7 @@ public class SQLiteExerciseRepositoryTest {
 
         exerciseRepository.save(workoutId, 1, exercise);
 
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         assertThat(exercises.get(0).getSets().size(), equalTo(2));
         assertThat(exercises.get(0).getSets().get(0), equalTo(set1));
         assertThat(exercises.get(0).getSets().get(1), equalTo(set2));
@@ -152,7 +151,7 @@ public class SQLiteExerciseRepositoryTest {
         ExerciseId exerciseId3 = createExercise(3, "name");
         ExerciseId exerciseId0 = createExercise(0, "name");
 
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
 
         assertThat(exercises.size(), equalTo(4));
         assertThat(exercises.get(0).getExerciseId(), equalTo(exerciseId0));

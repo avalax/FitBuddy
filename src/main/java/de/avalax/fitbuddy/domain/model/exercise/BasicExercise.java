@@ -127,4 +127,13 @@ public class BasicExercise implements Exercise {
         }
         return exerciseId.hashCode();
     }
+
+    @Override
+    public String toString() {
+        if (exerciseId == null) {
+            return "BasicExercise [name=" + name + "]";
+        }
+        return "BasicExercise [name=" + name + ", exerciseId=" + exerciseId.toString() + "]";
+    }
+
 }

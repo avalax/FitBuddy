@@ -20,7 +20,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -47,7 +47,7 @@ public class SQLiteSetRepositoryTest {
         setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        LinkedList<Exercise> exercises = new LinkedList<>();
+        List<Exercise> exercises = new ArrayList<>();
         Exercise exercise = new BasicExercise();
         exercises.add(exercise);
         Workout workout = new BasicWorkout("name", exercises);

@@ -25,7 +25,7 @@ public class SQLiteSetRepository implements SetRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (set.getSetId() == null) {
             long id = database.insert("sets", null, getContentValues(exerciseId, set));
-            set.setId(new SetId(String.valueOf(id)));
+            set.setSetId(new SetId(String.valueOf(id)));
         } else {
             database.update("sets", getContentValues(exerciseId, set), "id=?", new String[]{set.getSetId().id()});
         }
@@ -51,7 +51,7 @@ public class SQLiteSetRepository implements SetRepository {
         if (cursor.moveToFirst()) {
             do {
                 Set set = new BasicSet(cursor.getDouble(1), cursor.getInt(2));
-                set.setId(new SetId(cursor.getString(0)));
+                set.setSetId(new SetId(cursor.getString(0)));
                 sets.add(set);
             } while (cursor.moveToNext());
         }

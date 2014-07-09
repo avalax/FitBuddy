@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
-import java.util.LinkedList;
+import java.util.List;
 
 public interface ExerciseRepository {
 
@@ -10,5 +10,5 @@ public interface ExerciseRepository {
 
     void delete(ExerciseId id);
 
-    LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId);
+    List<Exercise> allExercisesBelongsTo(WorkoutId workoutId);
 }

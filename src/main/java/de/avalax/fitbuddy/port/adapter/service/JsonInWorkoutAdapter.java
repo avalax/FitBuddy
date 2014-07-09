@@ -10,7 +10,6 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class JsonInWorkoutAdapter {
@@ -23,7 +22,7 @@ public class JsonInWorkoutAdapter {
         try {
             List s = gson.fromJson(contents, ArrayList.class);
             List<ArrayList> exercises = (ArrayList) s.get(1);
-            LinkedList<Exercise> exerciseList = new LinkedList<>();
+            List<Exercise> exerciseList = new ArrayList<>();
             for (ArrayList exercise : exercises) {
                 List<Set> sets = new ArrayList<>();
                 for (int i = 0; i < (double) exercise.get(2); i++) {

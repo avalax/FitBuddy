@@ -17,5 +17,5 @@ public interface Set extends Serializable {
 
     SetId getSetId();
 
-    void setId(SetId setId);
+    void setSetId(SetId setId);
 }

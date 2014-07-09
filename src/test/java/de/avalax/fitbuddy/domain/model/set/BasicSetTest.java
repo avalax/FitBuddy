@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.domain.model.set;
 
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,64 +10,67 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class BasicSetTest {
     public static final int MAX_REPS = 15;
+    private static final double WEIGHT = 12.5;
     Set set;
 
     @Before
     public void setUp() throws Exception {
-        set = new BasicSet(12.5, MAX_REPS);
+        set = new BasicSet(WEIGHT, MAX_REPS);
     }
 
     @Test
-    public void testSameIdentity() throws Exception {
-        Set a1 = new BasicSet(12.5, MAX_REPS);
-        a1.setId(new SetId("42"));
-        Set a2 = new BasicSet(12.5, MAX_REPS);
-        a2.setId(new SetId("42"));
-        Assert.assertThat(a1, equalTo(a2));
-        Assert.assertThat(a1.hashCode(), equalTo(a2.hashCode()));
+    public void equalSetId_shouldHaveSameIdentity() throws Exception {
+        set.setSetId(new SetId("42"));
+        Set set2 = new BasicSet(WEIGHT, MAX_REPS);
+        set2.setSetId(new SetId("42"));
+
+        assertThat(set, equalTo(set2));
+        assertThat(set.hashCode(), equalTo(set2.hashCode()));
     }
 
     @Test
-    public void testDifferentIdentity() throws Exception {
-        Set a1 = new BasicSet(12.5, MAX_REPS);
-        a1.setId(new SetId("21"));
-        Set a2 = new BasicSet(12.5, MAX_REPS);
-        a2.setId(new SetId("42"));
-        Assert.assertThat(a1, not(equalTo(a2)));
-        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+    public void differntSetIds_shouldHaveDifferentIdentity() throws Exception {
+        set.setSetId(new SetId("21"));
+        Set set2 = new BasicSet(WEIGHT, MAX_REPS);
+        set2.setSetId(new SetId("42"));
+
+        assertThat(set, not(equalTo(set2)));
+        assertThat(set.hashCode(), not(equalTo(set2.hashCode())));
     }
 
     @Test
-    public void testDifferentIdentityWithNoId() throws Exception {
-        Set a1 = new BasicSet(12.5, MAX_REPS);
-        Set a2 = new BasicSet(12.5, MAX_REPS);
-        Assert.assertThat(a1, not(equalTo(a2)));
-        Assert.assertThat(a1.hashCode(), not(equalTo(a2.hashCode())));
+    public void nullValue_shouldHaveDifferentIdentity() throws Exception {
+        Set set2 = new BasicSet(WEIGHT, MAX_REPS);
+
+        assertThat(set, not(equalTo(set2)));
+        assertThat(set.hashCode(), not(equalTo(set2.hashCode())));
     }
 
     @Test
     public void getId_shouldReturnId() throws Exception {
         SetId setId = new SetId("42");
 
-        set.setId(setId);
+        set.setSetId(setId);
 
         assertThat(set.getSetId(), equalTo(setId));
     }
 
     @Test
     public void getWeight_shouldGetWeight() throws Exception {
-        assertThat(set.getWeight(), equalTo(12.5));
+        assertThat(set.getWeight(), equalTo(WEIGHT));
     }
 
     @Test
     public void setWeight_shouldSetWeight() throws Exception {
         set.setWeight(42.21);
+
         assertThat(set.getWeight(), equalTo(42.21));
     }
 
     @Test
     public void setReps_shouldSetReps() throws Exception {
         set.setReps(MAX_REPS);
+
         assertThat(set.getReps(), equalTo(MAX_REPS));
     }
 
@@ -80,6 +82,7 @@ public class BasicSetTest {
     @Test
     public void setMaxReps_shouldSetMaxReps() throws Exception {
         set.setMaxReps(42);
+
         assertThat(set.getMaxReps(), equalTo(42));
     }
 
@@ -95,5 +98,13 @@ public class BasicSetTest {
         set.setReps(MAX_REPS + 1);
 
         assertThat(set.getReps(), equalTo(MAX_REPS));
+    }
+
+    @Test
+    public void toString_shouldReturnSetInformations() throws Exception {
+        assertThat(set.toString(), equalTo("BasicSet [weight=" + WEIGHT + ", maxReps="+MAX_REPS+"]"));
+        SetId setId = new SetId("42");
+        set.setSetId(setId);
+        assertThat(set.toString(), equalTo("BasicSet [weight=" + WEIGHT + ", maxReps="+MAX_REPS+", setId=" + setId.toString() + "]"));
     }
 }

@@ -12,7 +12,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteExerciseRepository implements ExerciseRepository {
@@ -35,8 +35,8 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     }
 
     @Override
-    public LinkedList<Exercise> allExercisesBelongsTo(WorkoutId workoutId) {
-        LinkedList<Exercise> exercises = new LinkedList<>();
+    public List<Exercise> allExercisesBelongsTo(WorkoutId workoutId) {
+        List<Exercise> exercises = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
                 "workout_id=?", new String[]{workoutId.id()}, null, null, "position");

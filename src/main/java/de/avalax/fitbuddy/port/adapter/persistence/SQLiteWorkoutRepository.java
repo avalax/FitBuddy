@@ -9,7 +9,6 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SQLiteWorkoutRepository implements WorkoutRepository {
@@ -65,7 +64,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
 
     private Workout createWorkout(Cursor cursor) {
         WorkoutId workoutId = new WorkoutId(cursor.getString(0));
-        LinkedList<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
+        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         String name = cursor.getString(1);
         Workout workout = new BasicWorkout(name, exercises);
         workout.setWorkoutId(workoutId);

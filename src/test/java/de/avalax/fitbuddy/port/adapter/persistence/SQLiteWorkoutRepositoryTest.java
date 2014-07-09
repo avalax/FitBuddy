@@ -14,7 +14,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -65,14 +65,14 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
-        LinkedList<Exercise> exercises = new LinkedList<>();
+        List<Exercise> exercises = new ArrayList<>();
         Exercise exercise = new BasicExercise();
         exercises.add(exercise);
         Workout workout = new BasicWorkout("name", exercises);
 
         workoutRepository.save(workout);
 
-        LinkedList<Exercise> loadedExercises = exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId());
+        List<Exercise> loadedExercises = exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId());
         assertThat(loadedExercises.size(), equalTo(1));
         assertThat(loadedExercises.get(0), equalTo(exercise));
     }
@@ -116,7 +116,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
-        LinkedList<Exercise> exercises = new LinkedList<>();
+        List<Exercise> exercises = new ArrayList<>();
         Exercise exercise1 = new BasicExercise();
         exercises.add(exercise1);
         Exercise exercise2 = new BasicExercise();
