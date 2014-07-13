@@ -8,12 +8,20 @@ public class TranslatingWorkoutService implements WorkoutService {
 
     private JsonInWorkoutAdapter jsonInWorkoutAdapter;
 
-    public TranslatingWorkoutService(JsonInWorkoutAdapter jsonInWorkoutAdapter) {
+    private WorkoutInJsonAdapter workoutInJsonAdapter;
+
+    public TranslatingWorkoutService(JsonInWorkoutAdapter jsonInWorkoutAdapter, WorkoutInJsonAdapter workoutInJsonAdapter) {
         this.jsonInWorkoutAdapter = jsonInWorkoutAdapter;
+        this.workoutInJsonAdapter = workoutInJsonAdapter;
     }
 
     @Override
-    public Workout fromJson(String json) throws WorkoutParseException{
+    public Workout workoutFromJson(String json) throws WorkoutParseException {
         return jsonInWorkoutAdapter.createFromJson(json);
+    }
+
+    @Override
+    public String jsonFromWorkout(Workout workout) {
+        return workoutInJsonAdapter.fromWorkout(workout);
     }
 }

@@ -20,19 +20,20 @@ public class JsonInWorkoutAdapter {
             throw new WorkoutParseException();
         }
         try {
-            List s = gson.fromJson(contents, ArrayList.class);
-            List<ArrayList> exercises = (ArrayList) s.get(1);
+            List jsonWorkout = gson.fromJson(contents, ArrayList.class);
+            List<ArrayList> jsonExercises = (List<ArrayList>) jsonWorkout.get(1);
             List<Exercise> exerciseList = new ArrayList<>();
-            for (ArrayList exercise : exercises) {
+            for (ArrayList jsonExercise : jsonExercises) {
+                List<ArrayList> jsonSets = (List<ArrayList>) jsonExercise.get(1);
                 List<Set> sets = new ArrayList<>();
-                for (int i = 0; i < (double) exercise.get(2); i++) {
-                    double weight = (double) exercise.get(3);
-                    int maxReps = (int) ((double) exercise.get(1));
+                for (ArrayList jsonSet : jsonSets) {
+                    double weight = (double) jsonSet.get(1);
+                    int maxReps = (int) ((double) jsonSet.get(0));
                     sets.add(new BasicSet(weight, maxReps));
                 }
-                exerciseList.add(new BasicExercise((String) exercise.get(0), sets));
+                exerciseList.add(new BasicExercise((String) jsonExercise.get(0), sets));
             }
-            return new BasicWorkout((String) s.get(0), exerciseList);
+            return new BasicWorkout((String) jsonWorkout.get(0), exerciseList);
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
         }

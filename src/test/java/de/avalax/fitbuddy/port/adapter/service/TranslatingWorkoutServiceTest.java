@@ -18,6 +18,8 @@ public class TranslatingWorkoutServiceTest {
     @Mock
     private JsonInWorkoutAdapter jsonInWorkoutAdapter;
     @Mock
+    private WorkoutInJsonAdapter workoutInJsonAdapter;
+    @Mock
     private Workout workout;
 
     @Test
@@ -25,8 +27,18 @@ public class TranslatingWorkoutServiceTest {
         String aJsonString = "json";
         when(jsonInWorkoutAdapter.createFromJson(aJsonString)).thenReturn(workout);
 
-        Workout workout = workoutService.fromJson(aJsonString);
+        Workout workout = workoutService.workoutFromJson(aJsonString);
 
         assertThat(workout, equalTo(workout));
+    }
+
+    @Test
+    public void aWorkout_shouldReturnAQrCode() throws Exception {
+        String aJsonString = "json";
+        when(workoutInJsonAdapter.fromWorkout(workout)).thenReturn(aJsonString);
+
+        String json = workoutService.jsonFromWorkout(workout);
+
+        assertThat(json, equalTo(aJsonString));
     }
 }

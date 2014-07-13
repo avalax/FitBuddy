@@ -41,7 +41,6 @@ public class EditWeightDialogFragment extends DialogFragment {
         return fragment;
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

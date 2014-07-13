@@ -51,8 +51,7 @@ public class JsonInWorkoutAdapterTest {
 
     @Test
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
-        //TODO: remove weightRaise
-        Workout workout = jsonInWorkoutAdapter.createFromJson("[\"\",[[\"bankdrücken\",12,3,80,5]]]");
+        Workout workout = jsonInWorkoutAdapter.createFromJson("[\"\",[[\"bankdrücken\",[[12,80],[12,80],[12,80]]]]]");
 
         assertThat(workout.getExercises(), hasSize(1));
         assertThat(workout.getExercises().get(0).getName(), equalTo("bankdrücken"));

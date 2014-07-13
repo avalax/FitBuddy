@@ -87,7 +87,7 @@ public class ManageWorkoutTest {
 
     @Test
     public void createWorkoutFromJson_shouldPersistTheCreatedWorkout() throws Exception {
-        when(workoutService.fromJson("jsonstring")).thenReturn(workout);
+        when(workoutService.workoutFromJson("jsonstring")).thenReturn(workout);
         manageWorkout.createWorkoutFromJson("jsonstring");
         verify(workoutRepository).save(workout);
         assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));

@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
+import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
 
 import javax.inject.Singleton;
 
@@ -79,7 +80,8 @@ public class FitbuddyModule {
     @Singleton
     WorkoutService provideWorkoutService() {
         JsonInWorkoutAdapter jsonInWorkoutAdapter = new JsonInWorkoutAdapter();
-        return new TranslatingWorkoutService(jsonInWorkoutAdapter);
+        WorkoutInJsonAdapter workoutInJsonAdapter = new WorkoutInJsonAdapter();
+        return new TranslatingWorkoutService(jsonInWorkoutAdapter, workoutInJsonAdapter);
     }
 
     @Provides

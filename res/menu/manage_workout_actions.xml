@@ -20,4 +20,8 @@
         android:id="@+id/action_add_workout"
         android:showAsAction="collapseActionView"
         android:title="add new workout" />
+    <item
+        android:id="@+id/action_share_workout"
+        android:showAsAction="collapseActionView"
+        android:title="share workout" />
 </menu>

@@ -19,6 +19,7 @@ public class ManageWorkout {
     private ExerciseRepository exerciseRepository;
 
     private SetRepository setRepository;
+
     private WorkoutService workoutService;
 
     private WorkoutSession workoutSession;
@@ -26,8 +27,11 @@ public class ManageWorkout {
     private boolean unsavedChanges;
 
     private Workout workout;
+
     private Workout deletedWorkout;
+
     private Exercise deletedExercise;
+
     private Integer deletedExerciseIndex;
 
     public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
@@ -54,7 +58,7 @@ public class ManageWorkout {
         this.workout = workoutRepository.load(id);
     }
 
-    public void switchWorkout() throws WorkoutNotFoundException{
+    public void switchWorkout() throws WorkoutNotFoundException {
         if (workout == null) {
             throw new WorkoutNotFoundException();
         }
@@ -73,8 +77,8 @@ public class ManageWorkout {
         return workout;
     }
 
-    public void createWorkoutFromJson(String json) throws WorkoutParseException{
-        Workout workoutFromJson = workoutService.fromJson(json);
+    public void createWorkoutFromJson(String json) throws WorkoutParseException {
+        Workout workoutFromJson = workoutService.workoutFromJson(json);
         if (workoutFromJson != null) {
             workout = workoutFromJson;
             workoutRepository.save(workoutFromJson);

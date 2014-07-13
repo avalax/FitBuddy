@@ -40,6 +40,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     protected Bus bus;
     @Inject
     protected WorkoutSession workoutSession;
+    @Inject
+    protected WorkoutService workoutService;
     private ExerciseListFragment exerciseListFragment;
     private List<WorkoutListEntry> workoutList;
 
@@ -147,6 +149,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             }
             manageWorkout.createExercise();
             exerciseListFragment.initListView();
+        } else if (item.getItemId() == R.id.action_share_workout) {
+            displayQrCode();
         }
         return true;
     }
@@ -232,11 +236,17 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         }
     }
 
+    private void displayQrCode() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.addExtra("ENCODE_SHOW_CONTENTS", false);
+        integrator.shareText(workoutService.jsonFromWorkout(manageWorkout.getWorkout()));
+    }
+
     private void editWorkoutName() {
         FragmentManager fm = getSupportFragmentManager();
         String name = manageWorkout.getWorkout().getName();
         String hint = getResources().getString(R.string.new_workout_name);
-        EditNameDialogFragment.newInstance(name,hint).show(fm, "fragment_edit_name");
+        EditNameDialogFragment.newInstance(name, hint).show(fm, "fragment_edit_name");
     }
 
     @Override
