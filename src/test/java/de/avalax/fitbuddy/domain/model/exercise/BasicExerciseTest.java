@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
@@ -54,6 +55,13 @@ public class BasicExerciseTest {
 
         assertThat(exercise, not(equalTo(exercise2)));
         assertThat(exercise.hashCode(), not(equalTo(exercise2.hashCode())));
+    }
+
+    @Test
+    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
+    public void differntObject_shouldHaveDifferentIdentity() throws Exception {
+        exercise.setExerciseId(new ExerciseId("42"));
+        assertThat(exercise.equals("42"), is(false));
     }
 
     @Test

@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -56,6 +58,13 @@ public class BasicWorkoutTest {
 
         assertThat(workout, not(equalTo(workout2)));
         assertThat(workout.hashCode(), not(equalTo(workout2.hashCode())));
+    }
+
+    @Test
+    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
+    public void differntObject_shouldHaveDifferentIdentity() throws Exception {
+        workout.setWorkoutId(new WorkoutId("42"));
+        assertThat(workout.equals("42"), is(false));
     }
 
     @Test

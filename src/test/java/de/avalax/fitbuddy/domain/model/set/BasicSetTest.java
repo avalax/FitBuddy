@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.domain.model.set;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -44,6 +45,13 @@ public class BasicSetTest {
 
         assertThat(set, not(equalTo(set2)));
         assertThat(set.hashCode(), not(equalTo(set2.hashCode())));
+    }
+
+    @Test
+    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
+    public void differntObject_shouldHaveDifferentIdentity() throws Exception {
+        set.setSetId(new SetId("42"));
+        assertThat(set.equals("42"), is(false));
     }
 
     @Test
