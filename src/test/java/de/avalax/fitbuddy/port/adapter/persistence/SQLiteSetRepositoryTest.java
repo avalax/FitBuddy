@@ -35,7 +35,9 @@ public class SQLiteSetRepositoryTest {
     private ExerciseId exerciseId;
 
     private Set createSet(double weight, int maxReps) {
-        Set set = new BasicSet(weight, maxReps);
+        Set set = new BasicSet();
+        set.setWeight(weight);
+        set.setMaxReps(maxReps);
         setRepository.save(exerciseId, set);
         return set;
     }
@@ -57,7 +59,7 @@ public class SQLiteSetRepositoryTest {
 
     @Test
     public void saveUnpersistedSet_shouldAssignNewSetId() throws Exception {
-        Set set = new BasicSet(42, 12);
+        Set set = new BasicSet();
 
         assertThat(set.getSetId(), nullValue());
         setRepository.save(exerciseId, set);

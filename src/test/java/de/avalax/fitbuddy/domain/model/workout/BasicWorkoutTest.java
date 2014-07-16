@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -125,7 +124,7 @@ public class BasicWorkoutTest {
 
         @Test
         public void getExercises_shouldReturnExercises() throws Exception {
-            assertThat(workout.getExercises() ,equalTo(exercises));
+            assertThat(workout.getExercises(), equalTo(exercises));
         }
 
         @Test

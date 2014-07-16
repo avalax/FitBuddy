@@ -98,7 +98,7 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void saveExercise_shouldAlsoSaveSets() {
         List<Set> sets = new ArrayList<>();
-        Set set = new BasicSet(42, 12);
+        Set set = new BasicSet();
         sets.add(set);
         Exercise exercise = new BasicExercise("name", sets);
 
@@ -130,9 +130,9 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
         ArrayList<Set> sets = new ArrayList<>();
-        Set set1 = new BasicSet(42, 12);
+        Set set1 = new BasicSet();
         sets.add(set1);
-        Set set2 = new BasicSet(40, 10);
+        Set set2 = new BasicSet();
         sets.add(set2);
         Exercise exercise = new BasicExercise("name", sets);
 

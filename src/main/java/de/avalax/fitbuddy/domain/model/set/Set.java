@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.domain.model.set;
 import java.io.Serializable;
 
 public interface Set extends Serializable {
+
     double getWeight();
 
     int getReps();

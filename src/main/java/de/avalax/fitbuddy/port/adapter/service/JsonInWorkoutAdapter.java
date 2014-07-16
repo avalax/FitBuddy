@@ -29,7 +29,10 @@ public class JsonInWorkoutAdapter {
                 for (ArrayList jsonSet : jsonSets) {
                     double weight = (double) jsonSet.get(1);
                     int maxReps = (int) ((double) jsonSet.get(0));
-                    sets.add(new BasicSet(weight, maxReps));
+                    Set set = new BasicSet();
+                    set.setWeight(weight);
+                    set.setMaxReps(maxReps);
+                    sets.add(set);
                 }
                 exerciseList.add(new BasicExercise((String) jsonExercise.get(0), sets));
             }

@@ -50,8 +50,7 @@ public class SQLiteSetRepository implements SetRepository {
                 "exercise_id=?", new String[]{exerciseId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                Set set = new BasicSet(cursor.getDouble(1), cursor.getInt(2));
-                set.setSetId(new SetId(cursor.getString(0)));
+                Set set = new BasicSet(new SetId(cursor.getString(0)), cursor.getDouble(1), cursor.getInt(2));
                 sets.add(set);
             } while (cursor.moveToNext());
         }

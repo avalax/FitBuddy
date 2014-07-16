@@ -6,7 +6,13 @@ public class BasicSet implements Set {
     private int maxReps;
     private SetId setId;
 
-    public BasicSet(double weight, int maxReps) {
+    public BasicSet() {
+        this.maxReps = 1;
+        this.weight = 0;
+    }
+
+    public BasicSet(SetId setId, double weight, int maxReps) {
+        this.setId = setId;
         this.weight = weight;
         this.maxReps = maxReps;
     }
