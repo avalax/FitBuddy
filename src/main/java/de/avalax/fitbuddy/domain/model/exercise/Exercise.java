@@ -15,6 +15,7 @@ public interface Exercise extends Serializable {
     @Deprecated
     void setCurrentSet(int index);
 
+    @Deprecated
     Set getCurrentSet();
 
     void setExerciseId(ExerciseId exerciseId);

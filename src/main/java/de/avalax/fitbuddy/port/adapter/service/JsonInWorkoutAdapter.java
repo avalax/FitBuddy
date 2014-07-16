@@ -24,17 +24,19 @@ public class JsonInWorkoutAdapter {
             List<ArrayList> jsonExercises = (List<ArrayList>) jsonWorkout.get(1);
             List<Exercise> exerciseList = new ArrayList<>();
             for (ArrayList jsonExercise : jsonExercises) {
+                Exercise exercise = new BasicExercise();
+                exercise.setName((String) jsonExercise.get(0));
+
                 List<ArrayList> jsonSets = (List<ArrayList>) jsonExercise.get(1);
-                List<Set> sets = new ArrayList<>();
                 for (ArrayList jsonSet : jsonSets) {
                     double weight = (double) jsonSet.get(1);
                     int maxReps = (int) ((double) jsonSet.get(0));
                     Set set = new BasicSet();
                     set.setWeight(weight);
                     set.setMaxReps(maxReps);
-                    sets.add(set);
+                    exercise.addSet(set);
                 }
-                exerciseList.add(new BasicExercise((String) jsonExercise.get(0), sets));
+                exerciseList.add(exercise);
             }
             return new BasicWorkout((String) jsonWorkout.get(0), exerciseList);
         } catch (RuntimeException re) {

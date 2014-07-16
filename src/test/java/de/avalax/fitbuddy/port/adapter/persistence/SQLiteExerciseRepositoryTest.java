@@ -20,7 +20,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -62,7 +61,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void saveUnpersistedExercise_shouldAssignNewExerciseId() throws Exception {
-        Exercise exercise = new BasicExercise("nam", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
 
         assertThat(exercise.getExerciseId(), nullValue());
         exerciseRepository.save(workoutId, 1, exercise);
@@ -71,7 +70,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void savePersistedExercise_shouldKeepExerciseId() {
-        Exercise exercise = new BasicExercise("name", new ArrayList<Set>());
+        Exercise exercise = new BasicExercise();
         exerciseRepository.save(workoutId, 1, exercise);
         ExerciseId exerciseId = exercise.getExerciseId();
 
@@ -97,10 +96,9 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void saveExercise_shouldAlsoSaveSets() {
-        List<Set> sets = new ArrayList<>();
+        Exercise exercise = new BasicExercise();
         Set set = new BasicSet();
-        sets.add(set);
-        Exercise exercise = new BasicExercise("name", sets);
+        exercise.addSet(set);
 
         exerciseRepository.save(workoutId, 1, exercise);
 
@@ -129,12 +127,11 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
-        ArrayList<Set> sets = new ArrayList<>();
+        Exercise exercise = new BasicExercise();
         Set set1 = new BasicSet();
-        sets.add(set1);
+        exercise.addSet(set1);
         Set set2 = new BasicSet();
-        sets.add(set2);
-        Exercise exercise = new BasicExercise("name", sets);
+        exercise.addSet(set2);
 
         exerciseRepository.save(workoutId, 1, exercise);
 

@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -109,22 +109,19 @@ public class BasicExerciseTest {
     }
 
     public class givenAnExerciseWithSets {
-        private List<Set> sets;
-
         @Before
         public void setUp() throws Exception {
-            sets = new ArrayList<>();
-            exercise = new BasicExercise("Bankdrücken", sets);
+            exercise = new BasicExercise();
         }
 
         @Test
         public void getName_shouldReturnNameFromInitialization() throws Exception {
-            assertThat(exercise.getName(), equalTo("Bankdrücken"));
+            assertThat(exercise.getName(), equalTo(""));
         }
 
         @Test
-        public void getSets_shouldReturnSets() throws Exception {
-            assertThat(exercise.getSets(), equalTo(sets));
+        public void getSets_shouldReturnSetsEmptyListOnConstruction() throws Exception {
+            assertThat(exercise.getSets(), emptyCollectionOf(Set.class));
         }
 
         @Test
@@ -143,13 +140,13 @@ public class BasicExerciseTest {
 
             exercise.addSet(set);
             exercise.removeSet(set);
-            assertThat(sets, not(hasItem(set)));
+            assertThat(exercise.getSets(), not(hasItem(set)));
         }
 
         @Test
-        public void getCurrentSet_shouldReturnCurrentSetOnStartup() throws Exception {
+        public void getCurrentSet_shouldReturnCurrent() throws Exception {
             Set set = mock(Set.class);
-            sets.add(set);
+            exercise.addSet(set);
 
             assertThat(exercise.getCurrentSet(), equalTo(set));
         }
@@ -158,8 +155,8 @@ public class BasicExerciseTest {
         public void getCurrentSet_shouldReturnSecondSet() throws Exception {
             Set set = mock(Set.class);
 
-            sets.add(mock(Set.class));
-            sets.add(set);
+            exercise.addSet(mock(Set.class));
+            exercise.addSet(set);
 
             exercise.setCurrentSet(1);
 
@@ -173,7 +170,7 @@ public class BasicExerciseTest {
 
         @Test
         public void setSetNumber_shouldSetSetNumberToZero() throws Exception {
-            sets.add(mock(Set.class));
+            exercise.addSet(mock(Set.class));
 
             exercise.setCurrentSet(-1);
 
@@ -182,9 +179,12 @@ public class BasicExerciseTest {
 
         @Test
         public void setCurrentSet_ShouldSetToLastSetWhenSizeExceeded() throws Exception {
-            sets.add(mock(Set.class));
+            Set set = mock(Set.class);
+            exercise.addSet(set);
 
-            exercise.setCurrentSet(sets.size() + 1);
+            exercise.setCurrentSet(exercise.getSets().size() + 1);
+
+            assertThat(exercise.getCurrentSet(), equalTo(set));
         }
 
         @Test(expected = SetNotAvailableException.class)
@@ -203,7 +203,7 @@ public class BasicExerciseTest {
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(0);
-                sets.add(set);
+                exercise.addSet(set);
                 assertThat(exercise.getProgress(), equalTo(0.0));
             }
 
@@ -212,7 +212,7 @@ public class BasicExerciseTest {
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(100);
-                sets.add(set);
+                exercise.addSet(set);
                 assertThat(exercise.getProgress(), equalTo(1.0));
             }
 
@@ -221,39 +221,39 @@ public class BasicExerciseTest {
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(50);
-                sets.add(set);
+                exercise.addSet(set);
                 assertThat(exercise.getProgress(), equalTo(0.5));
             }
 
             @Test
             public void twoSetsWithoutReps_shouldHaveHalfProgress() throws Exception {
-                sets.add(mock(Set.class));
+                exercise.addSet(mock(Set.class));
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(0);
-                sets.add(set);
+                exercise.addSet(set);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.5));
             }
 
             @Test
             public void twoSetsWithMaxReps_shouldHaveFallProgress() throws Exception {
-                sets.add(mock(Set.class));
+                exercise.addSet(mock(Set.class));
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(100);
-                sets.add(set);
+                exercise.addSet(set);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(1.0));
             }
 
             @Test
             public void twoSetsWithHalfReps_shouldHave75Progress() throws Exception {
-                sets.add(mock(Set.class));
+                exercise.addSet(mock(Set.class));
                 Set set = mock(Set.class);
                 when(set.getMaxReps()).thenReturn(100);
                 when(set.getReps()).thenReturn(50);
-                sets.add(set);
+                exercise.addSet(set);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.75));
             }

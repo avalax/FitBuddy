@@ -18,7 +18,8 @@ public class BasicExercise implements Exercise {
         this.sets = new ArrayList<>();
     }
 
-    public BasicExercise(String name, List<Set> sets) {
+    public BasicExercise(ExerciseId exerciseId, String name, List<Set> sets) {
+        this.exerciseId = exerciseId;
         this.name = name;
         this.sets = sets;
         this.exerciseIndex = 0;
