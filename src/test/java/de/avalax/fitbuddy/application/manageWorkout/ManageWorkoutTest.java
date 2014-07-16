@@ -179,19 +179,17 @@ public class ManageWorkoutTest {
         }
 
         @Test
-        public void replaceExercise_shouldSaveExerciseToPersistence() throws Exception {
+        public void saveExercise_shouldSaveExerciseInRepository() throws Exception {
             Exercise exercise = workout.createExercise();
             exercise.setExerciseId(new ExerciseId("42"));
+            Exercise changedExercise = new BasicExercise();
+            changedExercise.setName("changed exercise");
+            changedExercise.setExerciseId(exercise.getExerciseId());
 
-            Exercise exerciseToReplace = new BasicExercise();
-            exerciseToReplace.setExerciseId(exercise.getExerciseId());
-            exerciseToReplace.setName("replacement");
+            manageWorkout.saveExercise(changedExercise);
 
-            manageWorkout.replaceExercise(exerciseToReplace);
-
-            assertThat(workout.getExercises(), hasSize(2));
-            assertThat(workout.getExercises().get(1).getName(), equalTo("replacement"));
-            verify(exerciseRepository).save(workout.getWorkoutId(), 1, exerciseToReplace);
+            assertThat(workout.getExercises().get(1).getName(),equalTo("changed exercise"));
+            verify(exerciseRepository).save(workout.getWorkoutId(), 1, changedExercise);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 

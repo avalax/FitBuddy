@@ -130,8 +130,7 @@ public class ManageWorkout {
         }
     }
 
-    @Deprecated
-    public void replaceExercise(Exercise exercise) {
+    public void saveExercise(Exercise exercise) {
         workout.replaceExercise(exercise);
         int position = workout.getExercises().indexOf(exercise);
         exerciseRepository.save(workout.getWorkoutId(), position, exercise);

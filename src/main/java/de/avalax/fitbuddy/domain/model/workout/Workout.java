@@ -22,7 +22,6 @@ public interface Workout extends Serializable {
 
     void addExercise(int index, Exercise exercise);
 
-    @Deprecated
     void replaceExercise(Exercise exercise);
 
     boolean deleteExercise(Exercise exercise);
