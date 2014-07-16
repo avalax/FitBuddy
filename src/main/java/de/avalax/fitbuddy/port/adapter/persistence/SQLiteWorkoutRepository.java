@@ -65,10 +65,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     private Workout createWorkout(Cursor cursor) {
         WorkoutId workoutId = new WorkoutId(cursor.getString(0));
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        String name = cursor.getString(1);
-        Workout workout = new BasicWorkout(name, exercises);
-        workout.setWorkoutId(workoutId);
-        return workout;
+        return new BasicWorkout(workoutId, cursor.getString(1), exercises);
     }
 
     @Override

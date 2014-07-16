@@ -4,22 +4,21 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.emptyCollectionOf;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
 public class BasicWorkoutTest {
@@ -110,51 +109,36 @@ public class BasicWorkoutTest {
         assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
     }
 
-    public class givenAWorkoutWithExercises {
-        private List<Exercise> exercises;
-
-        private int exerciseIndex;
-
-        @Before
-        public void setUp() throws Exception {
-            exerciseIndex = 0;
-            exercises = new ArrayList<>();
-            workout = new BasicWorkout("", exercises);
+    public class givenAWorkoutForExerciseManipulation {
+        @Test
+        public void getExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
+            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
         }
 
         @Test
-        public void getExercises_shouldReturnExercises() throws Exception {
-            assertThat(workout.getExercises(), equalTo(exercises));
+        public void createExercise_shouldAddExerciseToWorkout() throws Exception {
+            workout.createExercise();
+
+            assertThat(workout.getExercises(), hasSize(1));
         }
 
         @Test
-        public void addExercise_shouldAddExercise() throws Exception {
-            assertThat(exercises, hasSize(0));
-            workout.addExercise();
+        public void createExercise_shouldAddExerciseBeforePosition() throws Exception {
+            workout.createExercise();
+            Exercise exercise = workout.createExercise(0);
 
-            assertThat(exercises, hasSize(1));
+            assertThat(workout.getExercises(), hasSize(2));
+            assertThat(workout.getExercises().get(0), equalTo(exercise));
         }
 
         @Test
-        public void addExerciseBefore_shouldAddExerciseBeforePosition() throws Exception {
-            Exercise exercise = mock(Exercise.class);
-            exercises.add(mock(Exercise.class));
+        public void createExercise_shouldAddExerciseAfterPosition() throws Exception {
+            workout.createExercise();
 
-            workout.addExercise(exerciseIndex, exercise);
+            Exercise exercise = workout.createExercise(1);
 
-            assertThat(exercises, hasSize(2));
-            assertThat(workout.getExercises().get(exerciseIndex), equalTo(exercise));
-        }
-
-        @Test
-        public void addExerciseBefore_shouldAddExerciseAfterPosition() throws Exception {
-            Exercise exercise = mock(Exercise.class);
-            exercises.add(mock(Exercise.class));
-
-            workout.addExerciseAfter(exerciseIndex, exercise);
-
-            assertThat(exercises, hasSize(2));
-            assertThat(workout.getExercises().get(exerciseIndex + 1), equalTo(exercise));
+            assertThat(workout.getExercises(), hasSize(2));
+            assertThat(workout.getExercises().get(1), equalTo(exercise));
         }
 
         @Test
@@ -164,110 +148,102 @@ public class BasicWorkoutTest {
 
             workout.replaceExercise(exercise);
 
-            assertThat(exercises, empty());
+            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
         }
 
         @Test
-        public void setExercise_shouldReplaceExerciseAtPosition() throws Exception {
+        public void replaceExercise_shouldReplaceExerciseAtPosition() throws Exception {
             Exercise exerciseToReplace = new BasicExercise();
             ExerciseId exerciseId = new ExerciseId("42");
             exerciseToReplace.setExerciseId(exerciseId);
-            BasicExercise exercise = new BasicExercise();
+            Exercise exercise = workout.createExercise();
             exercise.setExerciseId(exerciseId);
-            exercises.add(exercise);
 
             workout.replaceExercise(exerciseToReplace);
 
-            assertThat(exercises, hasSize(1));
-            assertThat(workout.getExercises().get(exerciseIndex), equalTo(exerciseToReplace));
+            assertThat(workout.getExercises(), hasSize(1));
+            assertThat(workout.getExercises().get(0), equalTo(exerciseToReplace));
         }
 
         @Test
-        public void removeExercise_shouldRemoveExerciseAtPosition() throws Exception {
-            Exercise exercise = new BasicExercise();
-            exercise.setExerciseId(new ExerciseId("42"));
-            exercises.add(exercise);
+        public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
+            Exercise exercise = workout.createExercise();
 
             boolean isDeleted = workout.deleteExercise(exercise);
 
             assertThat(isDeleted, equalTo(true));
-            assertThat(exercises, empty());
+            assertThat(workout.getExercises(), not(hasItem(exercise)));
         }
 
         @Test
         public void deleteExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
-            Exercise exercise = mock(Exercise.class);
-            exercises.add(exercise);
-            Exercise exerciseToDelete = mock(Exercise.class);
-            exercises.add(exerciseToDelete);
+            Exercise exercise = workout.createExercise();
+            Exercise exerciseToDelete = workout.createExercise();
 
             workout.deleteExercise(exerciseToDelete);
 
-            assertThat(exercises, hasSize(1));
-            assertThat(exercises.get(0), equalTo(exercise));
+            assertThat(workout.getExercises(), hasSize(1));
+            assertThat(workout.getExercises().get(0), equalTo(exercise));
         }
 
         @Test
         public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
             ExerciseId exerciseId = new ExerciseId("42");
-            Exercise exercise = new BasicExercise();
+            Exercise exercise = workout.createExercise();
             exercise.setExerciseId(exerciseId);
-            exercises.add(exercise);
+
             Exercise clonedExercise = new BasicExercise();
             clonedExercise.setExerciseId(new ExerciseId(exerciseId));
 
             workout.deleteExercise(clonedExercise);
 
-            assertThat(exercises, empty());
+            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
         }
 
         @Test
         public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
-            Exercise exercise = new BasicExercise();
-            ExerciseId exerciseId = new ExerciseId("42");
-            exercise.setExerciseId(exerciseId);
-            Exercise exerciseToDelete = new BasicExercise();
-            exerciseToDelete.setExerciseId(exerciseId);
-            exercises.add(exerciseToDelete);
-            exercises.add(exercise);
+            Exercise exerciseToDelete = workout.createExercise();
+            Exercise exercise = workout.createExercise();
 
             workout.deleteExercise(exerciseToDelete);
 
-            assertThat(exercises, hasSize(1));
-            assertThat(exercises.get(0), equalTo(exercise));
+            assertThat(workout.getExercises(), hasSize(1));
+            assertThat(workout.getExercises().get(0), equalTo(exercise));
         }
 
         @Test
-        public void removeExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
+        public void deleteExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
             assertThat(workout.deleteExercise(mock(Exercise.class)), equalTo(false));
         }
 
         public class givenAnExerciseProgress {
             @Test
             public void getProgress_shouldReturnZeroProgress() throws Exception {
-                Exercise exercise = mock(Exercise.class);
-                exercises.add(exercise);
-                when(exercise.getProgress()).thenReturn(0.0);
+                workout.createExercise();
 
-                assertThat(workout.getProgress(exerciseIndex), equalTo(0.0));
+                assertThat(workout.getProgress(0), equalTo(0.0));
             }
 
             @Test
-            public void getProgress_shouldReturnExerciseCount() throws Exception {
-                Exercise exercise = mock(Exercise.class);
-                exercises.add(mock(Exercise.class));
-                exercises.add(exercise);
-                when(exercise.getProgress()).thenReturn(1.0);
+            public void getProgress_shouldReturnFullProgress() throws Exception {
+                workout.createExercise();
+                Exercise exercise = workout.createExercise();
+                Set set = new BasicSet();
+                set.setMaxReps(1);
+                set.setReps(1);
+                exercise.addSet(set);
 
                 assertThat(workout.getProgress(1), equalTo(1.0));
             }
 
             @Test
             public void getProgress_shouldReturn1point5() throws Exception {
-                Exercise exercise = mock(Exercise.class);
-                exercises.add(mock(Exercise.class));
-                exercises.add(exercise);
-                when(exercise.getProgress()).thenReturn(0.5);
+                workout.createExercise();
+                Exercise exercise = workout.createExercise();
+                Set set = new BasicSet();
+                set.setMaxReps(2);
+                set.setReps(1);
+                exercise.addSet(set);
 
                 assertThat(workout.getProgress(1), equalTo(0.75));
             }

@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.application.manageWorkout;
 
 import android.view.View;
 import de.avalax.fitbuddy.application.WorkoutSession;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -131,32 +130,34 @@ public class ManageWorkout {
         }
     }
 
-    public void replaceExercise(int position, Exercise exercise) {
+    @Deprecated
+    public void replaceExercise(Exercise exercise) {
         workout.replaceExercise(exercise);
+        int position = workout.getExercises().indexOf(exercise);
         exerciseRepository.save(workout.getWorkoutId(), position, exercise);
         setUnsavedChanges(false);
     }
 
     public void createExercise() {
-        workout.addExercise();
-        workoutRepository.save(workout);
+        Exercise exercise = workout.createExercise();
+        exerciseRepository.save(workout.getWorkoutId(), workout.getExercises().size() - 1, exercise);
         setUnsavedChanges(false);
     }
 
+    @Deprecated
     public void createExerciseBefore(Exercise exercise) {
         //TODO: move to Workout
-        Exercise newExercise = new BasicExercise();
         List<Exercise> exercises = workout.getExercises();
-        workout.addExercise(exercises.indexOf(exercise), newExercise);
+        workout.createExercise(exercises.indexOf(exercise));
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 
+    @Deprecated
     public void createExerciseAfter(Exercise exercise) {
         //TODO: move to Workout
-        Exercise newExercise = new BasicExercise();
         List<Exercise> exercises = workout.getExercises();
-        workout.addExerciseAfter(exercises.indexOf(exercise), newExercise);
+        workout.createExercise(exercises.indexOf(exercise) + 1);
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }

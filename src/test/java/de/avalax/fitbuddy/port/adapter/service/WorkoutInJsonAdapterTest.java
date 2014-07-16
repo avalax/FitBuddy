@@ -40,7 +40,7 @@ public class WorkoutInJsonAdapterTest {
     @Test
          public void workoutWithOneExercise_shouldReturnJson() throws Exception {
         workout.setName("nameOfWorkout");
-        workout.addExercise();
+        workout.createExercise();
 
         String json = workoutInJsonAdapter.fromWorkout(workout);
 
@@ -50,7 +50,7 @@ public class WorkoutInJsonAdapterTest {
     @Test
     public void workoutWithOneExerciseWithNameAndOneSet_shouldReturnJson() throws Exception {
         workout.setName("nameOfWorkout");
-        workout.addExercise();
+        workout.createExercise();
         Exercise exercise = workout.getExercises().get(0);
         exercise.setName("bankdrücken");
         Set set = new BasicSet();

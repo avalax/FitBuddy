@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
 import com.google.gson.Gson;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -22,9 +21,11 @@ public class JsonInWorkoutAdapter {
         try {
             List jsonWorkout = gson.fromJson(contents, ArrayList.class);
             List<ArrayList> jsonExercises = (List<ArrayList>) jsonWorkout.get(1);
-            List<Exercise> exerciseList = new ArrayList<>();
+            Workout workout = new BasicWorkout();
+            workout.setName((String) jsonWorkout.get(0));
+
             for (ArrayList jsonExercise : jsonExercises) {
-                Exercise exercise = new BasicExercise();
+                Exercise exercise = workout.createExercise();
                 exercise.setName((String) jsonExercise.get(0));
 
                 List<ArrayList> jsonSets = (List<ArrayList>) jsonExercise.get(1);
@@ -36,9 +37,9 @@ public class JsonInWorkoutAdapter {
                     set.setMaxReps(maxReps);
                     exercise.addSet(set);
                 }
-                exerciseList.add(exercise);
             }
-            return new BasicWorkout((String) jsonWorkout.get(0), exerciseList);
+
+            return workout;
         } catch (RuntimeException re) {
             throw new WorkoutParseException(re);
         }

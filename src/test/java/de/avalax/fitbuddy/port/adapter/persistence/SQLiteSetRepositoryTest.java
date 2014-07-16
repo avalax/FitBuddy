@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -20,7 +19,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -49,10 +47,9 @@ public class SQLiteSetRepositoryTest {
         setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        List<Exercise> exercises = new ArrayList<>();
-        Exercise exercise = new BasicExercise();
-        exercises.add(exercise);
-        Workout workout = new BasicWorkout("name", exercises);
+        Workout workout = new BasicWorkout();
+        Exercise exercise = workout.createExercise();
+
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();
     }

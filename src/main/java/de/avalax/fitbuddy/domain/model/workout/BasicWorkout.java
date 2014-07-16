@@ -12,7 +12,8 @@ public class BasicWorkout implements Workout {
     private String name;
     private WorkoutId workoutId;
 
-    public BasicWorkout(String name, List<Exercise> exercises) {
+    public BasicWorkout(WorkoutId workoutId, String name, List<Exercise> exercises) {
+        this.workoutId = workoutId;
         this.exercises = exercises;
         this.name = name;
     }
@@ -53,16 +54,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void addExercise(int index, Exercise exercise) {
-        exercises.add(index, exercise);
-    }
-
-    @Override
-    public void addExerciseAfter(int index, Exercise exercise) {
-        exercises.add(index + 1, exercise);
-    }
-
-    @Override
     public void replaceExercise(Exercise exercise) {
         int indexOf = exercises.indexOf(exercise);
         if (indexOf >= 0) {
@@ -76,8 +67,22 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void addExercise() {
-        exercises.add(new BasicExercise());
+    public Exercise createExercise() {
+        Exercise exercise = new BasicExercise();
+        exercises.add(exercise);
+        return exercise;
+    }
+
+    @Override
+    public Exercise createExercise(int index) {
+        Exercise exercise = new BasicExercise();
+        exercises.add(index, exercise);
+        return exercise;
+    }
+
+    @Override
+    public void addExercise(int index, Exercise exercise) {
+        exercises.add(index, exercise);
     }
 
     @Override

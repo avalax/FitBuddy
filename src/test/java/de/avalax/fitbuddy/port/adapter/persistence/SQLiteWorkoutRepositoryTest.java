@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 import de.avalax.fitbuddy.application.R;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -14,7 +13,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -65,10 +63,8 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
-        List<Exercise> exercises = new ArrayList<>();
-        Exercise exercise = new BasicExercise();
-        exercises.add(exercise);
-        Workout workout = new BasicWorkout("name", exercises);
+        Workout workout = new BasicWorkout();
+        Exercise exercise = workout.createExercise(0);
 
         workoutRepository.save(workout);
 
@@ -116,12 +112,9 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
-        List<Exercise> exercises = new ArrayList<>();
-        Exercise exercise1 = new BasicExercise();
-        exercises.add(exercise1);
-        Exercise exercise2 = new BasicExercise();
-        exercises.add(exercise2);
-        Workout workout = new BasicWorkout("name", exercises);
+        Workout workout = new BasicWorkout();
+        Exercise exercise1 = workout.createExercise(0);
+        Exercise exercise2 = workout.createExercise(1);
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 

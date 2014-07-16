@@ -59,7 +59,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_save_exercise) {
-            manageWorkout.replaceExercise(position, exercise);
+            manageWorkout.replaceExercise(exercise);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise) {

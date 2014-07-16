@@ -16,15 +16,16 @@ public interface Workout extends Serializable {
 
     double getProgress(int index);
 
+    Exercise createExercise();
+
+    Exercise createExercise(int index);
+
     void addExercise(int index, Exercise exercise);
 
-    void addExerciseAfter(int index, Exercise exercise);
-
+    @Deprecated
     void replaceExercise(Exercise exercise);
 
     boolean deleteExercise(Exercise exercise);
-
-    void addExercise();
 
     List<Exercise> getExercises();
 }

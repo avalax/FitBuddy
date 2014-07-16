@@ -120,7 +120,7 @@ public class BasicExerciseTest {
         }
 
         @Test
-        public void getSets_shouldReturnSetsEmptyListOnConstruction() throws Exception {
+        public void getSets_shouldReturnEmptyListOfSetsOnConstruction() throws Exception {
             assertThat(exercise.getSets(), emptyCollectionOf(Set.class));
         }
 

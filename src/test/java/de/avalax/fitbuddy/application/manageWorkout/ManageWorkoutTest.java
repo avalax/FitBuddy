@@ -49,17 +49,11 @@ public class ManageWorkoutTest {
     @InjectMocks
     private ManageWorkout manageWorkout;
 
-    @Mock
-    private Exercise exercise;
-
     private Workout workout;
-
-    private List<Exercise> exercises;
 
     @Before
     public void setUp() throws Exception {
-        exercises = new ArrayList<>();
-        workout = new BasicWorkout("", exercises);
+        workout = new BasicWorkout();
         MockitoAnnotations.initMocks(this);
         workout.setWorkoutId(new WorkoutId("123456"));
     }
@@ -108,12 +102,14 @@ public class ManageWorkoutTest {
     public class givenAWorkoutWithOneExercise {
         private WorkoutId workoutId;
 
+        private Exercise exercise;
+
         @Before
         public void setUp() throws Exception {
             workoutId = new WorkoutId("42");
             workout.setWorkoutId(workoutId);
             when(workoutRepository.load(workoutId)).thenReturn(workout);
-            exercises.add(exercise);
+            exercise = workout.createExercise();
 
             manageWorkout.setWorkout(workoutId);
         }
@@ -154,7 +150,7 @@ public class ManageWorkoutTest {
         public void createExercise_shouldPersistTheExercise() throws Exception {
             manageWorkout.createExercise();
 
-            verify(workoutRepository).save(workout);
+            verify(exerciseRepository).save(workout.getWorkoutId(), 1, workout.getExercises().get(1));
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 
@@ -163,7 +159,7 @@ public class ManageWorkoutTest {
             manageWorkout.createExerciseAfter(exercise);
 
             assertThat(workout.getExercises(), hasSize(2));
-            int indexOfNewExercise = exercises.indexOf(exercise) + 1;
+            int indexOfNewExercise = workout.getExercises().indexOf(exercise) + 1;
             Exercise newExercise = workout.getExercises().get(indexOfNewExercise);
             verify(workoutRepository).save(workout);
             assertThat(newExercise, not(equalTo(exercise)));
@@ -175,10 +171,27 @@ public class ManageWorkoutTest {
             manageWorkout.createExerciseBefore(exercise);
 
             assertThat(workout.getExercises(), hasSize(2));
-            int indexOfNewExercise = exercises.indexOf(exercise) - 1;
+            int indexOfNewExercise = workout.getExercises().indexOf(exercise) - 1;
             Exercise newExercise = workout.getExercises().get(indexOfNewExercise);
             verify(workoutRepository).save(workout);
             assertThat(newExercise, not(equalTo(exercise)));
+            assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
+        }
+
+        @Test
+        public void replaceExercise_shouldSaveExerciseToPersistence() throws Exception {
+            Exercise exercise = workout.createExercise();
+            exercise.setExerciseId(new ExerciseId("42"));
+
+            Exercise exerciseToReplace = new BasicExercise();
+            exerciseToReplace.setExerciseId(exercise.getExerciseId());
+            exerciseToReplace.setName("replacement");
+
+            manageWorkout.replaceExercise(exerciseToReplace);
+
+            assertThat(workout.getExercises(), hasSize(2));
+            assertThat(workout.getExercises().get(1).getName(), equalTo("replacement"));
+            verify(exerciseRepository).save(workout.getWorkoutId(), 1, exerciseToReplace);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 
@@ -191,28 +204,11 @@ public class ManageWorkoutTest {
         }
 
         public class exerciseManipulation {
-            @Test
-            public void replaceExercise_shouldSaveExerciseToPersistence() throws Exception {
-                exercise = new BasicExercise();
-                exercise.setExerciseId(new ExerciseId("42"));
-                exercises.clear();
-                exercises.add(exercise);
-                Exercise exerciseToReplace = new BasicExercise();
-                exerciseToReplace.setExerciseId(exercise.getExerciseId());
-                exerciseToReplace.setName("replacement");
-
-                manageWorkout.replaceExercise(42, exerciseToReplace);
-
-                assertThat(exercises, hasSize(1));
-                assertThat(exercises.get(0).getName(), equalTo("replacement"));
-                verify(exerciseRepository).save(workout.getWorkoutId(), 42, exerciseToReplace);
-                assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
-            }
 
             @Test
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
                 ExerciseId exerciseId = new ExerciseId("42");
-                when(exercise.getExerciseId()).thenReturn(exerciseId);
+                exercise.setExerciseId(exerciseId);
 
                 manageWorkout.deleteExercise(exercise);
 
@@ -224,7 +220,7 @@ public class ManageWorkoutTest {
 
             @Test
             public void undoDeleteExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
-                int size = exercises.size();
+                int size = workout.getExercises().size();
                 manageWorkout.deleteExercise(exercise);
 
                 manageWorkout.undoDeleteExercise();
@@ -237,9 +233,8 @@ public class ManageWorkoutTest {
 
             @Test
             public void undoDeleteExercise_shouldReinsertTheExerciseAtOldPosition() throws Exception {
-                Exercise exerciseToRestore = mock(Exercise.class);
-                exercises.add(exerciseToRestore);
-                exercises.add(mock(Exercise.class));
+                Exercise exerciseToRestore = workout.createExercise();
+                workout.createExercise();
 
                 manageWorkout.deleteExercise(exerciseToRestore);
                 manageWorkout.undoDeleteExercise();
