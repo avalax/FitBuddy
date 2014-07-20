@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip"
-    android:background="@drawable/activated_background">
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:padding="6dip">
 
     <TextView
         android:id="@+id/toptext"
-        android:textAppearance="@android:style/TextAppearance.Holo.Large"
-        android:textColor="@color/primary_progressbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="52dp"
-        android:lines="1"
         android:ellipsize="end"
-        android:text="@string/new_exercise_name" />
+        android:lines="1"
+        android:text="@string/new_exercise_name"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textColor="@color/primary_progressbar"/>
 
     <TextView
         android:id="@+id/setsTextView"
-        android:layout_below="@+id/toptext"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:drawableLeft="@drawable/ic_action_change_exercise"
-        android:text="@string/edit_sets_bar_title"
-        android:layout_marginLeft="5dp"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toptext"
+        android:layout_marginLeft="5dp"
+        android:drawableLeft="@drawable/ic_action_change_exercise"
+        android:ellipsize="marquee"
         android:singleLine="true"
-        android:ellipsize="marquee" />
+        android:text="@string/edit_sets_bar_title"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
     <TextView
         android:id="@+id/repsTextView"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toptext"
         android:layout_toRightOf="@+id/setsTextView"
         android:drawableLeft="@drawable/ic_action_repeat"
-        android:text="@string/edit_reps_bar_title"
-        android:layout_width="64dp"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
         android:singleLine="true"
-        android:ellipsize="marquee" />
+        android:text="@string/edit_reps_bar_title"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
     <TextView
         android:id="@+id/weightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toptext"
+        android:layout_centerHorizontal="true"
         android:layout_toRightOf="@+id/repsTextView"
         android:drawableLeft="@drawable/ic_action_weight"
-        android:text="@string/edit_weight_bar_title"
-        android:layout_width="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
         android:ellipsize="marquee"
-        android:layout_centerHorizontal="true" />
+        android:singleLine="true"
+        android:text="@string/edit_weight_bar_title"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 </RelativeLayout>
