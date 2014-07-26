@@ -1,7 +1,7 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
-import de.avalax.fitbuddy.application.R;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;

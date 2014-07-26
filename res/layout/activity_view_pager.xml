@@ -13,7 +13,7 @@
         android:progress="75"
         android:progressDrawable="@drawable/workout_progress_bar" />
 
-    <de.avalax.fitbuddy.application.FixedViewPager
+    <de.avalax.fitbuddy.presentation.FixedViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

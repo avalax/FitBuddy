@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="de.avalax.fitbuddy.application"
+    package="de.avalax.fitbuddy.presentation"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto"
     android:versionCode="1"
@@ -15,14 +15,14 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".workout.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".manageWorkout.ManageWorkoutActivity"/>
-        <activity android:name=".manageWorkout.editExercise.EditExerciseActivity"/>
+        <activity android:name=".edit.workout.ManageWorkoutActivity"/>
+        <activity android:name=".edit.exercise.EditExerciseActivity"/>
     </application>
 
 </manifest>

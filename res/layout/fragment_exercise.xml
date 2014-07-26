@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:components="http://schemas.android.com/apk/res/de.avalax.fitbuddy.application"
+    xmlns:components="http://schemas.android.com/apk/res/de.avalax.fitbuddy.presentation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <de.avalax.fitbuddy.application.swipeBar.VerticalProgressbarView
+    <de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView
         android:id="@+id/leftProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +13,7 @@
         components:background="@color/primary_background"
         components:progressbar="@drawable/primary_progress_bar" />
 
-    <de.avalax.fitbuddy.application.swipeBar.VerticalProgressbarView
+    <de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView
         android:id="@+id/rightProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
