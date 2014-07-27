@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
@@ -42,6 +44,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     protected WorkoutSession workoutSession;
     @Inject
     protected WorkoutService workoutService;
+    @Inject
+    protected SharedPreferences sharedPreferences;
     private ExerciseListFragment exerciseListFragment;
     private List<WorkoutListEntry> workoutList;
 
@@ -55,12 +59,13 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void init(Bundle savedInstanceState) {
-        WorkoutId workoutId = null;
+        WorkoutId workoutId;
         if (savedInstanceState != null) {
             workoutId = new WorkoutId(savedInstanceState.getString(WORKOUT_POSITION));
-        } else if (workoutSession.getWorkout() != null) {
-            workoutId = workoutSession.getWorkout().getWorkoutId();
+        } else {
+            workoutId = new WorkoutId(sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1"));
         }
+
         try {
             manageWorkout.setWorkout(workoutId);
         } catch (WorkoutNotFoundException wnfe) {

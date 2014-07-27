@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.presentation.workout;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -15,12 +16,13 @@ import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnPageChange;
-import de.avalax.fitbuddy.presentation.R;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.ManageWorkoutActivity;
 
@@ -32,7 +34,9 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
     @Inject
-    protected WorkoutSession workoutSession;
+    protected WorkoutApplicationService workoutApplicationService;
+    @Inject
+    protected SharedPreferences sharedPreferences;
     @InjectView(R.id.workoutProgressBar)
     protected ProgressBar workoutProggressBar;
     protected String actionSwitchWorkout;
@@ -67,13 +71,9 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         this.index = 0;
         this.decimalFormat = new DecimalFormat("###.###");
         this.weightTitle = getResources().getString(R.string.title_weight);
-        try {
-            workoutSession.switchToLastLoadedWorkout();
-        } catch (WorkoutNotFoundException wnfe) {
-            Log.d("MainActivity", wnfe.getMessage(), wnfe);
-            startManageWorkoutActivity();
-        }
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutSession));
+        String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+        viewPager.setOffscreenPageLimit(workoutApplicationService.countOfExercises(workoutId));
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService, workoutId));
 
         actionSwitchWorkout = getResources().getString(R.string.action_switch_workout);
     }
@@ -81,23 +81,23 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     @OnPageChange(R.id.pager)
     protected void updatePage(int index) {
         this.index = index;
-        Workout workout = workoutSession.getWorkout();
-        if (workout == null || workout.getExercises().isEmpty()) {
-            startManageWorkoutActivity();
-        } else {
+        String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+        try {
+            Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
             //TODO: 3x times - unnamed exercise from resources & move to a ui helper
-            Exercise exercise = workout.getExercises().get(index);
             setTitle(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
             if (menuItem != null) {
-                menuItem.setTitle(exerciseWeightText(index));
+                menuItem.setTitle(exerciseWeightText(exercise));
                 updateWorkoutProgress(index);
             }
+        } catch (ExerciseNotFoundException e) {
+            Log.d("exercise not found at position", e.getMessage(), e);
+            startManageWorkoutActivity();
         }
     }
 
-    private String exerciseWeightText(int index) {
+    private String exerciseWeightText(Exercise exercise) {
         //TODO: helper method
-        Exercise exercise = workoutSession.getWorkout().getExercises().get(index);
         if (exercise.getSets().isEmpty()) {
             return "-";
         }
@@ -125,26 +125,32 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == MANAGE_WORKOUT &&
                 resultCode == Activity.RESULT_OK) {
-            viewPager.getAdapter().notifyDataSetChanged();
-            viewPager.invalidate();
-            viewPager.setCurrentItem(0, true);
+            String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+            viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService, workoutId));
             updatePage(0);
         }
     }
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        Exercise exercise = workoutSession.getWorkout().getExercises().get(index);
-        if (exercise.getSets().isEmpty()) {
-            return;
+        String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+        try {
+            Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
+            double weight = exercise.getCurrentSet().getWeight();
+            EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
+        } catch (ExerciseNotFoundException e) {
+            Log.d("Can edit weight of current set", e.getMessage(), e);
         }
-        double weight = exercise.getCurrentSet().getWeight();
-        EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
     }
 
     protected void updateWorkoutProgress(int exerciseIndex) {
-        Workout workout = workoutSession.getWorkout();
-        workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exerciseIndex)));
+        String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+        try {
+            Workout workout = workoutApplicationService.requestWorkout(workoutId);
+            workoutProggressBar.setProgress(calculateProgressbarHeight(workout.getProgress(exerciseIndex)));
+        } catch (WorkoutNotFoundException e) {
+            Log.d("updateWorkoutProgress failed", e.getMessage(), e);
+        }
     }
 
     private int calculateProgressbarHeight(double progess) {
@@ -153,8 +159,14 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     @Override
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
-        workoutSession.getWorkout().getExercises().get(index).getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
-        updatePage(index);
+        String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
+        try {
+            Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
+            exercise.getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
+            updatePage(index);
+        } catch (ExerciseNotFoundException e) {
+            Log.d("Can edit weight of current set", e.getMessage(), e);
+        }
     }
 
     private void startManageWorkoutActivity() {

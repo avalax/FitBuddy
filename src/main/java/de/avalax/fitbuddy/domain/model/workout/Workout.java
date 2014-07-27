@@ -26,5 +26,6 @@ public interface Workout extends Serializable {
 
     boolean deleteExercise(Exercise exercise);
 
+    @Deprecated
     List<Exercise> getExercises();
 }

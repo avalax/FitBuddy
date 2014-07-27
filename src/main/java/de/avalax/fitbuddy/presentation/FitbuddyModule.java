@@ -7,6 +7,7 @@ import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -43,10 +44,11 @@ public class FitbuddyModule {
         this.sharedPreferences = sharedPreferences;
     }
 
+
     @Provides
     @Singleton
-    WorkoutSession provideWorkoutSession(SharedPreferences sharedPreferences, WorkoutRepository workoutRepository) {
-        return new WorkoutSession(sharedPreferences, workoutRepository);
+    WorkoutSession provideWorkoutSession(SharedPreferences sharedPreferences) {
+        return new WorkoutSession(sharedPreferences);
     }
 
     @Provides
@@ -77,6 +79,12 @@ public class FitbuddyModule {
     @Singleton
     SharedPreferences provideSharedPreferences() {
         return sharedPreferences;
+    }
+
+    @Provides
+    @Singleton
+    WorkoutApplicationService provideWorkoutApplicationService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository) {
+        return new WorkoutApplicationService(exerciseRepository, workoutRepository);
     }
 
     @Provides

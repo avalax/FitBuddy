@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
-import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
@@ -13,6 +12,7 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.presentation.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -155,6 +155,17 @@ public class SQLiteExerciseRepositoryTest {
         assertThat(exercises.get(1).getExerciseId(), equalTo(exerciseId1));
         assertThat(exercises.get(2).getExerciseId(), equalTo(exerciseId2));
         assertThat(exercises.get(3).getExerciseId(), equalTo(exerciseId3));
+    }
+
+    @Test
+    public void loadExerciseFromPosition_shouldReturnTheExercise() throws Exception {
+        createExercise(0, "name");
+        ExerciseId exerciseId = createExercise(1, "name");
+        createExercise(2, "name");
+
+        Exercise exercise = exerciseRepository.loadExerciseFromWorkoutWithPosition(workoutId, 1);
+
+        assertThat(exercise.getExerciseId(), equalTo(exerciseId));
     }
 
     @Test
