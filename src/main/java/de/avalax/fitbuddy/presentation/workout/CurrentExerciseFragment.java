@@ -29,8 +29,8 @@ public class CurrentExerciseFragment extends Fragment {
     protected VerticalProgressbarView setsProgressBar;
     @Inject
     protected WorkoutApplicationService workoutApplicationService;
-    private Exercise exercise;
     private int exerciseIndex;
+    private String workoutId;
 
     public static CurrentExerciseFragment newInstance(String workoutId, int exerciseIndex) {
         CurrentExerciseFragment fragment = new CurrentExerciseFragment();
@@ -56,20 +56,28 @@ public class CurrentExerciseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final Context context = getActivity();
         exerciseIndex = getArguments().getInt(ARGS_EXERCISE_INDEX);
-        String workoutId = getArguments().getString(ARGS_WORKOUT_ID);
+        workoutId = getArguments().getString(ARGS_WORKOUT_ID);
         try {
-            this.exercise = workoutApplicationService.exerciseFromPosition(workoutId, exerciseIndex);
+            Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, exerciseIndex);
             repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, repsProgressBar, getMaxMoveForReps(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
-                    changeReps(moved);
+                    try {
+                        changeReps(moved);
+                    } catch (ExerciseNotFoundException e) {
+                        Log.d("Can't execute onFlingEvent", e.getMessage(), e);
+                    }
                 }
             });
 
             setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(context, setsProgressBar, getMaxMoveForSets(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
-                    changeSets(moved);
+                    try {
+                        changeSets(moved);
+                    } catch (ExerciseNotFoundException e) {
+                        Log.d("Can't execute onFlingEvent", e.getMessage(), e);
+                    }
                 }
             });
 
@@ -90,32 +98,28 @@ public class CurrentExerciseFragment extends Fragment {
         return exercise.getCurrentSet().getMaxReps();
     }
 
-    private void changeReps(int moved) {
+    private void changeReps(int moved) throws ExerciseNotFoundException {
         setReps(moved);
         setViews();
         updateWorkoutProgress();
     }
 
-    private void changeSets(int moved) {
-        setSet(exercise.indexOfCurrentSet() + moved);
+    private void changeSets(int moved) throws ExerciseNotFoundException {
+        Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, exerciseIndex);
+        Integer position = exercise.indexOfCurrentSet() + moved;
+        workoutApplicationService.setSelectedSetOfExercise(exercise.getExerciseId(), position);
         setViews();
         updateWorkoutProgress();
         updatePage();
     }
 
-    private void setReps(int moved) {
-        if (exercise.getSets().isEmpty()) {
-            return;
-        }
-        //TODO: add to Set addRep, removeRep
-        exercise.getCurrentSet().setReps(exercise.getCurrentSet().getReps() + moved);
+    private void setReps(int moved)throws ExerciseNotFoundException {
+        Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, exerciseIndex);
+        workoutApplicationService.setRepsOfSet(exercise.getCurrentSet().getSetId(), exercise.getCurrentSet().getReps() + moved);
     }
 
-    private void setSet(int setNumber) {
-        exercise.setCurrentSet(setNumber);
-    }
-
-    private void setViews() {
+    private void setViews() throws ExerciseNotFoundException {
+        Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, exerciseIndex);
         if (exercise.getSets().size() > 0) {
             repsProgressBar.updateProgressbar(exercise.getCurrentSet());
         }

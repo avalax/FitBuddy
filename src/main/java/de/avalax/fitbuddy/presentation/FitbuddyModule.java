@@ -48,7 +48,7 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutSession provideWorkoutSession(SharedPreferences sharedPreferences) {
-        return new WorkoutSession(sharedPreferences);
+        return new WorkoutSession(sharedPreferences, context);
     }
 
     @Provides
@@ -83,8 +83,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository) {
-        return new WorkoutApplicationService(exerciseRepository, workoutRepository);
+    WorkoutApplicationService provideWorkoutApplicationService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutSession workoutSession) {
+        return new WorkoutApplicationService(exerciseRepository, workoutRepository, workoutSession);
     }
 
     @Provides

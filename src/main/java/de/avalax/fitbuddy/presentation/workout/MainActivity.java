@@ -43,7 +43,6 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     private DecimalFormat decimalFormat;
     private String weightTitle;
     private MenuItem menuItem;
-    private int index;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,8 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
-        updatePage(this.index);
+        viewPager.setCurrentItem(workoutApplicationService.selectedExercise());
+        updatePage(workoutApplicationService.selectedExercise());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -67,8 +67,6 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setBackgroundDrawable(null);
-
-        this.index = 0;
         this.decimalFormat = new DecimalFormat("###.###");
         this.weightTitle = getResources().getString(R.string.title_weight);
         String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
@@ -80,7 +78,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
 
     @OnPageChange(R.id.pager)
     protected void updatePage(int index) {
-        this.index = index;
+        workoutApplicationService.setSelectedExercise(index);
         String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
         try {
             Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
@@ -135,6 +133,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         FragmentManager fm = getSupportFragmentManager();
         String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
         try {
+            int index = workoutApplicationService.selectedExercise();
             Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
             double weight = exercise.getCurrentSet().getWeight();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
@@ -161,6 +160,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         String workoutId = sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1");
         try {
+            int index = workoutApplicationService.selectedExercise();
             Exercise exercise = workoutApplicationService.exerciseFromPosition(workoutId, index);
             exercise.getCurrentSet().setWeight(editWeightDialogFragment.getWeight());
             updatePage(index);
