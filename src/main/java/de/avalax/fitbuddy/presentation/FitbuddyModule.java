@@ -1,12 +1,12 @@
 package de.avalax.fitbuddy.presentation;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.exercise.ExerciseApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -21,6 +21,7 @@ import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
+import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.presentation.workout.CurrentExerciseFragment;
@@ -33,22 +34,21 @@ import javax.inject.Singleton;
         ManageWorkoutActivity.class,
         CurrentExerciseFragment.class,
         ExerciseListFragment.class,
-        EditExerciseActivity.class
+        EditExerciseActivity.class,
+        ExerciseAdapter.class
 })
 public class FitbuddyModule {
     private Context context;
-    private SharedPreferences sharedPreferences;
 
-    public FitbuddyModule(Context context, SharedPreferences sharedPreferences) {
+    public FitbuddyModule(Context context) {
         this.context = context;
-        this.sharedPreferences = sharedPreferences;
     }
 
 
     @Provides
     @Singleton
-    WorkoutSession provideWorkoutSession(SharedPreferences sharedPreferences) {
-        return new WorkoutSession(sharedPreferences, context);
+    WorkoutSession provideWorkoutSession() {
+        return new WorkoutSession(context);
     }
 
     @Provides
@@ -77,14 +77,14 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    SharedPreferences provideSharedPreferences() {
-        return sharedPreferences;
+    WorkoutApplicationService provideWorkoutApplicationService(WorkoutSession workoutSession, ExerciseApplicationService exerciseApplicationService) {
+        return new WorkoutApplicationService(workoutSession, exerciseApplicationService);
     }
 
     @Provides
     @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutSession workoutSession) {
-        return new WorkoutApplicationService(exerciseRepository, workoutRepository, workoutSession);
+    ExerciseApplicationService provideExerciseApplicationService() {
+        return new ExerciseApplicationService();
     }
 
     @Provides

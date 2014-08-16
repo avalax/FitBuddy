@@ -12,7 +12,6 @@ public interface Exercise extends Serializable {
 
     double getProgress();
 
-    @Deprecated
     void setCurrentSet(int index);
 
     @Deprecated

@@ -28,4 +28,8 @@ public interface Workout extends Serializable {
 
     @Deprecated
     List<Exercise> getExercises();
+
+    void setCurrentExercise(int index);
+
+    int indexOfCurrentExercise();
 }

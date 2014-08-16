@@ -57,11 +57,8 @@ public class ManageWorkout {
         this.workout = workoutRepository.load(id);
     }
 
-    public void switchWorkout() throws WorkoutNotFoundException {
-        if (workout == null) {
-            throw new WorkoutNotFoundException();
-        }
-        workoutSession.switchWorkoutById(workout.getWorkoutId());
+    public void switchWorkout() {
+        workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);
     }
 

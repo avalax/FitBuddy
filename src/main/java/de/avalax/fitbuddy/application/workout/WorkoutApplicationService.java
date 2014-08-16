@@ -1,62 +1,69 @@
 package de.avalax.fitbuddy.application.workout;
 
+import de.avalax.fitbuddy.application.exercise.ExerciseApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.set.SetId;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-
-import java.util.List;
 
 public class WorkoutApplicationService {
-    public static final String WORKOUT_ID_SHARED_KEY = "lastWorkoutId";
-
-    private ExerciseRepository exerciseRepository;
-    private WorkoutRepository workoutRepository;
     private WorkoutSession workoutSession;
+    private ExerciseApplicationService exerciseApplicationService;
 
-    public WorkoutApplicationService(ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository, WorkoutSession workoutSession) {
-        this.exerciseRepository = exerciseRepository;
-        this.workoutRepository = workoutRepository;
+    public WorkoutApplicationService(WorkoutSession workoutSession, ExerciseApplicationService exerciseApplicationService) {
         this.workoutSession = workoutSession;
+        this.exerciseApplicationService = exerciseApplicationService;
     }
 
-    public int countOfExercises(String workoutId) {
-        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(new WorkoutId(workoutId));
-        return exercises.size();
+    public int countOfCurrentExercises() throws WorkoutNotFoundException {
+        return getWorkout().getExercises().size();
     }
 
-    public Exercise exerciseFromPosition(String workoutId, int position) throws ExerciseNotFoundException {
-        Exercise exercise = exerciseRepository.loadExerciseFromWorkoutWithPosition(new WorkoutId(workoutId), position);
-        Integer index = workoutSession.selectedSetOfExercise(exercise.getExerciseId());
-        if (exercise.getSets().size() > index) {
-            exercise.setCurrentSet(index);
-            exercise.getCurrentSet().setReps(workoutSession.repsForSet(exercise.getCurrentSet().getSetId()));
-        }
-        return exercise;
+    public Exercise requestExercise(int position) throws WorkoutNotFoundException {
+        return getWorkout().getExercises().get(position);
     }
 
-    public Workout requestWorkout(String workoutId) throws WorkoutNotFoundException {
-        return workoutRepository.load(new WorkoutId(workoutId));
+    public void switchToSet(int position, int moved) throws WorkoutNotFoundException {
+        Exercise exercise = getWorkout().getExercises().get(position);
+        exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
+        //TODO only save by android lifecycle
+        workoutSession.saveCurrentWorkout();
     }
 
-    public void setSelectedSetOfExercise(ExerciseId exerciseId, Integer position) {
-        workoutSession.setSelectedSetOfExercise(exerciseId, position);
+    public void addRepsToSet(int position, int moved) throws WorkoutNotFoundException {
+        Set set = getWorkout().getExercises().get(position).getCurrentSet();
+        set.setReps(set.getReps() + moved);
+        //TODO only save by android lifecycle
+        workoutSession.saveCurrentWorkout();
     }
 
-    public void setRepsOfSet(SetId setId, int reps) {
-        workoutSession.setRepsOfSet(setId, reps);
+    public void setSelectedExerciseIndex(int index) throws WorkoutNotFoundException {
+        getWorkout().setCurrentExercise(index);
+        //TODO only save by android lifecycle
+        workoutSession.saveCurrentWorkout();
     }
 
-    public void setSelectedExercise(int selectedExercise) {
-        workoutSession.setSelectedExercise(selectedExercise);
+    public int indexOfCurrentExercise() throws WorkoutNotFoundException {
+        return getWorkout().indexOfCurrentExercise();
     }
 
-    public int selectedExercise() {
-        return workoutSession.selectedExercise();
+    public int workoutProgress(int exerciseIndex) throws WorkoutNotFoundException {
+        return calculateProgressbarHeight(getWorkout().getProgress(exerciseIndex));
+    }
+
+    private int calculateProgressbarHeight(double progess) {
+        return (int) Math.round(progess * 100);
+    }
+
+    public String nameOfExercise(int index) throws WorkoutNotFoundException {
+        return exerciseApplicationService.nameOfExercise(getWorkout().getExercises().get(index));
+    }
+
+    public String weightOfExercise(int index) throws WorkoutNotFoundException {
+        return exerciseApplicationService.weightOfExercise(getWorkout().getExercises().get(index));
+    }
+
+    public Workout getWorkout() throws WorkoutNotFoundException {
+        return workoutSession.getWorkout();
     }
 }

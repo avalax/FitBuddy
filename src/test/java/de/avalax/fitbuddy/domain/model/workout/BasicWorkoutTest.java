@@ -99,6 +99,15 @@ public class BasicWorkoutTest {
     }
 
     @Test
+    public void set_shouldSet() throws Exception {
+        int index = 42;
+
+        workout.setCurrentExercise(index);
+
+        assertThat(workout.indexOfCurrentExercise(), equalTo(index));
+    }
+
+    @Test
     public void toString_shouldReturnWorkoutInformations() throws Exception {
         String name = "NameOfWorkout";
         workout.setName(name);

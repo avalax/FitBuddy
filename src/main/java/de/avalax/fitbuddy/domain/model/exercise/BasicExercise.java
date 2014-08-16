@@ -10,7 +10,7 @@ import java.util.List;
 public class BasicExercise implements Exercise {
     private String name;
     private List<Set> sets;
-    private int exerciseIndex;
+    private int setIndex;
     private ExerciseId exerciseId;
 
     public BasicExercise() {
@@ -22,7 +22,7 @@ public class BasicExercise implements Exercise {
         this.exerciseId = exerciseId;
         this.name = name;
         this.sets = sets;
-        this.exerciseIndex = 0;
+        this.setIndex = 0;
     }
 
     @Override
@@ -32,15 +32,15 @@ public class BasicExercise implements Exercise {
 
     @Override
     public int indexOfCurrentSet() {
-        return exerciseIndex;
+        return setIndex;
     }
 
     @Override
     public Set getCurrentSet() {
-        if (isIndexGreaterEqualThan(exerciseIndex)) {
+        if (isIndexGreaterEqualThan(setIndex)) {
             throw new SetNotAvailableException();
         }
-        int index = exerciseIndex;
+        int index = setIndex;
         return sets.get(index);
     }
 
@@ -50,11 +50,11 @@ public class BasicExercise implements Exercise {
             return;
         }
         if (isIndexGreaterEqualThan(index)) {
-            this.exerciseIndex = sets.size() - 1;
+            this.setIndex = sets.size() - 1;
         } else if (isIndexNegative(index)) {
-            this.exerciseIndex = 0;
+            this.setIndex = 0;
         } else {
-            this.exerciseIndex = index;
+            this.setIndex = index;
         }
     }
 
@@ -67,7 +67,7 @@ public class BasicExercise implements Exercise {
         int reps = getCurrentSet().getReps();
         double maxReps = getCurrentSet().getMaxReps();
         double repsProgress = reps / maxReps / sets.size();
-        double setsProgress = (exerciseIndex) / (double) sets.size();
+        double setsProgress = (setIndex) / (double) sets.size();
         return setsProgress + repsProgress;
     }
 

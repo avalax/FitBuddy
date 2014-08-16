@@ -4,10 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.exercise.*;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -54,7 +51,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     }
 
     @Override
-    public Exercise loadExerciseFromWorkoutWithPosition(WorkoutId workoutId, int position) {
+    public Exercise loadExerciseFromWorkoutWithPosition(WorkoutId workoutId, int position) throws ExerciseNotFoundException {
         Exercise exercise = null;
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
@@ -66,6 +63,9 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         }
         cursor.close();
         database.close();
+        if (exercise == null) {
+            throw new ExerciseNotFoundException();
+        }
         return exercise;
     }
 

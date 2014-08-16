@@ -11,6 +11,7 @@ public class BasicWorkout implements Workout {
     private List<Exercise> exercises;
     private String name;
     private WorkoutId workoutId;
+    private int exerciseIndex;
 
     public BasicWorkout(WorkoutId workoutId, String name, List<Exercise> exercises) {
         this.workoutId = workoutId;
@@ -88,6 +89,16 @@ public class BasicWorkout implements Workout {
     @Override
     public List<Exercise> getExercises() {
         return Collections.unmodifiableList(exercises);
+    }
+
+    @Override
+    public void setCurrentExercise(int index) {
+        exerciseIndex = index;
+    }
+
+    @Override
+    public int indexOfCurrentExercise() {
+        return exerciseIndex;
     }
 
     @Override

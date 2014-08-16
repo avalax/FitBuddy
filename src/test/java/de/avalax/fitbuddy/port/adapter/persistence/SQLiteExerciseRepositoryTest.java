@@ -1,10 +1,7 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.exercise.*;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -166,6 +163,11 @@ public class SQLiteExerciseRepositoryTest {
         Exercise exercise = exerciseRepository.loadExerciseFromWorkoutWithPosition(workoutId, 1);
 
         assertThat(exercise.getExerciseId(), equalTo(exerciseId));
+    }
+
+    @Test(expected = ExerciseNotFoundException.class)
+    public void loadUnknownExerciseFromPosition_shouldThrowExerciseNotFoundException() throws Exception {
+        exerciseRepository.loadExerciseFromWorkoutWithPosition(workoutId, 1);
     }
 
     @Test

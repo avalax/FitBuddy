@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -20,12 +19,12 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
 import javax.inject.Inject;
@@ -45,7 +44,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Inject
     protected WorkoutService workoutService;
     @Inject
-    protected SharedPreferences sharedPreferences;
+    WorkoutApplicationService workoutApplicationService;
     private ExerciseListFragment exerciseListFragment;
     private List<WorkoutListEntry> workoutList;
 
@@ -59,19 +58,19 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     }
 
     private void init(Bundle savedInstanceState) {
-        WorkoutId workoutId;
+        WorkoutId workoutId = null;
         if (savedInstanceState != null) {
             workoutId = new WorkoutId(savedInstanceState.getString(WORKOUT_POSITION));
-        } else {
-            workoutId = new WorkoutId(sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "1"));
         }
 
         try {
+            if (workoutId == null) {
+                workoutId = workoutApplicationService.getWorkout().getWorkoutId();
+            }
             manageWorkout.setWorkout(workoutId);
         } catch (WorkoutNotFoundException wnfe) {
-            Log.d("MangeWorkoutActivity", wnfe.getMessage(), wnfe);
-            Workout workout = manageWorkout.createWorkout();
-            workoutSession.switchWorkoutById(workout.getWorkoutId());
+            Log.d("create a new workout", wnfe.getMessage(), wnfe);
+            manageWorkout.createWorkout();
         }
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
@@ -119,11 +118,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
-            if (manageWorkout.getWorkout() == null) {
-                return false;
-            }
-            WorkoutId workoutId = manageWorkout.getWorkout().getWorkoutId();
-            workoutSession.switchWorkoutById(workoutId);
+            manageWorkout.switchWorkout();
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {

@@ -3,26 +3,24 @@ package de.avalax.fitbuddy.presentation.workout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
-    private WorkoutApplicationService workoutApplicationService;
-    private String workoutId;
 
-    public MainPagerAdapter(FragmentManager fm, WorkoutApplicationService workoutApplicationService, String workoutId) {
+    private final int count;
+
+    public MainPagerAdapter(FragmentManager fm, int count) {
         super(fm);
-        this.workoutApplicationService = workoutApplicationService;
-        this.workoutId = workoutId;
+        this.count = count;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return CurrentExerciseFragment.newInstance(workoutId, position);
+        return CurrentExerciseFragment.newInstance(position);
     }
 
     @Override
     public int getCount() {
-        return workoutApplicationService.countOfExercises(workoutId);
+        return count;
     }
 
     @Override

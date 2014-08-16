@@ -88,12 +88,12 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public void delete(WorkoutId id) {
-        if (id == null) {
+    public void delete(WorkoutId workoutId) {
+        if (workoutId == null) {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("workout", "id=" + id.id(), null);
+        database.delete("workout", "id=" + workoutId.id(), null);
         database.close();
     }
 }

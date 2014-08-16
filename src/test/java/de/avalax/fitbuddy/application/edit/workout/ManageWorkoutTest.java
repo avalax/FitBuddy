@@ -94,11 +94,6 @@ public class ManageWorkoutTest {
         verifyNoMoreInteractions(workoutRepository);
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
-    public void switchWorkoutWithoutAWorkout_shouldThrowException() throws Exception {
-        manageWorkout.switchWorkout();
-    }
-
     public class givenAWorkoutWithOneExercise {
         private WorkoutId workoutId;
 
@@ -197,7 +192,7 @@ public class ManageWorkoutTest {
         public void switchWorkout_shouldSetWorkout() throws Exception {
             manageWorkout.switchWorkout();
 
-            verify(workoutSession).switchWorkoutById(workoutId);
+            verify(workoutSession).switchWorkout(workout);
             assertThat(manageWorkout.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 

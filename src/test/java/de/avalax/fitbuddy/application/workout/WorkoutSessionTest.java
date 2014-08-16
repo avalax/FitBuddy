@@ -1,10 +1,10 @@
 package de.avalax.fitbuddy.application.workout;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.set.SetId;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,69 +12,41 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowPreferenceManager;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;
-
-    private SharedPreferences sharedPreferences;
     private Context context;
     private File file;
-    private File file2;
 
-    private void writeSelectedSets(Map<ExerciseId, Integer> selectedSets) throws IOException {
-        file = new File(context.getDir("data", Context.MODE_PRIVATE), "selectedSets");
+    private void writeWorkout(Workout workout) throws IOException {
+        file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-        outputStream.writeObject(selectedSets);
+        outputStream.writeObject(workout);
         outputStream.flush();
         outputStream.close();
     }
 
-    private Map<ExerciseId, Integer> readSelectedSets() throws IOException {
-        Map<ExerciseId, Integer> selectedSets;
-        File file = new File(context.getDir("data", Context.MODE_PRIVATE), "selectedSets");
+    private Workout readWorkout() throws IOException {
+        Workout workout;
+        File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
         try {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            selectedSets = (Map<ExerciseId, Integer>) ois.readObject();
+            workout = (Workout) ois.readObject();
             ois.close();
             fis.close();
         } catch (IOException | ClassNotFoundException e) {
-            selectedSets = new HashMap<>();
+            workout = null;
         }
-        return selectedSets;
-    }
-
-    private void writeRepsForSets(Map<SetId, Integer> selectedSets) throws IOException {
-        file2 = new File(context.getDir("data", Context.MODE_PRIVATE), "repsForSet");
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file2));
-        outputStream.writeObject(selectedSets);
-        outputStream.flush();
-        outputStream.close();
-    }
-
-    private Map<SetId, Integer> readRepsForSets() throws IOException {
-        Map<SetId, Integer> selectedSets;
-        File file2 = new File(context.getDir("data", Context.MODE_PRIVATE), "repsForSet");
-        try {
-            FileInputStream fis = new FileInputStream(file2);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            selectedSets = (Map<SetId, Integer>) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException | ClassNotFoundException e) {
-            selectedSets = new HashMap<>();
-        }
-        return selectedSets;
+        return workout;
     }
 
     @After
@@ -84,157 +56,67 @@ public class WorkoutSessionTest {
                 throw new Exception("could not delete file " + file.getAbsolutePath());
             }
         }
-        if (file2 != null) {
-            if (!file2.delete()) {
-                throw new Exception("could not delete file " + file2.getAbsolutePath());
-            }
-        }
     }
 
     @Before
     public void setUp() throws Exception {
-        String lastWorkoutId = "21";
         context = Robolectric.application.getApplicationContext();
-        sharedPreferences = ShadowPreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().putString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, lastWorkoutId).commit();
-        workoutSession = new WorkoutSession(sharedPreferences, context);
+        workoutSession = new WorkoutSession(context);
+    }
+
+    @Test(expected = WorkoutNotFoundException.class)
+    public void noPersistedWorkout_shouldThrowWorkoutNotFoundException() throws Exception {
+        workoutSession.getWorkout();
+    }
+
+    @Test(expected = WorkoutNotFoundException.class)
+    public void switchedToNullInstance_shouldThrowWorkoutNotFoundExceptiopn() throws Exception {
+        workoutSession.switchWorkout(null);
+
+        workoutSession.getWorkout();
     }
 
     @Test
-    public void switchWorkout_shouldLoadAndSetWorkoutFromRepository() throws Exception {
+    public void switchWorkout_shouldLoadWorkoutFromFile() throws Exception {
         WorkoutId workoutId = new WorkoutId("42");
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
 
-        workoutSession.switchWorkoutById(workoutId);
+        workoutSession.switchWorkout(workout);
 
-        assertThat(sharedPreferences.getString(WorkoutApplicationService.WORKOUT_ID_SHARED_KEY, "-1"), equalTo(workoutId.id()));
+        assertThat(workoutSession.getWorkout().getWorkoutId(), equalTo(workoutId));
     }
 
     @Test
-    public void noPersistedRepsForSets_shouldReturnDefault() throws Exception {
-        SetId setId = new SetId("42");
+    public void persistedWorkout_shouldReturnWorkoutWithId() throws Exception {
+        WorkoutId workoutId = new WorkoutId("42");
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
+        writeWorkout(workout);
+        workoutSession = new WorkoutSession(context);
 
-        Integer reps = workoutSession.repsForSet(setId);
+        Workout persistedWorkout = workoutSession.getWorkout();
 
-        assertThat(reps, equalTo(0));
+        assertThat(persistedWorkout.getWorkoutId(), equalTo(workoutId));
     }
 
     @Test
-    public void noRepsForSet_shouldReturnDefault() throws Exception {
-        Map<SetId, Integer> repsForSets = new HashMap<>();
-        writeRepsForSets(repsForSets);
-        SetId setId = new SetId("42");
+    public void saveWorkoutWithChanges_shouldReturnWorkoutWithChanges() throws Exception {
+        WorkoutId workoutId = new WorkoutId("42");
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
+        workout.createExercise();
+        workout.createExercise();
+        writeWorkout(workout);
+        workoutSession = new WorkoutSession(context);
 
-        Integer reps = workoutSession.repsForSet(setId);
+        Workout persistedWorkout = workoutSession.getWorkout();
+        assertThat(persistedWorkout.indexOfCurrentExercise(), equalTo(0));
+        persistedWorkout.setCurrentExercise(1);
+        workoutSession.saveCurrentWorkout();
 
-        assertThat(reps, equalTo(0));
-    }
-
-    @Test
-    public void persistedRepsOfSet_shouldReturnReps() throws Exception {
-        SetId setId = new SetId("42");
-        int expectedReps = 12;
-        Map<SetId, Integer> repsForSets = new HashMap<>();
-        repsForSets.put(setId, expectedReps);
-        writeRepsForSets(repsForSets);
-        workoutSession = new WorkoutSession(sharedPreferences, context);
-
-        Integer reps = workoutSession.repsForSet(setId);
-
-        assertThat(reps, equalTo(expectedReps));
-    }
-
-    @Test
-    public void setRepsForSet_shouldPersistChange() throws Exception {
-        SetId setId = new SetId("42");
-        int expectedReps = 12;
-        workoutSession.setRepsOfSet(setId, expectedReps);
-
-        Map<SetId, Integer> repsForSet = readRepsForSets();
-
-        assertThat(repsForSet.get(setId), equalTo(expectedReps));
-    }
-
-    @Test
-    public void setRepsForSet_shouldReturnReps() throws Exception {
-        SetId setId = new SetId("42");
-        int expectedReps = 12;
-        workoutSession.setRepsOfSet(setId, expectedReps);
-
-        Integer reps = workoutSession.repsForSet(setId);
-
-        assertThat(reps, equalTo(expectedReps));
-    }
-
-    @Test
-    public void noPersistedSelectedSets_shouldReturnDefault() throws Exception {
-        ExerciseId exerciseId = new ExerciseId("42");
-
-        Integer position = workoutSession.selectedSetOfExercise(exerciseId);
-
-        assertThat(position, equalTo(0));
-    }
-
-    @Test
-    public void noSelectedSet_shouldReturnDefault() throws Exception {
-        Map<ExerciseId, Integer> selectedSets = new HashMap<>();
-        writeSelectedSets(selectedSets);
-        ExerciseId exerciseId = new ExerciseId("42");
-
-        Integer position = workoutSession.selectedSetOfExercise(exerciseId);
-
-        assertThat(position, equalTo(0));
-    }
-
-    @Test
-    public void selectedSet_shouldReturnPosition() throws Exception {
-        ExerciseId exerciseId = new ExerciseId("42");
-        int expectedPosition = 12;
-        Map<ExerciseId, Integer> selectedSets = new HashMap<>();
-        selectedSets.put(exerciseId, expectedPosition);
-        writeSelectedSets(selectedSets);
-        workoutSession = new WorkoutSession(sharedPreferences, context);
-
-        Integer position = workoutSession.selectedSetOfExercise(exerciseId);
-
-        assertThat(expectedPosition, equalTo(position));
-    }
-
-    @Test
-    public void setSetPosition_shouldPersistChange() throws Exception {
-        ExerciseId exerciseId = new ExerciseId("42");
-        int expectedPosition = 12;
-        workoutSession.setSelectedSetOfExercise(exerciseId, expectedPosition);
-
-        Map<ExerciseId, Integer> selectedSets = readSelectedSets();
-
-        assertThat(selectedSets.get(exerciseId), equalTo(expectedPosition));
-    }
-
-    @Test
-    public void setSetPosition_shouldReturnSetPosition() throws Exception {
-        ExerciseId exerciseId = new ExerciseId("42");
-        int expectedPosition = 12;
-        workoutSession.setSelectedSetOfExercise(exerciseId, expectedPosition);
-
-        Integer position = workoutSession.selectedSetOfExercise(exerciseId);
-
-        assertThat(position, equalTo(expectedPosition));
-    }
-
-    @Test
-    public void selectedExerciseOnInit_shouldReturnDefault() throws Exception {
-       assertThat(workoutSession.selectedExercise(), equalTo(0));
-    }
-
-    @Test
-    public void selectedExercise_shouldReturnFromSharedPreferences() throws Exception {
-        sharedPreferences.edit().putInt("selectedExercise", 42).commit();
-        assertThat(workoutSession.selectedExercise(), equalTo(42));
-    }
-
-    @Test
-    public void setSelectedExercise_shouldSaveToSharedPreferences() throws Exception {
-        workoutSession.setSelectedExercise(21);
-        assertThat(sharedPreferences.getInt("selectedExercise",0), equalTo(21));
+        Workout changedPersistedWorkout = readWorkout();
+        assertThat(changedPersistedWorkout.indexOfCurrentExercise(), equalTo(1));
+        assertThat(changedPersistedWorkout.getExercises(), hasSize(2));
     }
 }
