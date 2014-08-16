@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.application.exercise.ExerciseApplicationService;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
@@ -29,7 +30,7 @@ public class CurrentExerciseFragment extends Fragment {
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
-    ExerciseApplicationService exerciseApplicationService;
+    ExerciseViewHelper exerciseViewHelper;
     private int exerciseIndex;
 
     public static CurrentExerciseFragment newInstance(int exerciseIndex) {
@@ -56,48 +57,48 @@ public class CurrentExerciseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try {
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), repsProgressBar, exerciseApplicationService.maxRepsOfExercise(exercise)) {
+            repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), repsProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {
                         changeReps(moved);
-                    } catch (WorkoutNotFoundException e) {
+                    } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
             });
 
-            setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setsProgressBar, exerciseApplicationService.setCountOfExercise(exercise)) {
+            setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setsProgressBar, exerciseViewHelper.setCountOfExercise(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {
                         moveToSet(moved);
-                    } catch (WorkoutNotFoundException e) {
+                    } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
             });
 
             setViews();
-        } catch (WorkoutNotFoundException e) {
+        } catch (WorkoutNotFoundException| ExerciseNotFoundException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
     }
 
-    private void changeReps(int moved) throws WorkoutNotFoundException {
+    private void changeReps(int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
         workoutApplicationService.addRepsToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();
     }
 
-    private void moveToSet(int moved) throws WorkoutNotFoundException {
+    private void moveToSet(int moved) throws WorkoutNotFoundException,ExerciseNotFoundException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();
         updatePage();
     }
 
-    private void setViews() throws WorkoutNotFoundException {
+    private void setViews() throws WorkoutNotFoundException, ExerciseNotFoundException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         if (exercise.getSets().size() > 0) {
             repsProgressBar.updateProgressbar(exercise.getCurrentSet());

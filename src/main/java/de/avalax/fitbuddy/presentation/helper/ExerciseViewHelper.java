@@ -1,13 +1,13 @@
-package de.avalax.fitbuddy.application.exercise;
+package de.avalax.fitbuddy.presentation.helper;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 import java.text.DecimalFormat;
 
-public class ExerciseApplicationService {
+public class ExerciseViewHelper {
     private DecimalFormat decimalFormat;
 
-    public ExerciseApplicationService() {
+    public ExerciseViewHelper() {
         this.decimalFormat = new DecimalFormat("###.#");
     }
 

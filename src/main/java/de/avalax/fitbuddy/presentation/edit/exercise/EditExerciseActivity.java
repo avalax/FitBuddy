@@ -29,7 +29,6 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     private Exercise exercise;
 
     private EditExerciseDialogFragment editExerciseDialogFragment;
-    private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
-        position = getIntent().getIntExtra("position", -1);
         editExerciseDialogFragment = EditExerciseDialogFragment.newInstance(exercise);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editExerciseDialogFragment).commit();

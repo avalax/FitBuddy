@@ -6,7 +6,6 @@ import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
-import de.avalax.fitbuddy.application.exercise.ExerciseApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -21,9 +20,11 @@ import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.ManageWorkoutActivity;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.workout.CurrentExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.MainActivity;
 
@@ -35,7 +36,8 @@ import javax.inject.Singleton;
         CurrentExerciseFragment.class,
         ExerciseListFragment.class,
         EditExerciseActivity.class,
-        ExerciseAdapter.class
+        ExerciseAdapter.class,
+        EditExerciseDialogFragment.class
 })
 public class FitbuddyModule {
     private Context context;
@@ -77,14 +79,14 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService(WorkoutSession workoutSession, ExerciseApplicationService exerciseApplicationService) {
-        return new WorkoutApplicationService(workoutSession, exerciseApplicationService);
+    WorkoutApplicationService provideWorkoutApplicationService(WorkoutSession workoutSession) {
+        return new WorkoutApplicationService(workoutSession);
     }
 
     @Provides
     @Singleton
-    ExerciseApplicationService provideExerciseApplicationService() {
-        return new ExerciseApplicationService();
+    ExerciseViewHelper provideExerciseViewHelper() {
+        return new ExerciseViewHelper();
     }
 
     @Provides

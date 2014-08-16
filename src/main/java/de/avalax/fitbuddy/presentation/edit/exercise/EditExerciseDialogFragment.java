@@ -10,20 +10,20 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
-import java.text.DecimalFormat;
+import javax.inject.Inject;
 
 public class EditExerciseDialogFragment extends Fragment {
 
     private static final String ARGS_EXERCISE = "exercise";
-
-    private DecimalFormat decimalFormat;
 
     @InjectView(R.id.exerciseNameEditText)
     protected TextView exerciseNameEditText;
@@ -36,6 +36,9 @@ public class EditExerciseDialogFragment extends Fragment {
 
     @InjectView(R.id.exerciseRepsTextView)
     protected TextView exerciseRepsTextView;
+
+    @Inject
+    ExerciseViewHelper exerciseViewHelper;
 
     private Exercise exercise;
 
@@ -51,39 +54,20 @@ public class EditExerciseDialogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_edit, container, false);
         ButterKnife.inject(this, view);
-        this.decimalFormat = new DecimalFormat("###.#");
+        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
         init();
         return view;
     }
 
     protected void init() {
-        //TODO: 3x times - unnamed exercise from resources & move to a ui helper
-        exerciseNameEditText.setText(exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise");
-        exerciseWeightExitText.setText(getWeightText(exercise));
-        exerciseRepsTextView.setText(getMaxRepsText(exercise));
-        exerciseSetsTextView.setText(getSetsText(exercise));
+        exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
+        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise));
+        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
+        exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
     }
 
-    private String getSetsText(Exercise exercise) {
-        return exercise.getSets().isEmpty() ? "0" : String.valueOf(exercise.getSets().size());
-    }
 
-    private String getMaxRepsText(Exercise exercise) {
-        return exercise.getSets().isEmpty() ? "0" : String.valueOf(exercise.getCurrentSet().getMaxReps());
-    }
-
-    private String getWeightText(Exercise exercise) {
-        if (exercise.getSets().isEmpty()) {
-            return "-";
-        }
-        double weight = exercise.getCurrentSet().getWeight();
-        if (weight > 0) {
-            return decimalFormat.format(weight);
-        } else {
-            return "-";
-        }
-    }
 
     @OnClick(R.id.exerciseName)
     protected void changeName() {

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import de.avalax.fitbuddy.application.exercise.ExerciseApplicationService;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     private List<Exercise> exercises;
     @Inject
-    ExerciseApplicationService exerciseApplicationService;
+    ExerciseViewHelper exerciseViewHelper;
 
     public ExerciseAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
         super(context, textViewResourceId, exercises);
@@ -53,10 +53,10 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         public TextView reps;
 
         public void setFromExericse(Exercise exercise) {
-            name.setText(exerciseApplicationService.nameOfExercise(exercise));
-            weight.setText(exerciseApplicationService.weightOfExercise(exercise));
-            reps.setText(String.valueOf(exerciseApplicationService.maxRepsOfExercise(exercise)));
-            sets.setText(String.valueOf(exerciseApplicationService.setCountOfExercise(exercise)));
+            name.setText(exerciseViewHelper.nameOfExercise(exercise));
+            weight.setText(exerciseViewHelper.weightOfExercise(exercise));
+            reps.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
+            sets.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
         }
     }
 }
