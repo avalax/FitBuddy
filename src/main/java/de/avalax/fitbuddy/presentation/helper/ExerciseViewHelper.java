@@ -3,20 +3,26 @@ package de.avalax.fitbuddy.presentation.helper;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class ExerciseViewHelper {
     private DecimalFormat decimalFormat;
 
-    public ExerciseViewHelper() {
-        this.decimalFormat = new DecimalFormat("###.#");
+    public ExerciseViewHelper(Locale locale) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        this.decimalFormat = new DecimalFormat("###.###", symbols);
     }
 
     public String weightOfExercise(Exercise exercise) {
+        if (exercise == null) {
+            return "-";
+        }
         if (exercise.getSets().isEmpty()) {
             return "-";
         }
         double weight = exercise.getCurrentSet().getWeight();
-        if (weight > 0) {
+        if (weight != 0) {
             return decimalFormat.format(weight);
         } else {
             return "-";
@@ -24,14 +30,23 @@ public class ExerciseViewHelper {
     }
 
     public String nameOfExercise(Exercise exercise) {
-        return exercise.getName().length() > 0 ? exercise.getName() : "unnamed exercise";
+        if (exercise == null || exercise.getName().isEmpty()) {
+            return "unnamed exercise";
+        }
+        return exercise.getName();
     }
 
     public int maxRepsOfExercise(Exercise exercise) {
-        return exercise.getSets().isEmpty() ? 0 : exercise.getCurrentSet().getMaxReps();
+        if (exercise == null || exercise.getSets().isEmpty()) {
+            return 0;
+        }
+        return exercise.getCurrentSet().getMaxReps();
     }
 
     public int setCountOfExercise(Exercise exercise) {
-        return exercise.getSets().isEmpty() ? 0 : exercise.getSets().size();
+        if (exercise == null || exercise.getSets().isEmpty()) {
+            return 0;
+        }
+        return exercise.getSets().size();
     }
 }

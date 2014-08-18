@@ -29,6 +29,7 @@ import de.avalax.fitbuddy.presentation.workout.CurrentExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.MainActivity;
 
 import javax.inject.Singleton;
+import java.util.Locale;
 
 @Module(injects = {
         MainActivity.class,
@@ -86,7 +87,8 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     ExerciseViewHelper provideExerciseViewHelper() {
-        return new ExerciseViewHelper();
+        Locale locale = context.getResources().getConfiguration().locale;
+        return new ExerciseViewHelper(locale);
     }
 
     @Provides
