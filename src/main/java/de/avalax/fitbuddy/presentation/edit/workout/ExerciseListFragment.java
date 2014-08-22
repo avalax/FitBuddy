@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.presentation.edit.workout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
@@ -12,14 +13,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Bus;
-import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,7 +58,7 @@ public class ExerciseListFragment extends ListFragment {
     protected void initListView() {
         //TODO: setdata using adapter.setData(data);
         Workout workout = manageWorkout.getWorkout();
-        List<Exercise> exercises = workout != null ? workout.getExercises() : Collections.<Exercise>emptyList();
+        List<Exercise> exercises = getExercises(workout);
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
         footer.setVisibility(manageWorkout.unsavedChangesVisibility());
@@ -65,6 +68,22 @@ public class ExerciseListFragment extends ListFragment {
         } else if (manageWorkout.hasDeletedWorkout()) {
             unsavedChangesTextView.setText(R.string.has_deleted_workout);
         }
+    }
+
+    private List<Exercise> getExercises(Workout workout) {
+        if (workout == null) {
+            return Collections.emptyList();
+        }
+        List<Exercise> exercises = new ArrayList<>();
+        for (int i = 0; i < workout.countOfExercises(); i++) {
+            try {
+                Exercise exercise = workout.exerciseAtPosition(i);
+                exercises.add(exercise);
+            } catch (ExerciseNotFoundException e) {
+                Log.d("Can't add exercise to adapter", e.getMessage(), e);
+            }
+        }
+        return exercises;
     }
 
     @Override
@@ -87,11 +106,15 @@ public class ExerciseListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Exercise exercise = manageWorkout.getWorkout().getExercises().get(position);
-        Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
-        intent.putExtra("exercise", exercise);
-        intent.putExtra("position", position);
-        getActivity().startActivityForResult(intent, ManageWorkoutActivity.EDIT_EXERCISE);
+        try {
+            Exercise exercise = manageWorkout.getWorkout().exerciseAtPosition(position);
+            Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+            intent.putExtra("exercise", exercise);
+            intent.putExtra("position", position);
+            getActivity().startActivityForResult(intent, ManageWorkoutActivity.EDIT_EXERCISE);
+        } catch (ExerciseNotFoundException e) {
+            Log.d("Can't edit exercise", e.getMessage(), e);
+        }
     }
 
     @OnClick(R.id.button_undo)

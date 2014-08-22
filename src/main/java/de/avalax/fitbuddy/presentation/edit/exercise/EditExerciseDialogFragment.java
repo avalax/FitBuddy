@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.presentation.edit.exercise;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
@@ -61,12 +63,12 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     protected void init() {
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
         exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
-        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise));
-        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
+        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise, indexOfCurrentSet));
+        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)));
         exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
     }
-
 
 
     @OnClick(R.id.exerciseName)
@@ -80,30 +82,32 @@ public class EditExerciseDialogFragment extends Fragment {
 
     @OnClick(R.id.exerciseWeight)
     protected void changeWeight() {
-        if (exercise.getSets().isEmpty()) {
-            return;
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
+        try {
+            double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
+        } catch (SetNotAvailableException e) {
+            Log.d("can't edit weight without a set", e.getMessage(), e);
         }
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        double weight = exercise.getCurrentSet().getWeight();
-        EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
     }
 
     @OnClick(R.id.exerciseSets)
     protected void changeSets() {
-        //TODO: better fallback
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        int sets = exercise.getSets().size();
+        int sets = exercise.countOfSets();
         EditSetsDialogFragment.newInstance(sets).show(fm, "fragment_edit_sets");
     }
 
     @OnClick(R.id.exerciseReps)
     protected void changeReps() {
-        //TODO: better fallback
-        if (exercise.getSets().isEmpty()) {
-            return;
-        }
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        int reps = exercise.getCurrentSet().getMaxReps();
-        EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
+        try {
+            int reps = exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
+            EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
+        } catch (SetNotAvailableException e) {
+            Log.d("can't change reps", e.getMessage(), e);
+        }
     }
 }

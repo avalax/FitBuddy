@@ -1,12 +1,12 @@
 package de.avalax.fitbuddy.application.workout;
 
+import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
-
-import java.util.List;
 
 public class WorkoutApplicationService {
     private WorkoutSession workoutSession;
@@ -16,28 +16,29 @@ public class WorkoutApplicationService {
     }
 
     public int countOfCurrentExercises() throws WorkoutNotFoundException {
-        return getWorkout().getExercises().size();
+        return getWorkout().countOfExercises();
     }
 
     public Exercise requestExercise(int position) throws WorkoutNotFoundException, ExerciseNotFoundException {
-        //TODO: move to workout
-        List<Exercise> exercises = getWorkout().getExercises();
-        if (exercises.size() < position) {
-            throw new ExerciseNotFoundException();
-        }
-        return exercises.get(position);
+        return getWorkout().exerciseAtPosition(position);
     }
 
-    public void switchToSet(int position, int moved) throws WorkoutNotFoundException {
-        Exercise exercise = getWorkout().getExercises().get(position);
+    public void switchToSet(int position, int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+        Exercise exercise = getWorkout().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void addRepsToSet(int position, int moved) throws WorkoutNotFoundException {
-        Set set = getWorkout().getExercises().get(position).getCurrentSet();
-        set.setReps(set.getReps() + moved);
+    public void addRepsToSet(int position, int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+        Exercise exercise = getWorkout().exerciseAtPosition(position);
+        int currentSetIndex = exercise.indexOfCurrentSet();
+        try {
+            Set set = exercise.setAtPosition(currentSetIndex);
+            set.setReps(set.getReps() + moved);
+        } catch (SetNotAvailableException e) {
+            Log.d("can't update reps", e.getMessage(), e);
+        }
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }

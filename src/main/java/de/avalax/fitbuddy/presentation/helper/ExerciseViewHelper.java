@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.helper;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -14,17 +15,18 @@ public class ExerciseViewHelper {
         this.decimalFormat = new DecimalFormat("###.###", symbols);
     }
 
-    public String weightOfExercise(Exercise exercise) {
+    public String weightOfExercise(Exercise exercise, int positionOfSet) {
         if (exercise == null) {
             return "-";
         }
-        if (exercise.getSets().isEmpty()) {
-            return "-";
-        }
-        double weight = exercise.getCurrentSet().getWeight();
-        if (weight != 0) {
-            return decimalFormat.format(weight);
-        } else {
+        try {
+            double weight = exercise.setAtPosition(positionOfSet).getWeight();
+            if (weight != 0) {
+                return decimalFormat.format(weight);
+            } else {
+                return "-";
+            }
+        } catch (SetNotAvailableException e) {
             return "-";
         }
     }
@@ -36,17 +38,21 @@ public class ExerciseViewHelper {
         return exercise.getName();
     }
 
-    public int maxRepsOfExercise(Exercise exercise) {
-        if (exercise == null || exercise.getSets().isEmpty()) {
+    public int maxRepsOfExercise(Exercise exercise, int positionOfSet) {
+        if (exercise == null) {
             return 0;
         }
-        return exercise.getCurrentSet().getMaxReps();
+        try {
+            return exercise.setAtPosition(positionOfSet).getMaxReps();
+        } catch (SetNotAvailableException e) {
+            return 0;
+        }
     }
 
     public int setCountOfExercise(Exercise exercise) {
-        if (exercise == null || exercise.getSets().isEmpty()) {
+        if (exercise == null) {
             return 0;
         }
-        return exercise.getSets().size();
+        return exercise.countOfSets();
     }
 }

@@ -2,9 +2,9 @@ package de.avalax.fitbuddy.domain.model.workout;
 
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BasicWorkout implements Workout {
@@ -63,8 +63,13 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public boolean deleteExercise(Exercise exercise) {
-        return exercises.remove(exercise);
+    public void deleteExercise(Exercise exercise) {
+        exercises.remove(exercise);
+    }
+
+    @Override
+    public Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException {
+        return exercises.get(index);
     }
 
     @Override
@@ -87,11 +92,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public List<Exercise> getExercises() {
-        return Collections.unmodifiableList(exercises);
-    }
-
-    @Override
     public void setCurrentExercise(int index) {
         exerciseIndex = index;
     }
@@ -99,6 +99,11 @@ public class BasicWorkout implements Workout {
     @Override
     public int indexOfCurrentExercise() {
         return exerciseIndex;
+    }
+
+    @Override
+    public int countOfExercises() {
+        return exercises.size();
     }
 
     @Override

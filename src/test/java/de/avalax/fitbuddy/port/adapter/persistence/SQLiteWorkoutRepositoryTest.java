@@ -120,9 +120,9 @@ public class SQLiteWorkoutRepositoryTest {
 
         Workout loadedWorkout = workoutRepository.load(workoutId);
 
-        assertThat(loadedWorkout.getExercises().size(), equalTo(2));
-        assertThat(loadedWorkout.getExercises().get(0), equalTo(exercise1));
-        assertThat(loadedWorkout.getExercises().get(1), equalTo(exercise2));
+        assertThat(loadedWorkout.countOfExercises(), equalTo(2));
+        assertThat(loadedWorkout.exerciseAtPosition(0), equalTo(exercise1));
+        assertThat(loadedWorkout.exerciseAtPosition(1), equalTo(exercise2));
     }
 
     @Test

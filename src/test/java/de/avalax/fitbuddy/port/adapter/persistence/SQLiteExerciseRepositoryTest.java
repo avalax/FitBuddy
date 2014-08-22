@@ -133,9 +133,9 @@ public class SQLiteExerciseRepositoryTest {
         exerciseRepository.save(workoutId, 1, exercise);
 
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        assertThat(exercises.get(0).getSets().size(), equalTo(2));
-        assertThat(exercises.get(0).getSets().get(0), equalTo(set1));
-        assertThat(exercises.get(0).getSets().get(1), equalTo(set2));
+        assertThat(exercises.get(0).countOfSets(), equalTo(2));
+        assertThat(exercises.get(0).setAtPosition(0), equalTo(set1));
+        assertThat(exercises.get(0).setAtPosition(1), equalTo(set2));
     }
 
     @Test

@@ -2,16 +2,18 @@ package de.avalax.fitbuddy.presentation.edit.exercise;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
-import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
@@ -28,6 +30,8 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
 
     private Exercise exercise;
 
+    private int position;
+
     private EditExerciseDialogFragment editExerciseDialogFragment;
 
     @Override
@@ -37,6 +41,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         ButterKnife.inject(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        position = getIntent().getIntExtra("position", -1);
         editExerciseDialogFragment = EditExerciseDialogFragment.newInstance(exercise);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, editExerciseDialogFragment).commit();
@@ -53,19 +58,19 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_exercise) {
-            manageWorkout.deleteExercise(exercise);
+            manageWorkout.deleteExercise(exercise, position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_save_exercise) {
-            manageWorkout.saveExercise(exercise);
+            manageWorkout.saveExercise(exercise, position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise) {
-            manageWorkout.createExerciseBefore(exercise);
+            manageWorkout.createExerciseBefore(position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise_after) {
-            manageWorkout.createExerciseAfter(exercise);
+            manageWorkout.createExerciseAfter(position);
             setResult(RESULT_OK);
             finish();
         }
@@ -75,8 +80,14 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         double weight = editWeightDialogFragment.getWeight();
-        for (Set set : exercise.getSets()) {
-            set.setWeight(weight);
+        int countOfSets = exercise.countOfSets();
+        for (int i = 0; i < countOfSets; i++) {
+            try {
+                Set set = exercise.setAtPosition(i);
+                set.setWeight(weight);
+            } catch (SetNotAvailableException e) {
+                Log.d("can't update weight", e.getMessage(), e);
+            }
         }
         editExerciseDialogFragment.init();
     }
@@ -84,9 +95,15 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment) {
         int newSetAmount = editSetsDialogFragment.getSets();
+        int maxReps = 0;
+        double weight = 0;
+        try {
+            maxReps = exercise.countOfSets() == 0 ? 0 : exercise.setAtPosition(0).getMaxReps();
+            weight = exercise.countOfSets() == 0 ? 0 : exercise.setAtPosition(0).getWeight();
+        } catch (SetNotAvailableException e) {
+            Log.d("can't get first set", e.getMessage(), e);
+        }
         //TODO: update sets, instead of replacing them
-        int maxReps = exercise.getSets().isEmpty() ? 0 : exercise.getCurrentSet().getMaxReps();
-        double weight = exercise.getSets().isEmpty() ? 0 : exercise.getCurrentSet().getWeight();
         List<Set> sets = new ArrayList<>();
         for (int i = 0; i < newSetAmount; i++) {
             Set set = new BasicSet();
@@ -101,8 +118,14 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
         int reps = editRepsDialogFragment.getReps();
-        for (Set set : exercise.getSets()) {
-            set.setMaxReps(reps);
+        int countOfSets = exercise.countOfSets();
+        for (int i = 0; i < countOfSets; i++) {
+            try {
+                Set set = exercise.setAtPosition(i);
+                set.setMaxReps(reps);
+            } catch (SetNotAvailableException e) {
+                Log.d("can't update max reps", e.getMessage(), e);
+            }
         }
         editExerciseDialogFragment.init();
     }

@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
@@ -30,9 +32,13 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getWorkoutId().id()});
         }
         database.close();
-        List<Exercise> exercises = workout.getExercises();
-        for (int i = 0; i < exercises.size(); i++) {
-            exerciseRepository.save(workout.getWorkoutId(), i, exercises.get(i));
+        for (int i = 0; i < workout.countOfExercises(); i++) {
+            try {
+                Exercise exercise = workout.exerciseAtPosition(i);
+                exerciseRepository.save(workout.getWorkoutId(), i, exercise);
+            } catch (ExerciseNotFoundException e) {
+                Log.d("can't save exercise", e.getMessage(), e);
+            }
         }
     }
 

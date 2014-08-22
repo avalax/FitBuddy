@@ -8,13 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyCollectionOf;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -120,47 +116,38 @@ public class BasicExerciseTest {
         }
 
         @Test
-        public void getSets_shouldReturnEmptyListOfSetsOnConstruction() throws Exception {
-            assertThat(exercise.getSets(), emptyCollectionOf(Set.class));
+        public void countOfSets_shouldReturnZeroOnConstruction() throws Exception {
+            assertThat(exercise.countOfSets(), equalTo(0));
         }
 
         @Test
-        public void addSet_shouldAddSetToSets() throws Exception {
+        public void addSet_shouldAddSetToExercise() throws Exception {
             Set set = mock(Set.class);
 
             exercise.addSet(set);
 
-            List<Set> sets = exercise.getSets();
-            assertThat(sets.get(sets.size() - 1), equalTo(set));
+            assertThat(exercise.setAtPosition(0), equalTo(set));
         }
 
         @Test
-        public void removeSet_shouldRemoveSetFromSets() throws Exception {
+        public void removeSet_shouldRemoveSetFromExercise() throws Exception {
             Set set = mock(Set.class);
 
             exercise.addSet(set);
             exercise.removeSet(set);
-            assertThat(exercise.getSets(), not(hasItem(set)));
+            assertThat(exercise.countOfSets(), equalTo(0));
         }
 
         @Test
-        public void getCurrentSet_shouldReturnCurrent() throws Exception {
-            Set set = mock(Set.class);
-            exercise.addSet(set);
-
-            assertThat(exercise.getCurrentSet(), equalTo(set));
-        }
-
-        @Test
-        public void getCurrentSet_shouldReturnSecondSet() throws Exception {
+        public void setAtPosition_shouldReturnSecondSet() throws Exception {
             Set set = mock(Set.class);
 
             exercise.addSet(mock(Set.class));
             exercise.addSet(set);
 
-            exercise.setCurrentSet(1);
+            Set setAtPosition = exercise.setAtPosition(1);
 
-            assertThat(exercise.getCurrentSet(), equalTo(set));
+            assertThat(setAtPosition, equalTo(set));
         }
 
         @Test
@@ -182,14 +169,14 @@ public class BasicExerciseTest {
             Set set = mock(Set.class);
             exercise.addSet(set);
 
-            exercise.setCurrentSet(exercise.getSets().size() + 1);
+            exercise.setCurrentSet(exercise.countOfSets() + 1);
 
-            assertThat(exercise.getCurrentSet(), equalTo(set));
+            assertThat(exercise.indexOfCurrentSet(), equalTo(exercise.countOfSets() - 1));
         }
 
         @Test(expected = SetNotAvailableException.class)
-        public void getCurrentSet_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
-            exercise.getCurrentSet();
+        public void setAtPosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
+            exercise.setAtPosition(0);
         }
 
         public class givenAnExerciseProgress {

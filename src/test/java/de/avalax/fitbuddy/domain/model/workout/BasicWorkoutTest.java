@@ -14,9 +14,6 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyCollectionOf;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 
@@ -121,14 +118,15 @@ public class BasicWorkoutTest {
     public class givenAWorkoutForExerciseManipulation {
         @Test
         public void getExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
-            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
+            assertThat(workout.countOfExercises(), equalTo(0));
         }
 
         @Test
         public void createExercise_shouldAddExerciseToWorkout() throws Exception {
-            workout.createExercise();
+            Exercise exercise = workout.createExercise();
 
-            assertThat(workout.getExercises(), hasSize(1));
+            assertThat(workout.countOfExercises(), equalTo(1));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
@@ -136,8 +134,8 @@ public class BasicWorkoutTest {
             workout.createExercise();
             Exercise exercise = workout.createExercise(0);
 
-            assertThat(workout.getExercises(), hasSize(2));
-            assertThat(workout.getExercises().get(0), equalTo(exercise));
+            assertThat(workout.countOfExercises(), equalTo(2));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
@@ -146,8 +144,8 @@ public class BasicWorkoutTest {
 
             Exercise exercise = workout.createExercise(1);
 
-            assertThat(workout.getExercises(), hasSize(2));
-            assertThat(workout.getExercises().get(1), equalTo(exercise));
+            assertThat(workout.countOfExercises(), equalTo(2));
+            assertThat(workout.exerciseAtPosition(1), equalTo(exercise));
         }
 
         @Test
@@ -157,7 +155,7 @@ public class BasicWorkoutTest {
 
             workout.replaceExercise(exercise);
 
-            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
+            assertThat(workout.countOfExercises(), equalTo(0));
         }
 
         @Test
@@ -170,18 +168,17 @@ public class BasicWorkoutTest {
 
             workout.replaceExercise(exerciseToReplace);
 
-            assertThat(workout.getExercises(), hasSize(1));
-            assertThat(workout.getExercises().get(0), equalTo(exerciseToReplace));
+            assertThat(workout.countOfExercises(), equalTo(1));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToReplace));
         }
 
         @Test
         public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
             Exercise exercise = workout.createExercise();
 
-            boolean isDeleted = workout.deleteExercise(exercise);
+            workout.deleteExercise(exercise);
 
-            assertThat(isDeleted, equalTo(true));
-            assertThat(workout.getExercises(), not(hasItem(exercise)));
+            assertThat(workout.countOfExercises(), equalTo(0));
         }
 
         @Test
@@ -191,8 +188,8 @@ public class BasicWorkoutTest {
 
             workout.deleteExercise(exerciseToDelete);
 
-            assertThat(workout.getExercises(), hasSize(1));
-            assertThat(workout.getExercises().get(0), equalTo(exercise));
+            assertThat(workout.countOfExercises(), equalTo(1));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
@@ -206,7 +203,7 @@ public class BasicWorkoutTest {
 
             workout.deleteExercise(clonedExercise);
 
-            assertThat(workout.getExercises(), emptyCollectionOf(Exercise.class));
+            assertThat(workout.countOfExercises(), equalTo(0));
         }
 
         @Test
@@ -216,13 +213,13 @@ public class BasicWorkoutTest {
 
             workout.deleteExercise(exerciseToDelete);
 
-            assertThat(workout.getExercises(), hasSize(1));
-            assertThat(workout.getExercises().get(0), equalTo(exercise));
+            assertThat(workout.countOfExercises(), equalTo(1));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void deleteExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-            assertThat(workout.deleteExercise(mock(Exercise.class)), equalTo(false));
+            workout.deleteExercise(mock(Exercise.class));
         }
 
         public class givenAnExerciseProgress {

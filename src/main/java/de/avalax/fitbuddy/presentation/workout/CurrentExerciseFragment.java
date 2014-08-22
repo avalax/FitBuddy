@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
-import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
 
@@ -57,7 +58,8 @@ public class CurrentExerciseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try {
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), repsProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise)) {
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
+            repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), repsProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {
@@ -80,7 +82,7 @@ public class CurrentExerciseFragment extends Fragment {
             });
 
             setViews();
-        } catch (WorkoutNotFoundException| ExerciseNotFoundException e) {
+        } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
     }
@@ -91,7 +93,7 @@ public class CurrentExerciseFragment extends Fragment {
         updateWorkoutProgress();
     }
 
-    private void moveToSet(int moved) throws WorkoutNotFoundException,ExerciseNotFoundException {
+    private void moveToSet(int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();
@@ -100,8 +102,12 @@ public class CurrentExerciseFragment extends Fragment {
 
     private void setViews() throws WorkoutNotFoundException, ExerciseNotFoundException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-        if (exercise.getSets().size() > 0) {
-            repsProgressBar.updateProgressbar(exercise.getCurrentSet());
+        //TODO: move to service
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
+        try {
+            repsProgressBar.updateProgressbar(exercise.setAtPosition(indexOfCurrentSet));
+        } catch (SetNotAvailableException e) {
+            Log.d("Can't update set", e.getMessage(), e);
         }
         setsProgressBar.updateProgressbar(exercise);
     }

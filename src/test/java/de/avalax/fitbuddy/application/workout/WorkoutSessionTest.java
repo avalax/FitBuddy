@@ -17,7 +17,6 @@ import java.io.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -117,6 +116,6 @@ public class WorkoutSessionTest {
 
         Workout changedPersistedWorkout = readWorkout();
         assertThat(changedPersistedWorkout.indexOfCurrentExercise(), equalTo(1));
-        assertThat(changedPersistedWorkout.getExercises(), hasSize(2));
+        assertThat(changedPersistedWorkout.countOfExercises(), equalTo(2));
     }
 }

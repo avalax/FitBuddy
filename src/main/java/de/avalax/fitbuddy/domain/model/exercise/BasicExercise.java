@@ -1,10 +1,10 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
+import android.util.Log;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BasicExercise implements Exercise {
@@ -36,12 +36,11 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public Set getCurrentSet() {
-        if (isIndexGreaterEqualThan(setIndex)) {
+    public Set setAtPosition(int position) throws SetNotAvailableException {
+        if (isIndexGreaterEqualThan(position)) {
             throw new SetNotAvailableException();
         }
-        int index = setIndex;
-        return sets.get(index);
+        return sets.get(position);
     }
 
     @Override
@@ -63,12 +62,17 @@ public class BasicExercise implements Exercise {
         if (sets.isEmpty()) {
             return 0;
         }
-        //TODO: add getProgress to Set
-        int reps = getCurrentSet().getReps();
-        double maxReps = getCurrentSet().getMaxReps();
-        double repsProgress = reps / maxReps / sets.size();
-        double setsProgress = (setIndex) / (double) sets.size();
-        return setsProgress + repsProgress;
+        try {
+            //TODO: add getProgress to Set
+            int reps = setAtPosition(setIndex).getReps();
+            double maxReps = setAtPosition(setIndex).getMaxReps();
+            double repsProgress = reps / maxReps / sets.size();
+            double setsProgress = (setIndex) / (double) sets.size();
+            return setsProgress + repsProgress;
+        } catch (SetNotAvailableException e) {
+            Log.d("no sets available", e.getMessage(), e);
+            return 0;
+        }
     }
 
     @Override
@@ -77,13 +81,13 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public ExerciseId getExerciseId() {
-        return exerciseId;
+    public int countOfSets() {
+        return sets.size();
     }
 
     @Override
-    public List<Set> getSets() {
-        return Collections.unmodifiableList(sets);
+    public ExerciseId getExerciseId() {
+        return exerciseId;
     }
 
     @Override

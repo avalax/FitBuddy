@@ -1,15 +1,13 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
-import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class JsonInWorkoutAdapterTest {
     private JsonInWorkoutAdapter jsonInWorkoutAdapter;
@@ -39,7 +37,7 @@ public class JsonInWorkoutAdapterTest {
         Workout workout = jsonInWorkoutAdapter.createFromJson("[\"\",[]]");
 
         assertThat(workout.getName(), equalTo(""));
-        assertThat(workout.getExercises(), empty());
+        assertThat(workout.countOfExercises(), equalTo(0));
     }
 
     @Test
@@ -53,9 +51,9 @@ public class JsonInWorkoutAdapterTest {
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
         Workout workout = jsonInWorkoutAdapter.createFromJson("[\"\",[[\"bankdrücken\",[[12,80],[12,80],[12,80]]]]]");
 
-        assertThat(workout.getExercises(), hasSize(1));
-        assertThat(workout.getExercises().get(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.getExercises().get(0).getSets(), hasSize(3));
-        assertThat(workout.getExercises().get(0).getCurrentSet().getMaxReps(), is(12));
+        assertThat(workout.countOfExercises(), equalTo(1));
+        assertThat(workout.exerciseAtPosition(0).getName(), equalTo("bankdrücken"));
+        assertThat(workout.exerciseAtPosition(0).countOfSets(), equalTo(3));
+        assertThat(workout.exerciseAtPosition(0).setAtPosition(0).getMaxReps(), is(12));
     }
 }

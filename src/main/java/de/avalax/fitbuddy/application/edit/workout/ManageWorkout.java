@@ -1,14 +1,15 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
+import android.util.Log;
 import android.view.View;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageWorkout {
@@ -118,42 +119,33 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void deleteExercise(Exercise exercise) {
+    public void deleteExercise(Exercise exercise, int position) {
         exerciseRepository.delete(exercise.getExerciseId());
-        int index = workout.getExercises().indexOf(exercise);
-        if (workout.deleteExercise(exercise)) {
-            setUnsavedChanges(index, exercise);
-            deletedWorkout = null;
-        }
+        workout.deleteExercise(exercise);
+        setUnsavedChanges(position, exercise);
+        deletedWorkout = null;
     }
 
-    public void saveExercise(Exercise exercise) {
+    public void saveExercise(Exercise exercise, int position) {
         workout.replaceExercise(exercise);
-        int position = workout.getExercises().indexOf(exercise);
         exerciseRepository.save(workout.getWorkoutId(), position, exercise);
         setUnsavedChanges(false);
     }
 
     public void createExercise() {
         Exercise exercise = workout.createExercise();
-        exerciseRepository.save(workout.getWorkoutId(), workout.getExercises().size() - 1, exercise);
+        exerciseRepository.save(workout.getWorkoutId(), workout.countOfExercises() - 1, exercise);
         setUnsavedChanges(false);
     }
 
-    @Deprecated
-    public void createExerciseBefore(Exercise exercise) {
-        //TODO: move to Workout
-        List<Exercise> exercises = workout.getExercises();
-        workout.createExercise(exercises.indexOf(exercise));
+    public void createExerciseBefore(int position) {
+        workout.createExercise(position);
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 
-    @Deprecated
-    public void createExerciseAfter(Exercise exercise) {
-        //TODO: move to Workout
-        List<Exercise> exercises = workout.getExercises();
-        workout.createExercise(exercises.indexOf(exercise) + 1);
+    public void createExerciseAfter(int position) {
+        workout.createExercise(position + 1);
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
@@ -173,10 +165,14 @@ public class ManageWorkout {
     }
 
     public void replaceSets(Exercise exercise, List<Set> setToAdd) {
-        List<Set> setsToRemove = new ArrayList<>(exercise.getSets());
-        for (Set set : setsToRemove) {
-            setRepository.delete(set.getSetId());
-            exercise.removeSet(set);
+        for (int i = 0; i < exercise.countOfSets(); i++) {
+            try {
+                Set set = exercise.setAtPosition(i);
+                setRepository.delete(set.getSetId());
+                exercise.removeSet(set);
+            } catch (SetNotAvailableException e) {
+                Log.d("Can't delete set", e.getMessage(), e);
+            }
         }
         for (Set set : setToAdd) {
             setRepository.save(exercise.getExerciseId(), set);

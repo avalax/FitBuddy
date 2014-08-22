@@ -50,12 +50,12 @@ public class ExerciseViewHelperTest {
 
     @Test
     public void testWeightOfExercise() throws Exception {
-        assertThat(exerciseViewHelper.weightOfExercise(null), equalTo("-"));
-        assertThat(exerciseViewHelper.weightOfExercise(new BasicExercise()), equalTo("-"));
-        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(0.0)), equalTo("-"));
-        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(10.0)), equalTo("10"));
-        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(0.725)), equalTo("0.725"));
-        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(-0.725)), equalTo("-0.725"));
+        assertThat(exerciseViewHelper.weightOfExercise(null, -1), equalTo("-"));
+        assertThat(exerciseViewHelper.weightOfExercise(new BasicExercise(), 0), equalTo("-"));
+        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(0.0), 0), equalTo("-"));
+        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(10.0), 0), equalTo("10"));
+        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(0.725), 0), equalTo("0.725"));
+        assertThat(exerciseViewHelper.weightOfExercise(createExerciseWithWeight(-0.725), 0), equalTo("-0.725"));
     }
 
     @Test
@@ -67,9 +67,9 @@ public class ExerciseViewHelperTest {
 
     @Test
     public void testMaxRepsOfExercise() throws Exception {
-        assertThat(exerciseViewHelper.maxRepsOfExercise(null), equalTo(0));
-        assertThat(exerciseViewHelper.maxRepsOfExercise(new BasicExercise()), equalTo(0));
-        assertThat(exerciseViewHelper.maxRepsOfExercise(createExerciseWithMaxReps(12)), equalTo(12));
+        assertThat(exerciseViewHelper.maxRepsOfExercise(null, -1), equalTo(0));
+        assertThat(exerciseViewHelper.maxRepsOfExercise(new BasicExercise(), 0), equalTo(0));
+        assertThat(exerciseViewHelper.maxRepsOfExercise(createExerciseWithMaxReps(12), 0), equalTo(12));
     }
 
     @Test

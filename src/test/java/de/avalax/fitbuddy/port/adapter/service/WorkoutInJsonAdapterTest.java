@@ -51,7 +51,7 @@ public class WorkoutInJsonAdapterTest {
     public void workoutWithOneExerciseWithNameAndOneSet_shouldReturnJson() throws Exception {
         workout.setName("nameOfWorkout");
         workout.createExercise();
-        Exercise exercise = workout.getExercises().get(0);
+        Exercise exercise = workout.exerciseAtPosition(0);
         exercise.setName("bankdrücken");
         Set set = new BasicSet();
         set.setMaxReps(15);

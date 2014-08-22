@@ -1,9 +1,9 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
 import java.io.Serializable;
-import java.util.List;
 
 public interface Exercise extends Serializable {
     String getName();
@@ -14,14 +14,13 @@ public interface Exercise extends Serializable {
 
     void setCurrentSet(int index);
 
-    @Deprecated
-    Set getCurrentSet();
+    Set setAtPosition(int index) throws SetNotAvailableException;
 
     void setExerciseId(ExerciseId exerciseId);
 
-    ExerciseId getExerciseId();
+    int countOfSets();
 
-    List<Set> getSets();
+    ExerciseId getExerciseId();
 
     void setName(String name);
 
