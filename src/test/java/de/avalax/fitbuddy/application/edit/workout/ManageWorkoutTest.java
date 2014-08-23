@@ -254,6 +254,16 @@ public class ManageWorkoutTest {
             }
 
             @Test
+            public void changeSetAmountToSameAmount_shouldDoNothing() throws Exception {
+                Exercise exercise = new BasicExercise();
+                exercise.createSet();
+
+                manageWorkout.changeSetAmount(exercise, 1);
+
+                verifyNoMoreInteractions(setRepository);
+            }
+
+            @Test
             public void changeSetAmountWithoutSets_shouldAddOneSet() throws Exception {
                 ExerciseId exerciseId = new ExerciseId("21");
                 Exercise exercise = new BasicExercise();
@@ -263,6 +273,7 @@ public class ManageWorkoutTest {
 
                 verify(setRepository).save(exerciseId, exercise.setAtPosition(0));
             }
+
 
             @Test
             public void changeSetAmountToOne_shouldRemoveOneSet() throws Exception {
