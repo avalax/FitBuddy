@@ -12,8 +12,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
 public class BasicExerciseTest {
@@ -122,28 +120,23 @@ public class BasicExerciseTest {
 
         @Test
         public void addSet_shouldAddSetToExercise() throws Exception {
-            Set set = mock(Set.class);
-
-            exercise.addSet(set);
+            Set set = exercise.createSet();
 
             assertThat(exercise.setAtPosition(0), equalTo(set));
         }
 
         @Test
         public void removeSet_shouldRemoveSetFromExercise() throws Exception {
-            Set set = mock(Set.class);
+            Set set = exercise.createSet();
 
-            exercise.addSet(set);
             exercise.removeSet(set);
             assertThat(exercise.countOfSets(), equalTo(0));
         }
 
         @Test
         public void setAtPosition_shouldReturnSecondSet() throws Exception {
-            Set set = mock(Set.class);
-
-            exercise.addSet(mock(Set.class));
-            exercise.addSet(set);
+            exercise.createSet();
+            Set set = exercise.createSet();
 
             Set setAtPosition = exercise.setAtPosition(1);
 
@@ -157,7 +150,7 @@ public class BasicExerciseTest {
 
         @Test
         public void setSetNumber_shouldSetSetNumberToZero() throws Exception {
-            exercise.addSet(mock(Set.class));
+            exercise.createSet();
 
             exercise.setCurrentSet(-1);
 
@@ -166,8 +159,7 @@ public class BasicExerciseTest {
 
         @Test
         public void setCurrentSet_ShouldSetToLastSetWhenSizeExceeded() throws Exception {
-            Set set = mock(Set.class);
-            exercise.addSet(set);
+            exercise.createSet();
 
             exercise.setCurrentSet(exercise.countOfSets() + 1);
 
@@ -187,60 +179,55 @@ public class BasicExerciseTest {
 
             @Test
             public void oneSetWithoutReps_shouldHaveZeroProgress() throws Exception {
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(0);
-                exercise.addSet(set);
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(0);
+
                 assertThat(exercise.getProgress(), equalTo(0.0));
             }
 
             @Test
             public void oneSetWithMaxReps_shouldHaveFullProgress() throws Exception {
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(100);
-                exercise.addSet(set);
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(100);
                 assertThat(exercise.getProgress(), equalTo(1.0));
             }
 
             @Test
             public void oneSetWithHalfReps_shouldHaveHalfProgress() throws Exception {
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(50);
-                exercise.addSet(set);
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(50);
                 assertThat(exercise.getProgress(), equalTo(0.5));
             }
 
             @Test
             public void twoSetsWithoutReps_shouldHaveHalfProgress() throws Exception {
-                exercise.addSet(mock(Set.class));
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(0);
-                exercise.addSet(set);
+                exercise.createSet();
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(0);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.5));
             }
 
             @Test
             public void twoSetsWithMaxReps_shouldHaveFallProgress() throws Exception {
-                exercise.addSet(mock(Set.class));
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(100);
-                exercise.addSet(set);
+                exercise.createSet();
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(100);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(1.0));
             }
 
             @Test
             public void twoSetsWithHalfReps_shouldHave75Progress() throws Exception {
-                exercise.addSet(mock(Set.class));
-                Set set = mock(Set.class);
-                when(set.getMaxReps()).thenReturn(100);
-                when(set.getReps()).thenReturn(50);
-                exercise.addSet(set);
+                exercise.createSet();
+                Set set = exercise.createSet();
+                set.setMaxReps(100);
+                set.setReps(50);
                 exercise.setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.75));
             }

@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
@@ -20,8 +19,6 @@ import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
 
@@ -103,15 +100,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         } catch (SetNotAvailableException e) {
             Log.d("can't get first set", e.getMessage(), e);
         }
-        //TODO: update sets, instead of replacing them
-        List<Set> sets = new ArrayList<>();
-        for (int i = 0; i < newSetAmount; i++) {
-            Set set = new BasicSet();
-            set.setWeight(weight);
-            set.setMaxReps(maxReps);
-            sets.add(set);
-        }
-        manageWorkout.replaceSets(exercise, sets);
+        manageWorkout.changeSetAmount(exercise, newSetAmount);
         editExerciseDialogFragment.init();
     }
 

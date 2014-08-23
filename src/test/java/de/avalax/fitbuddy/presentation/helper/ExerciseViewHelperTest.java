@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.presentation.helper;
 
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,31 +14,29 @@ import static org.junit.Assert.assertThat;
 public class ExerciseViewHelperTest {
     private ExerciseViewHelper exerciseViewHelper;
 
-    private BasicExercise createExerciseWithWeight(double weight) {
-        BasicExercise exercise = new BasicExercise();
-        BasicSet set = new BasicSet();
+    private Exercise createExerciseWithWeight(double weight) {
+        Exercise exercise = new BasicExercise();
+        Set set = exercise.createSet();
         set.setWeight(weight);
-        exercise.addSet(set);
         return exercise;
     }
 
-    private BasicExercise createExerciseWithName(String name) {
-        BasicExercise exercise = new BasicExercise();
+    private Exercise createExerciseWithName(String name) {
+        Exercise exercise = new BasicExercise();
         exercise.setName(name);
         return exercise;
     }
 
     private Exercise createExerciseWithMaxReps(int maxReps) {
         Exercise exercise = new BasicExercise();
-        Set set = new BasicSet();
+        Set set = exercise.createSet();
         set.setMaxReps(maxReps);
-        exercise.addSet(set);
         return exercise;
     }
 
     private BasicExercise createExerciseWithOneSet() {
         BasicExercise exercise = new BasicExercise();
-        exercise.addSet(new BasicSet());
+        exercise.createSet();
         return exercise;
     }
 

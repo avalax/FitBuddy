@@ -4,7 +4,6 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
@@ -234,10 +233,9 @@ public class BasicWorkoutTest {
             public void getProgress_shouldReturnFullProgress() throws Exception {
                 workout.createExercise();
                 Exercise exercise = workout.createExercise();
-                Set set = new BasicSet();
+                Set set = exercise.createSet();
                 set.setMaxReps(1);
                 set.setReps(1);
-                exercise.addSet(set);
 
                 assertThat(workout.getProgress(1), equalTo(1.0));
             }
@@ -246,10 +244,9 @@ public class BasicWorkoutTest {
             public void getProgress_shouldReturn1point5() throws Exception {
                 workout.createExercise();
                 Exercise exercise = workout.createExercise();
-                Set set = new BasicSet();
+                Set set = exercise.createSet();
                 set.setMaxReps(2);
                 set.setReps(1);
-                exercise.addSet(set);
 
                 assertThat(workout.getProgress(1), equalTo(0.75));
             }

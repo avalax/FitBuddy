@@ -164,19 +164,38 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void replaceSets(Exercise exercise, List<Set> setToAdd) {
-        for (int i = 0; i < exercise.countOfSets(); i++) {
-            try {
-                Set set = exercise.setAtPosition(i);
-                setRepository.delete(set.getSetId());
-                exercise.removeSet(set);
-            } catch (SetNotAvailableException e) {
-                Log.d("Can't delete set", e.getMessage(), e);
-            }
+    public void changeSetAmount(Exercise exercise, int newSetAmount) {
+        if (newSetAmount == exercise.countOfSets()) {
+            return;
         }
-        for (Set set : setToAdd) {
-            setRepository.save(exercise.getExerciseId(), set);
-            exercise.addSet(set);
+        if (newSetAmount < exercise.countOfSets()) {
+            for (int i=0;i< exercise.countOfSets()-newSetAmount;i++) {
+                try {
+                    Set set = exercise.setAtPosition(i);
+                    exercise.removeSet(set);
+                    setRepository.delete(set.getSetId());
+                } catch (SetNotAvailableException e) {
+                    Log.d("Can't delete set", e.getMessage(), e);
+                }
+            }
+        } else {
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
+            double weight;
+            int maxReps;
+            try {
+                Set set = exercise.setAtPosition(indexOfCurrentSet);
+                weight = set.getWeight();
+                maxReps = set.getMaxReps();
+            } catch (SetNotAvailableException e) {
+                weight = 0;
+                maxReps = 0;
+            }
+            for (int i=0;i< newSetAmount-exercise.countOfSets();i++) {
+                Set set = exercise.createSet();
+                set.setMaxReps(maxReps);
+                set.setWeight(weight);
+                setRepository.save(exercise.getExerciseId(), set);
+            }
         }
         setUnsavedChanges(false);
     }

@@ -14,7 +14,6 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -255,25 +254,47 @@ public class ManageWorkoutTest {
             }
 
             @Test
-            public void replaceSets_shouldDeleteOldSetsAndSaveNewSets() throws Exception {
+            public void changeSetAmountWithoutSets_shouldAddOneSet() throws Exception {
                 ExerciseId exerciseId = new ExerciseId("21");
                 Exercise exercise = new BasicExercise();
                 exercise.setExerciseId(exerciseId);
-                SetId setIdToDelete = new SetId("42");
-                Set setToDelete = mock(Set.class);
-                when(setToDelete.getSetId()).thenReturn(setIdToDelete);
-                exercise.addSet(setToDelete);
-                List<Set> setsToAdd = new ArrayList<>();
-                Set setToAdd = mock(Set.class);
-                setsToAdd.add(setToAdd);
 
-                manageWorkout.replaceSets(exercise, setsToAdd);
+                manageWorkout.changeSetAmount(exercise, 1);
 
-                InOrder inOrder = inOrder(setRepository);
-                inOrder.verify(setRepository).delete(setIdToDelete);
-                inOrder.verify(setRepository).save(exerciseId, setToAdd);
-                assertThat(exercise.countOfSets(), equalTo(1));
-                assertThat(exercise.setAtPosition(0), equalTo(setToAdd));
+                verify(setRepository).save(exerciseId, exercise.setAtPosition(0));
+            }
+
+            @Test
+            public void changeSetAmountToOne_shouldRemoveOneSet() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("21");
+                Exercise exercise = new BasicExercise();
+                exercise.setExerciseId(exerciseId);
+                Set set1 = exercise.createSet();
+                set1.setSetId(new SetId("42"));
+                Set set2 = exercise.createSet();
+
+                manageWorkout.changeSetAmount(exercise, 1);
+
+                assertThat(exercise.setAtPosition(0), equalTo(set2));
+                verify(setRepository).delete(set1.getSetId());
+            }
+
+            @Test
+            public void changeSetAmountWithOneSet_shouldAddASecondEqualSet() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("21");
+                Exercise exercise = new BasicExercise();
+                exercise.setExerciseId(exerciseId);
+                Set set = exercise.createSet();
+                set.setMaxReps(12);
+                set.setWeight(42.0);
+
+                manageWorkout.changeSetAmount(exercise, 2);
+
+                Set newSet = exercise.setAtPosition(1);
+
+                assertThat(newSet.getMaxReps(), equalTo(12));
+                assertThat(newSet.getWeight(), equalTo(42.0));
+                verify(setRepository).save(exerciseId, newSet);
             }
         }
     }

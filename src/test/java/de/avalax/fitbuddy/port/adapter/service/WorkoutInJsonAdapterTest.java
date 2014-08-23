@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -53,10 +52,9 @@ public class WorkoutInJsonAdapterTest {
         workout.createExercise();
         Exercise exercise = workout.exerciseAtPosition(0);
         exercise.setName("bankdrücken");
-        Set set = new BasicSet();
+        Set set = exercise.createSet();
         set.setMaxReps(15);
         set.setWeight(42);
-        exercise.addSet(set);
 
         String json = workoutInJsonAdapter.fromWorkout(workout);
 

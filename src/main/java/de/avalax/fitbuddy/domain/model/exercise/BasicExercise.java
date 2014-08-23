@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
 import android.util.Log;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 
@@ -100,8 +101,10 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void addSet(Set set) {
+    public Set createSet() {
+        Set set = new BasicSet();
         sets.add(set);
+        return set;
     }
 
     @Override

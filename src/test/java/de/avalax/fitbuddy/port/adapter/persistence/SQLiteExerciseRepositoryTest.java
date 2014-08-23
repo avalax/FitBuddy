@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 import de.avalax.fitbuddy.domain.model.exercise.*;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
@@ -94,8 +93,7 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void saveExercise_shouldAlsoSaveSets() {
         Exercise exercise = new BasicExercise();
-        Set set = new BasicSet();
-        exercise.addSet(set);
+        Set set = exercise.createSet();
 
         exerciseRepository.save(workoutId, 1, exercise);
 
@@ -125,10 +123,8 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
         Exercise exercise = new BasicExercise();
-        Set set1 = new BasicSet();
-        exercise.addSet(set1);
-        Set set2 = new BasicSet();
-        exercise.addSet(set2);
+        Set set1 = exercise.createSet();
+        Set set2 = exercise.createSet();
 
         exerciseRepository.save(workoutId, 1, exercise);
 

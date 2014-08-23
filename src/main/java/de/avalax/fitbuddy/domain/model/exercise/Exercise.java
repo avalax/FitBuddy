@@ -24,8 +24,7 @@ public interface Exercise extends Serializable {
 
     void setName(String name);
 
-    @Deprecated
-    void addSet(Set set);
+    Set createSet();
 
     void removeSet(Set set);
 }

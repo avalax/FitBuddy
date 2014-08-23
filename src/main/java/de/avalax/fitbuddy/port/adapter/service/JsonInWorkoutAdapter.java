@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.port.adapter.service;
 
 import com.google.gson.Gson;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -32,10 +31,9 @@ public class JsonInWorkoutAdapter {
                 for (ArrayList jsonSet : jsonSets) {
                     double weight = (double) jsonSet.get(1);
                     int maxReps = (int) ((double) jsonSet.get(0));
-                    Set set = new BasicSet();
+                    Set set = exercise.createSet();
                     set.setWeight(weight);
                     set.setMaxReps(maxReps);
-                    exercise.addSet(set);
                 }
             }
 
