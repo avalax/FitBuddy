@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
-import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -101,8 +101,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    ManageWorkout provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
-        return new ManageWorkout(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutService);
+    EditWorkoutApplicationService provideManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
+        return new EditWorkoutApplicationService(workoutSession, workoutRepository, exerciseRepository, setRepository, workoutService);
     }
 
     @Provides

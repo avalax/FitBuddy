@@ -1,8 +1,8 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
-import android.util.Log;
 import android.view.View;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -12,7 +12,7 @@ import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.List;
 
-public class ManageWorkout {
+public class EditWorkoutApplicationService {
 
     private WorkoutRepository workoutRepository;
 
@@ -34,7 +34,7 @@ public class ManageWorkout {
 
     private Integer deletedExerciseIndex;
 
-    public ManageWorkout(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
+    public EditWorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
@@ -164,19 +164,15 @@ public class ManageWorkout {
         setUnsavedChanges(false);
     }
 
-    public void changeSetAmount(Exercise exercise, int newSetAmount) {
+    public void changeSetAmount(Exercise exercise, int newSetAmount) throws RessourceNotFoundException {
         if (newSetAmount == exercise.countOfSets()) {
             return;
         }
         if (newSetAmount < exercise.countOfSets()) {
-            for (int i=0;i< exercise.countOfSets()-newSetAmount;i++) {
-                try {
-                    Set set = exercise.setAtPosition(i);
-                    exercise.removeSet(set);
-                    setRepository.delete(set.getSetId());
-                } catch (SetNotAvailableException e) {
-                    Log.d("Can't delete set", e.getMessage(), e);
-                }
+            for (int i = 0; i < exercise.countOfSets() - newSetAmount; i++) {
+                Set set = exercise.setAtPosition(i);
+                exercise.removeSet(set);
+                setRepository.delete(set.getSetId());
             }
         } else {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
@@ -190,7 +186,7 @@ public class ManageWorkout {
                 weight = 0;
                 maxReps = 0;
             }
-            for (int i=0;i< newSetAmount-exercise.countOfSets();i++) {
+            for (int i = 0; i < newSetAmount - exercise.countOfSets(); i++) {
                 Set set = exercise.createSet();
                 set.setMaxReps(maxReps);
                 set.setWeight(weight);

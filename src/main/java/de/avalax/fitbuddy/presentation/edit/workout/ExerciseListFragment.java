@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Bus;
-import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ExerciseListFragment extends ListFragment {
     @Inject
-    protected ManageWorkout manageWorkout;
+    protected EditWorkoutApplicationService editWorkoutApplicationService;
     @Inject
     protected Bus bus;
     @InjectView(R.id.footer_undo)
@@ -57,15 +57,15 @@ public class ExerciseListFragment extends ListFragment {
 
     protected void initListView() {
         //TODO: setdata using adapter.setData(data);
-        Workout workout = manageWorkout.getWorkout();
+        Workout workout = editWorkoutApplicationService.getWorkout();
         List<Exercise> exercises = getExercises(workout);
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
-        footer.setVisibility(manageWorkout.unsavedChangesVisibility());
+        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
         TextView unsavedChangesTextView = (TextView) footer.findViewById(R.id.unsavedChangesTextView);
-        if (manageWorkout.hasDeletedExercise()) {
+        if (editWorkoutApplicationService.hasDeletedExercise()) {
             unsavedChangesTextView.setText(R.string.has_deleted_exercise);
-        } else if (manageWorkout.hasDeletedWorkout()) {
+        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
             unsavedChangesTextView.setText(R.string.has_deleted_workout);
         }
     }
@@ -107,7 +107,7 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Exercise exercise = manageWorkout.getWorkout().exerciseAtPosition(position);
+            Exercise exercise = editWorkoutApplicationService.getWorkout().exerciseAtPosition(position);
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
             intent.putExtra("exercise", exercise);
             intent.putExtra("position", position);
@@ -119,22 +119,22 @@ public class ExerciseListFragment extends ListFragment {
 
     @OnClick(R.id.button_undo)
     protected void undoChanges() {
-        if (manageWorkout.hasDeletedExercise()) {
-            manageWorkout.undoDeleteExercise();
+        if (editWorkoutApplicationService.hasDeletedExercise()) {
+            editWorkoutApplicationService.undoDeleteExercise();
             initListView();
-        } else if (manageWorkout.hasDeletedWorkout()) {
-            manageWorkout.undoDeleteWorkout();
+        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
+            editWorkoutApplicationService.undoDeleteWorkout();
             bus.post(new WorkoutListInvalidatedEvent());
         }
     }
 
     @OnClick(android.R.id.empty)
     protected void addExercise() {
-        if (manageWorkout.getWorkout() == null) {
-            manageWorkout.createWorkout();
+        if (editWorkoutApplicationService.getWorkout() == null) {
+            editWorkoutApplicationService.createWorkout();
             bus.post(new WorkoutListInvalidatedEvent());
         }
-        manageWorkout.createExercise();
+        editWorkoutApplicationService.createExercise();
         initListView();
     }
 

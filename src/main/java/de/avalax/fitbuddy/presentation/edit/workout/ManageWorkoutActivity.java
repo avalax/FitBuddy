@@ -19,7 +19,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.*;
@@ -36,7 +36,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
     private boolean initializing;
     @Inject
-    protected ManageWorkout manageWorkout;
+    protected EditWorkoutApplicationService editWorkoutApplicationService;
     @Inject
     protected Bus bus;
     @Inject
@@ -67,10 +67,10 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             if (workoutId == null) {
                 workoutId = workoutApplicationService.getWorkout().getWorkoutId();
             }
-            manageWorkout.setWorkout(workoutId);
+            editWorkoutApplicationService.setWorkout(workoutId);
         } catch (WorkoutNotFoundException wnfe) {
             Log.d("create a new workout", wnfe.getMessage(), wnfe);
-            manageWorkout.createWorkout();
+            editWorkoutApplicationService.createWorkout();
         }
         exerciseListFragment = new ExerciseListFragment();
         getSupportFragmentManager().beginTransaction()
@@ -94,7 +94,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(WORKOUT_POSITION, manageWorkout.getWorkout().getWorkoutId().id());
+        savedInstanceState.putString(WORKOUT_POSITION, editWorkoutApplicationService.getWorkout().getWorkoutId().id());
     }
 
     @Override
@@ -118,24 +118,24 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
-            manageWorkout.switchWorkout();
+            editWorkoutApplicationService.switchWorkout();
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {
             showNewWorkoutAltertDialog();
         } else if (item.getItemId() == R.id.action_change_workout_name) {
-            if (manageWorkout.getWorkout() == null) {
-                manageWorkout.createWorkout();
+            if (editWorkoutApplicationService.getWorkout() == null) {
+                editWorkoutApplicationService.createWorkout();
                 initActionNavigationBar();
             }
             editWorkoutName();
         } else if (item.getItemId() == R.id.action_delete_workout) {
-            manageWorkout.deleteWorkout();
-            List<WorkoutListEntry> workouts = manageWorkout.getWorkoutList();
+            editWorkoutApplicationService.deleteWorkout();
+            List<WorkoutListEntry> workouts = editWorkoutApplicationService.getWorkoutList();
             if (workouts.size() > 0) {
                 WorkoutId workoutId = workouts.get(0).getWorkoutId();
                 try {
-                    manageWorkout.setWorkout(workoutId);
+                    editWorkoutApplicationService.setWorkout(workoutId);
                 } catch (WorkoutNotFoundException wnfw) {
                     Log.d("MangeWorkoutActivity", wnfw.getMessage(), wnfw);
                 }
@@ -143,11 +143,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
             initActionNavigationBar();
             exerciseListFragment.initListView();
         } else if (item.getItemId() == R.id.action_add_exercise) {
-            if (manageWorkout.getWorkout() == null) {
-                manageWorkout.createWorkout();
+            if (editWorkoutApplicationService.getWorkout() == null) {
+                editWorkoutApplicationService.createWorkout();
                 initActionNavigationBar();
             }
-            manageWorkout.createExercise();
+            editWorkoutApplicationService.createExercise();
             exerciseListFragment.initListView();
         } else if (item.getItemId() == R.id.action_share_workout) {
             displayQrCode();
@@ -177,7 +177,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private void initActionNavigationBar() {
         ActionBar actionBar = getActionBar();
         initializing = true;
-        workoutList = manageWorkout.getWorkoutList();
+        workoutList = editWorkoutApplicationService.getWorkoutList();
         SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, workoutList);
 
@@ -188,7 +188,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private void selectNavigationItem() {
         ActionBar actionBar = getActionBar();
         for (int i = 0; i < workoutList.size(); i++) {
-            if (workoutList.get(i).getWorkoutId().equals(manageWorkout.getWorkout().getWorkoutId())) {
+            if (workoutList.get(i).getWorkoutId().equals(editWorkoutApplicationService.getWorkout().getWorkoutId())) {
                 actionBar.setSelectedNavigationItem(i);
             }
         }
@@ -196,7 +196,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     private void switchWorkout(WorkoutId workoutId) {
         try {
-            manageWorkout.setWorkout(workoutId);
+            editWorkoutApplicationService.setWorkout(workoutId);
             exerciseListFragment.initListView();
         } catch (WorkoutNotFoundException wnfe) {
             Log.d("ManageWorkoutActivity", wnfe.getMessage(), wnfe);
@@ -211,7 +211,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                    manageWorkout.createWorkout();
+                    editWorkoutApplicationService.createWorkout();
                     initActionNavigationBar();
                     exerciseListFragment.initListView();
                 } else if (item == 1) {
@@ -226,7 +226,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
     private void createWorkoutFromJson(String jsonString) {
         try {
-            manageWorkout.createWorkoutFromJson(jsonString);
+            editWorkoutApplicationService.createWorkoutFromJson(jsonString);
             initActionNavigationBar();
             exerciseListFragment.initListView();
         } catch (WorkoutParseException wpe) {
@@ -239,12 +239,12 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     private void displayQrCode() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.addExtra("ENCODE_SHOW_CONTENTS", false);
-        integrator.shareText(workoutService.jsonFromWorkout(manageWorkout.getWorkout()));
+        integrator.shareText(workoutService.jsonFromWorkout(editWorkoutApplicationService.getWorkout()));
     }
 
     private void editWorkoutName() {
         FragmentManager fm = getSupportFragmentManager();
-        String name = manageWorkout.getWorkout().getName();
+        String name = editWorkoutApplicationService.getWorkout().getName();
         String hint = getResources().getString(R.string.new_workout_name);
         EditNameDialogFragment.newInstance(name, hint).show(fm, "fragment_edit_name");
     }
@@ -252,8 +252,8 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
     @Override
     public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment) {
         String name = editNameDialogFragment.getName();
-        if (!manageWorkout.getWorkout().getName().equals(name)) {
-            manageWorkout.changeName(name);
+        if (!editWorkoutApplicationService.getWorkout().getName().equals(name)) {
+            editWorkoutApplicationService.changeName(name);
             initActionNavigationBar();
         }
     }

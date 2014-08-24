@@ -1,4 +1,6 @@
 package de.avalax.fitbuddy.domain.model.set;
 
-public class SetNotAvailableException extends Exception {
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+
+public class SetNotAvailableException extends RessourceNotFoundException {
 }

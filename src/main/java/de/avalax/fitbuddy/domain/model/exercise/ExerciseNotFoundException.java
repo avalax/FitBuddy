@@ -1,4 +1,6 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
-public class ExerciseNotFoundException extends Exception {
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+
+public class ExerciseNotFoundException extends RessourceNotFoundException {
 }

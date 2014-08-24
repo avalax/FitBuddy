@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnPageChange;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
@@ -81,7 +82,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
                 menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise, exercise.indexOfCurrentSet()));
                 updateWorkoutProgress(index);
             }
-        } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("can't update page", e.getMessage(), e);
         }
     }
@@ -126,7 +127,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     protected void updateWorkoutProgress(int exerciseIndex) {
         try {
             workoutProggressBar.setProgress(workoutApplicationService.workoutProgress(exerciseIndex));
-        } catch (WorkoutNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("updateWorkoutProgress failed", e.getMessage(), e);
         }
     }

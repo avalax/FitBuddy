@@ -1,10 +1,9 @@
 package de.avalax.fitbuddy.application.workout;
 
-import android.util.Log;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
@@ -23,27 +22,24 @@ public class WorkoutApplicationService {
         return getWorkout().exerciseAtPosition(position);
     }
 
-    public void switchToSet(int position, int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+    public void switchToSet(int position, int moved) throws RessourceNotFoundException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void addRepsToSet(int position, int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+    public void addRepsToSet(int position, int moved) throws RessourceNotFoundException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         int currentSetIndex = exercise.indexOfCurrentSet();
-        try {
-            Set set = exercise.setAtPosition(currentSetIndex);
-            set.setReps(set.getReps() + moved);
-        } catch (SetNotAvailableException e) {
-            Log.d("can't update reps", e.getMessage(), e);
-        }
+        Set set = exercise.setAtPosition(currentSetIndex);
+        set.setReps(set.getReps() + moved);
+
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void setSelectedExerciseIndex(int index) throws WorkoutNotFoundException {
+    public void setSelectedExerciseIndex(int index) throws RessourceNotFoundException {
         getWorkout().setCurrentExercise(index);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
@@ -53,7 +49,7 @@ public class WorkoutApplicationService {
         return getWorkout().indexOfCurrentExercise();
     }
 
-    public int workoutProgress(int exerciseIndex) throws WorkoutNotFoundException {
+    public int workoutProgress(int exerciseIndex) throws RessourceNotFoundException {
         return calculateProgressbarHeight(getWorkout().getProgress(exerciseIndex));
     }
 

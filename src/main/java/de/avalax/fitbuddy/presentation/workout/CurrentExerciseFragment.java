@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
@@ -64,7 +65,7 @@ public class CurrentExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         changeReps(moved);
-                    } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
+                    } catch (RessourceNotFoundException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
@@ -75,7 +76,7 @@ public class CurrentExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         moveToSet(moved);
-                    } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
+                    } catch (RessourceNotFoundException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
@@ -87,13 +88,13 @@ public class CurrentExerciseFragment extends Fragment {
         }
     }
 
-    private void changeReps(int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+    private void changeReps(int moved) throws RessourceNotFoundException {
         workoutApplicationService.addRepsToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();
     }
 
-    private void moveToSet(int moved) throws WorkoutNotFoundException, ExerciseNotFoundException {
+    private void moveToSet(int moved) throws RessourceNotFoundException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();

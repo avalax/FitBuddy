@@ -7,7 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
-import de.avalax.fitbuddy.application.edit.workout.ManageWorkout;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
@@ -23,7 +24,7 @@ import javax.inject.Inject;
 public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
 
     @Inject
-    protected ManageWorkout manageWorkout;
+    protected EditWorkoutApplicationService editWorkoutApplicationService;
 
     private Exercise exercise;
 
@@ -55,19 +56,19 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_exercise) {
-            manageWorkout.deleteExercise(exercise, position);
+            editWorkoutApplicationService.deleteExercise(exercise, position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_save_exercise) {
-            manageWorkout.saveExercise(exercise, position);
+            editWorkoutApplicationService.saveExercise(exercise, position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise) {
-            manageWorkout.createExerciseBefore(position);
+            editWorkoutApplicationService.createExerciseBefore(position);
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_exercise_after) {
-            manageWorkout.createExerciseAfter(position);
+            editWorkoutApplicationService.createExerciseAfter(position);
             setResult(RESULT_OK);
             finish();
         }
@@ -92,15 +93,11 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     @Override
     public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment) {
         int newSetAmount = editSetsDialogFragment.getSets();
-        int maxReps = 0;
-        double weight = 0;
         try {
-            maxReps = exercise.countOfSets() == 0 ? 0 : exercise.setAtPosition(0).getMaxReps();
-            weight = exercise.countOfSets() == 0 ? 0 : exercise.setAtPosition(0).getWeight();
-        } catch (SetNotAvailableException e) {
-            Log.d("can't get first set", e.getMessage(), e);
+            editWorkoutApplicationService.changeSetAmount(exercise, newSetAmount);
+        } catch (RessourceNotFoundException e) {
+            Log.d("can't update set amount", e.getMessage(), e);
         }
-        manageWorkout.changeSetAmount(exercise, newSetAmount);
         editExerciseDialogFragment.init();
     }
 
