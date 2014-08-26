@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -46,16 +47,14 @@ public class VerticalProgressbarView extends FrameLayout {
         a.recycle();
     }
 
-    public void updateProgressbar(Exercise exercise) {
-        String currentValueText = exercise.countOfSets() > 0 ? String.valueOf(exercise.indexOfCurrentSet() + 1) : "0";
+    public void updateProgressbar(Exercise exercise) throws SetNotFoundException {
+        String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
         String maxValueText = String.valueOf(exercise.countOfSets());
         updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
 
     public void updateProgressbar(Set set) {
-        double currentValue = set.getReps();
-        int maxValue = set.getMaxReps();
-        updateProgressbar(currentValue / maxValue, String.valueOf(set.getReps()), String.valueOf(maxValue));
+        updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
     }
 
     private void updateProgressbar(double progress, String currentValueText, String maxValueText) {

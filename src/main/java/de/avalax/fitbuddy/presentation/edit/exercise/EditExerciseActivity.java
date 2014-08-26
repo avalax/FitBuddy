@@ -11,7 +11,7 @@ import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
@@ -83,7 +83,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             try {
                 Set set = exercise.setAtPosition(i);
                 set.setWeight(weight);
-            } catch (SetNotAvailableException e) {
+            } catch (SetNotFoundException e) {
                 Log.d("can't update weight", e.getMessage(), e);
             }
         }
@@ -109,7 +109,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             try {
                 Set set = exercise.setAtPosition(i);
                 set.setMaxReps(reps);
-            } catch (SetNotAvailableException e) {
+            } catch (SetNotFoundException e) {
                 Log.d("can't update max reps", e.getMessage(), e);
             }
         }

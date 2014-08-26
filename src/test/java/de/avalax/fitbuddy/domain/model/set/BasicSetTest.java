@@ -113,6 +113,30 @@ public class BasicSetTest {
     }
 
     @Test
+    public void getProgress_shouldReturnZeroProgress() throws Exception {
+        set.setMaxReps(100);
+        set.setReps(0);
+
+        assertThat(set.getProgress(), equalTo(0.0));
+    }
+
+    @Test
+         public void getProgress_shouldReturnFullProgress() throws Exception {
+        set.setMaxReps(100);
+        set.setReps(100);
+
+        assertThat(set.getProgress(), equalTo(1.0));
+    }
+
+    @Test
+    public void getProgress_shouldReturnHalfProgress() throws Exception {
+        set.setMaxReps(100);
+        set.setReps(50);
+
+        assertThat(set.getProgress(), equalTo(0.5));
+    }
+
+    @Test
     public void toString_shouldReturnSetInformationsFromConstruction() throws Exception {
         assertThat(set.toString(), equalTo("BasicSet [weight=0.0, maxReps=1]"));
     }
@@ -126,6 +150,6 @@ public class BasicSetTest {
         SetId setId = new SetId("42");
         set.setSetId(setId);
 
-        assertThat(set.toString(), equalTo("BasicSet [weight=" + weight + ", maxReps="+ maxReps +", setId=" + setId.toString() + "]"));
+        assertThat(set.toString(), equalTo("BasicSet [weight=" + weight + ", maxReps=" + maxReps + ", setId=" + setId.toString() + "]"));
     }
 }

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ public interface Workout extends Serializable {
 
     String getName();
 
-    double getProgress(int index);
+    double getProgress(int index) throws ExerciseNotFoundException, SetNotFoundException;
 
     Exercise createExercise();
 

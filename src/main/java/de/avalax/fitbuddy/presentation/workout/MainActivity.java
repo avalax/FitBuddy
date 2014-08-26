@@ -18,9 +18,6 @@ import butterknife.OnPageChange;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
@@ -59,7 +56,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
             viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
             viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
             updatePage(workoutApplicationService.indexOfCurrentExercise());
-        } catch (WorkoutNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("Can't update viewPager", e.getMessage(), e);
             startManageWorkoutActivity();
         }
@@ -105,7 +102,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
             try {
                 viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
                 updatePage(0);
-            } catch (WorkoutNotFoundException e) {
+            } catch (RessourceNotFoundException e) {
                 Log.d("workout not found", e.getMessage(), e);
             }
         }
@@ -119,7 +116,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
-        } catch (WorkoutNotFoundException | ExerciseNotFoundException | SetNotAvailableException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
         }
     }
@@ -140,7 +137,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             exercise.setAtPosition(indexOfCurrentSet).setWeight(editWeightDialogFragment.getWeight());
             updatePage(index);
-        } catch (WorkoutNotFoundException | ExerciseNotFoundException | SetNotAvailableException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
         }
     }

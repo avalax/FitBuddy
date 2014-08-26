@@ -6,7 +6,7 @@ import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
@@ -182,7 +182,7 @@ public class EditWorkoutApplicationService {
                 Set set = exercise.setAtPosition(indexOfCurrentSet);
                 weight = set.getWeight();
                 maxReps = set.getMaxReps();
-            } catch (SetNotAvailableException e) {
+            } catch (SetNotFoundException e) {
                 weight = 0;
                 maxReps = 0;
             }

@@ -39,6 +39,11 @@ public class BasicSet implements Set {
     }
 
     @Override
+    public double getProgress() {
+        return (double) reps / maxReps;
+    }
+
+    @Override
     public void setReps(int reps) {
         if (reps < 0) {
             this.reps = 0;

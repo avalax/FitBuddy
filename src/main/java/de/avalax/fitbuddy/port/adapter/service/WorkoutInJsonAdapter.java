@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class WorkoutInJsonAdapter {
             try {
                 Set set = exercise.setAtPosition(i);
                 sets.add(fromSet(set));
-            } catch (SetNotAvailableException e) {
+            } catch (SetNotFoundException e) {
                 Log.d("can't export set", e.getMessage(), e);
             }
         }

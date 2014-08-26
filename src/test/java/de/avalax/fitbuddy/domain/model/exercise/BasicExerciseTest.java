@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 
 
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,7 +166,7 @@ public class BasicExerciseTest {
             assertThat(exercise.indexOfCurrentSet(), equalTo(exercise.countOfSets() - 1));
         }
 
-        @Test(expected = SetNotAvailableException.class)
+        @Test(expected = SetNotFoundException.class)
         public void setAtPosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
             exercise.setAtPosition(0);
         }

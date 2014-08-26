@@ -11,9 +11,7 @@ import butterknife.InjectView;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
@@ -83,7 +81,7 @@ public class CurrentExerciseFragment extends Fragment {
             });
 
             setViews();
-        } catch (WorkoutNotFoundException | ExerciseNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
     }
@@ -101,15 +99,11 @@ public class CurrentExerciseFragment extends Fragment {
         updatePage();
     }
 
-    private void setViews() throws WorkoutNotFoundException, ExerciseNotFoundException {
+    private void setViews() throws RessourceNotFoundException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-        //TODO: move to service
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        try {
-            repsProgressBar.updateProgressbar(exercise.setAtPosition(indexOfCurrentSet));
-        } catch (SetNotAvailableException e) {
-            Log.d("Can't update set", e.getMessage(), e);
-        }
+        Set set = exercise.setAtPosition(indexOfCurrentSet);
+        repsProgressBar.updateProgressbar(set);
         setsProgressBar.updateProgressbar(exercise);
     }
 

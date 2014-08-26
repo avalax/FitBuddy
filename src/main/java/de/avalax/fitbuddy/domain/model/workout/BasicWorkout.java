@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,8 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public double getProgress(int index) {
-        Exercise exercise = exercises.get(index);
+    public double getProgress(int index) throws ExerciseNotFoundException, SetNotFoundException {
+        Exercise exercise = exerciseAtPosition(index);
         return (index + exercise.getProgress()) / exercises.size();
     }
 

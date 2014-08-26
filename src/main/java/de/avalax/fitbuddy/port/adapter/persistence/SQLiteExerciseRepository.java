@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.*;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
@@ -85,7 +85,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             try {
                 Set set = exercise.setAtPosition(i);
                 setRepository.save(exercise.getExerciseId(), set);
-            } catch (SetNotAvailableException e) {
+            } catch (SetNotFoundException e) {
                 Log.d("Cant' save set", e.getMessage(), e);
             }
         }

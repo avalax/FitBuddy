@@ -1,9 +1,8 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
-import android.util.Log;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +36,9 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public Set setAtPosition(int position) throws SetNotAvailableException {
+    public Set setAtPosition(int position) throws SetNotFoundException {
         if (isIndexGreaterEqualThan(position)) {
-            throw new SetNotAvailableException();
+            throw new SetNotFoundException();
         }
         return sets.get(position);
     }
@@ -59,21 +58,14 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public double getProgress() {
+    public double getProgress() throws SetNotFoundException {
         if (sets.isEmpty()) {
             return 0;
         }
-        try {
-            //TODO: add getProgress to Set
-            int reps = setAtPosition(setIndex).getReps();
-            double maxReps = setAtPosition(setIndex).getMaxReps();
-            double repsProgress = reps / maxReps / sets.size();
-            double setsProgress = (setIndex) / (double) sets.size();
-            return setsProgress + repsProgress;
-        } catch (SetNotAvailableException e) {
-            Log.d("no sets available", e.getMessage(), e);
-            return 0;
-        }
+        Set set = setAtPosition(setIndex);
+        double repsProgress = set.getProgress() / sets.size();
+        double setsProgress = (setIndex) / (double) sets.size();
+        return setsProgress + repsProgress;
     }
 
     @Override
@@ -143,5 +135,4 @@ public class BasicExercise implements Exercise {
         }
         return "BasicExercise [name=" + name + ", exerciseId=" + exerciseId.toString() + "]";
     }
-
 }

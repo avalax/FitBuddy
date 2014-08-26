@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.SetNotAvailableException;
+import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
@@ -87,7 +87,7 @@ public class EditExerciseDialogFragment extends Fragment {
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
-        } catch (SetNotAvailableException e) {
+        } catch (SetNotFoundException e) {
             Log.d("can't edit weight without a set", e.getMessage(), e);
         }
     }
@@ -106,7 +106,7 @@ public class EditExerciseDialogFragment extends Fragment {
         try {
             int reps = exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
             EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
-        } catch (SetNotAvailableException e) {
+        } catch (SetNotFoundException e) {
             Log.d("can't change reps", e.getMessage(), e);
         }
     }

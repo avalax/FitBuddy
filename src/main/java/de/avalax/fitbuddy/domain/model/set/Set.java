@@ -19,4 +19,6 @@ public interface Set extends Serializable {
     SetId getSetId();
 
     void setSetId(SetId setId);
+
+    double getProgress();
 }

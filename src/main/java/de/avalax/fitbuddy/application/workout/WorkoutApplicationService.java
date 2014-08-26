@@ -14,7 +14,7 @@ public class WorkoutApplicationService {
         this.workoutSession = workoutSession;
     }
 
-    public int countOfCurrentExercises() throws WorkoutNotFoundException {
+    public int countOfCurrentExercises() throws RessourceNotFoundException {
         return getWorkout().countOfExercises();
     }
 
