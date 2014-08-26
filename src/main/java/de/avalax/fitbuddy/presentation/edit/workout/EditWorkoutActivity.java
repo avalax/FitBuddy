@@ -22,6 +22,7 @@ import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
@@ -30,7 +31,7 @@ import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import javax.inject.Inject;
 import java.util.List;
 
-public class ManageWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditNameDialogFragment.DialogListener {
+public class EditWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditNameDialogFragment.DialogListener {
 
     public static final int EDIT_EXERCISE = 2;
     private static final String WORKOUT_POSITION = "WORKOUT_POSITION";
@@ -65,11 +66,11 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
 
         try {
             if (workoutId == null) {
-                workoutId = workoutApplicationService.getWorkout().getWorkoutId();
+                workoutId = workoutApplicationService.currentWorkoutId();
             }
             editWorkoutApplicationService.setWorkout(workoutId);
-        } catch (WorkoutNotFoundException wnfe) {
-            Log.d("create a new workout", wnfe.getMessage(), wnfe);
+        } catch (RessourceNotFoundException e) {
+            Log.d("create a new workout", e.getMessage(), e);
             editWorkoutApplicationService.createWorkout();
         }
         exerciseListFragment = new ExerciseListFragment();
@@ -215,7 +216,7 @@ public class ManageWorkoutActivity extends FragmentActivity implements ActionBar
                     initActionNavigationBar();
                     exerciseListFragment.initListView();
                 } else if (item == 1) {
-                    IntentIntegrator integrator = new IntentIntegrator(ManageWorkoutActivity.this);
+                    IntentIntegrator integrator = new IntentIntegrator(EditWorkoutActivity.this);
                     integrator.initiateScan();
                 }
             }

@@ -21,20 +21,20 @@ import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseDialogFragment;
+import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
-import de.avalax.fitbuddy.presentation.edit.workout.ManageWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
-import de.avalax.fitbuddy.presentation.workout.CurrentExerciseFragment;
-import de.avalax.fitbuddy.presentation.workout.MainActivity;
+import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
+import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 
 import javax.inject.Singleton;
 import java.util.Locale;
 
 @Module(injects = {
-        MainActivity.class,
-        ManageWorkoutActivity.class,
-        CurrentExerciseFragment.class,
+        WorkoutActivity.class,
+        EditWorkoutActivity.class,
+        ExerciseFragment.class,
         ExerciseListFragment.class,
         EditExerciseActivity.class,
         ExerciseAdapter.class,

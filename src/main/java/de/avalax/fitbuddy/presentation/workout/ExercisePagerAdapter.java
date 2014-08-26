@@ -4,18 +4,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class MainPagerAdapter extends FragmentStatePagerAdapter {
+public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     private final int count;
 
-    public MainPagerAdapter(FragmentManager fm, int count) {
+    public ExercisePagerAdapter(FragmentManager fm, int count) {
         super(fm);
         this.count = count;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return CurrentExerciseFragment.newInstance(position);
+        return ExerciseFragment.newInstance(position);
     }
 
     @Override

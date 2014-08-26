@@ -47,19 +47,21 @@ public class VerticalProgressbarView extends FrameLayout {
         a.recycle();
     }
 
+    @Deprecated
     public void updateProgressbar(Exercise exercise) throws SetNotFoundException {
         String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
         String maxValueText = String.valueOf(exercise.countOfSets());
         updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
 
+    @Deprecated
     public void updateProgressbar(Set set) {
         updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
     }
 
-    private void updateProgressbar(double progress, String currentValueText, String maxValueText) {
-        valueTextView.setText(currentValueText);
-        maxValueTextView.setText(maxValueText);
+    public void updateProgressbar(double progress, String currentValue, String maxValue) {
+        valueTextView.setText(currentValue);
+        maxValueTextView.setText(maxValue);
         imageView.setImageLevel(calculateProgressbarHeight(progress, 1));
         postInvalidate();
     }

@@ -111,7 +111,7 @@ public class ExerciseListFragment extends ListFragment {
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
             intent.putExtra("exercise", exercise);
             intent.putExtra("position", position);
-            getActivity().startActivityForResult(intent, ManageWorkoutActivity.EDIT_EXERCISE);
+            getActivity().startActivityForResult(intent, EditWorkoutActivity.EDIT_EXERCISE);
         } catch (ExerciseNotFoundException e) {
             Log.d("Can't edit exercise", e.getMessage(), e);
         }

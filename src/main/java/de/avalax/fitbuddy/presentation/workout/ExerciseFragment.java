@@ -20,7 +20,7 @@ import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
 
 import javax.inject.Inject;
 
-public class CurrentExerciseFragment extends Fragment {
+public class ExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     @InjectView(R.id.leftProgressBar)
@@ -33,8 +33,8 @@ public class CurrentExerciseFragment extends Fragment {
     ExerciseViewHelper exerciseViewHelper;
     private int exerciseIndex;
 
-    public static CurrentExerciseFragment newInstance(int exerciseIndex) {
-        CurrentExerciseFragment fragment = new CurrentExerciseFragment();
+    public static ExerciseFragment newInstance(int exerciseIndex) {
+        ExerciseFragment fragment = new ExerciseFragment();
         Bundle args = new Bundle();
         args.putInt(ARGS_EXERCISE_INDEX, exerciseIndex);
         fragment.setArguments(args);
@@ -103,15 +103,16 @@ public class CurrentExerciseFragment extends Fragment {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
+        //TODO: use the generic updateProgressbar
         repsProgressBar.updateProgressbar(set);
         setsProgressBar.updateProgressbar(exercise);
     }
 
     private void updateWorkoutProgress() {
-        ((MainActivity) getActivity()).updateWorkoutProgress(exerciseIndex);
+        ((WorkoutActivity) getActivity()).updateWorkoutProgress(exerciseIndex);
     }
 
     private void updatePage() {
-        ((MainActivity) getActivity()).updatePage(exerciseIndex);
+        ((WorkoutActivity) getActivity()).updatePage(exerciseIndex);
     }
 }

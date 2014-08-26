@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
 public class WorkoutApplicationService {
@@ -45,8 +46,26 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
+    public void updateWeightOfCurrentSet(int index, double weight) throws RessourceNotFoundException {
+        Exercise exercise = requestExercise(index);
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
+        exercise.setAtPosition(indexOfCurrentSet).setWeight(weight);
+        //TODO only save by android lifecycle
+        workoutSession.saveCurrentWorkout();
+    }
+
+    public double weightOfCurrentSet(int index) throws RessourceNotFoundException{
+        Exercise exercise = requestExercise(index);
+        int indexOfCurrentSet = exercise.indexOfCurrentSet();
+        return exercise.setAtPosition(indexOfCurrentSet).getWeight();
+    }
+
     public int indexOfCurrentExercise() throws WorkoutNotFoundException {
         return getWorkout().indexOfCurrentExercise();
+    }
+
+    public WorkoutId currentWorkoutId() throws RessourceNotFoundException {
+        return workoutSession.getWorkout().getWorkoutId();
     }
 
     public int workoutProgress(int exerciseIndex) throws RessourceNotFoundException {
@@ -57,7 +76,7 @@ public class WorkoutApplicationService {
         return (int) Math.round(progess * 100);
     }
 
-    public Workout getWorkout() throws WorkoutNotFoundException {
+    private Workout getWorkout() throws WorkoutNotFoundException {
         return workoutSession.getWorkout();
     }
 }

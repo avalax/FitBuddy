@@ -21,12 +21,12 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
-import de.avalax.fitbuddy.presentation.edit.workout.ManageWorkoutActivity;
+import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 import javax.inject.Inject;
 
-public class MainActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
+public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int MANAGE_WORKOUT = 1;
     @InjectView(R.id.pager)
     protected ViewPager viewPager;
@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         inflater.inflate(R.menu.activity_main_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
         try {
-            viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
+            viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
             viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
             updatePage(workoutApplicationService.indexOfCurrentExercise());
         } catch (RessourceNotFoundException e) {
@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == MANAGE_WORKOUT && resultCode == Activity.RESULT_OK) {
             try {
-                viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
+                viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
                 updatePage(0);
             } catch (RessourceNotFoundException e) {
                 Log.d("workout not found", e.getMessage(), e);
@@ -112,9 +112,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
         FragmentManager fm = getSupportFragmentManager();
         try {
             int index = workoutApplicationService.indexOfCurrentExercise();
-            Exercise exercise = workoutApplicationService.requestExercise(index);
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
+            double weight = workoutApplicationService.weightOfCurrentSet(index);
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
         } catch (RessourceNotFoundException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
@@ -133,9 +131,8 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         try {
             int index = workoutApplicationService.indexOfCurrentExercise();
-            Exercise exercise = workoutApplicationService.requestExercise(index);
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            exercise.setAtPosition(indexOfCurrentSet).setWeight(editWeightDialogFragment.getWeight());
+            double weight = editWeightDialogFragment.getWeight();
+            workoutApplicationService.updateWeightOfCurrentSet(index, weight);
             updatePage(index);
         } catch (RessourceNotFoundException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
@@ -143,7 +140,7 @@ public class MainActivity extends FragmentActivity implements EditWeightDialogFr
     }
 
     private void startManageWorkoutActivity() {
-        Intent intent = new Intent(this, ManageWorkoutActivity.class);
+        Intent intent = new Intent(this, EditWorkoutActivity.class);
         startActivityForResult(intent, MANAGE_WORKOUT);
     }
 }
