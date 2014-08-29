@@ -38,6 +38,16 @@ public class WorkoutApplicationServiceTest {
         public void currentWorkoutId_shouldThrowRessourceNotFoundExeption() throws Exception {
             workoutApplicationService.currentWorkoutId();
         }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void indexOfCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.indexOfCurrentExercise();
+        }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void countOfExercises_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.countOfExercises();
+        }
     }
 
     public class aWorkoutGiven {
@@ -57,6 +67,27 @@ public class WorkoutApplicationServiceTest {
             WorkoutId currentWorkoutId = workoutApplicationService.currentWorkoutId();
 
             assertThat(currentWorkoutId, equalTo(workoutId));
+        }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void indexOfCurrentExerciseWithNoExercises_shouldReturnCurrentIndex() throws Exception {
+            workoutApplicationService.indexOfCurrentExercise();
+        }
+
+        @Test
+        public void indexOfCurrentExercise_shouldReturnIndexOf0() throws Exception {
+            workout.createExercise();
+            int indexOfCurrentExercise = workoutApplicationService.indexOfCurrentExercise();
+
+            assertThat(indexOfCurrentExercise,equalTo(0));
+        }
+
+        public void countOfExercises_shouldReturnCountOfExercies() throws Exception {
+            workout.createExercise();
+
+            int countOfExercises = workoutApplicationService.countOfExercises();
+
+            assertThat(countOfExercises,equalTo(1));
         }
     }
 }

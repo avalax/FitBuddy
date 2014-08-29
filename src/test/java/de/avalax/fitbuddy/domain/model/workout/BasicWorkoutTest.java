@@ -4,6 +4,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
@@ -94,9 +95,15 @@ public class BasicWorkoutTest {
         assertThat(workout.getName(), equalTo("newName"));
     }
 
+    @Test(expected = ExerciseNotFoundException.class)
+    public void indexOfCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
+        workout.indexOfCurrentExercise();
+    }
+
     @Test
-    public void set_shouldSet() throws Exception {
-        int index = 42;
+    public void setCurrentExercise_shouldReturnIndexOfCurrentExercise() throws Exception {
+        workout.createExercise();
+        int index = 0;
 
         workout.setCurrentExercise(index);
 

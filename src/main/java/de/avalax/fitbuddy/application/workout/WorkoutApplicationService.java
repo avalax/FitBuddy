@@ -15,7 +15,7 @@ public class WorkoutApplicationService {
         this.workoutSession = workoutSession;
     }
 
-    public int countOfCurrentExercises() throws RessourceNotFoundException {
+    public int countOfExercises() throws RessourceNotFoundException {
         return getWorkout().countOfExercises();
     }
 
@@ -60,7 +60,7 @@ public class WorkoutApplicationService {
         return exercise.setAtPosition(indexOfCurrentSet).getWeight();
     }
 
-    public int indexOfCurrentExercise() throws WorkoutNotFoundException {
+    public int indexOfCurrentExercise() throws RessourceNotFoundException {
         return getWorkout().indexOfCurrentExercise();
     }
 

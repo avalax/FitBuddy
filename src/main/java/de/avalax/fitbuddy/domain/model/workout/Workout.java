@@ -31,7 +31,7 @@ public interface Workout extends Serializable {
 
     void setCurrentExercise(int index);
 
-    int indexOfCurrentExercise();
+    int indexOfCurrentExercise() throws ExerciseNotFoundException;
 
     int countOfExercises();
 }

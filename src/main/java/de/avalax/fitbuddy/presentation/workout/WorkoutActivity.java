@@ -53,7 +53,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         inflater.inflate(R.menu.activity_main_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
         try {
-            viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
+            viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
             viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
             updatePage(workoutApplicationService.indexOfCurrentExercise());
         } catch (RessourceNotFoundException e) {
@@ -100,7 +100,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == MANAGE_WORKOUT && resultCode == Activity.RESULT_OK) {
             try {
-                viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfCurrentExercises()));
+                viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
                 updatePage(0);
             } catch (RessourceNotFoundException e) {
                 Log.d("workout not found", e.getMessage(), e);
