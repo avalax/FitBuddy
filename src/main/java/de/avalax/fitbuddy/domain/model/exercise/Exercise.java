@@ -8,11 +8,11 @@ import java.io.Serializable;
 public interface Exercise extends Serializable {
     String getName();
 
-    int indexOfCurrentSet();
+    int indexOfCurrentSet() throws SetNotFoundException;
 
     double getProgress() throws SetNotFoundException;
 
-    void setCurrentSet(int index);
+    void setCurrentSet(int index) throws SetNotFoundException;
 
     Set setAtPosition(int index) throws SetNotFoundException;
 

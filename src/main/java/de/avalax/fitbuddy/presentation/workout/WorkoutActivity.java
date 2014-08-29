@@ -72,7 +72,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     @OnPageChange(R.id.pager)
     protected void updatePage(int index) {
         try {
-            workoutApplicationService.setSelectedExerciseIndex(index);
+            workoutApplicationService.setCurrentExercise(index);
             Exercise exercise = workoutApplicationService.requestExercise(index);
             setTitle(exerciseViewHelper.nameOfExercise(exercise));
             if (menuItem != null) {

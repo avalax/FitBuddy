@@ -96,7 +96,10 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setCurrentExercise(int index) {
+    public void setCurrentExercise(int index) throws ExerciseNotFoundException {
+        if (exercises.size() <= index || index < 0) {
+            throw new ExerciseNotFoundException();
+        }
         exerciseIndex = index;
     }
 

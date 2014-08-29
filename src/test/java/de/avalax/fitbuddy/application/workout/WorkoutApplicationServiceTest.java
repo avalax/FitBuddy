@@ -60,6 +60,11 @@ public class WorkoutApplicationServiceTest {
         public void workoutProgress_shouldThrowRessourceNotFoundExeption() throws Exception {
             workoutApplicationService.workoutProgress(0);
         }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void setCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.setCurrentExercise(0);
+        }
     }
 
     public class aWorkoutGiven {
@@ -125,6 +130,21 @@ public class WorkoutApplicationServiceTest {
             int progress = workoutApplicationService.workoutProgress(0);
 
             assertThat(progress,equalTo(100));
+        }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void setCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.setCurrentExercise(0);
+        }
+
+        @Test
+        public void setCurrentExercise_shouldSetCurrentExercise() throws Exception {
+            workout.createExercise();
+            workout.createExercise();
+
+            workoutApplicationService.setCurrentExercise(1);
+
+            assertThat(workoutApplicationService.indexOfCurrentExercise(),equalTo(1));
         }
     }
 }

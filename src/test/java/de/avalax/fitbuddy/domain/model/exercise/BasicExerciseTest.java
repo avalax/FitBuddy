@@ -143,13 +143,18 @@ public class BasicExerciseTest {
             assertThat(setAtPosition, equalTo(set));
         }
 
-        @Test
-        public void setCurrentSetWithoutSets_shouldDoNothing() throws Exception {
+        @Test(expected = SetNotFoundException.class)
+        public void setCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
             exercise.setCurrentSet(1);
         }
 
-        @Test
-        public void setSetNumber_shouldSetSetNumberToZero() throws Exception {
+        @Test(expected = SetNotFoundException.class)
+        public void indexOFCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
+            exercise.indexOfCurrentSet();
+        }
+
+        @Test(expected = SetNotFoundException.class)
+        public void setCurrentSetToNegativIndex_shouldThrowSetNotFoundException() throws Exception {
             exercise.createSet();
 
             exercise.setCurrentSet(-1);
@@ -157,13 +162,11 @@ public class BasicExerciseTest {
             assertThat(exercise.indexOfCurrentSet(), equalTo(0));
         }
 
-        @Test
-        public void setCurrentSet_ShouldSetToLastSetWhenSizeExceeded() throws Exception {
+        @Test(expected = SetNotFoundException.class)
+        public void setCurrentSet_shouldThrowSetNotFoundException() throws Exception {
             exercise.createSet();
 
             exercise.setCurrentSet(exercise.countOfSets() + 1);
-
-            assertThat(exercise.indexOfCurrentSet(), equalTo(exercise.countOfSets() - 1));
         }
 
         @Test(expected = SetNotFoundException.class)

@@ -100,14 +100,23 @@ public class BasicWorkoutTest {
         workout.indexOfCurrentExercise();
     }
 
+    @Test(expected = ExerciseNotFoundException.class)
+    public void setCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
+        workout.setCurrentExercise(0);
+    }
+
+    @Test(expected = ExerciseNotFoundException.class)
+    public void setCurrentExerciseToNegativ_shouldThrowExerciseNotFoundException() throws Exception {
+        workout.setCurrentExercise(-1);
+    }
+
     @Test
     public void setCurrentExercise_shouldReturnIndexOfCurrentExercise() throws Exception {
         workout.createExercise();
-        int index = 0;
 
-        workout.setCurrentExercise(index);
+        workout.setCurrentExercise(0);
 
-        assertThat(workout.indexOfCurrentExercise(), equalTo(index));
+        assertThat(workout.indexOfCurrentExercise(), equalTo(0));
     }
 
     @Test

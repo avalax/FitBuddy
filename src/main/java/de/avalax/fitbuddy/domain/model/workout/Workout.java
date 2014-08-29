@@ -29,7 +29,7 @@ public interface Workout extends Serializable {
 
     Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException;
 
-    void setCurrentExercise(int index);
+    void setCurrentExercise(int index) throws ExerciseNotFoundException;
 
     int indexOfCurrentExercise() throws ExerciseNotFoundException;
 

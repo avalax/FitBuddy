@@ -63,11 +63,15 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     protected void init() {
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
-        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise, indexOfCurrentSet));
-        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)));
-        exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
+        try {
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
+            exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
+            exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise, indexOfCurrentSet));
+            exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)));
+            exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
+        } catch (SetNotFoundException e) {
+            Log.d("can't set set informations without a set", e.getMessage(), e);
+        }
     }
 
 
@@ -82,8 +86,8 @@ public class EditExerciseDialogFragment extends Fragment {
 
     @OnClick(R.id.exerciseWeight)
     protected void changeWeight() {
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
         try {
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
@@ -101,9 +105,9 @@ public class EditExerciseDialogFragment extends Fragment {
 
     @OnClick(R.id.exerciseReps)
     protected void changeReps() {
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         try {
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
             int reps = exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
             EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
         } catch (SetNotFoundException e) {

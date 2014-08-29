@@ -175,10 +175,10 @@ public class EditWorkoutApplicationService {
                 setRepository.delete(set.getSetId());
             }
         } else {
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
             double weight;
             int maxReps;
             try {
+                int indexOfCurrentSet = exercise.indexOfCurrentSet();
                 Set set = exercise.setAtPosition(indexOfCurrentSet);
                 weight = set.getWeight();
                 maxReps = set.getMaxReps();

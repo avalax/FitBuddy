@@ -40,7 +40,7 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
-    public void setSelectedExerciseIndex(int index) throws RessourceNotFoundException {
+    public void setCurrentExercise(int index) throws RessourceNotFoundException {
         getWorkout().setCurrentExercise(index);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();

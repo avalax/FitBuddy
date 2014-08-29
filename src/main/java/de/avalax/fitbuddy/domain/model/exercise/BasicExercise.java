@@ -31,7 +31,10 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public int indexOfCurrentSet() {
+    public int indexOfCurrentSet() throws SetNotFoundException {
+        if (sets.isEmpty()) {
+            throw new SetNotFoundException();
+        }
         return setIndex;
     }
 
@@ -44,17 +47,11 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public void setCurrentSet(int index) {
-        if (sets.isEmpty()) {
-            return;
+    public void setCurrentSet(int index) throws SetNotFoundException {
+        if (sets.size() <= index || index < 0) {
+            throw new SetNotFoundException();
         }
-        if (isIndexGreaterEqualThan(index)) {
-            this.setIndex = sets.size() - 1;
-        } else if (isIndexNegative(index)) {
-            this.setIndex = 0;
-        } else {
-            this.setIndex = index;
-        }
+        this.setIndex = index;
     }
 
     @Override
