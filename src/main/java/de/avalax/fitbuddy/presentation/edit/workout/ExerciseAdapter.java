@@ -29,18 +29,18 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ExericseViewHolder holder;
+        ExerciseViewHolder holder;
         if (convertView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = vi.inflate(R.layout.item_exercise, null);
-            holder = new ExericseViewHolder();
+            holder = new ExerciseViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.toptext);
             holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);
             holder.reps = (TextView) convertView.findViewById(R.id.repsTextView);
             holder.sets = (TextView) convertView.findViewById(R.id.setsTextView);
             convertView.setTag(holder);
         } else {
-            holder = (ExericseViewHolder) convertView.getTag();
+            holder = (ExerciseViewHolder) convertView.getTag();
         }
 
         holder.setFromExericse(exercises.get(position));
@@ -48,7 +48,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         return convertView;
     }
 
-    private class ExericseViewHolder {
+    private class ExerciseViewHolder {
         public TextView name;
         public TextView weight;
         public TextView sets;
