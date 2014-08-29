@@ -174,6 +174,11 @@ public class BasicExerciseTest {
             exercise.setAtPosition(0);
         }
 
+        @Test(expected = SetNotFoundException.class)
+        public void setAtNegativePosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
+            exercise.setAtPosition(-1);
+        }
+
         public class givenAnExerciseProgress {
             @Test
             public void withoutSets_shouldHaveZeroProgress() throws Exception {

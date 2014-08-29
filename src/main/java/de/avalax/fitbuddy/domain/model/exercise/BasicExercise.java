@@ -40,18 +40,18 @@ public class BasicExercise implements Exercise {
 
     @Override
     public Set setAtPosition(int position) throws SetNotFoundException {
-        if (isIndexGreaterEqualThan(position)) {
+        if (sets.size() <= position || position < 0) {
             throw new SetNotFoundException();
         }
         return sets.get(position);
     }
 
     @Override
-    public void setCurrentSet(int index) throws SetNotFoundException {
-        if (sets.size() <= index || index < 0) {
+    public void setCurrentSet(int position) throws SetNotFoundException {
+        if (sets.size() <= position || position < 0) {
             throw new SetNotFoundException();
         }
-        this.setIndex = index;
+        this.setIndex = position;
     }
 
     @Override
@@ -99,14 +99,6 @@ public class BasicExercise implements Exercise {
     @Override
     public void removeSet(Set set) {
         sets.remove(set);
-    }
-
-    private boolean isIndexGreaterEqualThan(int index) {
-        return index >= sets.size();
-    }
-
-    private boolean isIndexNegative(int index) {
-        return index < 0;
     }
 
     @Override

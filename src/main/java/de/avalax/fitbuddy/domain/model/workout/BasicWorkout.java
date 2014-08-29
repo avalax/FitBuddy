@@ -50,9 +50,9 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public double getProgress(int index) throws ExerciseNotFoundException, SetNotFoundException {
-        Exercise exercise = exerciseAtPosition(index);
-        return (index + exercise.getProgress()) / exercises.size();
+    public double getProgress(int position) throws ExerciseNotFoundException, SetNotFoundException {
+        Exercise exercise = exerciseAtPosition(position);
+        return (position + exercise.getProgress()) / exercises.size();
     }
 
     @Override
@@ -69,11 +69,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException {
-        if (exercises.size() <= index) {
+    public Exercise exerciseAtPosition(int position) throws ExerciseNotFoundException {
+        if (exercises.size() <= position || position < 0) {
             throw new ExerciseNotFoundException();
         }
-        return exercises.get(index);
+        return exercises.get(position);
     }
 
     @Override
@@ -84,23 +84,23 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise createExercise(int index) {
+    public Exercise createExercise(int position) {
         Exercise exercise = new BasicExercise();
-        exercises.add(index, exercise);
+        exercises.add(position, exercise);
         return exercise;
     }
 
     @Override
-    public void addExercise(int index, Exercise exercise) {
-        exercises.add(index, exercise);
+    public void addExercise(int position, Exercise exercise) {
+        exercises.add(position, exercise);
     }
 
     @Override
-    public void setCurrentExercise(int index) throws ExerciseNotFoundException {
-        if (exercises.size() <= index || index < 0) {
+    public void setCurrentExercise(int position) throws ExerciseNotFoundException {
+        if (exercises.size() <= position || position < 0) {
             throw new ExerciseNotFoundException();
         }
-        exerciseIndex = index;
+        exerciseIndex = position;
     }
 
     @Override

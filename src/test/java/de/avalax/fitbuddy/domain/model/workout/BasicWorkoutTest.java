@@ -141,6 +141,11 @@ public class BasicWorkoutTest {
             workout.exerciseAtPosition(0);
         }
 
+        @Test(expected = ExerciseNotFoundException.class)
+        public void exerciseAtNegativePosition_shouldThrowExerciseNotFoundException() throws Exception {
+            workout.exerciseAtPosition(-1);
+        }
+
         @Test
         public void createExercise_shouldAddExerciseToWorkout() throws Exception {
             Exercise exercise = workout.createExercise();
