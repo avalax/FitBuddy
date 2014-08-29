@@ -69,10 +69,10 @@ public class WorkoutApplicationService {
     }
 
     public int workoutProgress(int exerciseIndex) throws RessourceNotFoundException {
-        return calculateProgressbarHeight(getWorkout().getProgress(exerciseIndex));
+        return progressInPercent(getWorkout().getProgress(exerciseIndex));
     }
 
-    private int calculateProgressbarHeight(double progess) {
+    private int progressInPercent(double progess) {
         return (int) Math.round(progess * 100);
     }
 

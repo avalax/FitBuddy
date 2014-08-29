@@ -70,6 +70,9 @@ public class BasicWorkout implements Workout {
 
     @Override
     public Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException {
+        if (exercises.size() <= index) {
+            throw new ExerciseNotFoundException();
+        }
         return exercises.get(index);
     }
 

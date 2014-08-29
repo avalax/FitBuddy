@@ -123,8 +123,13 @@ public class BasicWorkoutTest {
 
     public class givenAWorkoutForExerciseManipulation {
         @Test
-        public void getExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
+        public void countOfExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
             assertThat(workout.countOfExercises(), equalTo(0));
+        }
+
+        @Test(expected = ExerciseNotFoundException.class)
+        public void exerciseAtPosition_shouldThrowExerciseNotFoundException() throws Exception {
+            workout.exerciseAtPosition(0);
         }
 
         @Test

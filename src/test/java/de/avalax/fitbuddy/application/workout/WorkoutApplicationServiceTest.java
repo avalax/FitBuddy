@@ -1,6 +1,8 @@
 package de.avalax.fitbuddy.application.workout;
 
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -48,6 +50,16 @@ public class WorkoutApplicationServiceTest {
         public void countOfExercises_shouldThrowRessourceNotFoundExeption() throws Exception {
             workoutApplicationService.countOfExercises();
         }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void requestExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.requestExercise(0);
+        }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void workoutProgress_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.workoutProgress(0);
+        }
     }
 
     public class aWorkoutGiven {
@@ -82,12 +94,37 @@ public class WorkoutApplicationServiceTest {
             assertThat(indexOfCurrentExercise,equalTo(0));
         }
 
+        @Test
         public void countOfExercises_shouldReturnCountOfExercies() throws Exception {
             workout.createExercise();
 
             int countOfExercises = workoutApplicationService.countOfExercises();
 
             assertThat(countOfExercises,equalTo(1));
+        }
+
+        @Test
+        public void requestExercise_shouldReturnExercise() throws Exception {
+            Exercise expectedExercise = workout.createExercise();
+            Exercise exercise = workoutApplicationService.requestExercise(0);
+
+            assertThat(exercise,equalTo(expectedExercise));
+        }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void workoutProgress_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.workoutProgress(0);
+        }
+
+        @Test
+        public void workoutProgress_shouldReturnProgressOfWorkout() throws Exception {
+            Exercise exercise = workout.createExercise();
+            Set set = exercise.createSet();
+            set.setMaxReps(50);
+            set.setReps(50);
+            int progress = workoutApplicationService.workoutProgress(0);
+
+            assertThat(progress,equalTo(100));
         }
     }
 }
