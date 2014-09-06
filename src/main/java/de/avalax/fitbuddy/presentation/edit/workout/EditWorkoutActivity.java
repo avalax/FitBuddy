@@ -29,6 +29,7 @@ import de.avalax.fitbuddy.presentation.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 public class EditWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditNameDialogFragment.DialogListener {
@@ -119,7 +120,11 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_workout) {
-            editWorkoutApplicationService.switchWorkout();
+            try {
+                editWorkoutApplicationService.switchWorkout();
+            } catch (IOException e) {
+                Log.d("Can't switch workout", e.getMessage(), e);
+            }
             setResult(RESULT_OK);
             finish();
         } else if (item.getItemId() == R.id.action_add_workout) {

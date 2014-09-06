@@ -8,6 +8,8 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
+import java.io.IOException;
+
 public class WorkoutApplicationService {
     private WorkoutSession workoutSession;
 
@@ -23,14 +25,14 @@ public class WorkoutApplicationService {
         return getWorkout().exerciseAtPosition(position);
     }
 
-    public void switchToSet(int position, int moved) throws RessourceNotFoundException {
+    public void switchToSet(int position, int moved) throws RessourceNotFoundException, IOException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void addRepsToSet(int position, int moved) throws RessourceNotFoundException {
+    public void addRepsToSet(int position, int moved) throws RessourceNotFoundException, IOException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         int currentSetIndex = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(currentSetIndex);
@@ -40,13 +42,13 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
-    public void setCurrentExercise(int index) throws RessourceNotFoundException {
+    public void setCurrentExercise(int index) throws RessourceNotFoundException, IOException {
         getWorkout().setCurrentExercise(index);
         //TODO only save by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void updateWeightOfCurrentSet(int index, double weight) throws RessourceNotFoundException {
+    public void updateWeightOfCurrentSet(int index, double weight) throws RessourceNotFoundException, IOException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         exercise.setAtPosition(indexOfCurrentSet).setWeight(weight);

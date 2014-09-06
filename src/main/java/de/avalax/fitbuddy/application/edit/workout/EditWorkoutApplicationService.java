@@ -10,6 +10,7 @@ import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EditWorkoutApplicationService {
@@ -58,7 +59,7 @@ public class EditWorkoutApplicationService {
         this.workout = workoutRepository.load(id);
     }
 
-    public void switchWorkout() {
+    public void switchWorkout() throws IOException {
         workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);
     }

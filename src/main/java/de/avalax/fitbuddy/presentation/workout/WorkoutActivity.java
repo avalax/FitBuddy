@@ -25,6 +25,7 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int MANAGE_WORKOUT = 1;
@@ -79,7 +80,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
                 menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise, exercise.indexOfCurrentSet()));
                 updateWorkoutProgress(index);
             }
-        } catch (RessourceNotFoundException e) {
+        } catch (RessourceNotFoundException | IOException e) {
             Log.d("can't update page", e.getMessage(), e);
         }
     }
@@ -134,7 +135,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             double weight = editWeightDialogFragment.getWeight();
             workoutApplicationService.updateWeightOfCurrentSet(index, weight);
             updatePage(index);
-        } catch (RessourceNotFoundException e) {
+        } catch (RessourceNotFoundException | IOException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
         }
     }

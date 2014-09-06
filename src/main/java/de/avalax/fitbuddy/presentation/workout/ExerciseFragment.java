@@ -19,6 +19,7 @@ import de.avalax.fitbuddy.presentation.workout.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class ExerciseFragment extends Fragment {
 
@@ -63,7 +64,7 @@ public class ExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         changeReps(moved);
-                    } catch (RessourceNotFoundException e) {
+                    } catch (RessourceNotFoundException | IOException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
@@ -74,7 +75,7 @@ public class ExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         moveToSet(moved);
-                    } catch (RessourceNotFoundException e) {
+                    } catch (RessourceNotFoundException | IOException e) {
                         Log.d("Can't execute onFlingEvent", e.getMessage(), e);
                     }
                 }
@@ -86,13 +87,13 @@ public class ExerciseFragment extends Fragment {
         }
     }
 
-    private void changeReps(int moved) throws RessourceNotFoundException {
+    private void changeReps(int moved) throws RessourceNotFoundException, IOException {
         workoutApplicationService.addRepsToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();
     }
 
-    private void moveToSet(int moved) throws RessourceNotFoundException {
+    private void moveToSet(int moved) throws RessourceNotFoundException, IOException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
         setViews();
         updateWorkoutProgress();

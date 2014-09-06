@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.application.workout;
 
 import android.content.Context;
-import android.util.Log;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
@@ -17,12 +16,12 @@ public class WorkoutSession {
         this.workout = readCurrentWorkoutFromFile();
     }
 
-    public void switchWorkout(Workout workout) {
+    public void switchWorkout(Workout workout) throws IOException {
         this.workout = workout;
         writeCurrentWorkoutToFile();
     }
 
-    public void saveCurrentWorkout() {
+    public void saveCurrentWorkout() throws IOException {
         writeCurrentWorkoutToFile();
     }
 
@@ -48,15 +47,12 @@ public class WorkoutSession {
         return workout;
     }
 
-    private void writeCurrentWorkoutToFile() {
+    private void writeCurrentWorkoutToFile() throws IOException {
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-            outputStream.writeObject(workout);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e) {
-            Log.d("Failed to write file", e.getMessage(), e);
-        }
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        outputStream.writeObject(workout);
+        outputStream.flush();
+        outputStream.close();
+
     }
 }
