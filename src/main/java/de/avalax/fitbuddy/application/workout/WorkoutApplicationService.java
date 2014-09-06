@@ -57,7 +57,8 @@ public class WorkoutApplicationService {
     public double weightOfCurrentSet(int index) throws RessourceNotFoundException{
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        return exercise.setAtPosition(indexOfCurrentSet).getWeight();
+        Set set = exercise.setAtPosition(indexOfCurrentSet);
+        return set.getWeight();
     }
 
     public int indexOfCurrentExercise() throws RessourceNotFoundException {
