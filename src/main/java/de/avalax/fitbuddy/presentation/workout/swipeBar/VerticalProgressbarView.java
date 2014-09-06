@@ -6,10 +6,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.R;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.Set;
 
 public class VerticalProgressbarView extends FrameLayout {
     private TextView maxValueTextView;
@@ -45,18 +42,6 @@ public class VerticalProgressbarView extends FrameLayout {
         imageView.setImageDrawable(a.getDrawable(R.styleable.ProgressBar_progressbar));
         imageView.setBackgroundColor(a.getColor(R.styleable.ProgressBar_background, R.color.primary_background));
         a.recycle();
-    }
-
-    @Deprecated
-    public void updateProgressbar(Exercise exercise) throws SetNotFoundException {
-        String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
-        String maxValueText = String.valueOf(exercise.countOfSets());
-        updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
-    }
-
-    @Deprecated
-    public void updateProgressbar(Set set) {
-        updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
     }
 
     public void updateProgressbar(double progress, String currentValue, String maxValue) {

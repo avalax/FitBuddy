@@ -25,9 +25,9 @@ public class ExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     @InjectView(R.id.leftProgressBar)
-    protected VerticalProgressbarView repsProgressBar;
+    protected VerticalProgressbarView setProgressBar;
     @InjectView(R.id.rightProgressBar)
-    protected VerticalProgressbarView setsProgressBar;
+    protected VerticalProgressbarView exerciseProgressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
@@ -59,7 +59,7 @@ public class ExerciseFragment extends Fragment {
         try {
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            repsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), repsProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)) {
+            setProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {
@@ -70,7 +70,7 @@ public class ExerciseFragment extends Fragment {
                 }
             });
 
-            setsProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setsProgressBar, exerciseViewHelper.setCountOfExercise(exercise)) {
+            exerciseProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), exerciseProgressBar, exerciseViewHelper.setCountOfExercise(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {
@@ -81,7 +81,8 @@ public class ExerciseFragment extends Fragment {
                 }
             });
 
-            setViews();
+            updateExerciseProgress();
+            updateSetProgress();
         } catch (RessourceNotFoundException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
@@ -89,24 +90,31 @@ public class ExerciseFragment extends Fragment {
 
     private void changeReps(int moved) throws RessourceNotFoundException, IOException {
         workoutApplicationService.addRepsToSet(exerciseIndex, moved);
-        setViews();
         updateWorkoutProgress();
+        updateExerciseProgress();
+        updateSetProgress();
     }
 
     private void moveToSet(int moved) throws RessourceNotFoundException, IOException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
-        setViews();
         updateWorkoutProgress();
+        updateExerciseProgress();
+        updateSetProgress();
         updatePage();
     }
 
-    private void setViews() throws RessourceNotFoundException {
+    private void updateSetProgress() throws RessourceNotFoundException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
-        //TODO: use the generic updateProgressbar
-        repsProgressBar.updateProgressbar(set);
-        setsProgressBar.updateProgressbar(exercise);
+        setProgressBar.updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
+    }
+
+    private void updateExerciseProgress() throws RessourceNotFoundException {
+        Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+        String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
+        String maxValueText = String.valueOf(exercise.countOfSets());
+        exerciseProgressBar.updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
     }
 
     private void updateWorkoutProgress() {
