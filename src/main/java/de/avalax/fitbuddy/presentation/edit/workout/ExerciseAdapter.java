@@ -46,7 +46,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         return convertView;
     }
 
-    private class ExerciseViewHolder {
+    protected class ExerciseViewHolder {
         public TextView name;
         public TextView weight;
         public TextView sets;
