@@ -63,15 +63,10 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     protected void init() {
-        try {
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
-            exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise, indexOfCurrentSet));
-            exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)));
-            exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
-        } catch (SetNotFoundException e) {
-            Log.d("can't set set informations without a set", e.getMessage(), e);
-        }
+        exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
+        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise));
+        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
+        exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
     }
 
 

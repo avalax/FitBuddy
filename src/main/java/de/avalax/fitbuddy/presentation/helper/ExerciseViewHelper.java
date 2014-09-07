@@ -15,12 +15,13 @@ public class ExerciseViewHelper {
         this.decimalFormat = new DecimalFormat("###.###", symbols);
     }
 
-    public String weightOfExercise(Exercise exercise, int positionOfSet) {
+    public String weightOfExercise(Exercise exercise) {
         if (exercise == null) {
             return "-";
         }
         try {
-            double weight = exercise.setAtPosition(positionOfSet).getWeight();
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
+            double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
             if (weight != 0) {
                 return decimalFormat.format(weight);
             } else {
@@ -38,12 +39,13 @@ public class ExerciseViewHelper {
         return exercise.getName();
     }
 
-    public int maxRepsOfExercise(Exercise exercise, int positionOfSet) {
+    public int maxRepsOfExercise(Exercise exercise) {
         if (exercise == null) {
             return 0;
         }
         try {
-            return exercise.setAtPosition(positionOfSet).getMaxReps();
+            int indexOfCurrentSet = exercise.indexOfCurrentSet();
+            return exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
         } catch (SetNotFoundException e) {
             return 0;
         }

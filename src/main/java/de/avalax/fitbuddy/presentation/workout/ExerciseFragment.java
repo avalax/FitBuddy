@@ -58,8 +58,7 @@ public class ExerciseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try {
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            setProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise, indexOfCurrentSet)) {
+            setProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise)) {
                 @Override
                 public void onFlingEvent(int moved) {
                     try {

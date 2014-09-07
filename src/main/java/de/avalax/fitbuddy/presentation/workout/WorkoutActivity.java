@@ -77,7 +77,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             Exercise exercise = workoutApplicationService.requestExercise(index);
             setTitle(exerciseViewHelper.nameOfExercise(exercise));
             if (menuItem != null) {
-                menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise, exercise.indexOfCurrentSet()));
+                menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise));
                 updateWorkoutProgress(index);
             }
         } catch (RessourceNotFoundException | IOException e) {
