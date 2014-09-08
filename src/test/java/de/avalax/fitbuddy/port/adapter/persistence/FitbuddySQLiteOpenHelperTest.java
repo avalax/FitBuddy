@@ -44,4 +44,15 @@ public class FitbuddySQLiteOpenHelperTest {
 
         assertThat(writableDatabase.getVersion(), equalTo(1));
     }
+
+    @Test
+    public void newInstanceAfterUpgrade_shouldCreateDatabaseWithVersionTwo() throws Exception {
+        FitbuddySQLiteOpenHelper openHelper = new FitbuddySQLiteOpenHelper("FitbuddySQLiteOpenHelperTest", 1, context, R.raw.fitbuddy_db);
+        SQLiteDatabase writableDatabase = openHelper.getWritableDatabase();
+        writableDatabase.close();
+        FitbuddySQLiteOpenHelper newOpenHelper = new FitbuddySQLiteOpenHelper("FitbuddySQLiteOpenHelperTest", 2, context, R.raw.fitbuddy_db);
+        SQLiteDatabase newWritableDatabase = newOpenHelper.getWritableDatabase();
+
+        assertThat(newWritableDatabase.getVersion(), equalTo(2));
+    }
 }
