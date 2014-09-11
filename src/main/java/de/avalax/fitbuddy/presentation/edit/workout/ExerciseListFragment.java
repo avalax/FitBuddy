@@ -124,7 +124,7 @@ public class ExerciseListFragment extends ListFragment {
             initListView();
         } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
             editWorkoutApplicationService.undoDeleteWorkout();
-            bus.post(new WorkoutListInvalidatedEvent());
+            ((EditWorkoutActivity)getActivity()).invalidate();
         }
     }
 
@@ -132,7 +132,7 @@ public class ExerciseListFragment extends ListFragment {
     protected void addExercise() {
         if (editWorkoutApplicationService.getWorkout() == null) {
             editWorkoutApplicationService.createWorkout();
-            bus.post(new WorkoutListInvalidatedEvent());
+            ((EditWorkoutActivity)getActivity()).invalidate();
         }
         editWorkoutApplicationService.createExercise();
         initListView();

@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
@@ -264,8 +263,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
         }
     }
 
-    @Subscribe
-    public void onWorkoutListInvalidated(WorkoutListInvalidatedEvent event) {
+    public void invalidate() {
         initActionNavigationBar();
         exerciseListFragment.initListView();
     }
