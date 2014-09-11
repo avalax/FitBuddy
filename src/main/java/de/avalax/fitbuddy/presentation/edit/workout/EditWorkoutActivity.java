@@ -17,7 +17,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.squareup.otto.Bus;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
@@ -38,8 +37,6 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
     private boolean initializing;
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @Inject
-    protected Bus bus;
     @Inject
     protected WorkoutSession workoutSession;
     @Inject
@@ -78,18 +75,6 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
                 .replace(R.id.fragment_container, exerciseListFragment).commit();
         initActionBar();
         initActionNavigationBar();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        bus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        bus.unregister(this);
     }
 
     @Override

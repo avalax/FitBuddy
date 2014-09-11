@@ -12,7 +12,6 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.squareup.otto.Bus;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
@@ -29,8 +28,6 @@ import java.util.List;
 public class ExerciseListFragment extends ListFragment {
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @Inject
-    protected Bus bus;
     @InjectView(R.id.footer_undo)
     protected View footer;
 
@@ -93,18 +90,6 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        bus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        bus.unregister(this);
-    }
-
-    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
             Exercise exercise = editWorkoutApplicationService.getWorkout().exerciseAtPosition(position);
@@ -124,7 +109,7 @@ public class ExerciseListFragment extends ListFragment {
             initListView();
         } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
             editWorkoutApplicationService.undoDeleteWorkout();
-            ((EditWorkoutActivity)getActivity()).invalidate();
+            ((EditWorkoutActivity) getActivity()).invalidate();
         }
     }
 
@@ -132,7 +117,7 @@ public class ExerciseListFragment extends ListFragment {
     protected void addExercise() {
         if (editWorkoutApplicationService.getWorkout() == null) {
             editWorkoutApplicationService.createWorkout();
-            ((EditWorkoutActivity)getActivity()).invalidate();
+            ((EditWorkoutActivity) getActivity()).invalidate();
         }
         editWorkoutApplicationService.createExercise();
         initListView();
