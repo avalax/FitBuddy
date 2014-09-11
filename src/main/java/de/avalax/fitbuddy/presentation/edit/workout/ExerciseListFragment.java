@@ -106,18 +106,19 @@ public class ExerciseListFragment extends ListFragment {
     protected void undoChanges() {
         if (editWorkoutApplicationService.hasDeletedExercise()) {
             editWorkoutApplicationService.undoDeleteExercise();
-            initListView();
         } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
             editWorkoutApplicationService.undoDeleteWorkout();
-            ((EditWorkoutActivity) getActivity()).invalidate();
+            getActivity().invalidateOptionsMenu();
+            ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
+        initListView();
     }
 
     @OnClick(android.R.id.empty)
     protected void addExercise() {
         if (editWorkoutApplicationService.getWorkout() == null) {
             editWorkoutApplicationService.createWorkout();
-            ((EditWorkoutActivity) getActivity()).invalidate();
+            ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
         editWorkoutApplicationService.createExercise();
         initListView();

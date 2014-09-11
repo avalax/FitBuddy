@@ -164,7 +164,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
         actionBar.setDisplayShowTitleEnabled(false);
     }
 
-    private void initActionNavigationBar() {
+    protected void initActionNavigationBar() {
         ActionBar actionBar = getActionBar();
         initializing = true;
         workoutList = editWorkoutApplicationService.getWorkoutList();
@@ -246,10 +246,5 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
             editWorkoutApplicationService.changeName(name);
             initActionNavigationBar();
         }
-    }
-
-    public void invalidate() {
-        initActionNavigationBar();
-        exerciseListFragment.initListView();
     }
 }
