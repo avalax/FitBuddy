@@ -4,10 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import de.avalax.fitbuddy.domain.model.exercise.*;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
@@ -81,13 +79,8 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             database.update("exercise", getContentValues(workoutId, position, exercise), "id=?", new String[]{exercise.getExerciseId().id()});
         }
         database.close();
-        for (int i=0;i<exercise.countOfSets();i++) {
-            try {
-                Set set = exercise.setAtPosition(i);
-                setRepository.save(exercise.getExerciseId(), set);
-            } catch (SetNotFoundException e) {
-                Log.d("Cant' save set", e.getMessage(), e);
-            }
+        for (Set set : exercise.setsOfExercise()) {
+            setRepository.save(exercise.getExerciseId(), set);
         }
     }
 

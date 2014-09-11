@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BasicExercise implements Exercise {
@@ -99,6 +100,11 @@ public class BasicExercise implements Exercise {
     @Override
     public void removeSet(Set set) {
         sets.remove(set);
+    }
+
+    @Override
+    public Iterable<Set> setsOfExercise() {
+        return Collections.unmodifiableList(sets);
     }
 
     @Override

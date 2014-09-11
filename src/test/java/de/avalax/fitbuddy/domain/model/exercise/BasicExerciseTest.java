@@ -8,8 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -177,6 +176,14 @@ public class BasicExerciseTest {
         @Test(expected = SetNotFoundException.class)
         public void setAtNegativePosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
             exercise.setAtPosition(-1);
+        }
+
+        @Test
+        public void setsOfExercise_shouldReturnSets() throws Exception {
+            Set set = exercise.createSet();
+            Set set2 = exercise.createSet();
+
+            assertThat(exercise.setsOfExercise(), hasItems(set, set2));
         }
 
         public class givenAnExerciseProgress {

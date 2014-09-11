@@ -3,7 +3,6 @@ package de.avalax.fitbuddy.port.adapter.service;
 import android.util.Log;
 import com.google.gson.Gson;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -19,13 +18,8 @@ public class WorkoutInJsonAdapter {
         Collection<Object> collection = new ArrayList<>();
         collection.add(workout.getName());
         List<Object> exercises = new ArrayList<>();
-        for (int i = 0; i < workout.countOfExercises(); i++) {
-            try {
-                Exercise exercise = workout.exerciseAtPosition(i);
-                exercises.add(fromExercise(exercise));
-            } catch (ExerciseNotFoundException e) {
-                Log.d("Can't export exercise", e.getMessage(), e);
-            }
+        for (Exercise exercise : workout.exercisesOfWorkout()) {
+            exercises.add(fromExercise(exercise));
         }
         collection.add(exercises);
         return gson.toJson(collection);

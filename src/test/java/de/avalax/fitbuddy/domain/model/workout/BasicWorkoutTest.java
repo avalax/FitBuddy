@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -117,6 +118,14 @@ public class BasicWorkoutTest {
         workout.setCurrentExercise(0);
 
         assertThat(workout.indexOfCurrentExercise(), equalTo(0));
+    }
+
+    @Test
+    public void exercisesOfWorkout_shouldReturnExercises() throws Exception {
+        Exercise exercise = workout.createExercise();
+        Exercise exercise2 = workout.createExercise();
+
+        assertThat(workout.exercisesOfWorkout(), hasItems(exercise, exercise2));
     }
 
     @Test

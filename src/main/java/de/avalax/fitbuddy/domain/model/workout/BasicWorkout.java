@@ -6,6 +6,7 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BasicWorkout implements Workout {
@@ -114,6 +115,11 @@ public class BasicWorkout implements Workout {
     @Override
     public int countOfExercises() {
         return exercises.size();
+    }
+
+    @Override
+    public Iterable<Exercise> exercisesOfWorkout() {
+        return Collections.unmodifiableList(exercises);
     }
 
     @Override

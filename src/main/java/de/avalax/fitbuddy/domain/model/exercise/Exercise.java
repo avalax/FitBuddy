@@ -27,4 +27,6 @@ public interface Exercise extends Serializable {
     Set createSet();
 
     void removeSet(Set set);
+
+    Iterable<Set> setsOfExercise();
 }
