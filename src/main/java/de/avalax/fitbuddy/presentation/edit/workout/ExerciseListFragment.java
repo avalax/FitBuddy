@@ -108,7 +108,6 @@ public class ExerciseListFragment extends ListFragment {
             editWorkoutApplicationService.undoDeleteExercise();
         } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
             editWorkoutApplicationService.undoDeleteWorkout();
-            getActivity().invalidateOptionsMenu();
             ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
         initListView();
