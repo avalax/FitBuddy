@@ -1,10 +1,8 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
-import android.util.Log;
 import com.google.gson.Gson;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import java.util.ArrayList;
@@ -29,13 +27,8 @@ public class WorkoutInJsonAdapter {
         List<Object> exportedExercise = new ArrayList<>();
         exportedExercise.add(exercise.getName());
         List<Object> sets = new ArrayList<>();
-        for (int i = 0; i < exercise.countOfSets(); i++) {
-            try {
-                Set set = exercise.setAtPosition(i);
-                sets.add(fromSet(set));
-            } catch (SetNotFoundException e) {
-                Log.d("can't export set", e.getMessage(), e);
-            }
+        for (Set set : exercise.setsOfExercise()) {
+            sets.add(fromSet(set));
         }
         exportedExercise.add(sets);
         return exportedExercise;
