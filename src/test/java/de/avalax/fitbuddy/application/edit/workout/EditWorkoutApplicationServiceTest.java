@@ -274,6 +274,16 @@ public class EditWorkoutApplicationServiceTest {
                 verify(setRepository).save(exerciseId, exercise.setAtPosition(0));
             }
 
+            @Test
+            public void changeSetAmountWithoutSets_shouldAddTwoSets() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("21");
+                Exercise exercise = new BasicExercise();
+                exercise.setExerciseId(exerciseId);
+
+                editWorkoutApplicationService.changeSetAmount(exercise, 2);
+
+                assertThat(exercise.countOfSets(), equalTo(2));
+            }
 
             @Test
             public void changeSetAmountToOne_shouldRemoveOneSet() throws Exception {
@@ -288,6 +298,20 @@ public class EditWorkoutApplicationServiceTest {
 
                 assertThat(exercise.setAtPosition(0), equalTo(set2));
                 verify(setRepository).delete(set1.getSetId());
+            }
+
+            @Test
+            public void changeSetAmountToOne_shouldRemoveTwoSets() throws Exception {
+                ExerciseId exerciseId = new ExerciseId("21");
+                Exercise exercise = new BasicExercise();
+                exercise.setExerciseId(exerciseId);
+                exercise.createSet();
+                exercise.createSet();
+                exercise.createSet();
+
+                editWorkoutApplicationService.changeSetAmount(exercise, 1);
+
+                assertThat(exercise.countOfSets(),equalTo(1));
             }
 
             @Test

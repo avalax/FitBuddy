@@ -166,11 +166,12 @@ public class EditWorkoutApplicationService {
     }
 
     public void changeSetAmount(Exercise exercise, int newSetAmount) throws RessourceNotFoundException {
-        if (newSetAmount == exercise.countOfSets()) {
+        int countOfSets = exercise.countOfSets();
+        if (newSetAmount == countOfSets) {
             return;
         }
-        if (newSetAmount < exercise.countOfSets()) {
-            for (int i = 0; i < exercise.countOfSets() - newSetAmount; i++) {
+        if (newSetAmount < countOfSets) {
+            for (int i = 0; i < countOfSets - newSetAmount; i++) {
                 Set set = exercise.setAtPosition(i);
                 exercise.removeSet(set);
                 setRepository.delete(set.getSetId());
@@ -187,7 +188,7 @@ public class EditWorkoutApplicationService {
                 weight = 0;
                 maxReps = 0;
             }
-            for (int i = 0; i < newSetAmount - exercise.countOfSets(); i++) {
+            for (int i = 0; i < newSetAmount - countOfSets; i++) {
                 Set set = exercise.createSet();
                 set.setMaxReps(maxReps);
                 set.setWeight(weight);
