@@ -193,23 +193,27 @@ public class EditWorkoutApplicationService {
     }
 
     public void moveExerciseAtPositionUp(int position) throws RessourceNotFoundException {
+        //TODO: move to workout
         if (position <= 0) {
             return;
         }
         Exercise exercise = workout.exerciseAtPosition(position);
         workout.deleteExercise(exercise);
         workout.addExercise(position - 1, exercise);
+
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 
     public void moveExerciseAtPositionDown(int position) throws RessourceNotFoundException {
+        //TODO: move to workout
         if (position + 1 >= workout.countOfExercises()) {
             return;
         }
         Exercise exercise = workout.exerciseAtPosition(position);
         workout.deleteExercise(exercise);
         workout.addExercise(position + 1, exercise);
+
         workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
