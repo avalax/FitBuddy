@@ -4,16 +4,4 @@
         android:icon="@drawable/ic_action_accept"
         android:showAsAction="always"
         android:title="save changes" />
-    <item
-        android:id="@+id/action_add_exercise"
-        android:showAsAction="collapseActionView"
-        android:title="add exercise before" />
-    <item
-        android:id="@+id/action_add_exercise_after"
-        android:showAsAction="collapseActionView"
-        android:title="add exercise after" />
-    <item
-        android:id="@+id/action_delete_exercise"
-        android:showAsAction="collapseActionView"
-        android:title="delete exercise" />
 </menu>

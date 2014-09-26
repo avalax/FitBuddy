@@ -139,13 +139,7 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void createExerciseBefore(int position) {
-        workout.createExercise(position);
-        workoutRepository.save(workout);
-        setUnsavedChanges(false);
-    }
-
-    public void createExerciseAfter(int position) {
+    public void createExerciseAfterPosition(int position) {
         workout.createExercise(position + 1);
         workoutRepository.save(workout);
         setUnsavedChanges(false);
@@ -195,6 +189,28 @@ public class EditWorkoutApplicationService {
                 setRepository.save(exercise.getExerciseId(), set);
             }
         }
+        setUnsavedChanges(false);
+    }
+
+    public void moveExerciseAtPositionUp(int position) throws RessourceNotFoundException {
+        if (position <= 0) {
+            return;
+        }
+        Exercise exercise = workout.exerciseAtPosition(position);
+        workout.deleteExercise(exercise);
+        workout.addExercise(position - 1, exercise);
+        workoutRepository.save(workout);
+        setUnsavedChanges(false);
+    }
+
+    public void moveExerciseAtPositionDown(int position) throws RessourceNotFoundException {
+        if (position + 1 >= workout.countOfExercises()) {
+            return;
+        }
+        Exercise exercise = workout.exerciseAtPosition(position);
+        workout.deleteExercise(exercise);
+        workout.addExercise(position + 1, exercise);
+        workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 }

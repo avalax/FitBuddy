@@ -51,7 +51,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main_actions, menu);
+        inflater.inflate(R.menu.workout_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
         try {
             viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));

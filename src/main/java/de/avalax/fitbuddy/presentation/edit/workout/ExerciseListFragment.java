@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.*;
-import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,7 +48,7 @@ public class ExerciseListFragment extends ListFragment {
 
     private void initContextualActionBar() {
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(new MultiChoiceModeListener());
+        getListView().setMultiChoiceModeListener(new ExerciseListMultiChoiceModeListener(this));
     }
 
     protected void initListView() {
@@ -123,43 +122,4 @@ public class ExerciseListFragment extends ListFragment {
         initListView();
     }
 
-    private class MultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
-
-        @Override
-        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-            setTitle(mode);
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            //TODO: change menu,when more then one is selected
-            mode.getMenuInflater().inflate(R.menu.manage_workout_cab_actions, menu);
-            setTitle(mode);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            //TODO: add ActionItemClicked Events
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-
-        }
-
-        private void setTitle(ActionMode mode) {
-            if (getListView().getCheckedItemCount() > 1) {
-                mode.setTitle(getResources().getText(R.string.cab_title_manage_exercises));
-            } else {
-                mode.setTitle(getResources().getText(R.string.cab_title_manage_exercise));
-            }
-        }
-    }
 }

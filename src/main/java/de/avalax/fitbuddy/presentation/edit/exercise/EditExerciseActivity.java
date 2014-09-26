@@ -55,20 +55,8 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_delete_exercise) {
-            editWorkoutApplicationService.deleteExercise(exercise, position);
-            setResult(RESULT_OK);
-            finish();
-        } else if (item.getItemId() == R.id.action_save_exercise) {
+        if (item.getItemId() == R.id.action_save_exercise) {
             editWorkoutApplicationService.saveExercise(exercise, position);
-            setResult(RESULT_OK);
-            finish();
-        } else if (item.getItemId() == R.id.action_add_exercise) {
-            editWorkoutApplicationService.createExerciseBefore(position);
-            setResult(RESULT_OK);
-            finish();
-        } else if (item.getItemId() == R.id.action_add_exercise_after) {
-            editWorkoutApplicationService.createExerciseAfter(position);
             setResult(RESULT_OK);
             finish();
         }

@@ -102,6 +102,7 @@ public class EditWorkoutApplicationServiceTest {
             workout.setWorkoutId(workoutId);
             when(workoutRepository.load(workoutId)).thenReturn(workout);
             exercise = workout.createExercise();
+            exercise.setName("ExerciseOne");
 
             editWorkoutApplicationService.setWorkout(workoutId);
         }
@@ -147,8 +148,8 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         @Test
-        public void createExerciseAfter_shouldPlaceTheExerciseAfterTheGiven() throws Exception {
-            editWorkoutApplicationService.createExerciseAfter(0);
+        public void createExerciseAfterPosition_shouldPlaceTheExerciseAfterTheGiven() throws Exception {
+            editWorkoutApplicationService.createExerciseAfterPosition(0);
 
             assertThat(workout.countOfExercises(), equalTo(2));
             Exercise newExercise = workout.exerciseAtPosition(1);
@@ -158,13 +159,48 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         @Test
-        public void createExerciseBefore_shouldPlaceTheExerciseBeforeTheGiven() throws Exception {
-            editWorkoutApplicationService.createExerciseBefore(0);
+        public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
+            editWorkoutApplicationService.moveExerciseAtPositionUp(0);
 
-            assertThat(workout.countOfExercises(), equalTo(2));
-            Exercise newExercise = workout.exerciseAtPosition(0);
+            verify(workoutRepository, never()).save(workout);
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(editWorkoutApplicationService.unsavedChangesVisibility(), equalTo(View.GONE));
+        }
+
+        @Test
+        public void moveExerciseAtPositionUp_shouldPlaceTheExerciseAtTheRightPosition() throws Exception {
+            Exercise exerciseToMove = workout.createExercise();
+            exerciseToMove.setName("ExerciseTwo");
+
+            editWorkoutApplicationService.moveExerciseAtPositionUp(1);
+
             verify(workoutRepository).save(workout);
-            assertThat(newExercise, not(equalTo(exercise)));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToMove));
+            assertThat(editWorkoutApplicationService.unsavedChangesVisibility(), equalTo(View.GONE));
+        }
+
+        @Test
+        public void moveLastExerciseAtPositionDown_shouldDoNothing() throws Exception {
+            Exercise lastExercise = workout.createExercise();
+
+            editWorkoutApplicationService.moveExerciseAtPositionDown(1);
+
+            verify(workoutRepository, never()).save(workout);
+            assertThat(workout.exerciseAtPosition(1), equalTo(lastExercise));
+            assertThat(editWorkoutApplicationService.unsavedChangesVisibility(), equalTo(View.GONE));
+        }
+
+        @Test
+        public void moveExerciseAtPositionDown_shouldPlaceTheExerciseAtTheRightPosition() throws Exception {
+            Exercise exerciseToMove = workout.createExercise();
+            exerciseToMove.setName("ExerciseToMove");
+            Exercise lastExercise = workout.createExercise();
+            lastExercise.setName("ExerciseLast");
+
+            editWorkoutApplicationService.moveExerciseAtPositionDown(1);
+
+            verify(workoutRepository).save(workout);
+            assertThat(workout.exerciseAtPosition(2), equalTo(exerciseToMove));
             assertThat(editWorkoutApplicationService.unsavedChangesVisibility(), equalTo(View.GONE));
         }
 
@@ -311,7 +347,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                assertThat(exercise.countOfSets(),equalTo(1));
+                assertThat(exercise.countOfSets(), equalTo(1));
             }
 
             @Test
