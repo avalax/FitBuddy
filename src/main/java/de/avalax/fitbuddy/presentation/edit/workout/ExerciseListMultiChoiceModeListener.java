@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
+    //TODO: introduces itemCheckedListObject with sort,add,remove
     private List<Integer> itemsChecked;
     private ExerciseListFragment exerciseListFragment;
     private EditWorkoutApplicationService editWorkoutApplicationService;
