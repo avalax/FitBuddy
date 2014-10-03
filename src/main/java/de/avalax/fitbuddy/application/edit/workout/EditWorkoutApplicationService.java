@@ -4,6 +4,7 @@ import android.view.View;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
@@ -120,7 +121,8 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void deleteExercise(Exercise exercise, int position) {
+    public void deleteExercise(int position) throws ExerciseNotFoundException {
+        Exercise exercise = workout.exerciseAtPosition(position);
         exerciseRepository.delete(exercise.getExerciseId());
         workout.deleteExercise(exercise);
         setUnsavedChanges(position, exercise);

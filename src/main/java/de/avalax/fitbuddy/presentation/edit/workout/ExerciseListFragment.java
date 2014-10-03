@@ -48,7 +48,7 @@ public class ExerciseListFragment extends ListFragment {
 
     private void initContextualActionBar() {
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(new ExerciseListMultiChoiceModeListener(this));
+        getListView().setMultiChoiceModeListener(new ExerciseListMultiChoiceModeListener(this, editWorkoutApplicationService));
     }
 
     protected void initListView() {

@@ -234,7 +234,7 @@ public class EditWorkoutApplicationServiceTest {
                 ExerciseId exerciseId = new ExerciseId("42");
                 exercise.setExerciseId(exerciseId);
 
-                editWorkoutApplicationService.deleteExercise(exercise, 0);
+                editWorkoutApplicationService.deleteExercise(0);
 
                 assertThat(workout.countOfExercises(), equalTo(0));
                 verify(exerciseRepository).delete(exerciseId);
@@ -245,7 +245,7 @@ public class EditWorkoutApplicationServiceTest {
             @Test
             public void undoDeleteExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 int size = workout.countOfExercises();
-                editWorkoutApplicationService.deleteExercise(exercise, 0);
+                editWorkoutApplicationService.deleteExercise(0);
 
                 editWorkoutApplicationService.undoDeleteExercise();
 
@@ -260,7 +260,7 @@ public class EditWorkoutApplicationServiceTest {
                 Exercise exerciseToRestore = workout.createExercise();
                 workout.createExercise();
 
-                editWorkoutApplicationService.deleteExercise(exerciseToRestore, 1);
+                editWorkoutApplicationService.deleteExercise(1);
                 editWorkoutApplicationService.undoDeleteExercise();
 
                 assertThat(workout.exerciseAtPosition(1), equalTo(exerciseToRestore));
@@ -271,7 +271,7 @@ public class EditWorkoutApplicationServiceTest {
                 editWorkoutApplicationService.createWorkout();
                 editWorkoutApplicationService.deleteWorkout();
                 editWorkoutApplicationService.setWorkout(workout.getWorkoutId());
-                editWorkoutApplicationService.deleteExercise(exercise, 0);
+                editWorkoutApplicationService.deleteExercise(0);
 
                 editWorkoutApplicationService.undoDeleteExercise();
 
@@ -281,7 +281,7 @@ public class EditWorkoutApplicationServiceTest {
 
             @Test
             public void undoDeleteWorkoutAfterDeleteAnExercise_shouldReinsertTheWorkout() throws Exception {
-                editWorkoutApplicationService.deleteExercise(exercise, 0);
+                editWorkoutApplicationService.deleteExercise(0);
                 editWorkoutApplicationService.deleteWorkout();
 
                 editWorkoutApplicationService.undoDeleteWorkout();
