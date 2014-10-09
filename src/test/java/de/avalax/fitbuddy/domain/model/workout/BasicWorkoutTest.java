@@ -11,9 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -137,6 +135,69 @@ public class BasicWorkoutTest {
         WorkoutId workoutId = new WorkoutId("42");
         workout.setWorkoutId(workoutId);
         assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
+    }
+
+    public class givenAnExerciseToMoveInWorkout {
+        private Exercise exercise;
+
+        @Before
+        public void setUp() throws Exception {
+            exercise = workout.createExercise();
+            exercise.setName("ExerciseOne");
+        }
+
+        @Test(expected = ExerciseNotFoundException.class)
+        public void moveUnknownExerciseUp_shouldThrowExerciseNotFoundException() throws Exception {
+            workout.moveExerciseAtPositionUp(1);
+        }
+
+        @Test
+        public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
+            boolean moved = workout.moveExerciseAtPositionUp(0);
+
+            assertThat(moved, is(false));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+        }
+
+        @Test
+        public void moveExerciseAtPositionUp_shouldPlaceTheExerciseAtTheRightPosition() throws Exception {
+            Exercise exerciseToMove = workout.createExercise();
+            exerciseToMove.setName("ExerciseTwo");
+
+            boolean moved = workout.moveExerciseAtPositionUp(1);
+
+            assertThat(moved, is(true));
+            assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToMove));
+        }
+
+
+        @Test(expected = ExerciseNotFoundException.class)
+        public void moveUnknownExerciseDwon_shouldThrowExerciseNotFoundException() throws Exception {
+            workout.moveExerciseAtPositionDown(1);
+        }
+
+        @Test
+        public void moveLastExerciseAtPositionDown_shouldDoNothing() throws Exception {
+            Exercise lastExercise = workout.createExercise();
+
+            boolean moved = workout.moveExerciseAtPositionDown(1);
+
+            assertThat(moved, is(false));
+            assertThat(workout.exerciseAtPosition(1), equalTo(lastExercise));
+        }
+
+        @Test
+        public void moveExerciseAtPositionDown_shouldPlaceTheExerciseAtTheSecondPosition() throws Exception {
+            Exercise exerciseToMove = workout.createExercise();
+            exerciseToMove.setName("ExerciseToMove");
+            Exercise lastExercise = workout.createExercise();
+            lastExercise.setName("ExerciseLast");
+
+            boolean moved = workout.moveExerciseAtPositionDown(1);
+
+            assertThat(moved, is(true));
+            assertThat(workout.exerciseAtPosition(2), equalTo(exerciseToMove));
+        }
     }
 
     public class givenAWorkoutForExerciseManipulation {

@@ -9,13 +9,8 @@ import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.presentation.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
-    //TODO: introduces itemCheckedListObject with sort,add,remove
-    private List<Integer> itemsChecked;
+    private ItemsWithCheckedState itemsChecked;
     private ExerciseListFragment exerciseListFragment;
     private EditWorkoutApplicationService editWorkoutApplicationService;
     private MenuItem moveExerciseUpMenuItem;
@@ -25,20 +20,16 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     public ExerciseListMultiChoiceModeListener(ExerciseListFragment exerciseListFragment, EditWorkoutApplicationService editWorkoutApplicationService) {
         this.exerciseListFragment = exerciseListFragment;
         this.editWorkoutApplicationService = editWorkoutApplicationService;
-        this.itemsChecked = new ArrayList<>();
+        this.itemsChecked = new ItemsWithCheckedState();
     }
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-        if (checked && !itemsChecked.contains(position)) {
-            itemsChecked.add(position);
+        if (checked) {
+            itemsChecked.addCheckedItem(position);
         } else {
-            if (itemsChecked.contains(position)) {
-                itemsChecked.remove(itemsChecked.indexOf((position)));
-            }
+            itemsChecked.removeCheckedItem(position);
         }
-        Collections.sort(itemsChecked);
-        Collections.reverse(itemsChecked);
         updateMenuItems();
     }
 
@@ -65,11 +56,15 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
             editWorkoutApplicationService.createExercise();
         }
         if (item.getItemId() == R.id.action_move_exercise_up) {
-            moveExerciseUp();
+            for (int position : itemsChecked.list()) {
+                moveExerciseUp(position);
+            }
         }
 
         if (item.getItemId() == R.id.action_move_exercise_down) {
-            moveExerciseDown();
+            for (int position : itemsChecked.list()) {
+                moveExerciseDown(position);
+            }
         }
 
         if (item.getItemId() == R.id.action_delete_exercise) {
@@ -79,14 +74,14 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
             return false;
         }
         exerciseListFragment.initListView();
-        this.itemsChecked.clear();
+        itemsChecked.clear();
         updateMenuItems();
         return false;
     }
 
     private void deleteExercises() {
         //TODO: delete more then one exercise with undo and move to applicationservice
-        for (Integer position : itemsChecked) {
+        for (Integer position : itemsChecked.list()) {
             try {
                 editWorkoutApplicationService.deleteExercise(position);
             } catch (RessourceNotFoundException e) {
@@ -95,25 +90,19 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
         }
     }
 
-    private void moveExerciseUp() {
-        //TODO: move array edit to applicationservice
-        for (Integer position : itemsChecked) {
-            try {
-                editWorkoutApplicationService.moveExerciseAtPositionUp(position);
-            } catch (RessourceNotFoundException e) {
-                Log.d("Can't move exercise up", e.getMessage(), e);
-            }
+    private void moveExerciseUp(int position) {
+        try {
+            editWorkoutApplicationService.moveExerciseAtPositionUp(position);
+        } catch (RessourceNotFoundException e) {
+            Log.d("Can't move exercise up", e.getMessage(), e);
         }
     }
 
-    private void moveExerciseDown() {
-        //TODO: move array edit to applicationservice
-        for (Integer position : itemsChecked) {
-            try {
-                editWorkoutApplicationService.moveExerciseAtPositionDown(position);
-            } catch (RessourceNotFoundException e) {
-                Log.d("Can't move exercise down", e.getMessage(), e);
-            }
+    private void moveExerciseDown(int position) {
+        try {
+            editWorkoutApplicationService.moveExerciseAtPositionDown(position);
+        } catch (RessourceNotFoundException e) {
+            Log.d("Can't move exercise down", e.getMessage(), e);
         }
     }
 
@@ -123,7 +112,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     }
 
     private void updateMenuItems() {
-        int checkedItemCount = itemsChecked.size();
+        int checkedItemCount = itemsChecked.list().size();
         boolean isOneItemSelected = checkedItemCount == 1;
         boolean isMoreItemsSelected = checkedItemCount >= 1;
         moveExerciseUpMenuItem.setVisible(isOneItemSelected);

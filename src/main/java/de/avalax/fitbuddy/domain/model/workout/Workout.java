@@ -33,6 +33,10 @@ public interface Workout extends Serializable {
 
     int indexOfCurrentExercise() throws ExerciseNotFoundException;
 
+    boolean moveExerciseAtPositionUp(int index) throws ExerciseNotFoundException;
+
+    boolean moveExerciseAtPositionDown(int index) throws ExerciseNotFoundException;
+
     int countOfExercises();
 
     Iterable<Exercise> exercisesOfWorkout();

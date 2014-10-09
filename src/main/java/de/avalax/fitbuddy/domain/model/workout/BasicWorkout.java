@@ -37,17 +37,17 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public void setName(String name) {
         if (name == null) {
             this.name = "";
         } else {
             this.name = name.trim();
         }
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -70,11 +70,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise exerciseAtPosition(int position) throws ExerciseNotFoundException {
-        if (exercises.size() <= position || position < 0) {
+    public Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException {
+        if (exercises.size() <= index || index < 0) {
             throw new ExerciseNotFoundException();
         }
-        return exercises.get(position);
+        return exercises.get(index);
     }
 
     @Override
@@ -97,11 +97,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setCurrentExercise(int position) throws ExerciseNotFoundException {
-        if (exercises.size() <= position || position < 0) {
+    public void setCurrentExercise(int index) throws ExerciseNotFoundException {
+        if (exercises.size() <= index || index < 0) {
             throw new ExerciseNotFoundException();
         }
-        exerciseIndex = position;
+        exerciseIndex = index;
     }
 
     @Override
@@ -110,6 +110,34 @@ public class BasicWorkout implements Workout {
             throw new ExerciseNotFoundException();
         }
         return exerciseIndex;
+    }
+
+    @Override
+    public boolean moveExerciseAtPositionUp(int index) throws ExerciseNotFoundException {
+        if (index < 0) {
+            throw new ExerciseNotFoundException();
+        }
+        if (index == 0) {
+            return false;
+        }
+        Exercise exercise = exerciseAtPosition(index);
+        deleteExercise(exercise);
+        addExercise(index - 1, exercise);
+        return true;
+    }
+
+    @Override
+    public boolean moveExerciseAtPositionDown(int index) throws ExerciseNotFoundException {
+        if (index + 1 > countOfExercises()) {
+            throw new ExerciseNotFoundException();
+        }
+        if (index + 1 == countOfExercises()) {
+            return false;
+        }
+        Exercise exercise = exerciseAtPosition(index);
+        deleteExercise(exercise);
+        addExercise(index + 1, exercise);
+        return true;
     }
 
     @Override

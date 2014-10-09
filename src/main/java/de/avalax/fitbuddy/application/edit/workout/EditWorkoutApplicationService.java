@@ -194,29 +194,18 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void moveExerciseAtPositionUp(int position) throws RessourceNotFoundException {
-        //TODO: move to workout
-        if (position <= 0) {
-            return;
-        }
-        Exercise exercise = workout.exerciseAtPosition(position);
-        workout.deleteExercise(exercise);
-        workout.addExercise(position - 1, exercise);
 
-        workoutRepository.save(workout);
+    public void moveExerciseAtPositionUp(int position) throws RessourceNotFoundException {
+        if (workout.moveExerciseAtPositionUp(position)) {
+            workoutRepository.save(workout);
+        }
         setUnsavedChanges(false);
     }
 
     public void moveExerciseAtPositionDown(int position) throws RessourceNotFoundException {
-        //TODO: move to workout
-        if (position + 1 >= workout.countOfExercises()) {
-            return;
+        if (workout.moveExerciseAtPositionDown(position)) {
+            workoutRepository.save(workout);
         }
-        Exercise exercise = workout.exerciseAtPosition(position);
-        workout.deleteExercise(exercise);
-        workout.addExercise(position + 1, exercise);
-
-        workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 }
