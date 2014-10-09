@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -183,12 +182,6 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         public class moveExercises {
-            private List positions;
-            @Before
-            public void setUp() throws Exception {
-                positions = new ArrayList<>();
-            }
-
             @Test
             public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
                 editWorkoutApplicationService.moveExerciseAtPositionUp(0);
@@ -237,13 +230,20 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         public class exerciseManipulation {
+            private List<Integer> positions;
+
+            @Before
+            public void setUp() throws Exception {
+                positions = new ArrayList<>();
+            }
 
             @Test
             public void deleteExercise_shouldDeleteThePersistdExercise() throws Exception {
                 ExerciseId exerciseId = new ExerciseId("42");
                 exercise.setExerciseId(exerciseId);
+                positions.add(0);
 
-                editWorkoutApplicationService.deleteExercise(0);
+                editWorkoutApplicationService.deleteExercise(positions);
 
                 assertThat(workout.countOfExercises(), equalTo(0));
                 verify(exerciseRepository).delete(exerciseId);
@@ -254,7 +254,8 @@ public class EditWorkoutApplicationServiceTest {
             @Test
             public void undoDeleteExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 int size = workout.countOfExercises();
-                editWorkoutApplicationService.deleteExercise(0);
+                positions.add(0);
+                editWorkoutApplicationService.deleteExercise(positions);
 
                 editWorkoutApplicationService.undoDeleteExercise();
 
@@ -268,19 +269,37 @@ public class EditWorkoutApplicationServiceTest {
             public void undoDeleteExercise_shouldReinsertTheExerciseAtOldPosition() throws Exception {
                 Exercise exerciseToRestore = workout.createExercise();
                 workout.createExercise();
+                positions.add(1);
 
-                editWorkoutApplicationService.deleteExercise(1);
+                editWorkoutApplicationService.deleteExercise(positions);
                 editWorkoutApplicationService.undoDeleteExercise();
 
                 assertThat(workout.exerciseAtPosition(1), equalTo(exerciseToRestore));
             }
 
             @Test
+            public void undoDeleteExercises_shouldReinsertBothExercisesAtOldPosition() throws Exception {
+                Exercise exerciseToRestore = workout.createExercise();
+                exerciseToRestore.setName("exericseToRestore");
+                Exercise secondExerciseToRestore = workout.createExercise();
+                secondExerciseToRestore.setName("secondExercise");
+                positions.add(1);
+                positions.add(0);
+
+                editWorkoutApplicationService.deleteExercise(positions);
+                editWorkoutApplicationService.undoDeleteExercise();
+
+                assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+                assertThat(workout.exerciseAtPosition(1), equalTo(exerciseToRestore));
+            }
+
+            @Test
             public void undoDeleteExerciseAfterDeleteAnWorkout_shouldReinsertTheExercise() throws Exception {
+                positions.add(0);
                 editWorkoutApplicationService.createWorkout();
                 editWorkoutApplicationService.deleteWorkout();
                 editWorkoutApplicationService.setWorkout(workout.getWorkoutId());
-                editWorkoutApplicationService.deleteExercise(0);
+                editWorkoutApplicationService.deleteExercise(positions);
 
                 editWorkoutApplicationService.undoDeleteExercise();
 
@@ -290,7 +309,8 @@ public class EditWorkoutApplicationServiceTest {
 
             @Test
             public void undoDeleteWorkoutAfterDeleteAnExercise_shouldReinsertTheWorkout() throws Exception {
-                editWorkoutApplicationService.deleteExercise(0);
+                positions.add(0);
+                editWorkoutApplicationService.deleteExercise(positions);
                 editWorkoutApplicationService.deleteWorkout();
 
                 editWorkoutApplicationService.undoDeleteWorkout();

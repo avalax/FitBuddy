@@ -12,7 +12,10 @@ import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class EditWorkoutApplicationService {
 
@@ -32,9 +35,7 @@ public class EditWorkoutApplicationService {
 
     private Workout deletedWorkout;
 
-    private Exercise deletedExercise;
-
-    private Integer deletedExerciseIndex;
+    private Map<Integer, Exercise> deletedExercises;
 
     public EditWorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
         this.workoutSession = workoutSession;
@@ -42,6 +43,7 @@ public class EditWorkoutApplicationService {
         this.exerciseRepository = exerciseRepository;
         this.setRepository = setRepository;
         this.workoutService = workoutService;
+        this.deletedExercises = new TreeMap<>();
     }
 
     private void setUnsavedChanges(boolean unsavedChanges) {
@@ -90,7 +92,7 @@ public class EditWorkoutApplicationService {
             return;
         }
         workoutRepository.delete(workout.getWorkoutId());
-        deletedExercise = null;
+        deletedExercises.clear();
         setUnsavedChanges(workout);
         workout = null;
     }
@@ -101,16 +103,18 @@ public class EditWorkoutApplicationService {
     }
 
     private void setUnsavedChanges(int index, Exercise exercise) {
-        this.deletedExerciseIndex = index;
-        this.deletedExercise = exercise;
+        deletedExercises.put(index, exercise);
         setUnsavedChanges(true);
     }
 
     public void undoDeleteExercise() {
-        workout.addExercise(deletedExerciseIndex, deletedExercise);
-        exerciseRepository.save(workout.getWorkoutId(), deletedExerciseIndex, deletedExercise);
-        deletedExerciseIndex = null;
-        deletedExercise = null;
+        for (Map.Entry<Integer, Exercise> deletedExercise : deletedExercises.entrySet()) {
+            int index = deletedExercise.getKey();
+            Exercise exercise = deletedExercise.getValue();
+            workout.addExercise(index, exercise);
+            exerciseRepository.save(workout.getWorkoutId(), index, exercise);
+        }
+        deletedExercises.clear();
         setUnsavedChanges(false);
     }
 
@@ -121,12 +125,14 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void deleteExercise(int position) throws ExerciseNotFoundException {
-        Exercise exercise = workout.exerciseAtPosition(position);
-        exerciseRepository.delete(exercise.getExerciseId());
-        workout.deleteExercise(exercise);
-        setUnsavedChanges(position, exercise);
-        deletedWorkout = null;
+    public void deleteExercise(Collection<Integer> positions) throws ExerciseNotFoundException {
+        for (Integer position : positions) {
+            Exercise exercise = workout.exerciseAtPosition(position);
+            exerciseRepository.delete(exercise.getExerciseId());
+            workout.deleteExercise(exercise);
+            setUnsavedChanges(position, exercise);
+            deletedWorkout = null;
+        }
     }
 
     public void saveExercise(Exercise exercise, int position) {
@@ -152,7 +158,7 @@ public class EditWorkoutApplicationService {
     }
 
     public boolean hasDeletedExercise() {
-        return deletedExercise != null;
+        return !deletedExercises.isEmpty();
     }
 
     public void changeName(String name) {

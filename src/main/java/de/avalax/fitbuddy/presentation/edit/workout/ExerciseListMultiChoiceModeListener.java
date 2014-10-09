@@ -80,13 +80,10 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     }
 
     private void deleteExercises() {
-        //TODO: delete more then one exercise with undo and move to applicationservice
-        for (Integer position : itemsChecked.list()) {
-            try {
-                editWorkoutApplicationService.deleteExercise(position);
-            } catch (RessourceNotFoundException e) {
-                Log.d("Can't delete exercises", e.getMessage(), e);
-            }
+        try {
+            editWorkoutApplicationService.deleteExercise(itemsChecked.list());
+        } catch (RessourceNotFoundException e) {
+            Log.d("Can't delete exercises", e.getMessage(), e);
         }
     }
 
