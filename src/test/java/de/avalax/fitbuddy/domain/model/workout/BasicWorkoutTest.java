@@ -172,8 +172,8 @@ public class BasicWorkoutTest {
 
 
         @Test(expected = ExerciseNotFoundException.class)
-        public void moveUnknownExerciseDwon_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.moveExerciseAtPositionDown(1);
+        public void moveUnknownExerciseDown_shouldThrowExerciseNotFoundException() throws Exception {
+            workout.moveExerciseAtPositionDown(-1);
         }
 
         @Test

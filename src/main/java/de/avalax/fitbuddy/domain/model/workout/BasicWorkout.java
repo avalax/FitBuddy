@@ -114,9 +114,6 @@ public class BasicWorkout implements Workout {
 
     @Override
     public boolean moveExerciseAtPositionUp(int index) throws ExerciseNotFoundException {
-        if (index < 0) {
-            throw new ExerciseNotFoundException();
-        }
         if (index == 0) {
             return false;
         }
@@ -128,9 +125,6 @@ public class BasicWorkout implements Workout {
 
     @Override
     public boolean moveExerciseAtPositionDown(int index) throws ExerciseNotFoundException {
-        if (index + 1 > countOfExercises()) {
-            throw new ExerciseNotFoundException();
-        }
         if (index + 1 == countOfExercises()) {
             return false;
         }
