@@ -6,6 +6,7 @@ import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -68,7 +69,7 @@ public class EditWorkoutApplicationService {
     public void switchWorkout() throws IOException {
         try {
             Workout workoutToSave = workoutSession.getWorkout();
-            finishedWorkoutRepository.save(workoutToSave);
+            finishedWorkoutRepository.saveWorkout(workoutToSave);
         } catch (RessourceNotFoundException ignored) {
         }
         workoutSession.switchWorkout(workout);

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.application.workout;
 
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -152,7 +153,7 @@ public class WorkoutApplicationServiceTest {
         public void finishWorkout_shouldPersistCurrentWorkout() throws Exception {
             workoutApplicationService.finishCurrentWorkout();
 
-            verify(finishedWorkoutRepository).save(workout);
+            verify(finishedWorkoutRepository).saveWorkout(workout);
         }
 
         @Test

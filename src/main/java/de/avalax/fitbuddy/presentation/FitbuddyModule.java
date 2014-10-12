@@ -9,7 +9,7 @@ import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
-import de.avalax.fitbuddy.domain.model.workout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
 import de.avalax.fitbuddy.port.adapter.persistence.*;

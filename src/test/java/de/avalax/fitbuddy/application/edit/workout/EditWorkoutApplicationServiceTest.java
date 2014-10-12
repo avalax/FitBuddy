@@ -6,6 +6,7 @@ import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -193,7 +194,7 @@ public class EditWorkoutApplicationServiceTest {
 
             editWorkoutApplicationService.switchWorkout();
 
-            verify(finishedWorkoutRepository).save(currentWorkoutToPersist);
+            verify(finishedWorkoutRepository).saveWorkout(currentWorkoutToPersist);
         }
 
         public class moveExercises {

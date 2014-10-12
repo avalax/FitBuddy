@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.application.workout;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.*;
 
@@ -30,7 +31,7 @@ public class WorkoutApplicationService {
     public void switchToSet(int position, int moved) throws RessourceNotFoundException, IOException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
-        //TODO only save by android lifecycle
+        //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
@@ -40,13 +41,13 @@ public class WorkoutApplicationService {
         Set set = exercise.setAtPosition(currentSetIndex);
         set.setReps(set.getReps() + moved);
 
-        //TODO only save by android lifecycle
+        //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
     public void setCurrentExercise(int index) throws RessourceNotFoundException, IOException {
         getWorkout().setCurrentExercise(index);
-        //TODO only save by android lifecycle
+        //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
@@ -54,7 +55,7 @@ public class WorkoutApplicationService {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         exercise.setAtPosition(indexOfCurrentSet).setWeight(weight);
-        //TODO only save by android lifecycle
+        //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
@@ -75,7 +76,7 @@ public class WorkoutApplicationService {
 
     public void finishCurrentWorkout() throws RessourceNotFoundException, IOException {
         Workout workout = workoutSession.getWorkout();
-        finishedWorkoutRepository.save(workout);
+        finishedWorkoutRepository.saveWorkout(workout);
         Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
         workoutSession.switchWorkout(newWorkout);
     }
