@@ -43,6 +43,9 @@ public class EditWorkoutApplicationServiceTest {
     @Mock
     private WorkoutSession workoutSession;
 
+    @Mock
+    private FinishedWorkoutRepository finishedWorkoutRepository;
+
     @InjectMocks
     private EditWorkoutApplicationService editWorkoutApplicationService;
 
@@ -175,10 +178,22 @@ public class EditWorkoutApplicationServiceTest {
 
         @Test
         public void switchWorkout_shouldSetWorkout() throws Exception {
+            when(workoutSession.getWorkout()).thenThrow(new WorkoutNotFoundException());
             editWorkoutApplicationService.switchWorkout();
 
             verify(workoutSession).switchWorkout(workout);
             assertThat(editWorkoutApplicationService.unsavedChangesVisibility(), equalTo(View.GONE));
+        }
+
+        @Test
+        public void switchWorkout_shouldPersistCurrentWorkout() throws Exception {
+            BasicWorkout currentWorkoutToPersist = new BasicWorkout();
+            currentWorkoutToPersist.setName("currentWorkoutToPersist");
+            when(workoutSession.getWorkout()).thenReturn(currentWorkoutToPersist);
+
+            editWorkoutApplicationService.switchWorkout();
+
+            verify(finishedWorkoutRepository).save(currentWorkoutToPersist);
         }
 
         public class moveExercises {

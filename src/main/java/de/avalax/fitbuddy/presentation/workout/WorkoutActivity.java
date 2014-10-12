@@ -48,26 +48,30 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         init();
     }
 
+    private void init() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setBackgroundDrawable(null);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.workout_actions, menu);
         this.menuItem = menu.findItem(R.id.action_change_weight);
         try {
-            viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
-            viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
-            updatePage(workoutApplicationService.indexOfCurrentExercise());
+            initWorkoutActivity();
         } catch (RessourceNotFoundException e) {
-            Log.d("Can't update viewPager", e.getMessage(), e);
+            Log.d("workout not found", e.getMessage(), e);
             startManageWorkoutActivity();
         }
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void init() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setBackgroundDrawable(null);
+    private void initWorkoutActivity() throws RessourceNotFoundException {
+        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
+        viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
+        updatePage(workoutApplicationService.indexOfCurrentExercise());
     }
 
     @OnPageChange(R.id.pager)
@@ -93,6 +97,9 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         if (item.getItemId() == R.id.action_change_weight) {
             showEditDialog();
         }
+        if (item.getItemId() == R.id.action_finish_workout) {
+            finishActiveWorkout();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -101,8 +108,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == MANAGE_WORKOUT && resultCode == Activity.RESULT_OK) {
             try {
-                viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
-                updatePage(0);
+                initWorkoutActivity();
             } catch (RessourceNotFoundException e) {
                 Log.d("workout not found", e.getMessage(), e);
             }
@@ -143,5 +149,14 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     private void startManageWorkoutActivity() {
         Intent intent = new Intent(this, EditWorkoutActivity.class);
         startActivityForResult(intent, MANAGE_WORKOUT);
+    }
+
+    private void finishActiveWorkout() {
+        try {
+            workoutApplicationService.finishCurrentWorkout();
+            initWorkoutActivity();
+        } catch (RessourceNotFoundException | IOException e) {
+            Log.d("Can not finish workout", e.getMessage(), e);
+        }
     }
 }

@@ -3,10 +3,7 @@ package de.avalax.fitbuddy.application.workout;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.*;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +11,7 @@ import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(HierarchicalContextRunner.class)
 public class WorkoutApplicationServiceTest {
@@ -24,10 +20,16 @@ public class WorkoutApplicationServiceTest {
 
     private WorkoutApplicationService workoutApplicationService;
 
+    private FinishedWorkoutRepository finishedWorkoutRepository;
+
+    private WorkoutRepository workoutRepository;
+
     @Before
     public void setUp() throws Exception {
         workoutSession = mock(WorkoutSession.class);
-        workoutApplicationService = new WorkoutApplicationService(workoutSession);
+        finishedWorkoutRepository = mock(FinishedWorkoutRepository.class);
+        workoutRepository = mock(WorkoutRepository.class);
+        workoutApplicationService = new WorkoutApplicationService(workoutSession, workoutRepository, finishedWorkoutRepository);
     }
 
     public class noWorkoutGiven {
@@ -85,6 +87,11 @@ public class WorkoutApplicationServiceTest {
         public void updateWeightOfCurrentSet_shouldThrowRessourceNotFoundExeption() throws Exception {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
+
+        @Test(expected = RessourceNotFoundException.class)
+        public void finishWorkout_shouldThrowRessourceNotFoundExeption() throws Exception {
+            workoutApplicationService.finishCurrentWorkout();
+        }
     }
 
     public class aWorkoutGiven {
@@ -139,6 +146,25 @@ public class WorkoutApplicationServiceTest {
         @Test(expected = RessourceNotFoundException.class)
         public void updateWeightOfCurrentSetWithoutExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
+        }
+
+        @Test
+        public void finishWorkout_shouldPersistCurrentWorkout() throws Exception {
+            workoutApplicationService.finishCurrentWorkout();
+
+            verify(finishedWorkoutRepository).save(workout);
+        }
+
+        @Test
+        public void finishWorkout_shouldResetCurrentWorkout() throws Exception {
+            WorkoutId workoutId = workout.getWorkoutId();
+            BasicWorkout newWorkoutFromRepository = new BasicWorkout();
+            newWorkoutFromRepository.setName("newWorkoutFromRepository");
+            when(workoutRepository.load(workoutId)).thenReturn(newWorkoutFromRepository);
+
+            workoutApplicationService.finishCurrentWorkout();
+
+            verify(workoutSession).switchWorkout(newWorkoutFromRepository);
         }
 
         public class anExerciseGiven {

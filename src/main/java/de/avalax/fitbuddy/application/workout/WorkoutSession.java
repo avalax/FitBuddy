@@ -10,7 +10,6 @@ public class WorkoutSession {
     private Workout workout;
     private Context context;
 
-
     public WorkoutSession(Context context) {
         this.context = context;
         this.workout = readCurrentWorkoutFromFile();

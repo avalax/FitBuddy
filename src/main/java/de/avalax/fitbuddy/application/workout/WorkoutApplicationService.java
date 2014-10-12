@@ -4,17 +4,19 @@ import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.io.IOException;
 
 public class WorkoutApplicationService {
     private WorkoutSession workoutSession;
+    private WorkoutRepository workoutRepository;
+    private FinishedWorkoutRepository finishedWorkoutRepository;
 
-    public WorkoutApplicationService(WorkoutSession workoutSession) {
+    public WorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, FinishedWorkoutRepository finishedWorkoutRepository) {
         this.workoutSession = workoutSession;
+        this.workoutRepository = workoutRepository;
+        this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 
     public int countOfExercises() throws RessourceNotFoundException {
@@ -56,7 +58,7 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
-    public double weightOfCurrentSet(int index) throws RessourceNotFoundException{
+    public double weightOfCurrentSet(int index) throws RessourceNotFoundException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
@@ -69,6 +71,13 @@ public class WorkoutApplicationService {
 
     public WorkoutId currentWorkoutId() throws RessourceNotFoundException {
         return workoutSession.getWorkout().getWorkoutId();
+    }
+
+    public void finishCurrentWorkout() throws RessourceNotFoundException, IOException {
+        Workout workout = workoutSession.getWorkout();
+        finishedWorkoutRepository.save(workout);
+        Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
+        workoutSession.switchWorkout(newWorkout);
     }
 
     public int workoutProgress(int exerciseIndex) throws RessourceNotFoundException {

@@ -7,4 +7,8 @@
         android:id="@+id/action_switch_workout"
         android:title="@string/action_switch_workout"
         android:showAsAction="never" />
+    <item
+        android:id="@+id/action_finish_workout"
+        android:title="@string/action_finish_workout"
+        android:showAsAction="never" />
 </menu>

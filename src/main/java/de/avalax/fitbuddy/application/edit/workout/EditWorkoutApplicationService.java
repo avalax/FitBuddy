@@ -19,6 +19,8 @@ import java.util.TreeMap;
 
 public class EditWorkoutApplicationService {
 
+    private FinishedWorkoutRepository finishedWorkoutRepository;
+
     private WorkoutRepository workoutRepository;
 
     private ExerciseRepository exerciseRepository;
@@ -37,8 +39,9 @@ public class EditWorkoutApplicationService {
 
     private Map<Integer, Exercise> deletedExercises;
 
-    public EditWorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
+    public EditWorkoutApplicationService(WorkoutSession workoutSession, FinishedWorkoutRepository finishedWorkoutRepository, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
         this.workoutSession = workoutSession;
+        this.finishedWorkoutRepository = finishedWorkoutRepository;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.setRepository = setRepository;
@@ -63,6 +66,11 @@ public class EditWorkoutApplicationService {
     }
 
     public void switchWorkout() throws IOException {
+        try {
+            Workout workoutToSave = workoutSession.getWorkout();
+            finishedWorkoutRepository.save(workoutToSave);
+        } catch (RessourceNotFoundException ignored) {
+        }
         workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);
     }
@@ -80,11 +88,9 @@ public class EditWorkoutApplicationService {
 
     public void createWorkoutFromJson(String json) throws WorkoutParseException {
         Workout workoutFromJson = workoutService.workoutFromJson(json);
-        if (workoutFromJson != null) {
-            workout = workoutFromJson;
-            workoutRepository.save(workoutFromJson);
-            setUnsavedChanges(false);
-        }
+        workout = workoutFromJson;
+        workoutRepository.save(workoutFromJson);
+        setUnsavedChanges(false);
     }
 
     public void deleteWorkout() {
