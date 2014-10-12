@@ -59,7 +59,7 @@ public class BasicFinishedWorkoutTest {
 
     @Test
     public void getName_shouldReturnName() throws Exception {
-        assertThat(finishedWorkout.getWorkoutName(), equalTo(workoutName));
+        assertThat(finishedWorkout.getName(), equalTo(workoutName));
     }
 
     @Test
@@ -69,6 +69,6 @@ public class BasicFinishedWorkoutTest {
 
     @Test
     public void toString_shouldReturnWorkoutInformations() throws Exception {
-        assertThat(finishedWorkout.toString(), equalTo("BasicFinishedWorkout [name=" + finishedWorkout.getWorkoutName() + ", finishedWorkoutId=" + finishedWorkout.getFinishedWorkoutId().toString() + "]"));
+        assertThat(finishedWorkout.toString(), equalTo("BasicFinishedWorkout [name=" + finishedWorkout.getName() + ", finishedWorkoutId=" + finishedWorkout.getFinishedWorkoutId().toString() + ", workoutId=" + finishedWorkout.getWorkoutId().toString() + ", created=" + finishedWorkout.getCreated() + "]"));
     }
 }

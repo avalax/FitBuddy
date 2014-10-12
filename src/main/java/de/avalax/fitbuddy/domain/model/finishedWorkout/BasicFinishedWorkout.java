@@ -31,13 +31,13 @@ public class BasicFinishedWorkout implements FinishedWorkout {
     }
 
     @Override
-    public String getWorkoutName() {
+    public String getName() {
         return workoutName;
     }
 
     @Override
     public String toString() {
-        return "BasicFinishedWorkout [name=" + workoutName + ", finishedWorkoutId=" + finishedWorkoutId.toString() + "]";
+        return "BasicFinishedWorkout [name=" + workoutName + ", finishedWorkoutId=" + finishedWorkoutId.toString() + ", workoutId=" + workoutId.toString() + ", created=" + created + "]";
     }
 
     @Override

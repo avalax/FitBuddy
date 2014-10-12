@@ -5,11 +5,11 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import java.util.Date;
 
 public interface FinishedWorkout {
-    String getWorkoutName();
-
     FinishedWorkoutId getFinishedWorkoutId();
 
-    String getCreated();
-
     WorkoutId getWorkoutId();
+
+    String getName();
+
+    String getCreated();
 }

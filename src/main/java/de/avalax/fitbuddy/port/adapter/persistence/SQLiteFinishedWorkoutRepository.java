@@ -19,6 +19,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         long id = database.insert("finished_workout", null, getContentValues(workout));
+        //TODO: save exercises with set details
         return new FinishedWorkoutId(String.valueOf(id));
     }
 
@@ -45,7 +46,9 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(cursor.getString(0));
         WorkoutId workoutId = new WorkoutId(cursor.getString(1));
-        return new BasicFinishedWorkout(finishedWorkoutId, workoutId, cursor.getString(2), cursor.getString(3));
+        FinishedWorkout finishedWorkout = new BasicFinishedWorkout(finishedWorkoutId, workoutId, cursor.getString(2), cursor.getString(3));
+        //TODO: add finished exercises
+        return finishedWorkout;
     }
 
     private ContentValues getContentValues(Workout workout) {

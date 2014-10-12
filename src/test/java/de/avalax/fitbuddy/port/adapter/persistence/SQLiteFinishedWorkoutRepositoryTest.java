@@ -60,7 +60,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
 
         assertThat(finishedWorkout.getFinishedWorkoutId(), equalTo(finishedWorkoutId));
         assertThat(finishedWorkout.getWorkoutId(), equalTo(workout.getWorkoutId()));
-        assertThat(finishedWorkout.getWorkoutName(), equalTo(workout.getName()));
+        assertThat(finishedWorkout.getName(), equalTo(workout.getName()));
         assertThat(finishedWorkout.getCreated(), any(String.class));
     }
 }
