@@ -18,8 +18,9 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     @Override
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        long id = database.insert("finished_workout", null, getContentValues(workout));
+        long id = database.insertOrThrow("finished_workout", null, getContentValues(workout));
         //TODO: save exercises with set details
+        database.close();
         return new FinishedWorkoutId(String.valueOf(id));
     }
 

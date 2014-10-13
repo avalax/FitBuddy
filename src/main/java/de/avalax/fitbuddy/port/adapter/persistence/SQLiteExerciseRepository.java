@@ -73,7 +73,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     public void save(WorkoutId workoutId, int position, Exercise exercise) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (exercise.getExerciseId() == null) {
-            long id = database.insert("exercise", null, getContentValues(workoutId, position, exercise));
+            long id = database.insertOrThrow("exercise", null, getContentValues(workoutId, position, exercise));
             exercise.setExerciseId(new ExerciseId(String.valueOf(id)));
         } else {
             database.update("exercise", getContentValues(workoutId, position, exercise), "id=?", new String[]{exercise.getExerciseId().id()});

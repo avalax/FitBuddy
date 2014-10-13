@@ -63,4 +63,9 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         assertThat(finishedWorkout.getName(), equalTo(workout.getName()));
         assertThat(finishedWorkout.getCreated(), any(String.class));
     }
+
+    @Test
+    public void saveWorkout_shouldAlsoInsertExerciseInformationsIntoDatabase() throws Exception {
+        //TODO: save exercises with set details
+    }
 }
