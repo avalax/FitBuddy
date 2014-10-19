@@ -34,7 +34,7 @@ public class SQLiteFinishedExerciseRepositoryTest {
     private Exercise exercise;
 
     private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
-        FinishedWorkoutRepository workoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper);
+        FinishedWorkoutRepository workoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
         Workout workout = new BasicWorkout();
         workout.setWorkoutId(new WorkoutId("42"));
         finishedWorkoutId = workoutRepository.saveWorkout(workout);
@@ -62,6 +62,7 @@ public class SQLiteFinishedExerciseRepositoryTest {
     public void saveExercise_shouldInsertExerciseWithSetInformations() throws Exception {
         Set set = exercise.createSet();
         set.setWeight(12.34);
+        set.setMaxReps(15);
         set.setReps(12);
         finishedExerciseRepository.save(finishedWorkoutId, exercise);
 
@@ -73,6 +74,7 @@ public class SQLiteFinishedExerciseRepositoryTest {
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
         assertThat(finishedExercise.getWeight(), equalTo(exercise.setAtPosition(0).getWeight()));
         assertThat(finishedExercise.getReps(), equalTo(exercise.setAtPosition(0).getReps()));
+        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.setAtPosition(0).getMaxReps()));
     }
 
     @Test

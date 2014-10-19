@@ -38,6 +38,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
         values.put("name", exercise.getName() != null ? exercise.getName() : "");
         values.put("weight", set.getWeight());
         values.put("reps", set.getReps());
+        values.put("maxReps", set.getMaxReps());
         return values;
     }
 
@@ -45,7 +46,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
     public List<FinishedExercise> allSetsBelongsTo(FinishedWorkoutId finishedWorkoutId) {
         List<FinishedExercise> finishedExercises = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("finished_exercise", new String[]{"id", "name", "weight", "reps"},
+        Cursor cursor = database.query("finished_exercise", new String[]{"id", "name", "weight", "reps", "maxReps"},
                 "finished_workout_id=?", new String[]{finishedWorkoutId.id()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -53,7 +54,8 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
                 String name = cursor.getString(1);
                 double weight = cursor.getDouble(2);
                 int reps = cursor.getInt(3);
-                FinishedExercise finishedExercise = new BasicFinishedExercise(finishedExerciseId, finishedWorkoutId, name, weight, reps);
+                int maxReps = cursor.getInt(4);
+                FinishedExercise finishedExercise = new BasicFinishedExercise(finishedExerciseId, finishedWorkoutId, name, weight, reps, maxReps);
                 finishedExercises.add(finishedExercise);
             } while (cursor.moveToNext());
         }

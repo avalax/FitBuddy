@@ -4,24 +4,34 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.*;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
+import java.util.List;
+
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
+    private FinishedExerciseRepository finishedExerciseRepository;
 
-    public SQLiteFinishedWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    public SQLiteFinishedWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, FinishedExerciseRepository finishedExerciseRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
+        this.finishedExerciseRepository = finishedExerciseRepository;
     }
 
     @Override
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         long id = database.insertOrThrow("finished_workout", null, getContentValues(workout));
-        //TODO: save exercises with set details
+        FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(String.valueOf(id));
+        for (Exercise exercise : workout.exercisesOfWorkout()) {
+            finishedExerciseRepository.save(finishedWorkoutId, exercise);
+        }
         database.close();
-        return new FinishedWorkoutId(String.valueOf(id));
+        return finishedWorkoutId;
     }
 
     @Override
@@ -47,9 +57,13 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(cursor.getString(0));
         WorkoutId workoutId = new WorkoutId(cursor.getString(1));
-        FinishedWorkout finishedWorkout = new BasicFinishedWorkout(finishedWorkoutId, workoutId, cursor.getString(2), cursor.getString(3));
-        //TODO: add finished exercises
-        return finishedWorkout;
+        List<FinishedExercise> finishedExercises = addFinishedExercises(finishedWorkoutId);
+
+        return new BasicFinishedWorkout(finishedWorkoutId, workoutId, cursor.getString(2), cursor.getString(3), finishedExercises);
+    }
+
+    private List<FinishedExercise> addFinishedExercises(FinishedWorkoutId finishedWorkoutId) {
+        return finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
     }
 
     private ContentValues getContentValues(Workout workout) {

@@ -8,6 +8,7 @@ import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -77,8 +78,14 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    FinishedWorkoutRepository provideFinishWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper) {
-        return new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper);
+    FinishedWorkoutRepository provideFinishWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, FinishedExerciseRepository finishedExerciseRepository) {
+        return new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
+    }
+
+    @Provides
+    @Singleton
+    FinishedExerciseRepository provideFinishedExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+        return new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
     }
 
     @Provides

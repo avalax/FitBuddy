@@ -1,9 +1,14 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -15,21 +20,25 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class SQLiteFinishedWorkoutRepositoryTest {
-    private SQLiteFinishedWorkoutRepository finishedWorkoutRepository;
+    private FinishedWorkoutRepository finishedWorkoutRepository;
     private Workout workout;
 
     @Before
     public void setUp() throws Exception {
         Context context = Robolectric.application.getApplicationContext();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
-        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper);
+        FinishedExerciseRepository finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
+        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
         workout = new BasicWorkout();
         workout.setWorkoutId(new WorkoutId("42"));
         workout.setName("basicWorkout");
@@ -66,6 +75,21 @@ public class SQLiteFinishedWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldAlsoInsertExerciseInformationsIntoDatabase() throws Exception {
-        //TODO: save exercises with set details
+        Exercise exercise = workout.createExercise();
+        exercise.setName("finished exercise");
+        Set set = exercise.createSet();
+        set.setWeight(42.21);
+        set.setMaxReps(15);
+        set.setReps(12);
+
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
+
+        FinishedWorkout finishedWorkout = finishedWorkoutRepository.load(finishedWorkoutId);
+        List<FinishedExercise> finishedExercises = finishedWorkout.getFinishedExercises();
+        assertThat(finishedExercises, hasSize(1));
+        assertThat(finishedExercises.get(0).getName(), equalTo(exercise.getName()));
+        assertThat(finishedExercises.get(0).getWeight(), equalTo(exercise.setAtPosition(0).getWeight()));
+        assertThat(finishedExercises.get(0).getReps(), equalTo(exercise.setAtPosition(0).getReps()));
+        assertThat(finishedExercises.get(0).getMaxReps(), equalTo(exercise.setAtPosition(0).getMaxReps()));
     }
 }
