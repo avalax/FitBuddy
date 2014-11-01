@@ -8,7 +8,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19"/>
+        android:targetSdkVersion="21"/>
     <application
         android:name=".FitbuddyApplication"
         android:allowBackup="true"
