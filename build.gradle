@@ -56,14 +56,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-            //runProguard false
+            runProguard false
             testCoverageEnabled = true
         }
         if (System.getenv("KEYSTORE") && new File(System.getenv("KEYSTORE")).exists()) {
             release {
                 debuggable false
-                //runProguard true
-                //zipAlign true
+                runProguard true
+                zipAlign true
                 proguardFiles "proguard.cfg"
                 signingConfig signingConfigs.release
             }
