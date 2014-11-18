@@ -16,7 +16,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import javax.inject.Inject;

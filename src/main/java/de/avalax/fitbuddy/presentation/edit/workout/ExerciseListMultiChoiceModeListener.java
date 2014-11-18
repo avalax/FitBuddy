@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 
 class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
     private ItemsWithCheckedState itemsChecked;

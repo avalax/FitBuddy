@@ -23,7 +23,7 @@ import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.*;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
 import javax.inject.Inject;

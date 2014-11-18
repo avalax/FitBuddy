@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 import javax.inject.Inject;

@@ -19,7 +19,7 @@ import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;

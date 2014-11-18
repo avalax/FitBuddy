@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 
 public class EditNameDialogFragment extends DialogFragment {
 

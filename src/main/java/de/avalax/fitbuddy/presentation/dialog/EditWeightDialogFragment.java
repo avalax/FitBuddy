@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.NumberPicker;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 
 public class EditWeightDialogFragment extends DialogFragment {

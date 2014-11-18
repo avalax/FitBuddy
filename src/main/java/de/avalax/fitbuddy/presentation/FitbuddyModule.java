@@ -25,6 +25,7 @@ import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
+import de.avalax.fitbuddy.R;
 
 import javax.inject.Singleton;
 import java.util.Locale;

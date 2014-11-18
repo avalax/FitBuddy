@@ -11,7 +11,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

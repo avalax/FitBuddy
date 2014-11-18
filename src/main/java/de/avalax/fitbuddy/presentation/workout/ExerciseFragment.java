@@ -13,7 +13,7 @@ import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;

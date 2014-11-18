@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="de.avalax.fitbuddy.presentation"
+    package="de.avalax.fitbuddy"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="1.0.0-SNAPSHOT">
+    android:installLocation="auto">
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="21"/>
     <application
-        android:name=".FitbuddyApplication"
+        android:name="de.avalax.fitbuddy.presentation.FitbuddyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".workout.WorkoutActivity">
+        <activity android:name="de.avalax.fitbuddy.presentation.workout.WorkoutActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".edit.workout.EditWorkoutActivity"/>
-        <activity android:name=".edit.exercise.EditExerciseActivity"/>
+        <activity android:name="de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity"/>
+        <activity android:name="de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity"/>
     </application>
 
 </manifest>

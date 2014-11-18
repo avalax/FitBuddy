@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import org.junit.Before;
 import org.junit.Test;

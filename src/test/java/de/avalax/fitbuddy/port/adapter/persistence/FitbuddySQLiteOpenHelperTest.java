@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

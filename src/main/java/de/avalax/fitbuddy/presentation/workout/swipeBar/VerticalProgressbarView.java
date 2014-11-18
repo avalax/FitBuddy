@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.avalax.fitbuddy.presentation.R;
+import de.avalax.fitbuddy.R;
 
 public class VerticalProgressbarView extends FrameLayout {
     private TextView maxValueTextView;
