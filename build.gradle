@@ -149,6 +149,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     reports {
         xml.enabled = true
         html.enabled = true
+        xml.destination = "build/reports/jacoco/test/jacocoTestReport.xml"
+        html.destination = "build/reports/jacoco/test"
     }
 
     doFirst {
