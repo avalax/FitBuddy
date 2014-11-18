@@ -1,11 +1,13 @@
 language: android
 jdk:
   - oraclejdk7
-before_install:
-  - chmod +x gradlew
 android:
   components:
     - build-tools-21.1.1
     - android-21
+before_install:
+  - chmod +x gradlew
+install:
+  - ./gradlew build
 after_success:
-  - gradlew jacocoTestReport coveralls
+  - ./gradlew jacocoTestReport coveralls
