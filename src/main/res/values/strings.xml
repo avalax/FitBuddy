@@ -41,6 +41,7 @@
     <string name="dialog_change_sets">change sets</string>
     <string name="dialog_change_reps">change reps</string>
     <string name="dialog_change_name">change name</string>
-    <string name="cab_title_manage_exercises">manage exercises</string>
+    <string name="cab_title_manage_exercises">manage finishedWorkouts</string>
     <string name="cab_title_manage_exercise">manage exercise</string>
+    <string name="action_display_finished_workouts">finished workouts</string>
 </resources>

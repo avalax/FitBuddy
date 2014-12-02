@@ -18,9 +18,11 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     private List<Exercise> exercises;
     @Inject
     ExerciseViewHelper exerciseViewHelper;
+    private int textViewResourceId;
 
     public ExerciseAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
         super(context, textViewResourceId, exercises);
+        this.textViewResourceId = textViewResourceId;
         ((FitbuddyApplication) context.getApplicationContext()).inject(this);
         this.exercises = exercises;
     }
@@ -30,7 +32,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         ExerciseViewHolder holder;
         if (convertView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = vi.inflate(R.layout.item_exercise, null);
+            convertView = vi.inflate(textViewResourceId, parent, false);
             holder = new ExerciseViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.toptext);
             holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);

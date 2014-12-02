@@ -2,25 +2,25 @@ package de.avalax.fitbuddy.presentation.edit.workout;
 
 import android.content.Context;
 import android.view.View;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class ExerciseAdapterTest {
     private ExerciseAdapter exerciseAdapter;
