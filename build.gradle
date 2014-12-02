@@ -3,9 +3,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.5'
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.2'
+        classpath 'com.android.tools.build:gradle:1.0.0-rc1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
     }
 }
@@ -56,14 +56,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-            runProguard false
-            testCoverageEnabled = true
+            minifyEnabled false
+            testCoverageEnabled true
         }
         if (System.getenv("KEYSTORE") && new File(System.getenv("KEYSTORE")).exists()) {
             release {
                 debuggable false
-                runProguard true
-                zipAlign true
+                minifyEnabled true
+                zipAlignEnabled true
                 proguardFiles "proguard.cfg"
                 signingConfig signingConfigs.release
             }
@@ -83,13 +83,13 @@ robolectric {
 dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:support-v4:21.0.2'
     compile 'com.google.zxing:android-integration:3.1.0'
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.code.gson:gson:2.3.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.hamcrest:hamcrest-all:1.3'
-    androidTestCompile 'org.mockito:mockito-all:1.10.8'
+    androidTestCompile 'org.mockito:mockito-all:1.10.14'
     androidTestCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.11.3'
     androidTestCompile('org.robolectric:robolectric:2.4') {
         exclude module: 'classworlds'
@@ -160,4 +160,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
             }
         }
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
 }
