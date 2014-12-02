@@ -1,17 +1,16 @@
 package de.avalax.fitbuddy.presentation.workout;
 
 import android.support.v4.view.PagerAdapter;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
-@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class ExercisePagerAdapterTest {
 

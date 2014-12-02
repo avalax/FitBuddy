@@ -1,24 +1,29 @@
 package de.avalax.fitbuddy.application.workout;
 
 import android.content.Context;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;

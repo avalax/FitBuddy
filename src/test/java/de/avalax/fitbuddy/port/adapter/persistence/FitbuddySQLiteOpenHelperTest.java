@@ -16,7 +16,6 @@ import java.io.InputStream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class FitbuddySQLiteOpenHelperTest {
 

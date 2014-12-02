@@ -1,6 +1,16 @@
 package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+
+import java.util.List;
+
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
@@ -12,22 +22,12 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.R;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class SQLiteFinishedWorkoutRepositoryTest {
     private FinishedWorkoutRepository finishedWorkoutRepository;
