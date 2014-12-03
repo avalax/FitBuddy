@@ -10,8 +10,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
 public class ItemsWithCheckedStateTest {
     private ItemsWithCheckedState itemsWithCheckedState;
@@ -47,7 +47,7 @@ public class ItemsWithCheckedStateTest {
         itemsWithCheckedState.addCheckedItem(21);
         itemsWithCheckedState.addCheckedItem(42);
 
-        assertThat(itemsWithCheckedState.list(), hasItems(21, 42));
+        assertThat(itemsWithCheckedState.list(), containsInAnyOrder(21, 42));
     }
 
     @Test

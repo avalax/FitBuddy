@@ -1,18 +1,21 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 
@@ -123,7 +126,7 @@ public class BasicWorkoutTest {
         Exercise exercise = workout.createExercise();
         Exercise exercise2 = workout.createExercise();
 
-        assertThat(workout.exercisesOfWorkout(), hasItems(exercise, exercise2));
+        assertThat(workout.exercisesOfWorkout(), containsInAnyOrder(exercise, exercise2));
     }
 
     @Test
