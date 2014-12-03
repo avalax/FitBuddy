@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -23,6 +24,7 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 import de.avalax.fitbuddy.R;
@@ -37,7 +39,8 @@ import java.util.Locale;
         ExerciseListFragment.class,
         EditExerciseActivity.class,
         ExerciseAdapter.class,
-        EditExerciseDialogFragment.class
+        EditExerciseDialogFragment.class,
+        FinishedWorkoutListFragment.class
 })
 public class FitbuddyModule {
     private Context context;
@@ -93,6 +96,12 @@ public class FitbuddyModule {
     @Singleton
     WorkoutApplicationService provideWorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, FinishedWorkoutRepository finishedWorkoutRepository) {
         return new WorkoutApplicationService(workoutSession, workoutRepository, finishedWorkoutRepository);
+    }
+
+    @Provides
+    @Singleton
+    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService(FinishedWorkoutRepository finishedWorkoutRepository) {
+        return new FinishedWorkoutApplicationService(finishedWorkoutRepository);
     }
 
     @Provides

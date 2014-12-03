@@ -11,4 +11,8 @@
         android:id="@+id/action_finish_workout"
         android:title="@string/action_finish_workout"
         android:showAsAction="never" />
+    <item
+        android:id="@+id/action_display_finished_workouts"
+        android:title="@string/action_display_finished_workouts"
+        android:showAsAction="never" />
 </menu>

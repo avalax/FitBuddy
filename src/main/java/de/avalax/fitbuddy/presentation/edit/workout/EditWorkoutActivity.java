@@ -14,21 +14,27 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
-import butterknife.ButterKnife;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
-import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
-import de.avalax.fitbuddy.domain.model.workout.*;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
 public class EditWorkoutActivity extends FragmentActivity implements ActionBar.OnNavigationListener, EditNameDialogFragment.DialogListener {
 
@@ -37,8 +43,6 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
     private boolean initializing;
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @Inject
-    protected WorkoutSession workoutSession;
     @Inject
     protected WorkoutService workoutService;
     @Inject

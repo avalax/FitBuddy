@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.Context;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(RobolectricTestRunner.class)
@@ -91,5 +93,24 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         assertThat(finishedExercises.get(0).getWeight(), equalTo(exercise.setAtPosition(0).getWeight()));
         assertThat(finishedExercises.get(0).getReps(), equalTo(exercise.setAtPosition(0).getReps()));
         assertThat(finishedExercises.get(0).getMaxReps(), equalTo(exercise.setAtPosition(0).getMaxReps()));
+    }
+
+    @Test
+    public void noFinishedWorkouts_shouldReturnEmptyList() throws Exception {
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutRepository.loadAll();
+
+        assertThat(finishedWorkouts, emptyCollectionOf(FinishedWorkout.class));
+    }
+
+    @Test
+    public void twoPersistedFinishedWorkouts_shouldReturnListWithThem() throws Exception {
+        FinishedWorkoutId finishedWorkoutId1 = finishedWorkoutRepository.saveWorkout(new BasicWorkout());
+        FinishedWorkoutId finishedWorkoutId2 = finishedWorkoutRepository.saveWorkout(new BasicWorkout());
+
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutRepository.loadAll();
+
+        assertThat(finishedWorkouts, hasSize(2));
+        assertThat(finishedWorkouts.get(0).getFinishedWorkoutId(), Matchers.equalTo(finishedWorkoutId1));
+        assertThat(finishedWorkouts.get(1).getFinishedWorkoutId(), Matchers.equalTo(finishedWorkoutId2));
     }
 }

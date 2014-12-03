@@ -67,6 +67,7 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     private List<Exercise> getExercises(Workout workout) {
+        //TODO: mover to service
         if (workout == null) {
             return Collections.emptyList();
         }

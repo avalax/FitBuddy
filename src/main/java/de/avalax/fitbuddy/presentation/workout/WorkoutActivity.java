@@ -23,6 +23,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -100,6 +101,9 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         if (item.getItemId() == R.id.action_finish_workout) {
             finishActiveWorkout();
         }
+        if (item.getItemId() == R.id.action_display_finished_workouts) {
+            displayFinishedWorkouts();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -124,6 +128,11 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         } catch (RessourceNotFoundException e) {
             Log.d("Can edit weight of current set", e.getMessage(), e);
         }
+    }
+
+    private void displayFinishedWorkouts() {
+        Intent intent = new Intent(this, FinishedWorkoutActivity.class);
+        startActivity(intent);
     }
 
     protected void updateWorkoutProgress(int exerciseIndex) {
