@@ -11,6 +11,7 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -186,7 +187,7 @@ public class BasicExerciseTest {
             Set set = exercise.createSet();
             Set set2 = exercise.createSet();
 
-            assertThat(exercise.setsOfExercise(), hasItems(set, set2));
+            assertThat(exercise.setsOfExercise(), containsInAnyOrder(set, set2));
         }
 
         public class givenAnExerciseProgress {
