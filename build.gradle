@@ -83,7 +83,7 @@ robolectric {
 dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v4:21.0.2@aar'
     compile 'com.google.zxing:android-integration:3.1.0'
     compile 'com.google.code.gson:gson:2.3.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
