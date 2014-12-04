@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.R;
@@ -16,17 +18,10 @@ import de.avalax.fitbuddy.R;
 public class EditSetsDialogFragment extends DialogFragment {
 
     private static final String ARGS_SETS = "sets";
-
-    private int sets;
-
-    public interface DialogListener {
-        public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment);
-    }
-
     @InjectView(R.id.setsNumberPicker)
     protected NumberPicker setsNumberPicker;
-
     DialogListener listener;
+    private int sets;
 
     public static EditSetsDialogFragment newInstance(int sets) {
         EditSetsDialogFragment fragment = new EditSetsDialogFragment();
@@ -35,7 +30,6 @@ public class EditSetsDialogFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -48,6 +42,7 @@ public class EditSetsDialogFragment extends DialogFragment {
         }
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -83,5 +78,9 @@ public class EditSetsDialogFragment extends DialogFragment {
 
     public int getSets() {
         return sets;
+    }
+
+    public interface DialogListener {
+        public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment);
     }
 }

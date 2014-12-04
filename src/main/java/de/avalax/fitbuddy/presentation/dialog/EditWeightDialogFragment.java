@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.R;
@@ -17,22 +19,13 @@ import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 public class EditWeightDialogFragment extends DialogFragment {
 
     private static final String ARGS_WEIGHT = "weight";
-
-    private double weight;
-
-    private WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
-
-    public interface DialogListener {
-        public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment);
-    }
-
     @InjectView(R.id.weightNumberPicker)
     protected NumberPicker weightNumberPicker;
-
     @InjectView(R.id.weightDecimalPlacesNumberPicker)
     protected NumberPicker weightDecimalPlacesNumberPicker;
-
     DialogListener listener;
+    private double weight;
+    private WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
 
     public static EditWeightDialogFragment newInstance(double weight) {
         EditWeightDialogFragment fragment = new EditWeightDialogFragment();
@@ -53,6 +46,7 @@ public class EditWeightDialogFragment extends DialogFragment {
         }
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -94,5 +88,9 @@ public class EditWeightDialogFragment extends DialogFragment {
 
     public double getWeight() {
         return weight;
+    }
+
+    public interface DialogListener {
+        public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment);
     }
 }

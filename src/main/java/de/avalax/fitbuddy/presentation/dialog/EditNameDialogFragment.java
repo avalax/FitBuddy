@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.fitbuddy.R;
@@ -17,17 +18,10 @@ public class EditNameDialogFragment extends DialogFragment {
 
     private static final String ARGS_NAME = "name";
     private static final String ARGS_HINT = "hint";
-
-    private String name;
-
-    public interface DialogListener {
-        public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment);
-    }
-
     @InjectView(R.id.nameEditText)
     protected EditText nameEditText;
-
     DialogListener listener;
+    private String name;
 
     public static EditNameDialogFragment newInstance(String name, String hint) {
         EditNameDialogFragment fragment = new EditNameDialogFragment();
@@ -37,7 +31,6 @@ public class EditNameDialogFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -84,5 +77,9 @@ public class EditNameDialogFragment extends DialogFragment {
 
     public String getName() {
         return name;
+    }
+
+    public interface DialogListener {
+        public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment);
     }
 }
