@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0-rc2'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
@@ -16,6 +17,7 @@ allprojects {
     }
 }
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'robolectric'
 apply plugin: 'com.github.kt3k.coveralls'

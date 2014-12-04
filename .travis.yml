@@ -1,13 +1,8 @@
-language: android
+language: java
 jdk:
   - oraclejdk7
-android:
-  components:
-    - platform-tools
-    - tools
-    - build-tools-21.1.1
-    - android-21
-    - extra-android-m2repository
+before_install:
+  - sudo apt-get install -qq libstdc++6:i386 lib32z1 expect
 before_script:
   - ./gradlew dependencies
 script:
