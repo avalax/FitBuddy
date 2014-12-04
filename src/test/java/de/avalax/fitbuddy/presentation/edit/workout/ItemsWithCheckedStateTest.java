@@ -11,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
 public class ItemsWithCheckedStateTest {
     private ItemsWithCheckedState itemsWithCheckedState;
@@ -30,7 +29,7 @@ public class ItemsWithCheckedStateTest {
     public void oneItemChecked_shouldReturnListWithThisItem() throws Exception {
         itemsWithCheckedState.addCheckedItem(42);
 
-        assertThat(itemsWithCheckedState.list(), hasItem(42));
+        assertThat(itemsWithCheckedState.list(), containsInAnyOrder(42));
     }
 
     @Test
@@ -39,7 +38,7 @@ public class ItemsWithCheckedStateTest {
         itemsWithCheckedState.addCheckedItem(42);
 
         assertThat(itemsWithCheckedState.list(), hasSize(1));
-        assertThat(itemsWithCheckedState.list(), hasItem(42));
+        assertThat(itemsWithCheckedState.list(), containsInAnyOrder(42));
     }
 
     @Test
@@ -54,7 +53,7 @@ public class ItemsWithCheckedStateTest {
     public void uncheckUnknownItem_shouldReturnListWithoutThisItem() throws Exception {
         itemsWithCheckedState.removeCheckedItem(21);
 
-        assertThat(itemsWithCheckedState.list(), not(hasItem(21)));
+        assertThat(itemsWithCheckedState.list(), not(containsInAnyOrder(21)));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class ItemsWithCheckedStateTest {
         itemsWithCheckedState.addCheckedItem(42);
         itemsWithCheckedState.removeCheckedItem(21);
 
-        assertThat(itemsWithCheckedState.list(), not(hasItem(21)));
+        assertThat(itemsWithCheckedState.list(), not(containsInAnyOrder(21)));
     }
 
     @Test
