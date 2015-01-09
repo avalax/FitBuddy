@@ -332,7 +332,7 @@ public class BasicWorkoutTest {
             public void getProgress_shouldReturnFullProgress() throws Exception {
                 workout.createExercise();
                 Exercise exercise = workout.createExercise();
-                Set set = exercise.createSet();
+                Set set = exercise.setAtPosition(0);
                 set.setMaxReps(1);
                 set.setReps(1);
 
@@ -343,7 +343,7 @@ public class BasicWorkoutTest {
             public void getProgress_shouldReturn1point5() throws Exception {
                 workout.createExercise();
                 Exercise exercise = workout.createExercise();
-                Set set = exercise.createSet();
+                Set set = exercise.setAtPosition(0);
                 set.setMaxReps(2);
                 set.setReps(1);
 

@@ -208,22 +208,22 @@ public class WorkoutApplicationServiceTest {
 
             @Test(expected = RessourceNotFoundException.class)
             public void switchToSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
-                workoutApplicationService.switchToSet(0, 0);
+                workoutApplicationService.switchToSet(1, 0);
             }
 
             @Test(expected = RessourceNotFoundException.class)
             public void weightOfCurrentSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
-                workoutApplicationService.weightOfCurrentSet(0);
+                workoutApplicationService.weightOfCurrentSet(1);
             }
 
             @Test(expected = RessourceNotFoundException.class)
             public void addRepsToSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
-                workoutApplicationService.addRepsToSet(0, 0);
+                workoutApplicationService.addRepsToSet(1, 0);
             }
 
             @Test(expected = RessourceNotFoundException.class)
             public void updateWeightOfCurrentSetWithoutSet_shouldThrowRessourceNotFoundExeption() throws Exception {
-                workoutApplicationService.updateWeightOfCurrentSet(0, 0);
+                workoutApplicationService.updateWeightOfCurrentSet(1, 0);
             }
 
             public class aSetGiven {
@@ -231,7 +231,7 @@ public class WorkoutApplicationServiceTest {
 
                 @Before
                 public void setUp() throws Exception {
-                    set = exercise.createSet();
+                    set = exercise.setAtPosition(0);
                 }
 
                 @Test

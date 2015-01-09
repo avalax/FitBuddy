@@ -79,14 +79,13 @@ public class BasicWorkout implements Workout {
 
     @Override
     public Exercise createExercise() {
-        Exercise exercise = new BasicExercise();
-        exercises.add(exercise);
-        return exercise;
+        return createExercise(exercises.size());
     }
 
     @Override
     public Exercise createExercise(int position) {
         Exercise exercise = new BasicExercise();
+        exercise.createSet();
         exercises.add(position, exercise);
         return exercise;
     }

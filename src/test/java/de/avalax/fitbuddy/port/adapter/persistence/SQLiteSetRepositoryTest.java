@@ -11,6 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -50,7 +51,8 @@ public class SQLiteSetRepositoryTest {
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         Workout workout = new BasicWorkout();
-        Exercise exercise = workout.createExercise();
+        Exercise exercise = new BasicExercise();
+        workout.addExercise(0, exercise);
 
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();
@@ -97,8 +99,8 @@ public class SQLiteSetRepositoryTest {
         loadedSet2.setWeight(100);
 
         setRepository.save(exerciseId, loadedSet2);
-        List<Set> reloadedSets = setRepository.allSetsBelongsTo(exerciseId);
 
+        List<Set> reloadedSets = setRepository.allSetsBelongsTo(exerciseId);
         assertThat(reloadedSets.get(0).getWeight(), equalTo(set1.getWeight()));
         assertThat(reloadedSets.get(1).getWeight(), equalTo(loadedSet2.getWeight()));
     }

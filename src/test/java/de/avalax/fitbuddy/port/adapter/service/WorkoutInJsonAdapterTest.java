@@ -1,11 +1,12 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -37,9 +38,11 @@ public class WorkoutInJsonAdapterTest {
     }
 
     @Test
-         public void workoutWithOneExercise_shouldReturnJson() throws Exception {
+    public void workoutWithOneExerciseAndNoSets_shouldReturnJson() throws Exception {
         workout.setName("nameOfWorkout");
         workout.createExercise();
+        Exercise exercise = workout.exerciseAtPosition(0);
+        exercise.removeSet(exercise.setAtPosition(0));
 
         String json = workoutInJsonAdapter.fromWorkout(workout);
 
@@ -52,7 +55,7 @@ public class WorkoutInJsonAdapterTest {
         workout.createExercise();
         Exercise exercise = workout.exerciseAtPosition(0);
         exercise.setName("bankdrücken");
-        Set set = exercise.createSet();
+        Set set = exercise.setAtPosition(0);
         set.setMaxReps(15);
         set.setWeight(42);
 
