@@ -15,13 +15,11 @@ import butterknife.InjectView;
 import de.avalax.fitbuddy.R;
 
 public class EditNameDialogFragment extends DialogFragment {
-
     private static final String ARGS_NAME = "name";
     private static final String ARGS_HINT = "hint";
     @InjectView(R.id.nameEditText)
     protected EditText nameEditText;
-    DialogListener listener;
-    private String name;
+    private DialogListener listener;
 
     public static EditNameDialogFragment newInstance(String name, String hint) {
         EditNameDialogFragment fragment = new EditNameDialogFragment();
@@ -49,7 +47,7 @@ public class EditNameDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_edit_name, null);
         ButterKnife.inject(this, view);
 
-        this.name = getArguments().getString(ARGS_NAME);
+        String name = getArguments().getString(ARGS_NAME);
 
         nameEditText.setText(name);
         nameEditText.setHint(getArguments().getString(ARGS_HINT));
@@ -59,7 +57,6 @@ public class EditNameDialogFragment extends DialogFragment {
                 .setMessage(R.string.dialog_change_name)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        setName();
                         listener.onDialogPositiveClick(EditNameDialogFragment.this);
                     }
                 })
@@ -71,12 +68,8 @@ public class EditNameDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    private void setName() {
-        this.name = nameEditText.getText().toString();
-    }
-
     public String getName() {
-        return name;
+        return nameEditText.getText().toString();
     }
 
     public interface DialogListener {
