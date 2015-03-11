@@ -126,7 +126,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             double weight = workoutApplicationService.weightOfCurrentSet(index);
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
         } catch (RessourceNotFoundException e) {
-            Log.d("Can edit weight of current set", e.getMessage(), e);
+            Log.d("Can't edit weight", e.getMessage(), e);
         }
     }
 
@@ -139,7 +139,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         try {
             workoutProggressBar.setProgress(workoutApplicationService.workoutProgress(exerciseIndex));
         } catch (RessourceNotFoundException e) {
-            Log.d("updateWorkoutProgress failed", e.getMessage(), e);
+            Log.d("Can't change progress", e.getMessage(), e);
         }
     }
 
@@ -151,7 +151,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             workoutApplicationService.updateWeightOfCurrentSet(index, weight);
             updatePage(index);
         } catch (RessourceNotFoundException | IOException e) {
-            Log.d("Can edit weight of current set", e.getMessage(), e);
+            Log.d("Can't edit weight", e.getMessage(), e);
         }
     }
 

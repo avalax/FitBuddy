@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk=18)
 public class SQLiteWorkoutRepositoryTest {
 
     private WorkoutRepository workoutRepository;

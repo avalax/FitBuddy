@@ -64,7 +64,7 @@ public class ExerciseFragment extends Fragment {
                     try {
                         changeReps(moved);
                     } catch (RessourceNotFoundException | IOException e) {
-                        Log.d("Can't execute onFlingEvent", e.getMessage(), e);
+                        Log.d("Can't change reps", e.getMessage(), e);
                     }
                 }
             });
@@ -75,7 +75,7 @@ public class ExerciseFragment extends Fragment {
                     try {
                         moveToSet(moved);
                     } catch (RessourceNotFoundException | IOException e) {
-                        Log.d("Can't execute onFlingEvent", e.getMessage(), e);
+                        Log.d("Can't change set", e.getMessage(), e);
                     }
                 }
             });

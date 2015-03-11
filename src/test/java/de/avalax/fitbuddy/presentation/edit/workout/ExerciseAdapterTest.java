@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk=18)
 public class ExerciseAdapterTest {
     private ExerciseAdapter exerciseAdapter;
     private Exercise exercise;

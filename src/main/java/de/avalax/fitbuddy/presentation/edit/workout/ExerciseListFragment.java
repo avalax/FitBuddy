@@ -77,7 +77,7 @@ public class ExerciseListFragment extends ListFragment {
                 Exercise exercise = workout.exerciseAtPosition(i);
                 exercises.add(exercise);
             } catch (ExerciseNotFoundException e) {
-                Log.d("Can't add exercise to adapter", e.getMessage(), e);
+                Log.d("Can't add exercise", e.getMessage(), e);
             }
         }
         return exercises;

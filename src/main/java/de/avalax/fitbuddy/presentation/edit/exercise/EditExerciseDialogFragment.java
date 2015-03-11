@@ -87,7 +87,7 @@ public class EditExerciseDialogFragment extends Fragment {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
         } catch (SetNotFoundException e) {
-            Log.d("can't edit weight without a set", e.getMessage(), e);
+            Log.d("can't edit weight", e.getMessage(), e);
         }
     }
 

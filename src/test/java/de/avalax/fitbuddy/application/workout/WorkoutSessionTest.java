@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +26,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk=18)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;
     private Context context;

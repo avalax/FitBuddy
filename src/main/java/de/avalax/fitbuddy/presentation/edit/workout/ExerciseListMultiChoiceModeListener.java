@@ -99,7 +99,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
         try {
             editWorkoutApplicationService.moveExerciseAtPositionDown(position);
         } catch (RessourceNotFoundException e) {
-            Log.d("Can't move exercise down", e.getMessage(), e);
+            Log.d("Can't move exercise", e.getMessage(), e);
         }
     }
 

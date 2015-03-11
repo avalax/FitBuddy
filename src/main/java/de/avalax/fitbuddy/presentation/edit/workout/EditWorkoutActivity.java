@@ -225,7 +225,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
             exerciseListFragment.initListView();
         } catch (WorkoutParseException wpe) {
             Toast toast = Toast.makeText(this, getText(R.string.action_read_qrcode_failed), Toast.LENGTH_LONG);
-            Log.d("reading of qrcode failed", wpe.getMessage(), wpe);
+            Log.d("failed reading qrcode", wpe.getMessage(), wpe);
             toast.show();
         }
     }

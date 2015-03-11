@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk=18)
 public class SQLiteFinishedWorkoutRepositoryTest {
     private FinishedWorkoutRepository finishedWorkoutRepository;
     private Workout workout;
