@@ -1,8 +1,6 @@
-language: java
+language: android
 jdk:
   - oraclejdk7
-before_install:
-  - sudo apt-get install -qq libstdc++6:i386 lib32z1 expect
 before_script:
   - ./gradlew dependencies
 script:
