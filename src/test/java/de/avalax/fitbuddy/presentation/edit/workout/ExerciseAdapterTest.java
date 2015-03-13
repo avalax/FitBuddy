@@ -23,7 +23,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
 public class ExerciseAdapterTest {
     private ExerciseAdapter exerciseAdapter;
     private Exercise exercise;

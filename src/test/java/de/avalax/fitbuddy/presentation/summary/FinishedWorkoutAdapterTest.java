@@ -25,7 +25,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
 public class FinishedWorkoutAdapterTest {
     private FinishedWorkoutAdapter finishedWorkoutAdapter;
     private FinishedWorkout finishedWorkout;

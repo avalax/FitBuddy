@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
 public class SQLiteFinishedWorkoutRepositoryTest {
     private FinishedWorkoutRepository finishedWorkoutRepository;
     private Workout workout;

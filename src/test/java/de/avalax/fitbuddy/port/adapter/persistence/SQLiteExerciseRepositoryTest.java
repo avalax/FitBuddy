@@ -30,7 +30,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
 public class SQLiteExerciseRepositoryTest {
 
     private ExerciseRepository exerciseRepository;
