@@ -22,6 +22,9 @@ apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.ben-manes.versions'
 
 android {
+    sourceSets {
+        androidTest.java.srcDirs = ['src/test/java']
+    }
     packagingOptions {
         exclude 'LICENSE.txt'
         exclude 'META-INF/LICENSE'
