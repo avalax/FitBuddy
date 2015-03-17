@@ -97,7 +97,8 @@ apply plugin: 'jacoco'
 
 jacoco.toolVersion = "0.7.2.201409121644"
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
+task jacocoTestReport(type: JacocoReport) {
+	dependsOn project.tasks.withType(Test)
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
 
@@ -129,7 +130,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     }
 
     doFirst {
-        new File('build/intermediates/classes/').eachFileRecurse { file ->
+        new File("${project.buildDir}/intermediates/classes").eachFileRecurse { file ->
             if (file.name.contains('$$')) {
                 file.renameTo(file.path.replace('$$', '$'))
             }
