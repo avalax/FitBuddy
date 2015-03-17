@@ -102,11 +102,10 @@ jacoco {
 
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     group = "Reporting"
-
     description = "Generate Jacoco coverage reports"
 
     classDirectories = fileTree(
-            dir: 'build/intermediates/classes/debug',
+            dir: "${project.buildDir}/intermediates/classes/debug",
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
@@ -123,13 +122,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     )
 
     sourceDirectories = files('src/main/java')
-    executionData = files('build/jacoco/testDebug.exec')
+    executionData = files("${project.buildDir}/jacoco/testDebug.exec")
 
     reports {
         xml.enabled = true
         html.enabled = true
-        xml.destination = "build/reports/jacoco/test/jacocoTestReport.xml"
-        html.destination = "build/reports/jacoco/test"
+        xml.destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        html.destination = "${project.buildDir}/reports/jacoco/test"
     }
 
     doFirst {
