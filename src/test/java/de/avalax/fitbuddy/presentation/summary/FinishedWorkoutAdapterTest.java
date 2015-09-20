@@ -3,6 +3,18 @@ package de.avalax.fitbuddy.presentation.summary;
 import android.content.Context;
 import android.view.View;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.BasicFinishedWorkout;
@@ -10,29 +22,18 @@ import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
 public class FinishedWorkoutAdapterTest {
     private FinishedWorkoutAdapter finishedWorkoutAdapter;
     private FinishedWorkout finishedWorkout;
 
     @Before
     public void setUp() throws Exception {
-        Context context = Robolectric.application.getApplicationContext();
+        Context context = RuntimeEnvironment.application.getApplicationContext();
         List<FinishedWorkout> finishedWorkouts = new ArrayList<>();
         finishedWorkout = new BasicFinishedWorkout(new FinishedWorkoutId("42"),new WorkoutId("21"),"name","2014-12-24", Collections.<FinishedExercise>emptyList());
         finishedWorkouts.add(finishedWorkout);

@@ -8,35 +8,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
-import javax.inject.Inject;
-
 public class EditExerciseDialogFragment extends Fragment {
 
     private static final String ARGS_EXERCISE = "exercise";
 
-    @InjectView(R.id.exerciseNameEditText)
+    @Bind(R.id.exerciseNameEditText)
     protected TextView exerciseNameEditText;
 
-    @InjectView(R.id.exerciseWeightExitText)
+    @Bind(R.id.exerciseWeightExitText)
     protected TextView exerciseWeightExitText;
 
-    @InjectView(R.id.exerciseSetsTextView)
+    @Bind(R.id.exerciseSetsTextView)
     protected TextView exerciseSetsTextView;
 
-    @InjectView(R.id.exerciseRepsTextView)
+    @Bind(R.id.exerciseRepsTextView)
     protected TextView exerciseRepsTextView;
 
     @Inject
@@ -55,7 +56,7 @@ public class EditExerciseDialogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_edit, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
         init();

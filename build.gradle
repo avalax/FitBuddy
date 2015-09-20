@@ -3,10 +3,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
+        classpath 'com.android.tools.build:gradle:1.3.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
     }
 }
 
@@ -30,17 +30,18 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -75,22 +76,22 @@ android {
 }
 
 dependencies {
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.google.zxing:android-integration:3.2.0'
-
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'org.mockito:mockito-all:1.10.19'
-    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.0'
-    testCompile('org.robolectric:robolectric:2.4') {
+    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1'
+    testCompile('org.robolectric:robolectric:3.0') {
         exclude module: 'commons-logging'
         exclude module: 'httpclient'
     }
+
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.zxing:android-integration:3.2.1'
 }
 
 apply plugin: 'jacoco'
@@ -107,6 +108,7 @@ task jacocoTestReport(type: JacocoReport) {
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
+                       '**/*$ViewBinder*.*',
                        '**/BuildConfig.*',
                        '**/Manifest*.*',
                        '**/*InjectAdapter*.class',
@@ -127,14 +129,6 @@ task jacocoTestReport(type: JacocoReport) {
         html.enabled = true
         xml.destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         html.destination = "${project.buildDir}/reports/jacoco/test"
-    }
-
-    doFirst {
-        new File("${project.buildDir}/intermediates/classes").eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
     }
 }
 

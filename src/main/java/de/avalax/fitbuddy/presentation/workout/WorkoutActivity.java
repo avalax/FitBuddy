@@ -12,27 +12,29 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnPageChange;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
-import javax.inject.Inject;
-import java.io.IOException;
-
 public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int MANAGE_WORKOUT = 1;
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     protected ViewPager viewPager;
-    @InjectView(R.id.workoutProgressBar)
+    @Bind(R.id.workoutProgressBar)
     protected ProgressBar workoutProggressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;
@@ -44,7 +46,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         init();
     }

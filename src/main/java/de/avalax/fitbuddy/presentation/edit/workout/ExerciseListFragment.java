@@ -4,30 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ExerciseListFragment extends ListFragment {
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @InjectView(R.id.footer_undo)
+    @Bind(R.id.footer_undo)
     protected View footer;
 
     @Override
@@ -35,7 +39,7 @@ public class ExerciseListFragment extends ListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initListView();
         return view;
     }

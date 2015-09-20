@@ -6,16 +6,18 @@ import android.view.View;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import de.avalax.fitbuddy.BuildConfig;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
 public class SwipeBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 30;

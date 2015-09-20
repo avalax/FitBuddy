@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.avalax.fitbuddy.R;
 
 public class EditRepsDialogFragment extends DialogFragment {
 
     private static final String ARGS_REPS = "reps";
-    @InjectView(R.id.repsNumberPicker)
+    @Bind(R.id.repsNumberPicker)
     protected NumberPicker repsNumberPicker;
     DialogListener listener;
     private int reps;
@@ -47,7 +47,7 @@ public class EditRepsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_edit_reps, null);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         this.reps = getArguments().getInt(ARGS_REPS);
 

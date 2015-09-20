@@ -54,7 +54,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         init(savedInstanceState);
     }

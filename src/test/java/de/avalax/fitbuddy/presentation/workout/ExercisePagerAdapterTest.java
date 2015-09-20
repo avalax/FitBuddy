@@ -5,15 +5,17 @@ import android.support.v4.view.PagerAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import de.avalax.fitbuddy.BuildConfig;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
 public class ExercisePagerAdapterTest {
 
     private ExercisePagerAdapter exercisePagerAdapter;

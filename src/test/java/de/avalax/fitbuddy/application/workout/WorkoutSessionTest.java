@@ -6,8 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.File;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -25,8 +26,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;
     private Context context;
@@ -62,7 +63,7 @@ public class WorkoutSessionTest {
 
     @Before
     public void setUp() throws Exception {
-        context = Robolectric.application.getApplicationContext();
+        context = RuntimeEnvironment.application.getApplicationContext();
         workoutSession = new WorkoutSession(context);
     }
 

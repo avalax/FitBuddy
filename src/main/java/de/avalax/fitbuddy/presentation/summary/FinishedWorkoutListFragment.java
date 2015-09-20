@@ -28,7 +28,7 @@ public class FinishedWorkoutListFragment extends ListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_finished_workout_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initListView();
         return view;
     }

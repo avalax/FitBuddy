@@ -1,11 +1,14 @@
 package de.avalax.fitbuddy.presentation.workout.swipeBar;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import de.avalax.fitbuddy.R;
 
 public class VerticalProgressbarView extends FrameLayout {
@@ -40,7 +43,7 @@ public class VerticalProgressbarView extends FrameLayout {
     private void attributs(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ProgressBar);
         imageView.setImageDrawable(a.getDrawable(R.styleable.ProgressBar_progressbar));
-        imageView.setBackgroundColor(a.getColor(R.styleable.ProgressBar_background, R.color.primary_background));
+        imageView.setBackgroundColor(a.getColor(R.styleable.ProgressBar_background, ContextCompat.getColor(getContext(), R.color.primary_background)));
         a.recycle();
     }
 

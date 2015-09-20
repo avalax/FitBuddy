@@ -5,12 +5,13 @@ import android.content.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
 
+import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -29,8 +30,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class SQLiteExerciseRepositoryTest {
 
     private ExerciseRepository exerciseRepository;
@@ -55,7 +56,7 @@ public class SQLiteExerciseRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = Robolectric.application.getApplicationContext();
+        Context context = RuntimeEnvironment.application.getApplicationContext();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteExerciseRepositoryTest", 1, context, R.raw.fitbuddy_db);
         setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);

@@ -6,27 +6,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
 
-import javax.inject.Inject;
-import java.io.IOException;
-
 public class ExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
-    @InjectView(R.id.leftProgressBar)
+    @Bind(R.id.leftProgressBar)
     protected VerticalProgressbarView setProgressBar;
-    @InjectView(R.id.rightProgressBar)
+    @Bind(R.id.rightProgressBar)
     protected VerticalProgressbarView exerciseProgressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;
@@ -47,7 +49,7 @@ public class ExerciseFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         exerciseIndex = getArguments().getInt(ARGS_EXERCISE_INDEX);
         return view;
