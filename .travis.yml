@@ -5,8 +5,8 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-22.0.0
-    - android-22
+    - build-tools-23.0.1
+    - android-23
     - extra-android-m2repository
 before_script:
   - ./gradlew dependencies
