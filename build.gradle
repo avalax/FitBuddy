@@ -132,6 +132,24 @@ task jacocoTestReport(type: JacocoReport) {
     }
 }
 
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+	configFile rootProject.file('checkstyle.xml')
+	source 'src/main/java'
+	ignoreFailures true
+	showViolations true
+	include '**/*.java'
+		
+	classpath = files()
+}
+
+afterEvaluate {
+	if (project.tasks.findByName('check')) {
+		check.dependsOn('checkstyle')
+	}
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.9'
 }
