@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
@@ -19,9 +19,9 @@ import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 public class EditWeightDialogFragment extends DialogFragment {
 
     private static final String ARGS_WEIGHT = "weight";
-    @Bind(R.id.weightNumberPicker)
+    @BindView(R.id.weightNumberPicker)
     protected NumberPicker weightNumberPicker;
-    @Bind(R.id.weightDecimalPlacesNumberPicker)
+    @BindView(R.id.weightDecimalPlacesNumberPicker)
     protected NumberPicker weightDecimalPlacesNumberPicker;
     DialogListener listener;
     private double weight;
@@ -91,6 +91,6 @@ public class EditWeightDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
-        public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment);
+        void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment);
     }
 }

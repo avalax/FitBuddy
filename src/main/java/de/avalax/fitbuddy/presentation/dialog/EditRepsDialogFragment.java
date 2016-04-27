@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 
 public class EditRepsDialogFragment extends DialogFragment {
 
     private static final String ARGS_REPS = "reps";
-    @Bind(R.id.repsNumberPicker)
+    @BindView(R.id.repsNumberPicker)
     protected NumberPicker repsNumberPicker;
     DialogListener listener;
     private int reps;

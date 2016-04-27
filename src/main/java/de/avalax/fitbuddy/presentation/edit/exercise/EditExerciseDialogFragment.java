@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.R;
@@ -28,16 +28,16 @@ public class EditExerciseDialogFragment extends Fragment {
 
     private static final String ARGS_EXERCISE = "exercise";
 
-    @Bind(R.id.exerciseNameEditText)
+    @BindView(R.id.exerciseNameEditText)
     protected TextView exerciseNameEditText;
 
-    @Bind(R.id.exerciseWeightExitText)
+    @BindView(R.id.exerciseWeightExitText)
     protected TextView exerciseWeightExitText;
 
-    @Bind(R.id.exerciseSetsTextView)
+    @BindView(R.id.exerciseSetsTextView)
     protected TextView exerciseSetsTextView;
 
-    @Bind(R.id.exerciseRepsTextView)
+    @BindView(R.id.exerciseRepsTextView)
     protected TextView exerciseRepsTextView;
 
     @Inject

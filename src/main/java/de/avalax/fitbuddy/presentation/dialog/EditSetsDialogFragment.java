@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 
 public class EditSetsDialogFragment extends DialogFragment {
 
     private static final String ARGS_SETS = "sets";
-    @Bind(R.id.setsNumberPicker)
+    @BindView(R.id.setsNumberPicker)
     protected NumberPicker setsNumberPicker;
     DialogListener listener;
     private int sets;
@@ -81,6 +81,6 @@ public class EditSetsDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
-        public void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment);
+        void onDialogPositiveClick(EditSetsDialogFragment editSetsDialogFragment);
     }
 }

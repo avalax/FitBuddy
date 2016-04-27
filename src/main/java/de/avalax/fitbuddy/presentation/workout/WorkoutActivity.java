@@ -17,7 +17,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnPageChange;
 import de.avalax.fitbuddy.R;
@@ -32,9 +32,9 @@ import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
 public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int MANAGE_WORKOUT = 1;
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     protected ViewPager viewPager;
-    @Bind(R.id.workoutProgressBar)
+    @BindView(R.id.workoutProgressBar)
     protected ProgressBar workoutProggressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;

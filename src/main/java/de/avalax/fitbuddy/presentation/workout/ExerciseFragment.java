@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
@@ -26,9 +26,9 @@ import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
 public class ExerciseFragment extends Fragment {
 
     private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
-    @Bind(R.id.leftProgressBar)
+    @BindView(R.id.leftProgressBar)
     protected VerticalProgressbarView setProgressBar;
-    @Bind(R.id.rightProgressBar)
+    @BindView(R.id.rightProgressBar)
     protected VerticalProgressbarView exerciseProgressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;

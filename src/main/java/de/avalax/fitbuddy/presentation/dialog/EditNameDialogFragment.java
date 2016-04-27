@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 
 public class EditNameDialogFragment extends DialogFragment {
     private static final String ARGS_NAME = "name";
     private static final String ARGS_HINT = "hint";
-    @Bind(R.id.nameEditText)
+    @BindView(R.id.nameEditText)
     protected EditText nameEditText;
     private DialogListener listener;
 
@@ -75,6 +75,6 @@ public class EditNameDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
-        public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment);
+        void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment);
     }
 }

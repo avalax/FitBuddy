@@ -17,7 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.avalax.fitbuddy.R;
@@ -31,7 +31,7 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 public class ExerciseListFragment extends ListFragment {
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @Bind(R.id.footer_undo)
+    @BindView(R.id.footer_undo)
     protected View footer;
 
     @Override
