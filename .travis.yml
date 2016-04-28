@@ -11,6 +11,6 @@ android:
 before_script:
   - ./gradlew dependencies
 script:
-  - ./gradlew build -i
+  - ./gradlew build
 after_success:
   - ./gradlew jacocoTestReport coveralls

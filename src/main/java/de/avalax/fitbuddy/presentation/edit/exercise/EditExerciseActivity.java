@@ -6,20 +6,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import butterknife.ButterKnife;
+
+import javax.inject.Inject;
+
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
-
-import javax.inject.Inject;
 
 public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
 
@@ -36,7 +36,6 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
-        ButterKnife.bind(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
         position = getIntent().getIntExtra("position", -1);
@@ -75,7 +74,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
                 Log.d("can't update weight", e.getMessage(), e);
             }
         }
-        editExerciseDialogFragment.init();
+        editExerciseDialogFragment.init(editExerciseDialogFragment.getView());
     }
 
     @Override
@@ -83,10 +82,10 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         int newSetAmount = editSetsDialogFragment.getSets();
         try {
             editWorkoutApplicationService.changeSetAmount(exercise, newSetAmount);
-        } catch (RessourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             Log.d("can't update set amount", e.getMessage(), e);
         }
-        editExerciseDialogFragment.init();
+        editExerciseDialogFragment.init(editExerciseDialogFragment.getView());
     }
 
     @Override
@@ -101,14 +100,14 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
                 Log.d("can't update max reps", e.getMessage(), e);
             }
         }
-        editExerciseDialogFragment.init();
+        editExerciseDialogFragment.init(editExerciseDialogFragment.getView());
     }
 
     @Override
     public void onDialogPositiveClick(EditNameDialogFragment editNameDialogFragment) {
         String name = editNameDialogFragment.getName();
         exercise.setName(name);
-        editExerciseDialogFragment.init();
+        editExerciseDialogFragment.init(editExerciseDialogFragment.getView());
         getActionBar().setTitle(exercise.getName());
     }
 }

@@ -6,7 +6,6 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.1.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
-		classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
@@ -17,7 +16,6 @@ allprojects {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -81,13 +79,11 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.google.zxing:android-integration:3.2.1'
-    compile 'com.jakewharton:butterknife:8.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
 }
 
 apply plugin: 'jacoco'
 
-jacoco.toolVersion = "0.7.2.201409121644"
+jacoco.toolVersion = "0.7.6.201602180812"
 
 task jacocoTestReport(type: JacocoReport) {
 	dependsOn project.tasks.withType(Test)

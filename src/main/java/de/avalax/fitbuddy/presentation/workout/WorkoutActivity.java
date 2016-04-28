@@ -17,12 +17,9 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnPageChange;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
@@ -32,10 +29,8 @@ import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
 public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
     private static final int MANAGE_WORKOUT = 1;
-    @BindView(R.id.pager)
-    protected ViewPager viewPager;
-    @BindView(R.id.workoutProgressBar)
-    protected ProgressBar workoutProggressBar;
+    private ViewPager viewPager;
+    private ProgressBar workoutProgressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
@@ -46,7 +41,6 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-        ButterKnife.bind(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         init();
     }
@@ -55,6 +49,25 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setBackgroundDrawable(null);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        workoutProgressBar = (ProgressBar) findViewById(R.id.workoutProgressBar);
+        ((ViewPager) findViewById(R.id.pager)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updatePage(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -64,20 +77,19 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         this.menuItem = menu.findItem(R.id.action_change_weight);
         try {
             initWorkoutActivity();
-        } catch (RessourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             Log.d("workout not found", e.getMessage(), e);
             startManageWorkoutActivity();
         }
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void initWorkoutActivity() throws RessourceNotFoundException {
+    private void initWorkoutActivity() throws ResourceNotFoundException {
         viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
         viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
         updatePage(workoutApplicationService.indexOfCurrentExercise());
     }
 
-    @OnPageChange(R.id.pager)
     protected void updatePage(int index) {
         try {
             workoutApplicationService.setCurrentExercise(index);
@@ -87,7 +99,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
                 menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise));
                 updateWorkoutProgress(index);
             }
-        } catch (RessourceNotFoundException | IOException e) {
+        } catch (ResourceNotFoundException | IOException e) {
             Log.d("can't update page", e.getMessage(), e);
         }
     }
@@ -115,7 +127,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         if (requestCode == MANAGE_WORKOUT && resultCode == Activity.RESULT_OK) {
             try {
                 initWorkoutActivity();
-            } catch (RessourceNotFoundException e) {
+            } catch (ResourceNotFoundException e) {
                 Log.d("workout not found", e.getMessage(), e);
             }
         }
@@ -127,7 +139,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             int index = workoutApplicationService.indexOfCurrentExercise();
             double weight = workoutApplicationService.weightOfCurrentSet(index);
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_name");
-        } catch (RessourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             Log.d("Can't edit weight", e.getMessage(), e);
         }
     }
@@ -139,8 +151,8 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
 
     protected void updateWorkoutProgress(int exerciseIndex) {
         try {
-            workoutProggressBar.setProgress(workoutApplicationService.workoutProgress(exerciseIndex));
-        } catch (RessourceNotFoundException e) {
+            workoutProgressBar.setProgress(workoutApplicationService.workoutProgress(exerciseIndex));
+        } catch (ResourceNotFoundException e) {
             Log.d("Can't change progress", e.getMessage(), e);
         }
     }
@@ -152,7 +164,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
             double weight = editWeightDialogFragment.getWeight();
             workoutApplicationService.updateWeightOfCurrentSet(index, weight);
             updatePage(index);
-        } catch (RessourceNotFoundException | IOException e) {
+        } catch (ResourceNotFoundException | IOException e) {
             Log.d("Can't edit weight", e.getMessage(), e);
         }
     }
@@ -166,7 +178,7 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
         try {
             workoutApplicationService.finishCurrentWorkout();
             initWorkoutActivity();
-        } catch (RessourceNotFoundException | IOException e) {
+        } catch (ResourceNotFoundException | IOException e) {
             Log.d("Can not finish workout", e.getMessage(), e);
         }
     }

@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.application.edit.workout;
 
 import android.view.View;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
-import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -70,7 +70,7 @@ public class EditWorkoutApplicationService {
         try {
             Workout workoutToSave = workoutSession.getWorkout();
             finishedWorkoutRepository.saveWorkout(workoutToSave);
-        } catch (RessourceNotFoundException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
         workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);
@@ -174,7 +174,7 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void changeSetAmount(Exercise exercise, int newSetAmount) throws RessourceNotFoundException {
+    public void changeSetAmount(Exercise exercise, int newSetAmount) throws ResourceNotFoundException {
         int countOfSets = exercise.countOfSets();
         if (newSetAmount == countOfSets) {
             return;
@@ -208,14 +208,14 @@ public class EditWorkoutApplicationService {
     }
 
 
-    public void moveExerciseAtPositionUp(int position) throws RessourceNotFoundException {
+    public void moveExerciseAtPositionUp(int position) throws ResourceNotFoundException {
         if (workout.moveExerciseAtPositionUp(position)) {
             workoutRepository.save(workout);
         }
         setUnsavedChanges(false);
     }
 
-    public void moveExerciseAtPositionDown(int position) throws RessourceNotFoundException {
+    public void moveExerciseAtPositionDown(int position) throws ResourceNotFoundException {
         if (workout.moveExerciseAtPositionDown(position)) {
             workoutRepository.save(workout);
         }

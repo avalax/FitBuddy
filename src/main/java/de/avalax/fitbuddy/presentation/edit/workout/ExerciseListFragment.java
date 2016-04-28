@@ -17,9 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -31,15 +28,13 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 public class ExerciseListFragment extends ListFragment {
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
-    @BindView(R.id.footer_undo)
-    protected View footer;
+    private View footer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
-        ButterKnife.bind(this, view);
         initListView();
         return view;
     }
@@ -48,6 +43,27 @@ public class ExerciseListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initContextualActionBar();
+        footer = getView().findViewById(R.id.footer_undo);
+        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
+
+        getView().findViewById(R.id.button_undo).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                undoChanges();
+            }
+        });
+
+        getView().findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addExercise();
+            }
+        });
+
+        TextView unsavedChangesTextView = (TextView) getView().findViewById(R.id.unsavedChangesTextView);
+        if (editWorkoutApplicationService.hasDeletedExercise()) {
+            unsavedChangesTextView.setText(R.string.has_deleted_exercise);
+        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
+            unsavedChangesTextView.setText(R.string.has_deleted_workout);
+        }
     }
 
     private void initContextualActionBar() {
@@ -61,13 +77,6 @@ public class ExerciseListFragment extends ListFragment {
         List<Exercise> exercises = getExercises(workout);
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
-        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
-        TextView unsavedChangesTextView = (TextView) footer.findViewById(R.id.unsavedChangesTextView);
-        if (editWorkoutApplicationService.hasDeletedExercise()) {
-            unsavedChangesTextView.setText(R.string.has_deleted_exercise);
-        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
-            unsavedChangesTextView.setText(R.string.has_deleted_workout);
-        }
     }
 
     private List<Exercise> getExercises(Workout workout) {
@@ -106,8 +115,7 @@ public class ExerciseListFragment extends ListFragment {
         }
     }
 
-    @OnClick(R.id.button_undo)
-    protected void undoChanges() {
+    private void undoChanges() {
         if (editWorkoutApplicationService.hasDeletedExercise()) {
             editWorkoutApplicationService.undoDeleteExercise();
         } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
@@ -117,7 +125,6 @@ public class ExerciseListFragment extends ListFragment {
         initListView();
     }
 
-    @OnClick(android.R.id.empty)
     protected void addExercise() {
         if (editWorkoutApplicationService.getWorkout() == null) {
             editWorkoutApplicationService.createWorkout();

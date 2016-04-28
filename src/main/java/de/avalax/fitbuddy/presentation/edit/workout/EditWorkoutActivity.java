@@ -23,11 +23,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.RessourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
@@ -54,7 +53,6 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
-        ButterKnife.bind(this);
         ((FitbuddyApplication) getApplication()).inject(this);
         init(savedInstanceState);
     }
@@ -70,7 +68,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
                 workoutId = workoutApplicationService.currentWorkoutId();
             }
             editWorkoutApplicationService.setWorkout(workoutId);
-        } catch (RessourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             Log.d("create a new workout", e.getMessage(), e);
             editWorkoutApplicationService.createWorkout();
         }

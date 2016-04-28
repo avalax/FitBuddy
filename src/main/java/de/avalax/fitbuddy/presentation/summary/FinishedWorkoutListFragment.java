@@ -11,8 +11,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
@@ -28,9 +26,18 @@ public class FinishedWorkoutListFragment extends ListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_finished_workout_list, container, false);
-        ButterKnife.bind(this, view);
         initListView();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        getView().findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishActivity();
+            }
+        });
     }
 
     protected void initListView() {
@@ -39,8 +46,7 @@ public class FinishedWorkoutListFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
-    @OnClick(android.R.id.empty)
-    protected void finishActivity() {
+    private void finishActivity() {
         getActivity().finish();
     }
 

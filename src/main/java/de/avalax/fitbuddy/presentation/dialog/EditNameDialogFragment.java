@@ -11,15 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.avalax.fitbuddy.R;
 
 public class EditNameDialogFragment extends DialogFragment {
     private static final String ARGS_NAME = "name";
     private static final String ARGS_HINT = "hint";
-    @BindView(R.id.nameEditText)
-    protected EditText nameEditText;
+
+    private EditText nameEditText;
     private DialogListener listener;
 
     public static EditNameDialogFragment newInstance(String name, String hint) {
@@ -47,10 +45,9 @@ public class EditNameDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_edit_name, null);
-        ButterKnife.bind(this, view);
-
         String name = getArguments().getString(ARGS_NAME);
 
+        nameEditText = (EditText) view.findViewById(R.id.nameEditText);
         nameEditText.setText(name);
         nameEditText.setHint(getArguments().getString(ARGS_HINT));
 

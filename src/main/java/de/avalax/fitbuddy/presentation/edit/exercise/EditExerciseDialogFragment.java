@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
@@ -28,17 +25,13 @@ public class EditExerciseDialogFragment extends Fragment {
 
     private static final String ARGS_EXERCISE = "exercise";
 
-    @BindView(R.id.exerciseNameEditText)
-    protected TextView exerciseNameEditText;
+    private TextView exerciseNameEditText;
 
-    @BindView(R.id.exerciseWeightExitText)
-    protected TextView exerciseWeightExitText;
+    private TextView exerciseWeightExitText;
 
-    @BindView(R.id.exerciseSetsTextView)
-    protected TextView exerciseSetsTextView;
+    private TextView exerciseSetsTextView;
 
-    @BindView(R.id.exerciseRepsTextView)
-    protected TextView exerciseRepsTextView;
+    private TextView exerciseRepsTextView;
 
     @Inject
     ExerciseViewHelper exerciseViewHelper;
@@ -56,32 +49,56 @@ public class EditExerciseDialogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_edit, container, false);
-        ButterKnife.bind(this, view);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
-        init();
+        init(view);
         return view;
     }
 
-    protected void init() {
+    protected void init(View view) {
+        exerciseNameEditText = (TextView) view.findViewById(R.id.exerciseNameEditText);
+        exerciseWeightExitText = (TextView) view.findViewById(R.id.exerciseWeightExitText);
+        exerciseSetsTextView = (TextView) view.findViewById(R.id.exerciseSetsTextView);
+        exerciseRepsTextView = (TextView) view.findViewById(R.id.exerciseRepsTextView);
+
         exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
         exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise));
         exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
         exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
+
+        view.findViewById(R.id.exerciseName).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeName();
+            }
+        });
+
+        view.findViewById(R.id.exerciseWeight).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeWeight();
+            }
+        });
+
+        view.findViewById(R.id.exerciseSets).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeSets();
+            }
+        });
+
+        view.findViewById(R.id.exerciseReps).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeReps();
+            }
+        });
     }
 
-
-    @OnClick(R.id.exerciseName)
-    protected void changeName() {
+    private void changeName() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         String name = exercise.getName();
         String hint = getResources().getString(R.string.new_exercise_name);
         EditNameDialogFragment.newInstance(name, hint).show(fm, "fragment_edit_name");
     }
 
-
-    @OnClick(R.id.exerciseWeight)
-    protected void changeWeight() {
+    private void changeWeight() {
         try {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
@@ -92,15 +109,13 @@ public class EditExerciseDialogFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.exerciseSets)
-    protected void changeSets() {
+    private void changeSets() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         int sets = exercise.countOfSets();
         EditSetsDialogFragment.newInstance(sets).show(fm, "fragment_edit_sets");
     }
 
-    @OnClick(R.id.exerciseReps)
-    protected void changeReps() {
+    private void changeReps() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         try {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
