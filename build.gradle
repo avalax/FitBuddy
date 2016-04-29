@@ -36,6 +36,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+	testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
     if (System.getenv("KEYSTORE") && new File(System.getenv("KEYSTORE")).exists()) {
         signingConfigs {
             release {
