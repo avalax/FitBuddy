@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
 
@@ -92,7 +92,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.5'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.squareup.dagger:dagger:1.2.5'
     compile 'com.google.zxing:android-integration:3.2.1'
@@ -100,7 +100,7 @@ dependencies {
 
 apply plugin: 'jacoco'
 
-jacoco.toolVersion = "0.7.6.201602180812"
+jacoco.toolVersion = "0.7.7.201606060606"
 
 task jacocoTestReport(type: JacocoReport) {
 	dependsOn project.tasks.withType(Test)
