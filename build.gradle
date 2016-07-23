@@ -100,7 +100,9 @@ dependencies {
 
 apply plugin: 'jacoco'
 
-jacoco.toolVersion = "0.7.7.201606060606"
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
 
 task jacocoTestReport(type: JacocoReport) {
 	dependsOn project.tasks.withType(Test)
@@ -145,6 +147,10 @@ task jacocoTestReport(type: JacocoReport) {
 }
 
 apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "7.0"
+}
 
 task checkstyle(type: Checkstyle) {
 	configFile rootProject.file('checkstyle.xml')
