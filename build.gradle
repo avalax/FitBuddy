@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-beta2'
+        classpath 'com.android.tools.build:gradle:2.2.0-rc2'
     }
 }
 
@@ -30,7 +30,7 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
     compileSdkVersion 24
-    buildToolsVersion '24.0.1'
+    buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
         minSdkVersion 14
