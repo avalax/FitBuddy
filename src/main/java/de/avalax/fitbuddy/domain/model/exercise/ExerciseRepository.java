@@ -11,6 +11,4 @@ public interface ExerciseRepository {
     void delete(ExerciseId id);
 
     List<Exercise> allExercisesBelongsTo(WorkoutId workoutId);
-
-    Exercise loadExerciseFromWorkoutWithPosition(WorkoutId workoutId, int position) throws ExerciseNotFoundException;
 }

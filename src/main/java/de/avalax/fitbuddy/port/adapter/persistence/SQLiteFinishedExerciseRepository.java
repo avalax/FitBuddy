@@ -35,7 +35,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
     private ContentValues getContentValues(FinishedWorkoutId finishedWorkoutId, Exercise exercise, Set set) {
         ContentValues values = new ContentValues();
         values.put("finished_workout_id", finishedWorkoutId.id());
-        values.put("name", exercise.getName() != null ? exercise.getName() : "");
+        values.put("name", exercise.getName());
         values.put("weight", set.getWeight());
         values.put("reps", set.getReps());
         values.put("maxReps", set.getMaxReps());

@@ -39,7 +39,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
 
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
-        values.put("name", workout.getName() != null ? workout.getName() : "");
+        values.put("name", workout.getName());
         return values;
     }
 
