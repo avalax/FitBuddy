@@ -62,7 +62,7 @@ public class SQLiteFinishedExerciseRepositoryTest {
     }
 
     @Test
-    public void saveExercise_shouldInsertExerciseWithSetInformations() throws Exception {
+    public void saveExercise_shouldInsertExerciseWithSetInformation() throws Exception {
         Set set = exercise.createSet();
         set.setWeight(12.34);
         set.setMaxReps(15);

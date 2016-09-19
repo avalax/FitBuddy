@@ -160,22 +160,6 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
-    public void loadExerciseFromPosition_shouldReturnTheExercise() throws Exception {
-        createExercise(0, "name");
-        ExerciseId exerciseId = createExercise(1, "name");
-        createExercise(2, "name");
-
-        Exercise exercise = exerciseRepository.loadExerciseFromWorkoutWithPosition(workoutId, 1);
-
-        assertThat(exercise.getExerciseId(), equalTo(exerciseId));
-    }
-
-    @Test(expected = ExerciseNotFoundException.class)
-    public void loadUnknownExerciseFromPosition_shouldThrowExerciseNotFoundException() throws Exception {
-        exerciseRepository.loadExerciseFromWorkoutWithPosition(workoutId, 1);
-    }
-
-    @Test
     public void deleteExerciseWithNull_shouldDoNothing() throws Exception {
         exerciseRepository.delete(null);
     }

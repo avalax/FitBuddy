@@ -91,7 +91,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
 
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
-        values.put("name", workout.getName() != null ? workout.getName() : "");
+        values.put("name", workout.getName());
         values.put("workout_id", workout.getWorkoutId() != null ? workout.getWorkoutId().id(): null);
         return values;
     }
