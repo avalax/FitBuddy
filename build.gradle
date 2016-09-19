@@ -33,7 +33,7 @@ android {
     buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -95,7 +95,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.squareup.dagger:dagger:1.2.5'
-    compile 'com.google.zxing:android-integration:3.2.1'
+    compile 'com.google.zxing:android-integration:3.3.0'
 }
 
 versioneye {

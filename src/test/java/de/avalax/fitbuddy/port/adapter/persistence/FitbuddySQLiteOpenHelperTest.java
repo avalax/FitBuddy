@@ -15,6 +15,7 @@ import java.io.InputStream;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.port.adapter.persistence.exception.DatabaseResourceNotFoundException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -30,7 +31,7 @@ public class FitbuddySQLiteOpenHelperTest {
         context = RuntimeEnvironment.application.getApplicationContext();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = DatabaseResourceNotFoundException.class)
     public void newInstanceWithWrongResource_shouldCreateDatabase() throws Exception {
         FitbuddySQLiteOpenHelper openHelper = new FitbuddySQLiteOpenHelper("FitbuddySQLiteOpenHelperTest", 1, context, R.raw.fitbuddy_db) {
             protected void insertFromStream(InputStream inputStream, SQLiteDatabase database) throws IOException {

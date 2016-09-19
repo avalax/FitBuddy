@@ -9,31 +9,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import de.avalax.fitbuddy.port.adapter.persistence.exception.DatabaseResourceNotFoundException;
+
 public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
     private Context context;
-    private int createRessourceId;
+    private int createResourceId;
 
-    public FitbuddySQLiteOpenHelper(String name, int version, Context context, int createRessourceId) {
+    public FitbuddySQLiteOpenHelper(String name, int version, Context context, int createResourceId) {
         super(context, name, null, version);
         this.context = context;
-        this.createRessourceId = createRessourceId;
+        this.createResourceId = createResourceId;
     }
 
     @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        if (!db.isReadOnly()) {
-            db.execSQL("PRAGMA foreign_keys=ON;");
-        }
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        InputStream inputStream = context.getResources().openRawResource(createRessourceId);
+        InputStream inputStream = context.getResources().openRawResource(createResourceId);
         try {
             insertFromStream(inputStream, database);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseResourceNotFoundException(e);
         }
     }
 
