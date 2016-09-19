@@ -44,4 +44,14 @@
     <string name="cab_title_manage_exercises">manage finishedWorkouts</string>
     <string name="cab_title_manage_exercise">manage exercise</string>
     <string name="action_display_finished_workouts">finished workouts</string>
+    <string name="no_exercises_default_text">click to add your first exercise</string>
+    <string name="action_undo">UNDO</string>
+    <string name="label_exercise_name">Exercise name</string>
+    <string name="default_exercise_name">new exercise</string>
+    <string name="label_exercise_weight">Weight</string>
+    <string name="default_weight">-</string>
+    <string name="label_exercise_sets">Sets</string>
+    <string name="default_exercise_sets">3</string>
+    <string name="label_exercise_repetitions">Repetitions</string>
+    <string name="default_exercise_repetitions">12</string>
 </resources>

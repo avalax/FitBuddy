@@ -21,7 +21,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:lines="1"
-        android:text="click to add your first exercise"
+        android:text="@string/no_exercises_default_text"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Holo.Small"/>
 
@@ -36,10 +36,9 @@
             android:id="@+id/unsavedChangesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="@string/unsaved_changes"
             android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
@@ -56,20 +55,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?android:attr/selectableItemBackground"
-            android:drawableLeft="@drawable/ic_action_undo"
+            android:drawableStart="@drawable/ic_action_undo"
             android:drawablePadding="6dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="10dp"
-            android:text="UNDO"
+            android:paddingStart="12dp"
+            android:paddingEnd="10dp"
+            android:text="@string/action_undo"
             android:textAppearance="@android:style/TextAppearance.Holo.Small"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button_undo"
+            android:layout_alignStart="@+id/button_undo"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="?android:attr/dividerVertical"/>

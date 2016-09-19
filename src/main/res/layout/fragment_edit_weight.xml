@@ -8,8 +8,8 @@
         android:id="@+id/weightNumberPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toLeftOf="@+id/divider"/>
+        android:layout_marginStart="10dp"
+        android:layout_toStartOf="@+id/divider"/>
 
     <TextView
         android:id="@+id/divider"
@@ -26,6 +26,6 @@
         android:id="@+id/weightDecimalPlacesNumberPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/divider"/>
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/divider"/>
 </RelativeLayout>

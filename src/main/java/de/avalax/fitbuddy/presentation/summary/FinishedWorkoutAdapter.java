@@ -29,8 +29,8 @@ public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = vi.inflate(textViewResourceId, parent, false);
             holder = new FinishedWorkoutViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.toptext);
-            holder.date = (TextView) convertView.findViewById(R.id.date);
+            holder.name = (TextView) convertView.findViewById(R.id.finished_workout_title);
+            holder.date = (TextView) convertView.findViewById(R.id.finished_workout_date);
             convertView.setTag(holder);
         } else {
             holder = (FinishedWorkoutViewHolder) convertView.getTag();

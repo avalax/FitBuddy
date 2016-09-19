@@ -7,10 +7,10 @@
     android:padding="6dip">
 
     <TextView
-        android:id="@+id/toptext"
+        android:id="@+id/finished_workout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="52dp"
+        android:layout_marginEnd="52dp"
         android:ellipsize="end"
         android:lines="1"
         android:text="@string/new_workout_name"
@@ -18,12 +18,12 @@
         android:textColor="@color/primary_progressbar"/>
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/finished_workout_date"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toptext"
-        android:layout_marginLeft="5dp"
-        android:drawableLeft="@drawable/ic_action_go_to_today"
+        android:layout_below="@+id/finished_workout_title"
+        android:layout_marginStart="5dp"
+        android:drawableStart="@drawable/ic_action_go_to_today"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="@string/edit_sets_bar_title"
