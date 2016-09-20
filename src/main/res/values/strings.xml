@@ -11,7 +11,6 @@
     <string name="vertical_bar_default_text">0</string>
     <string name="action_switch_workout">switch workout</string>
     <string name="action_finish_workout">finish workout</string>
-    <string name="cancel">Cancel</string>
     <string name="action_read_qrcode_failed">qrcode is not a fitbuddy workout</string>
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>

@@ -1,7 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<NumberPicker
-    android:id="@+id/setsNumberPicker"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minWidth="400dip"
+    android:orientation="vertical">
+
+    <NumberPicker
+        android:id="@+id/setsNumberPicker"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0" />
+
+    <Button
+        android:id="@+id/done_button"
+        style="?android:buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/ok" />
+</LinearLayout>

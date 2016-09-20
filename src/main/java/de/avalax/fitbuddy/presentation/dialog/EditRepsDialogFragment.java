@@ -1,24 +1,21 @@
 package de.avalax.fitbuddy.presentation.dialog;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import de.avalax.fitbuddy.R;
 
 public class EditRepsDialogFragment extends DialogFragment {
-
     private static final String ARGS_REPS = "reps";
     private NumberPicker repsNumberPicker;
     private DialogListener listener;
-    private int reps;
 
     public static EditRepsDialogFragment newInstance(int reps) {
         EditRepsDialogFragment fragment = new EditRepsDialogFragment();
@@ -39,45 +36,34 @@ public class EditRepsDialogFragment extends DialogFragment {
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_edit_reps, null);
-
-        this.reps = getArguments().getInt(ARGS_REPS);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_edit_reps, container, false);
+        Button button = (Button) view.findViewById(R.id.done_button);
+        Integer reps = getArguments().getInt(ARGS_REPS);
+        getDialog().setTitle(R.string.dialog_change_reps);
 
         repsNumberPicker = (NumberPicker) view.findViewById(R.id.repsNumberPicker);
         repsNumberPicker.setMinValue(0);
         repsNumberPicker.setMaxValue(999);
         repsNumberPicker.setValue(reps);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(view)
-                .setMessage(R.string.dialog_change_reps)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        setReps();
-                        listener.onDialogPositiveClick(EditRepsDialogFragment.this);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        EditRepsDialogFragment.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
-    }
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                listener.onDialogPositiveClick(EditRepsDialogFragment.this);
+                getDialog().dismiss();
+            }
+        });
 
-    private void setReps() {
-        this.reps = repsNumberPicker.getValue();
+        return view;
     }
 
     public int getReps() {
-        return reps;
+        return repsNumberPicker.getValue();
     }
 
     public interface DialogListener {
-        public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment);
+        void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment);
     }
 }
