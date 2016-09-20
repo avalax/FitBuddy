@@ -35,7 +35,18 @@ public class ExerciseListFragment extends ListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
-        initListView();
+        footer = view.findViewById(R.id.footer_undo);
+        view.findViewById(R.id.button_undo).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                undoChanges();
+            }
+        });
+
+        view.findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addExercise();
+            }
+        });
         return view;
     }
 
@@ -43,20 +54,8 @@ public class ExerciseListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initContextualActionBar();
-        footer = getView().findViewById(R.id.footer_undo);
-        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
+        initListView();
 
-        getView().findViewById(R.id.button_undo).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                undoChanges();
-            }
-        });
-
-        getView().findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                addExercise();
-            }
-        });
 
         TextView unsavedChangesTextView = (TextView) getView().findViewById(R.id.unsavedChangesTextView);
         if (editWorkoutApplicationService.hasDeletedExercise()) {
@@ -72,6 +71,7 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     protected void initListView() {
+        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
         //TODO: setdata using adapter.setData(data);
         Workout workout = editWorkoutApplicationService.getWorkout();
         List<Exercise> exercises = getExercises(workout);
@@ -80,7 +80,7 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     private List<Exercise> getExercises(Workout workout) {
-        //TODO: mover to service
+        //TODO: move to service
         if (workout == null) {
             return Collections.emptyList();
         }

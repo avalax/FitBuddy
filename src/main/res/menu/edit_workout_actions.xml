@@ -2,7 +2,7 @@
     <item
         android:id="@+id/action_save_workout"
         android:icon="@drawable/ic_action_accept"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/workout_save" />
     <item
         android:id="@+id/action_change_workout_name"
