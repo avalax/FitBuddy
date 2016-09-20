@@ -8,9 +8,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:layout_marginStart="?android:attr/listPreferredItemPaddingLeft"
         android:orientation="vertical"
-        android:paddingRight="?android:attr/scrollbarSize">
+        android:paddingEnd="?android:attr/scrollbarSize"
+        android:paddingStart="?android:attr/scrollbarSize">
 
         <RelativeLayout
             android:id="@+id/exerciseName"
@@ -27,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Exercise name"
+                android:maxLines="1"
+                android:text="@string/label_exercise_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -36,7 +37,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseName"
-                android:text="new exercise"
+                android:text="@string/default_exercise_name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>
@@ -65,8 +66,8 @@
 
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Weight"
+                android:maxLines="1"
+                android:text="@string/label_exercise_weight"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -74,7 +75,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseWeight"
-                android:text="-"
+                android:text="@string/default_weight"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>
@@ -102,8 +103,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Sets"
+                android:maxLines="1"
+                android:text="@string/label_exercise_sets"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -111,7 +112,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseSets"
-                android:text="3"
+                android:text="@string/default_exercise_sets"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>
@@ -139,8 +140,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Repetitions"
+                android:maxLines="1"
+                android:text="@string/label_exercise_repetitions"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <TextView
@@ -148,7 +149,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseReps"
-                android:text="12"
+                android:text="@string/default_exercise_repetitions"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>

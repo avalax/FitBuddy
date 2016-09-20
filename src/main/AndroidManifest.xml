@@ -5,19 +5,25 @@
     android:installLocation="auto">
 
     <application
-        android:name="de.avalax.fitbuddy.presentation.FitbuddyApplication"
+        android:name=".presentation.FitbuddyApplication"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <activity android:name="de.avalax.fitbuddy.presentation.workout.WorkoutActivity">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true">
+        <activity android:name=".presentation.workout.WorkoutActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="fitbuddy.de" />
             </intent-filter>
         </activity>
-        <activity android:name="de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity"/>
-        <activity android:name="de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity"/>
+        <activity android:name=".presentation.edit.workout.EditWorkoutActivity"/>
+        <activity android:name=".presentation.edit.exercise.EditExerciseActivity"/>
         <activity android:name=".presentation.summary.FinishedWorkoutActivity"/>
     </application>
 

@@ -1,24 +1,21 @@
 package de.avalax.fitbuddy.presentation.dialog;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import de.avalax.fitbuddy.R;
 
 public class EditSetsDialogFragment extends DialogFragment {
-
     private static final String ARGS_SETS = "sets";
-    protected NumberPicker setsNumberPicker;
-    DialogListener listener;
-    private int sets;
+    private NumberPicker setsNumberPicker;
+    private DialogListener listener;
 
     public static EditSetsDialogFragment newInstance(int sets) {
         EditSetsDialogFragment fragment = new EditSetsDialogFragment();
@@ -29,52 +26,41 @@ public class EditSetsDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            listener = (DialogListener) activity;
+            listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement EditSetsDialogFragment.DialogListener");
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_edit_sets, null);
-
-        this.sets = getArguments().getInt(ARGS_SETS);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_edit_sets, container, false);
+        Button button = (Button) view.findViewById(R.id.done_button);
+        Integer sets = getArguments().getInt(ARGS_SETS);
+        getDialog().setTitle(R.string.dialog_change_sets);
 
         setsNumberPicker = (NumberPicker) view.findViewById(R.id.setsNumberPicker);
         setsNumberPicker.setMinValue(0);
         setsNumberPicker.setMaxValue(999);
         setsNumberPicker.setValue(sets);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(view)
-                .setMessage(R.string.dialog_change_sets)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        setSets();
-                        listener.onDialogPositiveClick(EditSetsDialogFragment.this);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        EditSetsDialogFragment.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
-    }
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                listener.onDialogPositiveClick(EditSetsDialogFragment.this);
+                getDialog().dismiss();
+            }
+        });
 
-    private void setSets() {
-        this.sets = setsNumberPicker.getValue();
+        return view;
     }
 
     public int getSets() {
-        return sets;
+        return setsNumberPicker.getValue();
     }
 
     public interface DialogListener {

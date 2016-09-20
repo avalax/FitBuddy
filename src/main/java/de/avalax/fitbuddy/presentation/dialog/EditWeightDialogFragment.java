@@ -1,14 +1,17 @@
 package de.avalax.fitbuddy.presentation.dialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import de.avalax.fitbuddy.R;
@@ -19,8 +22,7 @@ public class EditWeightDialogFragment extends DialogFragment {
     private static final String ARGS_WEIGHT = "weight";
     private NumberPicker weightNumberPicker;
     private NumberPicker weightDecimalPlacesNumberPicker;
-    DialogListener listener;
-    private double weight;
+    private DialogListener listener;
     private WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
 
     public static EditWeightDialogFragment newInstance(double weight) {
@@ -32,23 +34,23 @@ public class EditWeightDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            listener = (DialogListener) activity;
+            listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement EditWeightDialogFragment.DialogListener");
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_edit_weight, null);
-
-        this.weight = getArguments().getDouble(ARGS_WEIGHT);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
+        Button button = (Button) view.findViewById(R.id.done_button);
+        Double weight = getArguments().getDouble(ARGS_WEIGHT);
+        getDialog().setTitle(R.string.dialog_change_weight);
 
         weightNumberPicker = (NumberPicker) view.findViewById(R.id.weightNumberPicker);
         weightNumberPicker.setMinValue(0);
@@ -62,29 +64,18 @@ public class EditWeightDialogFragment extends DialogFragment {
         weightDecimalPlacesNumberPicker.setValue(weightDecimalPlaces.getPosition(weight - Math.floor(weight)));
         weightDecimalPlacesNumberPicker.setDisplayedValues(labels);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(view)
-                .setMessage(R.string.dialog_change_weight)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        setWeight();
-                        listener.onDialogPositiveClick(EditWeightDialogFragment.this);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        EditWeightDialogFragment.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
-    }
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                listener.onDialogPositiveClick(EditWeightDialogFragment.this);
+                getDialog().dismiss();
+            }
+        });
 
-    private void setWeight() {
-        this.weight = weightNumberPicker.getValue() + weightDecimalPlaces.getWeight(weightDecimalPlacesNumberPicker.getValue());
+        return view;
     }
 
     public double getWeight() {
-        return weight;
+        return weightNumberPicker.getValue() + weightDecimalPlaces.getWeight(weightDecimalPlacesNumberPicker.getValue());
     }
 
     public interface DialogListener {

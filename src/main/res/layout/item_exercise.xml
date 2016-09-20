@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="?android:attr/activatedBackgroundIndicator"
     android:padding="6dip">
 
     <TextView
-        android:id="@+id/toptext"
+        android:id="@+id/exercise_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="52dp"
+        android:layout_marginEnd="52dp"
         android:ellipsize="end"
         android:lines="1"
         android:text="@string/new_exercise_name"
@@ -21,11 +20,11 @@
         android:id="@+id/setsTextView"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toptext"
-        android:layout_marginLeft="5dp"
-        android:drawableLeft="@drawable/ic_action_change_exercise"
+        android:layout_below="@+id/exercise_title"
+        android:layout_marginStart="5dp"
+        android:drawableEnd="@drawable/ic_action_change_exercise"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_sets_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
@@ -33,11 +32,11 @@
         android:id="@+id/repsTextView"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toptext"
-        android:layout_toRightOf="@+id/setsTextView"
-        android:drawableLeft="@drawable/ic_action_repeat"
+        android:layout_below="@+id/exercise_title"
+        android:layout_toEndOf="@+id/setsTextView"
+        android:drawableEnd="@drawable/ic_action_repeat"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_reps_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
@@ -45,12 +44,12 @@
         android:id="@+id/weightTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toptext"
+        android:layout_below="@+id/exercise_title"
         android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/repsTextView"
-        android:drawableLeft="@drawable/ic_action_weight"
+        android:layout_toEndOf="@+id/repsTextView"
+        android:drawableEnd="@drawable/ic_action_weight"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_weight_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 </RelativeLayout>

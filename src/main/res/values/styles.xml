@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppTheme" parent="android:Theme.Holo" />
-
-    <style name="PagerTitleStrip">
-        <item name="android:textAppearance">@android:style/TextAppearance.Holo.Medium</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingRight">108dp</item>
-    </style>
 </resources>

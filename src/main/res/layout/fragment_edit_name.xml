@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<EditText
-    android:id="@+id/nameEditText"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:inputType="textAutoComplete"
-    />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minWidth="400dip"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0"
+        android:divider="@null"
+        android:dividerHeight="0.0dip"
+        android:inputType="textAutoComplete"
+        tools:ignore="labelFor" />
+
+    <Button
+        android:id="@+id/done_button"
+        style="?android:buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/ok" />
+</LinearLayout>
