@@ -175,3 +175,58 @@ afterEvaluate {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14.1'
 }
+
+apply plugin: 'pmd'
+
+task pmd(type: Pmd, group: 'reporting', description: 'Inspect sourcecode for bugs') {
+    ruleSetFiles = files("pmd.xml")
+    ignoreFailures = true
+    ruleSets = []
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/test/**'
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        xml {
+            destination "$reportsDir/pmd/pmd.xml"
+        }
+        html {
+            destination "$reportsDir/pmd/pmd.html"
+        }
+    }
+}
+
+afterEvaluate {
+    if (project.tasks.findByName('check')) {
+        check.dependsOn('pmd')
+    }
+}
+
+apply plugin: 'findbugs'
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    classes = files('build/intermediates/classes/debug')
+    source = fileTree('src/main/java/')
+    classpath = files()
+    excludeFilter = new File("findbugs.xml")
+
+    effort = 'max'
+    reports {
+        xml.enabled = true
+        html.enabled = false
+        xml {
+            destination "$reportsDir/findbugs/findbugs.xml"
+        }
+    }
+}
+
+afterEvaluate {
+    if (project.tasks.findByName("check")) {
+        check.dependsOn('findbugs')
+    }
+}
