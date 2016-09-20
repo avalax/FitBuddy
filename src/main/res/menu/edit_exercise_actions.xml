@@ -3,5 +3,5 @@
         android:id="@+id/action_save_exercise"
         android:icon="@drawable/ic_action_accept"
         android:showAsAction="always"
-        android:title="save changes" />
+        android:title="@string/exercise_save" />
 </menu>

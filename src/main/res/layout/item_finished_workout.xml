@@ -25,7 +25,7 @@
         android:layout_marginStart="5dp"
         android:drawableStart="@drawable/ic_action_go_to_today"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_sets_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 </RelativeLayout>

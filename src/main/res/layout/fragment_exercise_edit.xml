@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/label_exercise_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -66,7 +66,7 @@
 
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/label_exercise_weight"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/label_exercise_sets"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/label_exercise_repetitions"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 

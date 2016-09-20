@@ -25,7 +25,7 @@
         android:layout_marginStart="5dp"
         android:drawableEnd="@drawable/ic_action_change_exercise"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_sets_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
@@ -37,7 +37,7 @@
         android:layout_toEndOf="@+id/setsTextView"
         android:drawableEnd="@drawable/ic_action_repeat"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_reps_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
@@ -50,7 +50,7 @@
         android:layout_toEndOf="@+id/repsTextView"
         android:drawableEnd="@drawable/ic_action_weight"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/edit_weight_bar_title"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 </RelativeLayout>

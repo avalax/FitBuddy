@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitBuddy</string>
-    <string name="action_settings">Settings</string>
-    <string name="negativeLabel">-%2$s = %1$s kg</string>
-    <string name="neutralLabel">%1$s kg</string>
-    <string name="positiveLabel">+%2$s = %1$s kg</string>
-    <string name="title_result">result of %1s</string>
     <string name="title_weight">%1$skg</string>
-    <string name="title_exercise_with_weight">%1$s: %2$skg</string>
     <string name="new_exercise_name">new exercise</string>
     <string name="new_workout_name">new workout</string>
-    <string name="edit_weight_title">weight - %1s</string>
-    <string name="edit_effort_title">"effort - %1s"</string>
-    <string name="edit_confirmation_title">save - %1s</string>
     <string name="edit_weight_bar_title">xx.x</string>
-    <string name="edit_weight_raise_bar_title">raise</string>
     <string name="edit_reps_bar_title">xx</string>
     <string name="edit_sets_bar_title">xx</string>
     <string name="vertical_bar_contentDescription">progressBar</string>
     <string name="vertical_bar_default_text">0</string>
-    <string name="edit_label_default_text">label</string>
-    <string name="action_toggle_editmode">edit workout</string>
     <string name="action_switch_workout">switch workout</string>
-    <string name="action_create_new_workout">add workout</string>
     <string name="action_finish_workout">finish workout</string>
-    <string name="save">Save</string>
-    <string name="action_delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="pager_overflow">show actions</string>
-    <string name="action_exercise_delete">delete exercise</string>
-    <string name="action_exercise_add_before_selected">add new exercise before</string>
-    <string name="action_exercise_add_behind_selected">add new exercise behind</string>
     <string name="action_read_qrcode_failed">qrcode is not a fitbuddy workout</string>
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
@@ -42,7 +23,6 @@
     <string name="dialog_change_reps">change reps</string>
     <string name="dialog_change_name">change name</string>
     <string name="cab_title_manage_exercises">manage finishedWorkouts</string>
-    <string name="cab_title_manage_exercise">manage exercise</string>
     <string name="action_display_finished_workouts">finished workouts</string>
     <string name="no_exercises_default_text">click to add your first exercise</string>
     <string name="action_undo">UNDO</string>
@@ -54,4 +34,15 @@
     <string name="default_exercise_sets">3</string>
     <string name="label_exercise_repetitions">Repetitions</string>
     <string name="default_exercise_repetitions">12</string>
+    <string name="exercise_save">save changes</string>
+    <string name="exercise_add">add exercise</string>
+    <string name="exercise_move_up">move up</string>
+    <string name="exercise_move_down">move down</string>
+    <string name="exercise_delete">delete</string>
+    <string name="workout_save">save changes</string>
+    <string name="workout_change_name">change workout name</string>
+    <string name="workout_add_new_exercise">add new exercise</string>
+    <string name="workout_delete">delete workout</string>
+    <string name="workout_new_workout">add new workout</string>
+    <string name="workout_share">share workout</string>
 </resources>

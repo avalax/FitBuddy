@@ -3,25 +3,25 @@
         android:id="@+id/action_save_workout"
         android:icon="@drawable/ic_action_accept"
         android:showAsAction="always"
-        android:title="save changes" />
+        android:title="@string/workout_save" />
     <item
         android:id="@+id/action_change_workout_name"
         android:showAsAction="collapseActionView"
-        android:title="change workout name" />
+        android:title="@string/workout_change_name" />
     <item
         android:id="@+id/action_add_exercise"
         android:showAsAction="collapseActionView"
-        android:title="add new exercise" />
+        android:title="@string/workout_add_new_exercise" />
     <item
         android:id="@+id/action_delete_workout"
         android:showAsAction="collapseActionView"
-        android:title="delete workout" />
+        android:title="@string/workout_delete" />
     <item
         android:id="@+id/action_add_workout"
         android:showAsAction="collapseActionView"
-        android:title="add new workout" />
+        android:title="@string/workout_new_workout" />
     <item
         android:id="@+id/action_share_workout"
         android:showAsAction="collapseActionView"
-        android:title="share workout" />
+        android:title="@string/workout_share" />
 </menu>
