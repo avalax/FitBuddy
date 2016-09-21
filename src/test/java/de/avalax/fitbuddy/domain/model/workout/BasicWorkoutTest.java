@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
@@ -97,17 +97,17 @@ public class BasicWorkoutTest {
         assertThat(workout.getName(), equalTo("newName"));
     }
 
-    @Test(expected = ExerciseNotFoundException.class)
+    @Test(expected = ExerciseException.class)
     public void indexOfCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
         workout.indexOfCurrentExercise();
     }
 
-    @Test(expected = ExerciseNotFoundException.class)
+    @Test(expected = ExerciseException.class)
     public void setCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
         workout.setCurrentExercise(0);
     }
 
-    @Test(expected = ExerciseNotFoundException.class)
+    @Test(expected = ExerciseException.class)
     public void setCurrentExerciseToNegativ_shouldThrowExerciseNotFoundException() throws Exception {
         workout.setCurrentExercise(-1);
     }
@@ -149,7 +149,7 @@ public class BasicWorkoutTest {
             exercise.setName("ExerciseOne");
         }
 
-        @Test(expected = ExerciseNotFoundException.class)
+        @Test(expected = ExerciseException.class)
         public void moveUnknownExerciseUp_shouldThrowExerciseNotFoundException() throws Exception {
             workout.moveExerciseAtPositionUp(1);
         }
@@ -174,7 +174,7 @@ public class BasicWorkoutTest {
         }
 
 
-        @Test(expected = ExerciseNotFoundException.class)
+        @Test(expected = ExerciseException.class)
         public void moveUnknownExerciseDown_shouldThrowExerciseNotFoundException() throws Exception {
             workout.moveExerciseAtPositionDown(-1);
         }
@@ -209,12 +209,12 @@ public class BasicWorkoutTest {
             assertThat(workout.countOfExercises(), equalTo(0));
         }
 
-        @Test(expected = ExerciseNotFoundException.class)
+        @Test(expected = ExerciseException.class)
         public void exerciseAtPosition_shouldThrowExerciseNotFoundException() throws Exception {
             workout.exerciseAtPosition(0);
         }
 
-        @Test(expected = ExerciseNotFoundException.class)
+        @Test(expected = ExerciseException.class)
         public void exerciseAtNegativePosition_shouldThrowExerciseNotFoundException() throws Exception {
             workout.exerciseAtPosition(-1);
         }
@@ -297,7 +297,7 @@ public class BasicWorkoutTest {
             exercise.setExerciseId(exerciseId);
 
             Exercise clonedExercise = new BasicExercise();
-            clonedExercise.setExerciseId(new ExerciseId(exerciseId));
+            clonedExercise.setExerciseId(exerciseId);
 
             workout.deleteExercise(clonedExercise);
 

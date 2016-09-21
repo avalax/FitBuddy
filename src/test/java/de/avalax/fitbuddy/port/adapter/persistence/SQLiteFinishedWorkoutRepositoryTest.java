@@ -19,7 +19,7 @@ import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
@@ -49,12 +49,12 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         workout.setName("basicWorkout");
     }
 
-    @Test(expected = FinishedWorkoutNotFoundException.class)
+    @Test(expected = FinishedWorkoutException.class)
     public void loadWithNullInstance_shouldThrowWorkoutNotFoundException() throws Exception {
         finishedWorkoutRepository.load(null);
     }
 
-    @Test(expected = FinishedWorkoutNotFoundException.class)
+    @Test(expected = FinishedWorkoutException.class)
     public void loadByUnknownWorkoutId_shouldThrowWorkoutNotFoundException() throws Exception {
         finishedWorkoutRepository.load(new FinishedWorkoutId("21"));
     }

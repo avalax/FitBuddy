@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,13 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
         this.exercises = exercises;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ExerciseViewHolder holder;
         if (convertView == null) {
-            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
+            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
             convertView = vi.inflate(textViewResourceId, parent, false);
             holder = new ExerciseViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.exercise_title);
@@ -43,18 +46,18 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
             holder = (ExerciseViewHolder) convertView.getTag();
         }
 
-        holder.setFromExericse(exercises.get(position));
+        holder.setFromExercise(exercises.get(position));
 
         return convertView;
     }
 
-    protected class ExerciseViewHolder {
+    class ExerciseViewHolder {
         public TextView name;
         public TextView weight;
         public TextView sets;
         public TextView reps;
 
-        public void setFromExericse(Exercise exercise) {
+        void setFromExercise(Exercise exercise) {
             name.setText(exerciseViewHelper.nameOfExercise(exercise));
             weight.setText(exerciseViewHelper.weightOfExercise(exercise));
             reps.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));

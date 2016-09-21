@@ -9,10 +9,6 @@ public class WorkoutId implements Serializable {
         this.id = id;
     }
 
-    public WorkoutId(WorkoutId workoutId) {
-        this(workoutId.id());
-    }
-
     public String id() {
         return id;
     }
@@ -29,6 +25,6 @@ public class WorkoutId implements Serializable {
 
     @Override
     public String toString() {
-        return "WorkoutId [id="+id+"]";
+        return "WorkoutId [id=" + id + "]";
     }
 }

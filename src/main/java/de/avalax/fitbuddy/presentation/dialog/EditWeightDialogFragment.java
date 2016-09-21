@@ -1,11 +1,7 @@
 package de.avalax.fitbuddy.presentation.dialog;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -20,8 +16,8 @@ import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 public class EditWeightDialogFragment extends DialogFragment {
 
     private static final String ARGS_WEIGHT = "weight";
-    private NumberPicker weightNumberPicker;
-    private NumberPicker weightDecimalPlacesNumberPicker;
+    private NumberPicker numberPicker;
+    private NumberPicker decimalPlacesNumberPicker;
     private DialogListener listener;
     private WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
 
@@ -46,23 +42,25 @@ public class EditWeightDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
         Button button = (Button) view.findViewById(R.id.done_button);
         Double weight = getArguments().getDouble(ARGS_WEIGHT);
         getDialog().setTitle(R.string.dialog_change_weight);
 
-        weightNumberPicker = (NumberPicker) view.findViewById(R.id.weightNumberPicker);
-        weightNumberPicker.setMinValue(0);
-        weightNumberPicker.setMaxValue(999);
-        weightNumberPicker.setValue((int) Math.floor(weight));
+        numberPicker = (NumberPicker) view.findViewById(R.id.numberPicker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(999);
+        numberPicker.setValue((int) Math.floor(weight));
 
         String[] labels = weightDecimalPlaces.getLabels();
-        weightDecimalPlacesNumberPicker = (NumberPicker) view.findViewById(R.id.weightDecimalPlacesNumberPicker);
-        weightDecimalPlacesNumberPicker.setMinValue(0);
-        weightDecimalPlacesNumberPicker.setMaxValue(labels.length - 1);
-        weightDecimalPlacesNumberPicker.setValue(weightDecimalPlaces.getPosition(weight - Math.floor(weight)));
-        weightDecimalPlacesNumberPicker.setDisplayedValues(labels);
+        int decimalPlaces = weightDecimalPlaces.getPosition(weight - Math.floor(weight));
+        decimalPlacesNumberPicker = (NumberPicker) view.findViewById(R.id.decimalPlaces);
+        decimalPlacesNumberPicker.setMinValue(0);
+        decimalPlacesNumberPicker.setMaxValue(labels.length - 1);
+        decimalPlacesNumberPicker.setValue(decimalPlaces);
+        decimalPlacesNumberPicker.setDisplayedValues(labels);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,7 +73,8 @@ public class EditWeightDialogFragment extends DialogFragment {
     }
 
     public double getWeight() {
-        return weightNumberPicker.getValue() + weightDecimalPlaces.getWeight(weightDecimalPlacesNumberPicker.getValue());
+        int decimalPlaces = decimalPlacesNumberPicker.getValue();
+        return numberPicker.getValue() + weightDecimalPlaces.getWeight(decimalPlaces);
     }
 
     public interface DialogListener {

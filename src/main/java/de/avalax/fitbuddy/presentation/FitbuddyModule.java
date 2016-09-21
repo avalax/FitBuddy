@@ -2,19 +2,30 @@ package de.avalax.fitbuddy.presentation;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.Locale;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
-import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
-import de.avalax.fitbuddy.port.adapter.persistence.*;
+import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedExerciseRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
@@ -27,10 +38,6 @@ import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
-import de.avalax.fitbuddy.R;
-
-import javax.inject.Singleton;
-import java.util.Locale;
 
 @Module(injects = {
         WorkoutActivity.class,
@@ -64,43 +71,58 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutRepository provideWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, ExerciseRepository exerciseRepository) {
+    WorkoutRepository provideWorkoutRepository(
+            SQLiteOpenHelper sqLiteOpenHelper,
+            ExerciseRepository exerciseRepository) {
         return new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
     }
 
     @Provides
     @Singleton
-    ExerciseRepository provideExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper, SetRepository setRepository) {
+    ExerciseRepository provideExerciseRepository(
+            SQLiteOpenHelper sqLiteOpenHelper,
+            SetRepository setRepository) {
         return new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
     }
 
     @Provides
     @Singleton
-    SetRepository provideSetRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    SetRepository provideSetRepository(
+            SQLiteOpenHelper sqLiteOpenHelper) {
         return new SQLiteSetRepository(sqLiteOpenHelper);
     }
 
     @Provides
     @Singleton
-    FinishedWorkoutRepository provideFinishWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, FinishedExerciseRepository finishedExerciseRepository) {
+    FinishedWorkoutRepository provideFinishWorkoutRepository(
+            SQLiteOpenHelper sqLiteOpenHelper,
+            FinishedExerciseRepository finishedExerciseRepository) {
         return new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
     }
 
     @Provides
     @Singleton
-    FinishedExerciseRepository provideFinishedExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    FinishedExerciseRepository provideFinishedExerciseRepository(
+            SQLiteOpenHelper sqLiteOpenHelper) {
         return new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
     }
 
     @Provides
     @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, FinishedWorkoutRepository finishedWorkoutRepository) {
-        return new WorkoutApplicationService(workoutSession, workoutRepository, finishedWorkoutRepository);
+    WorkoutApplicationService provideWorkoutApplicationService(
+            WorkoutSession workoutSession,
+            WorkoutRepository workoutRepository,
+            FinishedWorkoutRepository finishedWorkoutRepository) {
+        return new WorkoutApplicationService(
+                workoutSession,
+                workoutRepository,
+                finishedWorkoutRepository);
     }
 
     @Provides
     @Singleton
-    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService(FinishedWorkoutRepository finishedWorkoutRepository) {
+    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService(
+            FinishedWorkoutRepository finishedWorkoutRepository) {
         return new FinishedWorkoutApplicationService(finishedWorkoutRepository);
     }
 
@@ -121,7 +143,19 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    EditWorkoutApplicationService provideManageWorkout(WorkoutSession workoutSession, FinishedWorkoutRepository finishedWorkoutRepository, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, SetRepository setRepository, WorkoutService workoutService) {
-        return new EditWorkoutApplicationService(workoutSession, finishedWorkoutRepository, workoutRepository, exerciseRepository, setRepository, workoutService);
+    EditWorkoutApplicationService provideManageWorkout(
+            WorkoutSession workoutSession,
+            FinishedWorkoutRepository finishedWorkoutRepository,
+            WorkoutRepository workoutRepository,
+            ExerciseRepository exerciseRepository,
+            SetRepository setRepository,
+            WorkoutService workoutService) {
+        return new EditWorkoutApplicationService(
+                workoutSession,
+                finishedWorkoutRepository,
+                workoutRepository,
+                exerciseRepository,
+                setRepository,
+                workoutService);
     }
 }

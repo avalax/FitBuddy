@@ -4,11 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class ExercisePagerAdapter extends FragmentStatePagerAdapter {
+public class ExercisePager extends FragmentStatePagerAdapter {
 
     private final int count;
 
-    public ExercisePagerAdapter(FragmentManager fm, int count) {
+    public ExercisePager(FragmentManager fm, int count) {
         super(fm);
         this.count = count;
     }

@@ -21,7 +21,7 @@ import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -67,12 +67,12 @@ public class WorkoutSessionTest {
         workoutSession = new WorkoutSession(context);
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
+    @Test(expected = WorkoutException.class)
     public void noPersistedWorkout_shouldThrowWorkoutNotFoundException() throws Exception {
         workoutSession.getWorkout();
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
+    @Test(expected = WorkoutException.class)
     public void switchedToNullInstance_shouldThrowWorkoutNotFoundExceptiopn() throws Exception {
         workoutSession.switchWorkout(null);
 

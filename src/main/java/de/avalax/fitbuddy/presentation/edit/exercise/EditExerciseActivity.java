@@ -11,17 +11,21 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 
-public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
+public class EditExerciseActivity extends FragmentActivity implements
+        EditWeightDialogFragment.DialogListener,
+        EditSetsDialogFragment.DialogListener,
+        EditRepsDialogFragment.DialogListener,
+        EditNameDialogFragment.DialogListener {
 
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;
@@ -70,7 +74,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             try {
                 Set set = exercise.setAtPosition(i);
                 set.setWeight(weight);
-            } catch (SetNotFoundException e) {
+            } catch (SetException e) {
                 Log.d("can't update weight", e.getMessage(), e);
             }
         }
@@ -82,7 +86,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
         int newSetAmount = editSetsDialogFragment.getSets();
         try {
             editWorkoutApplicationService.changeSetAmount(exercise, newSetAmount);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("can't update set amount", e.getMessage(), e);
         }
         editExerciseDialogFragment.init(editExerciseDialogFragment.getView());
@@ -96,7 +100,7 @@ public class EditExerciseActivity extends FragmentActivity implements EditWeight
             try {
                 Set set = exercise.setAtPosition(i);
                 set.setMaxReps(reps);
-            } catch (SetNotFoundException e) {
+            } catch (SetException e) {
                 Log.d("can't update max reps", e.getMessage(), e);
             }
         }

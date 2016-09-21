@@ -15,7 +15,6 @@ public class WorkoutListEntry {
 
     @Override
     public String toString() {
-        //TODO: unnamed workout from resources & move to a ui helper
         if (name.length() == 0) {
             return "unnamed workout";
         }

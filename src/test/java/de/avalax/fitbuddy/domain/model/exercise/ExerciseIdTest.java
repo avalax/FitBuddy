@@ -12,7 +12,6 @@ public class ExerciseIdTest {
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     public void testSameIdentity() throws Exception {
         assertThat(new ExerciseId("42"), equalTo(new ExerciseId("42")));
-        assertThat(new ExerciseId(new ExerciseId("42")), equalTo(new ExerciseId("42")));
         assertThat(new ExerciseId("42").hashCode(), equalTo(new ExerciseId("42").hashCode()));
         assertThat(new ExerciseId("42").equals("42"), is(false));
     }

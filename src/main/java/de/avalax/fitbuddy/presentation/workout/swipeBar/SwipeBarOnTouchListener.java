@@ -9,18 +9,19 @@ import android.view.ViewConfiguration;
 public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
     private final GestureDetectorCompat gdt;
 
-    public SwipeBarOnTouchListener(Context context, View swipeableView, int swipeMoveMax) {
+    public SwipeBarOnTouchListener(Context context, View view, int swipeMoveMax) {
         final SwipeBarOnTouchListener touchListener = this;
         ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
         int minSwipeDistance = viewConfiguration.getScaledPagingTouchSlop();
-        int thresholdSwipeVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+        int velocity = viewConfiguration.getScaledMinimumFlingVelocity();
 
-        gdt = new GestureDetectorCompat (context, new SwipeBarOnGestureListener(swipeMoveMax, swipeableView, minSwipeDistance, thresholdSwipeVelocity) {
-            @Override
-            public void onFlingEvent(int moved) {
-                touchListener.onFlingEvent(moved);
-            }
-        });
+        gdt = new GestureDetectorCompat(context,
+                new SwipeBarOnGestureListener(swipeMoveMax, view, minSwipeDistance, velocity) {
+                    @Override
+                    public void onFlingEvent(int moved) {
+                        touchListener.onFlingEvent(moved);
+                    }
+                });
     }
 
     @Override

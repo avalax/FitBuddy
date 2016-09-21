@@ -9,10 +9,6 @@ public class ExerciseId implements Serializable {
         this.id = id;
     }
 
-    public ExerciseId(ExerciseId exerciseId) {
-        this(exerciseId.id());
-    }
-
     public String id() {
         return id;
     }

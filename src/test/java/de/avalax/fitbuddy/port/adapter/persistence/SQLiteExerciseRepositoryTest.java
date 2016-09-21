@@ -16,7 +16,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;

@@ -9,10 +9,6 @@ public class FinishedExerciseId implements Serializable {
         this.id = id;
     }
 
-    public FinishedExerciseId(FinishedExerciseId finishedWorkoutId) {
-        this(finishedWorkoutId.id());
-    }
-
     public String id() {
         return id;
     }

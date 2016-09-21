@@ -5,16 +5,16 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOnGestureListener {
-    private View swipeableView;
-    private int swipeMoveMax;
-    private int swipeMinDistance;
-    private int swipeThresholdVelocity;
+    private View view;
+    private int maxIncrement;
+    private int minDistance;
+    private int velocity;
 
-    public SwipeBarOnGestureListener(int swipeMoveMax, View swipeableView, int swipeMinDistance, int swipeThresholdVelocity) {
-        this.swipeMoveMax = swipeMoveMax;
-        this.swipeableView = swipeableView;
-        this.swipeMinDistance = swipeMinDistance;
-        this.swipeThresholdVelocity = swipeThresholdVelocity;
+    public SwipeBarOnGestureListener(int maxIncrement, View view, int minDistance, int velocity) {
+        this.maxIncrement = maxIncrement;
+        this.view = view;
+        this.minDistance = minDistance;
+        this.velocity = velocity;
     }
 
     @Override
@@ -24,16 +24,16 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
     }
 
     @Override
-    public boolean onFling(MotionEvent startMotionEvent, MotionEvent endMotionEvent, float velocityX, float velocityY) {
-        float absVelocityY = Math.abs(velocityY);
-        float moved = startMotionEvent.getY() - endMotionEvent.getY();
-        int scaledBarHeight = swipeableView.getHeight() / 2;
+    public boolean onFling(MotionEvent startEvent, MotionEvent endEvent, float x, float y) {
+        float absY = Math.abs(y);
+        float distance = startEvent.getY() - endEvent.getY();
+        int scaledBarHeight = view.getHeight() / 2;
 
-        if (moved > swipeMinDistance && absVelocityY > swipeThresholdVelocity) {
-            onFlingEvent(calculateMoved(moved, scaledBarHeight));
+        if (distance > minDistance && absY > velocity) {
+            onFlingEvent(calculateMoved(distance, scaledBarHeight));
             return true;
-        } else if (-moved > swipeMinDistance && absVelocityY > swipeMinDistance) {
-            onFlingEvent(-calculateMoved(moved, scaledBarHeight));
+        } else if (-distance > minDistance && absY > minDistance) {
+            onFlingEvent(-calculateMoved(distance, scaledBarHeight));
             return true;
         }
         return false;
@@ -41,8 +41,8 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
 
 
     private int calculateMoved(float moved, int height) {
-        if (Math.abs(moved) + swipeMinDistance >= height) {
-            return swipeMoveMax;
+        if (Math.abs(moved) + minDistance >= height) {
+            return maxIncrement;
         }
         return 1;
     }

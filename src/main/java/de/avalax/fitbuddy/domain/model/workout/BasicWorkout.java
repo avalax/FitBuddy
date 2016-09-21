@@ -2,8 +2,8 @@ package de.avalax.fitbuddy.domain.model.workout;
 
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +51,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public double getProgress(int position) throws ExerciseNotFoundException, SetNotFoundException {
+    public double getProgress(int position) throws ExerciseException, SetException {
         Exercise exercise = exerciseAtPosition(position);
         return (position + exercise.getProgress()) / exercises.size();
     }
@@ -70,9 +70,9 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Exercise exerciseAtPosition(int index) throws ExerciseNotFoundException {
+    public Exercise exerciseAtPosition(int index) throws ExerciseException {
         if (exercises.size() <= index || index < 0) {
-            throw new ExerciseNotFoundException();
+            throw new ExerciseException();
         }
         return exercises.get(index);
     }
@@ -96,23 +96,23 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setCurrentExercise(int index) throws ExerciseNotFoundException {
+    public void setCurrentExercise(int index) throws ExerciseException {
         if (exercises.size() <= index || index < 0) {
-            throw new ExerciseNotFoundException();
+            throw new ExerciseException();
         }
         exerciseIndex = index;
     }
 
     @Override
-    public int indexOfCurrentExercise() throws ExerciseNotFoundException {
+    public int indexOfCurrentExercise() throws ExerciseException {
         if (exercises.isEmpty()) {
-            throw new ExerciseNotFoundException();
+            throw new ExerciseException();
         }
         return exerciseIndex;
     }
 
     @Override
-    public boolean moveExerciseAtPositionUp(int index) throws ExerciseNotFoundException {
+    public boolean moveExerciseAtPositionUp(int index) throws ExerciseException {
         if (index == 0) {
             return false;
         }
@@ -123,7 +123,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public boolean moveExerciseAtPositionDown(int index) throws ExerciseNotFoundException {
+    public boolean moveExerciseAtPositionDown(int index) throws ExerciseException {
         if (index + 1 == countOfExercises()) {
             return false;
         }
@@ -139,7 +139,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Iterable<Exercise> exercisesOfWorkout() {
+    public List<Exercise> exercisesOfWorkout() {
         return Collections.unmodifiableList(exercises);
     }
 

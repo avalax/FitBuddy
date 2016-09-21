@@ -1,15 +1,17 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.R;
 
-class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
+class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
     private ItemsWithCheckedState itemsChecked;
     private ExerciseListFragment exerciseListFragment;
     private EditWorkoutApplicationService editWorkoutApplicationService;
@@ -17,7 +19,8 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private MenuItem moveExerciseDownMenuItem;
     private MenuItem deleteExerciseMenuItem;
 
-    public ExerciseListMultiChoiceModeListener(ExerciseListFragment exerciseListFragment, EditWorkoutApplicationService editWorkoutApplicationService) {
+    ExerciseModeListener(ExerciseListFragment exerciseListFragment,
+                         EditWorkoutApplicationService editWorkoutApplicationService) {
         this.exerciseListFragment = exerciseListFragment;
         this.editWorkoutApplicationService = editWorkoutApplicationService;
         this.itemsChecked = new ItemsWithCheckedState();
@@ -36,8 +39,10 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        Resources resources = exerciseListFragment.getResources();
+        CharSequence title = resources.getText(R.string.cab_title_manage_exercises);
         mode.getMenuInflater().inflate(R.menu.edit_exerciselist_actions, mode.getMenu());
-        mode.setTitle(exerciseListFragment.getResources().getText(R.string.cab_title_manage_exercises));
+        mode.setTitle(title);
         moveExerciseUpMenuItem = menu.findItem(R.id.action_move_exercise_up);
         moveExerciseDownMenuItem = menu.findItem(R.id.action_move_exercise_down);
         deleteExerciseMenuItem = menu.findItem(R.id.action_delete_exercise);
@@ -82,7 +87,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void deleteExercises() {
         try {
             editWorkoutApplicationService.deleteExercise(itemsChecked.list());
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't delete exercises", e.getMessage(), e);
         }
     }
@@ -90,7 +95,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void moveExerciseUp(int position) {
         try {
             editWorkoutApplicationService.moveExerciseAtPositionUp(position);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't move exercise up", e.getMessage(), e);
         }
     }
@@ -98,7 +103,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void moveExerciseDown(int position) {
         try {
             editWorkoutApplicationService.moveExerciseAtPositionDown(position);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't move exercise", e.getMessage(), e);
         }
     }

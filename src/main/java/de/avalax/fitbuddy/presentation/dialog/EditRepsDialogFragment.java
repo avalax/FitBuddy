@@ -38,7 +38,8 @@ public class EditRepsDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_reps, container, false);
         Button button = (Button) view.findViewById(R.id.done_button);
         Integer reps = getArguments().getInt(ARGS_REPS);
