@@ -45,7 +45,7 @@ public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
         return convertView;
     }
 
-    class FinishedWorkoutViewHolder {
+    static class FinishedWorkoutViewHolder {
         TextView name;
         TextView date;
 

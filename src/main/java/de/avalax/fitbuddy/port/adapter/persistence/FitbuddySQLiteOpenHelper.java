@@ -8,8 +8,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import de.avalax.fitbuddy.port.adapter.persistence.exception.DatabaseResourceNotFoundException;
+
+import static java.nio.charset.StandardCharsets.*;
 
 public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
     private Context context;
@@ -43,7 +46,8 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
 
     protected void insertFromStream(InputStream inputStream, SQLiteDatabase database)
             throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         while (bufferedReader.ready()) {
             String insertStmt = bufferedReader.readLine();
             database.execSQL(insertStmt);
