@@ -21,11 +21,12 @@ import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
+import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment.DialogListener;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
-public class WorkoutActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener {
+public class WorkoutActivity extends FragmentActivity implements DialogListener {
     private static final int MANAGE_WORKOUT = 1;
     private ViewPager viewPager;
     private ProgressBar workoutProgressBar;
@@ -50,9 +51,9 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         workoutProgressBar = (ProgressBar) findViewById(R.id.workoutProgressBar);
-        ((ViewPager) findViewById(R.id.pager)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float offset, int offsetPixels) {
 
             }
 
@@ -83,7 +84,8 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
     }
 
     private void initWorkoutActivity() throws ResourceException {
-        viewPager.setAdapter(new ExercisePagerAdapter(getSupportFragmentManager(), workoutApplicationService.countOfExercises()));
+        int countOfExercises = workoutApplicationService.countOfExercises();
+        viewPager.setAdapter(new ExercisePager(getSupportFragmentManager(), countOfExercises));
         viewPager.setCurrentItem(workoutApplicationService.indexOfCurrentExercise());
         updatePage(workoutApplicationService.indexOfCurrentExercise());
     }
@@ -149,7 +151,8 @@ public class WorkoutActivity extends FragmentActivity implements EditWeightDialo
 
     protected void updateWorkoutProgress(int exerciseIndex) {
         try {
-            workoutProgressBar.setProgress(workoutApplicationService.workoutProgress(exerciseIndex));
+            int workoutProgress = workoutApplicationService.workoutProgress(exerciseIndex);
+            workoutProgressBar.setProgress(workoutProgress);
         } catch (ResourceException e) {
             Log.d("Can't change progress", e.getMessage(), e);
         }

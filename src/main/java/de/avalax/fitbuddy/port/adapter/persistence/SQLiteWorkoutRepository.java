@@ -4,18 +4,26 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.workout.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class SQLiteWorkoutRepository implements WorkoutRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
     private ExerciseRepository exerciseRepository;
 
-    public SQLiteWorkoutRepository(SQLiteOpenHelper sqLiteOpenHelper, ExerciseRepository exerciseRepository) {
+    public SQLiteWorkoutRepository(
+            SQLiteOpenHelper sqLiteOpenHelper,
+            ExerciseRepository exerciseRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
         this.exerciseRepository = exerciseRepository;
     }
@@ -27,7 +35,8 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             long id = database.insertOrThrow("workout", null, getContentValues(workout));
             workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
         } else {
-            database.update("workout", getContentValues(workout), "id=?", new String[]{workout.getWorkoutId().id()});
+            String[] args = {workout.getWorkoutId().id()};
+            database.update("workout", getContentValues(workout), "id=?", args);
         }
         database.close();
         int position = 1;

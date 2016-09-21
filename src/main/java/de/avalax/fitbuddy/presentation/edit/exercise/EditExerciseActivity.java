@@ -21,7 +21,11 @@ import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditSetsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 
-public class EditExerciseActivity extends FragmentActivity implements EditWeightDialogFragment.DialogListener, EditSetsDialogFragment.DialogListener, EditRepsDialogFragment.DialogListener, EditNameDialogFragment.DialogListener {
+public class EditExerciseActivity extends FragmentActivity implements
+        EditWeightDialogFragment.DialogListener,
+        EditSetsDialogFragment.DialogListener,
+        EditRepsDialogFragment.DialogListener,
+        EditNameDialogFragment.DialogListener {
 
     @Inject
     protected EditWorkoutApplicationService editWorkoutApplicationService;

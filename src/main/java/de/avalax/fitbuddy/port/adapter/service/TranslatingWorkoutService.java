@@ -10,7 +10,9 @@ public class TranslatingWorkoutService implements WorkoutService {
 
     private WorkoutInJsonAdapter workoutInJsonAdapter;
 
-    public TranslatingWorkoutService(JsonInWorkoutAdapter jsonInWorkoutAdapter, WorkoutInJsonAdapter workoutInJsonAdapter) {
+    public TranslatingWorkoutService(
+            JsonInWorkoutAdapter jsonInWorkoutAdapter,
+            WorkoutInJsonAdapter workoutInJsonAdapter) {
         this.jsonInWorkoutAdapter = jsonInWorkoutAdapter;
         this.workoutInJsonAdapter = workoutInJsonAdapter;
     }

@@ -13,12 +13,12 @@ import de.avalax.fitbuddy.port.adapter.persistence.exception.DatabaseResourceNot
 
 public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
     private Context context;
-    private int createResourceId;
+    private int resourceId;
 
-    public FitbuddySQLiteOpenHelper(String name, int version, Context context, int createResourceId) {
+    public FitbuddySQLiteOpenHelper(String name, int version, Context context, int resourceId) {
         super(context, name, null, version);
         this.context = context;
-        this.createResourceId = createResourceId;
+        this.resourceId = resourceId;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        InputStream inputStream = context.getResources().openRawResource(createResourceId);
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
         try {
             insertFromStream(inputStream, database);
         } catch (IOException e) {
@@ -41,7 +41,8 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
     }
 
-    protected void insertFromStream(InputStream inputStream, SQLiteDatabase database) throws IOException {
+    protected void insertFromStream(InputStream inputStream, SQLiteDatabase database)
+            throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         while (bufferedReader.ready()) {
             String insertStmt = bufferedReader.readLine();

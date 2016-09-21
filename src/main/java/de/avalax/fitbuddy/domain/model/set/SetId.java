@@ -9,10 +9,6 @@ public class SetId implements Serializable {
         this.id = id;
     }
 
-    public SetId(SetId SetId) {
-        this(SetId.id());
-    }
-
     public String id() {
         return id;
     }

@@ -11,8 +11,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,11 +25,12 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 public class ExerciseListFragment extends ListFragment {
     @Inject
-    protected EditWorkoutApplicationService editWorkoutApplicationService;
+    protected EditWorkoutApplicationService editWorkoutService;
     private View footer;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
@@ -56,44 +55,27 @@ public class ExerciseListFragment extends ListFragment {
         initContextualActionBar();
         initListView();
 
-
-        TextView unsavedChangesTextView = (TextView) getView().findViewById(R.id.unsavedChangesTextView);
-        if (editWorkoutApplicationService.hasDeletedExercise()) {
-            unsavedChangesTextView.setText(R.string.has_deleted_exercise);
-        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
-            unsavedChangesTextView.setText(R.string.has_deleted_workout);
+        TextView textView = (TextView) getView().findViewById(R.id.unsavedChangesTextView);
+        if (editWorkoutService.hasDeletedExercise()) {
+            textView.setText(R.string.has_deleted_exercise);
+        } else if (editWorkoutService.hasDeletedWorkout()) {
+            textView.setText(R.string.has_deleted_workout);
         }
     }
 
     private void initContextualActionBar() {
+        ExerciseModeListener listener = new ExerciseModeListener(this, editWorkoutService);
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(new ExerciseListMultiChoiceModeListener(this, editWorkoutApplicationService));
+        getListView().setMultiChoiceModeListener(listener);
     }
 
     protected void initListView() {
-        footer.setVisibility(editWorkoutApplicationService.unsavedChangesVisibility());
-        //TODO: setdata using adapter.setData(data);
-        Workout workout = editWorkoutApplicationService.getWorkout();
-        List<Exercise> exercises = getExercises(workout);
+        int visibility = editWorkoutService.hasUnsavedChanges() ? View.VISIBLE : View.GONE;
+        footer.setVisibility(visibility);
+        Workout workout = editWorkoutService.getWorkout();
+        List<Exercise> exercises = workout.exercisesOfWorkout();
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
-    }
-
-    private List<Exercise> getExercises(Workout workout) {
-        //TODO: move to service
-        if (workout == null) {
-            return Collections.emptyList();
-        }
-        List<Exercise> exercises = new ArrayList<>();
-        for (int i = 0; i < workout.countOfExercises(); i++) {
-            try {
-                Exercise exercise = workout.exerciseAtPosition(i);
-                exercises.add(exercise);
-            } catch (ExerciseException e) {
-                Log.d("Can't add exercise", e.getMessage(), e);
-            }
-        }
-        return exercises;
     }
 
     @Override
@@ -105,7 +87,7 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Exercise exercise = editWorkoutApplicationService.getWorkout().exerciseAtPosition(position);
+            Exercise exercise = editWorkoutService.getWorkout().exerciseAtPosition(position);
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
             intent.putExtra("exercise", exercise);
             intent.putExtra("position", position);
@@ -116,21 +98,21 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     private void undoChanges() {
-        if (editWorkoutApplicationService.hasDeletedExercise()) {
-            editWorkoutApplicationService.undoDeleteExercise();
-        } else if (editWorkoutApplicationService.hasDeletedWorkout()) {
-            editWorkoutApplicationService.undoDeleteWorkout();
+        if (editWorkoutService.hasDeletedExercise()) {
+            editWorkoutService.undoDeleteExercise();
+        } else if (editWorkoutService.hasDeletedWorkout()) {
+            editWorkoutService.undoDeleteWorkout();
             ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
         initListView();
     }
 
     protected void addExercise() {
-        if (editWorkoutApplicationService.getWorkout() == null) {
-            editWorkoutApplicationService.createWorkout();
+        if (editWorkoutService.getWorkout() == null) {
+            editWorkoutService.createWorkout();
             ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
-        editWorkoutApplicationService.createExercise();
+        editWorkoutService.createExercise();
         initListView();
     }
 

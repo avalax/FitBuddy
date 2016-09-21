@@ -1,8 +1,5 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
-import android.view.View;
-
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +16,9 @@ import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
@@ -68,8 +65,8 @@ public class EditWorkoutApplicationService {
         this.unsavedChanges = unsavedChanges;
     }
 
-    public int unsavedChangesVisibility() {
-        return unsavedChanges ? View.VISIBLE : View.GONE;
+    public boolean hasUnsavedChanges() {
+        return unsavedChanges;
     }
 
     public Workout getWorkout() {
@@ -165,12 +162,6 @@ public class EditWorkoutApplicationService {
     public void createExercise() {
         Exercise exercise = workout.createExercise();
         exerciseRepository.save(workout.getWorkoutId(), workout.countOfExercises() - 1, exercise);
-        setUnsavedChanges(false);
-    }
-
-    public void createExerciseAfterPosition(int position) {
-        workout.createExercise(position + 1);
-        workoutRepository.save(workout);
         setUnsavedChanges(false);
     }
 

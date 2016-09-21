@@ -10,7 +10,7 @@
         android:layout_weight="1.0">
 
         <NumberPicker
-            android:id="@+id/weightNumberPicker"
+            android:id="@+id/numberPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -28,7 +28,7 @@
             android:textAppearance="@android:style/TextAppearance.Holo.Large" />
 
         <NumberPicker
-            android:id="@+id/weightDecimalPlacesNumberPicker"
+            android:id="@+id/decimalPlaces"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

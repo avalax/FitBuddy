@@ -139,7 +139,7 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public Iterable<Exercise> exercisesOfWorkout() {
+    public List<Exercise> exercisesOfWorkout() {
         return Collections.unmodifiableList(exercises);
     }
 

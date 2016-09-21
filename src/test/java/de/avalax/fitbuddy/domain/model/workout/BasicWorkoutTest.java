@@ -297,7 +297,7 @@ public class BasicWorkoutTest {
             exercise.setExerciseId(exerciseId);
 
             Exercise clonedExercise = new BasicExercise();
-            clonedExercise.setExerciseId(new ExerciseId(exerciseId));
+            clonedExercise.setExerciseId(exerciseId);
 
             workout.deleteExercise(clonedExercise);
 

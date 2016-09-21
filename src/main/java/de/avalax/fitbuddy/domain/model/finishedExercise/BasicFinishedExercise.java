@@ -10,7 +10,13 @@ public class BasicFinishedExercise implements FinishedExercise {
     private int reps;
     private FinishedExerciseId finishedExerciseId;
 
-    public BasicFinishedExercise(FinishedExerciseId finishedExerciseId, FinishedWorkoutId finishedWorkoutId, String name, double weight, int reps, int maxReps) {
+    public BasicFinishedExercise(
+            FinishedExerciseId finishedExerciseId,
+            FinishedWorkoutId finishedWorkoutId,
+            String name,
+            double weight,
+            int reps,
+            int maxReps) {
         this.finishedWorkoutId = finishedWorkoutId;
         this.finishedExerciseId = finishedExerciseId;
         this.name = name;
@@ -51,12 +57,16 @@ public class BasicFinishedExercise implements FinishedExercise {
 
     @Override
     public String toString() {
-        return "BasicFinishedExercise [name=" + name + ", finishedExerciseId=" + finishedExerciseId.toString() + ", weight=" + weight + ", reps=" + reps + "]";
+        return "BasicFinishedExercise [name=" + name
+                + ", finishedExerciseId=" + finishedExerciseId.toString()
+                + ", weight=" + weight
+                + ", reps=" + reps + "]";
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof FinishedExercise && finishedExerciseId.equals(((FinishedExercise) o).getFinishedExerciseId());
+        return o instanceof FinishedExercise
+                && finishedExerciseId.equals(((FinishedExercise) o).getFinishedExerciseId());
     }
 
     @Override

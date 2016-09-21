@@ -12,7 +12,6 @@ public class SetIdTest {
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     public void testSameIdentity() throws Exception {
         assertThat(new SetId("42"), equalTo(new SetId("42")));
-        assertThat(new SetId(new SetId("42")), equalTo(new SetId("42")));
         assertThat(new SetId("42").hashCode(), equalTo(new SetId("42").hashCode()));
         assertThat(new SetId("42").equals("42"), is(false));
     }

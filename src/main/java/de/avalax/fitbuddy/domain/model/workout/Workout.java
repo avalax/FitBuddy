@@ -5,6 +5,7 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Workout extends Serializable {
     WorkoutId getWorkoutId();
@@ -39,5 +40,5 @@ public interface Workout extends Serializable {
 
     int countOfExercises();
 
-    Iterable<Exercise> exercisesOfWorkout();
+    List<Exercise> exercisesOfWorkout();
 }

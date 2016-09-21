@@ -52,31 +52,35 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        setProgressBar = (VerticalProgressbarView) getView().findViewById(R.id.leftProgressBar);
-        exerciseProgressBar = (VerticalProgressbarView) getView().findViewById(R.id.rightProgressBar);
+        setProgressBar = (VerticalProgressbarView) view.findViewById(R.id.leftProgressBar);
+        exerciseProgressBar = (VerticalProgressbarView) view.findViewById(R.id.rightProgressBar);
         try {
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            setProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), setProgressBar, exerciseViewHelper.maxRepsOfExercise(exercise)) {
-                @Override
-                public void onFlingEvent(int moved) {
-                    try {
-                        changeReps(moved);
-                    } catch (ResourceException | IOException e) {
-                        Log.d("Can't change reps", e.getMessage(), e);
-                    }
-                }
-            });
+            int reps = exerciseViewHelper.maxRepsOfExercise(exercise);
+            int sets = exerciseViewHelper.setCountOfExercise(exercise);
+            setProgressBar.setOnTouchListener(
+                    new SwipeBarOnTouchListener(getActivity(), setProgressBar, reps) {
+                        @Override
+                        public void onFlingEvent(int moved) {
+                            try {
+                                changeReps(moved);
+                            } catch (ResourceException | IOException e) {
+                                Log.d("Can't change reps", e.getMessage(), e);
+                            }
+                        }
+                    });
 
-            exerciseProgressBar.setOnTouchListener(new SwipeBarOnTouchListener(getActivity(), exerciseProgressBar, exerciseViewHelper.setCountOfExercise(exercise)) {
-                @Override
-                public void onFlingEvent(int moved) {
-                    try {
-                        moveToSet(moved);
-                    } catch (ResourceException | IOException e) {
-                        Log.d("Can't change set", e.getMessage(), e);
-                    }
-                }
-            });
+            exerciseProgressBar.setOnTouchListener(
+                    new SwipeBarOnTouchListener(getActivity(), exerciseProgressBar, sets) {
+                        @Override
+                        public void onFlingEvent(int moved) {
+                            try {
+                                moveToSet(moved);
+                            } catch (ResourceException | IOException e) {
+                                Log.d("Can't change set", e.getMessage(), e);
+                            }
+                        }
+                    });
 
             updateExerciseProgress();
             updateSetProgress();
@@ -104,14 +108,17 @@ public class ExerciseFragment extends Fragment {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
-        setProgressBar.updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
+        double progress = set.getProgress();
+        String reps = String.valueOf(set.getReps());
+        String maxReps = String.valueOf(set.getMaxReps());
+        setProgressBar.updateProgressbar(progress, reps, maxReps);
     }
 
     private void updateExerciseProgress() throws ResourceException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-        String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
-        String maxValueText = String.valueOf(exercise.countOfSets());
-        exerciseProgressBar.updateProgressbar(exercise.getProgress(), currentValueText, maxValueText);
+        String currentValue = String.valueOf(exercise.indexOfCurrentSet() + 1);
+        String maxValue = String.valueOf(exercise.countOfSets());
+        exerciseProgressBar.updateProgressbar(exercise.getProgress(), currentValue, maxValue);
     }
 
     private void updateWorkoutProgress() {

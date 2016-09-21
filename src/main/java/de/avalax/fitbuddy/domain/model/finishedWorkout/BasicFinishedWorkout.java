@@ -1,9 +1,9 @@
 package de.avalax.fitbuddy.domain.model.finishedWorkout;
 
+import java.util.List;
+
 import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-
-import java.util.List;
 
 public class BasicFinishedWorkout implements FinishedWorkout {
     private FinishedWorkoutId finishedWorkoutId;
@@ -12,7 +12,12 @@ public class BasicFinishedWorkout implements FinishedWorkout {
     private String created;
     private List<FinishedExercise> finishedExercises;
 
-    public BasicFinishedWorkout(FinishedWorkoutId finishedWorkoutId, WorkoutId workoutId, String workoutName, String created, List<FinishedExercise> finishedExercises) {
+    public BasicFinishedWorkout(
+            FinishedWorkoutId finishedWorkoutId,
+            WorkoutId workoutId,
+            String workoutName,
+            String created,
+            List<FinishedExercise> finishedExercises) {
         this.finishedWorkoutId = finishedWorkoutId;
         this.workoutId = workoutId;
         this.workoutName = workoutName;
@@ -47,12 +52,16 @@ public class BasicFinishedWorkout implements FinishedWorkout {
 
     @Override
     public String toString() {
-        return "BasicFinishedWorkout [name=" + workoutName + ", finishedWorkoutId=" + finishedWorkoutId.toString() + ", workoutId=" + workoutId.toString() + ", created=" + created + "]";
+        return "BasicFinishedWorkout [name=" + workoutName
+                + ", finishedWorkoutId=" + finishedWorkoutId.toString()
+                + ", workoutId=" + workoutId.toString()
+                + ", created=" + created + "]";
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof FinishedWorkout && finishedWorkoutId.equals(((FinishedWorkout) o).getFinishedWorkoutId());
+        return o instanceof FinishedWorkout
+                && finishedWorkoutId.equals(((FinishedWorkout) o).getFinishedWorkoutId());
     }
 
     @Override

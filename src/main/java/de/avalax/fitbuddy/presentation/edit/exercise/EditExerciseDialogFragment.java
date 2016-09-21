@@ -25,14 +25,6 @@ public class EditExerciseDialogFragment extends Fragment {
 
     private static final String ARGS_EXERCISE = "exercise";
 
-    private TextView exerciseNameEditText;
-
-    private TextView exerciseWeightExitText;
-
-    private TextView exerciseSetsTextView;
-
-    private TextView exerciseRepsTextView;
-
     @Inject
     ExerciseViewHelper exerciseViewHelper;
 
@@ -47,7 +39,8 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_edit, container, false);
         ((FitbuddyApplication) getActivity().getApplication()).inject(this);
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
@@ -56,15 +49,19 @@ public class EditExerciseDialogFragment extends Fragment {
     }
 
     protected void init(View view) {
-        exerciseNameEditText = (TextView) view.findViewById(R.id.exerciseNameEditText);
-        exerciseWeightExitText = (TextView) view.findViewById(R.id.exerciseWeightExitText);
-        exerciseSetsTextView = (TextView) view.findViewById(R.id.exerciseSetsTextView);
-        exerciseRepsTextView = (TextView) view.findViewById(R.id.exerciseRepsTextView);
+        String reps = String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise));
+        String sets = String.valueOf(exerciseViewHelper.setCountOfExercise(exercise));
+        String name = exerciseViewHelper.nameOfExercise(exercise);
+        String weight = exerciseViewHelper.weightOfExercise(exercise);
+        TextView exerciseNameEditText = (TextView) view.findViewById(R.id.exerciseNameEditText);
+        TextView exerciseWeightExitText = (TextView) view.findViewById(R.id.exerciseWeightExitText);
+        TextView exerciseSetsTextView = (TextView) view.findViewById(R.id.exerciseSetsTextView);
+        TextView exerciseRepsTextView = (TextView) view.findViewById(R.id.exerciseRepsTextView);
 
-        exerciseNameEditText.setText(exerciseViewHelper.nameOfExercise(exercise));
-        exerciseWeightExitText.setText(exerciseViewHelper.weightOfExercise(exercise));
-        exerciseRepsTextView.setText(String.valueOf(exerciseViewHelper.maxRepsOfExercise(exercise)));
-        exerciseSetsTextView.setText(String.valueOf(exerciseViewHelper.setCountOfExercise(exercise)));
+        exerciseNameEditText.setText(name);
+        exerciseWeightExitText.setText(weight);
+        exerciseRepsTextView.setText(reps);
+        exerciseSetsTextView.setText(sets);
 
         view.findViewById(R.id.exerciseName).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

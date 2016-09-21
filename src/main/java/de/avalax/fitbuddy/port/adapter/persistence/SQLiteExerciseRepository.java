@@ -4,19 +4,25 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import de.avalax.fitbuddy.domain.model.exercise.*;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 public class SQLiteExerciseRepository implements ExerciseRepository {
     private SQLiteOpenHelper sqLiteOpenHelper;
     private SetRepository setRepository;
 
-    public SQLiteExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper, SetRepository setRepository) {
+    public SQLiteExerciseRepository(
+            SQLiteOpenHelper sqLiteOpenHelper,
+            SetRepository setRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
         this.setRepository = setRepository;
     }
@@ -53,11 +59,14 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     @Override
     public void save(WorkoutId workoutId, int position, Exercise exercise) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
+        ContentValues contentValues = getContentValues(workoutId, position, exercise);
         if (exercise.getExerciseId() == null) {
-            long id = database.insertOrThrow("exercise", null, getContentValues(workoutId, position, exercise));
-            exercise.setExerciseId(new ExerciseId(String.valueOf(id)));
+            long id = database.insertOrThrow("exercise", null, contentValues);
+            ExerciseId exerciseId = new ExerciseId(String.valueOf(id));
+            exercise.setExerciseId(exerciseId);
         } else {
-            database.update("exercise", getContentValues(workoutId, position, exercise), "id=?", new String[]{exercise.getExerciseId().id()});
+            String[] args = {exercise.getExerciseId().id()};
+            database.update("exercise", contentValues, "id=?", args);
         }
         database.close();
         for (Set set : exercise.setsOfExercise()) {
