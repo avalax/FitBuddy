@@ -179,7 +179,7 @@ public class EditWorkoutApplicationServiceTest {
 
         @Test
         public void switchWorkout_shouldSetWorkout() throws Exception {
-            when(workoutSession.getWorkout()).thenThrow(new WorkoutNotFoundException());
+            when(workoutSession.getWorkout()).thenThrow(new WorkoutException());
             editWorkoutApplicationService.switchWorkout();
 
             verify(workoutSession).switchWorkout(workout);

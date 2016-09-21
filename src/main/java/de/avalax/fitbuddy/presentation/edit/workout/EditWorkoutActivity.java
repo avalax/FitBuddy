@@ -26,10 +26,10 @@ import javax.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
@@ -68,7 +68,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
                 workoutId = workoutApplicationService.currentWorkoutId();
             }
             editWorkoutApplicationService.setWorkout(workoutId);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("create a new workout", e.getMessage(), e);
             editWorkoutApplicationService.createWorkout();
         }
@@ -108,7 +108,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
         if (item.getItemId() == R.id.action_save_workout) {
             try {
                 editWorkoutApplicationService.switchWorkout();
-            } catch (IOException e) {
+            } catch (WorkoutException e) {
                 Log.d("Can't switch workout", e.getMessage(), e);
             }
             setResult(RESULT_OK);
@@ -128,7 +128,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
                 WorkoutId workoutId = workouts.get(0).getWorkoutId();
                 try {
                     editWorkoutApplicationService.setWorkout(workoutId);
-                } catch (WorkoutNotFoundException wnfw) {
+                } catch (WorkoutException wnfw) {
                     Log.d("MangeWorkoutActivity", wnfw.getMessage(), wnfw);
                 }
             }
@@ -190,7 +190,7 @@ public class EditWorkoutActivity extends FragmentActivity implements ActionBar.O
         try {
             editWorkoutApplicationService.setWorkout(workoutId);
             exerciseListFragment.initListView();
-        } catch (WorkoutNotFoundException wnfe) {
+        } catch (WorkoutException wnfe) {
             Log.d("ManageWorkoutActivity", wnfe.getMessage(), wnfe);
         }
     }

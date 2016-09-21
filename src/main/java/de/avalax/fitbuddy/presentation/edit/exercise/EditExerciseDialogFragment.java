@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
@@ -104,7 +104,7 @@ public class EditExerciseDialogFragment extends Fragment {
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
-        } catch (SetNotFoundException e) {
+        } catch (SetException e) {
             Log.d("can't edit weight", e.getMessage(), e);
         }
     }
@@ -121,7 +121,7 @@ public class EditExerciseDialogFragment extends Fragment {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             int reps = exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
             EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
-        } catch (SetNotFoundException e) {
+        } catch (SetException e) {
             Log.d("can't change reps", e.getMessage(), e);
         }
     }

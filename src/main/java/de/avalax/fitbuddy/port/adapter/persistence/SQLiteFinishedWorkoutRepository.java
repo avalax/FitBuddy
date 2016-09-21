@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -15,7 +14,7 @@ import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseReposito
 import de.avalax.fitbuddy.domain.model.finishedWorkout.BasicFinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -42,9 +41,9 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     }
 
     @Override
-    public FinishedWorkout load(FinishedWorkoutId finishedWorkoutId) throws FinishedWorkoutNotFoundException {
+    public FinishedWorkout load(FinishedWorkoutId finishedWorkoutId) throws FinishedWorkoutException {
         if (finishedWorkoutId == null) {
-            throw new FinishedWorkoutNotFoundException();
+            throw new FinishedWorkoutException();
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("finished_workout", new String[]{"id", "workout_id", "name", "created"},
@@ -57,7 +56,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         } else {
             cursor.close();
             database.close();
-            throw new FinishedWorkoutNotFoundException();
+            throw new FinishedWorkoutException();
         }
     }
 

@@ -1,0 +1,6 @@
+package de.avalax.fitbuddy.domain.model.exercise;
+
+import de.avalax.fitbuddy.domain.model.ResourceException;
+
+public class ExerciseException extends ResourceException {
+}

@@ -44,9 +44,9 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public Workout load(WorkoutId workoutId) throws WorkoutNotFoundException {
+    public Workout load(WorkoutId workoutId) throws WorkoutException {
         if (workoutId == null) {
-            throw new WorkoutNotFoundException();
+            throw new WorkoutException();
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
@@ -59,7 +59,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         } else {
             cursor.close();
             database.close();
-            throw new WorkoutNotFoundException();
+            throw new WorkoutException();
         }
     }
 

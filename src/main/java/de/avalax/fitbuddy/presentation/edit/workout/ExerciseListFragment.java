@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
@@ -89,7 +89,7 @@ public class ExerciseListFragment extends ListFragment {
             try {
                 Exercise exercise = workout.exerciseAtPosition(i);
                 exercises.add(exercise);
-            } catch (ExerciseNotFoundException e) {
+            } catch (ExerciseException e) {
                 Log.d("Can't add exercise", e.getMessage(), e);
             }
         }
@@ -110,7 +110,7 @@ public class ExerciseListFragment extends ListFragment {
             intent.putExtra("exercise", exercise);
             intent.putExtra("position", position);
             getActivity().startActivityForResult(intent, EditWorkoutActivity.EDIT_EXERCISE);
-        } catch (ExerciseNotFoundException e) {
+        } catch (ExerciseException e) {
             Log.d("Can't edit exercise", e.getMessage(), e);
         }
     }

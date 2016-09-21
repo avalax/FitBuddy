@@ -1,7 +1,7 @@
 package de.avalax.fitbuddy.presentation.helper;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -27,7 +27,7 @@ public class ExerciseViewHelper {
             } else {
                 return "-";
             }
-        } catch (SetNotFoundException e) {
+        } catch (SetException e) {
             return "-";
         }
     }
@@ -46,7 +46,7 @@ public class ExerciseViewHelper {
         try {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             return exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
-        } catch (SetNotFoundException e) {
+        } catch (SetException e) {
             return 0;
         }
     }

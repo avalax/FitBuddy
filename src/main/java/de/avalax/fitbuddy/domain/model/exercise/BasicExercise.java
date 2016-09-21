@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,31 +32,31 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public int indexOfCurrentSet() throws SetNotFoundException {
+    public int indexOfCurrentSet() throws SetException {
         if (sets.isEmpty()) {
-            throw new SetNotFoundException();
+            throw new SetException();
         }
         return setIndex;
     }
 
     @Override
-    public Set setAtPosition(int position) throws SetNotFoundException {
+    public Set setAtPosition(int position) throws SetException {
         if (sets.size() <= position || position < 0) {
-            throw new SetNotFoundException();
+            throw new SetException();
         }
         return sets.get(position);
     }
 
     @Override
-    public void setCurrentSet(int position) throws SetNotFoundException {
+    public void setCurrentSet(int position) throws SetException {
         if (sets.size() <= position || position < 0) {
-            throw new SetNotFoundException();
+            throw new SetException();
         }
         this.setIndex = position;
     }
 
     @Override
-    public double getProgress() throws SetNotFoundException {
+    public double getProgress() throws SetException {
         if (sets.isEmpty()) {
             return 0;
         }

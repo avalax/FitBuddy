@@ -1,41 +1,44 @@
 package de.avalax.fitbuddy.application.workout;
 
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseNotFoundException;
 import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.*;
-
-import java.io.IOException;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class WorkoutApplicationService {
     private WorkoutSession workoutSession;
     private WorkoutRepository workoutRepository;
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
-    public WorkoutApplicationService(WorkoutSession workoutSession, WorkoutRepository workoutRepository, FinishedWorkoutRepository finishedWorkoutRepository) {
+    public WorkoutApplicationService(
+            WorkoutSession workoutSession,
+            WorkoutRepository workoutRepository,
+            FinishedWorkoutRepository finishedWorkoutRepository) {
         this.workoutSession = workoutSession;
         this.workoutRepository = workoutRepository;
         this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 
-    public int countOfExercises() throws ResourceNotFoundException {
+    public int countOfExercises() throws ResourceException {
         return getWorkout().countOfExercises();
     }
 
-    public Exercise requestExercise(int position) throws WorkoutNotFoundException, ExerciseNotFoundException {
+    public Exercise requestExercise(int position) throws ResourceException {
         return getWorkout().exerciseAtPosition(position);
     }
 
-    public void switchToSet(int position, int moved) throws ResourceNotFoundException, IOException {
+    public void switchToSet(int position, int moved) throws ResourceException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void addRepsToSet(int position, int moved) throws ResourceNotFoundException, IOException {
+    public void addRepsToSet(int position, int moved) throws ResourceException {
         Exercise exercise = getWorkout().exerciseAtPosition(position);
         int currentSetIndex = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(currentSetIndex);
@@ -45,13 +48,13 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
-    public void setCurrentExercise(int index) throws ResourceNotFoundException, IOException {
+    public void setCurrentExercise(int index) throws ResourceException {
         getWorkout().setCurrentExercise(index);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
-    public void updateWeightOfCurrentSet(int index, double weight) throws ResourceNotFoundException, IOException {
+    public void updateWeightOfCurrentSet(int index, double weight) throws ResourceException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         exercise.setAtPosition(indexOfCurrentSet).setWeight(weight);
@@ -59,29 +62,29 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
-    public double weightOfCurrentSet(int index) throws ResourceNotFoundException {
+    public double weightOfCurrentSet(int index) throws ResourceException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
         return set.getWeight();
     }
 
-    public int indexOfCurrentExercise() throws ResourceNotFoundException {
+    public int indexOfCurrentExercise() throws ResourceException {
         return getWorkout().indexOfCurrentExercise();
     }
 
-    public WorkoutId currentWorkoutId() throws ResourceNotFoundException {
+    public WorkoutId currentWorkoutId() throws ResourceException {
         return workoutSession.getWorkout().getWorkoutId();
     }
 
-    public void finishCurrentWorkout() throws ResourceNotFoundException, IOException {
+    public void finishCurrentWorkout() throws ResourceException {
         Workout workout = workoutSession.getWorkout();
         finishedWorkoutRepository.saveWorkout(workout);
         Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
         workoutSession.switchWorkout(newWorkout);
     }
 
-    public int workoutProgress(int exerciseIndex) throws ResourceNotFoundException {
+    public int workoutProgress(int exerciseIndex) throws ResourceException {
         return progressInPercent(getWorkout().getProgress(exerciseIndex));
     }
 
@@ -89,7 +92,7 @@ public class WorkoutApplicationService {
         return (int) Math.round(progess * 100);
     }
 
-    private Workout getWorkout() throws WorkoutNotFoundException {
+    private Workout getWorkout() throws WorkoutException {
         return workoutSession.getWorkout();
     }
 }

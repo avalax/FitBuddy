@@ -20,7 +20,7 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutNotFoundException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import static org.hamcrest.CoreMatchers.any;
@@ -100,12 +100,12 @@ public class SQLiteWorkoutRepositoryTest {
         assertThat(workout2.getName(), equalTo("newname2"));
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
+    @Test(expected = WorkoutException.class)
     public void loadWithNullInstance_shouldThrowWorkoutNotFoundException() throws Exception {
         workoutRepository.load(null);
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
+    @Test(expected = WorkoutException.class)
     public void loadByUnknownWorkoutId_shouldThrowWorkoutNotFoundException() throws Exception {
         workoutRepository.load(new WorkoutId("21"));
     }
@@ -174,7 +174,7 @@ public class SQLiteWorkoutRepositoryTest {
         workoutRepository.delete(null);
     }
 
-    @Test(expected = WorkoutNotFoundException.class)
+    @Test(expected = WorkoutException.class)
     public void deleteWorkoutByWorkoutId_shouldRemoveItFromPersistence() throws Exception {
         WorkoutId workoutId = createWorkout("workout1");
 

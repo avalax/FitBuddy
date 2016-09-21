@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetNotFoundException;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.not;
@@ -145,17 +145,17 @@ public class BasicExerciseTest {
             assertThat(setAtPosition, equalTo(set));
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void setCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
             exercise.setCurrentSet(1);
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void indexOFCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
             exercise.indexOfCurrentSet();
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void setCurrentSetToNegativIndex_shouldThrowSetNotFoundException() throws Exception {
             exercise.createSet();
 
@@ -164,19 +164,19 @@ public class BasicExerciseTest {
             assertThat(exercise.indexOfCurrentSet(), equalTo(0));
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void setCurrentSet_shouldThrowSetNotFoundException() throws Exception {
             exercise.createSet();
 
             exercise.setCurrentSet(exercise.countOfSets() + 1);
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void setAtPosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
             exercise.setAtPosition(0);
         }
 
-        @Test(expected = SetNotFoundException.class)
+        @Test(expected = SetException.class)
         public void setAtNegativePosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
             exercise.setAtPosition(-1);
         }

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
@@ -61,7 +61,7 @@ public class ExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         changeReps(moved);
-                    } catch (ResourceNotFoundException | IOException e) {
+                    } catch (ResourceException | IOException e) {
                         Log.d("Can't change reps", e.getMessage(), e);
                     }
                 }
@@ -72,7 +72,7 @@ public class ExerciseFragment extends Fragment {
                 public void onFlingEvent(int moved) {
                     try {
                         moveToSet(moved);
-                    } catch (ResourceNotFoundException | IOException e) {
+                    } catch (ResourceException | IOException e) {
                         Log.d("Can't change set", e.getMessage(), e);
                     }
                 }
@@ -80,19 +80,19 @@ public class ExerciseFragment extends Fragment {
 
             updateExerciseProgress();
             updateSetProgress();
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
     }
 
-    private void changeReps(int moved) throws ResourceNotFoundException, IOException {
+    private void changeReps(int moved) throws ResourceException, IOException {
         workoutApplicationService.addRepsToSet(exerciseIndex, moved);
         updateWorkoutProgress();
         updateExerciseProgress();
         updateSetProgress();
     }
 
-    private void moveToSet(int moved) throws ResourceNotFoundException, IOException {
+    private void moveToSet(int moved) throws ResourceException, IOException {
         workoutApplicationService.switchToSet(exerciseIndex, moved);
         updateWorkoutProgress();
         updateExerciseProgress();
@@ -100,14 +100,14 @@ public class ExerciseFragment extends Fragment {
         updatePage();
     }
 
-    private void updateSetProgress() throws ResourceNotFoundException {
+    private void updateSetProgress() throws ResourceException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(indexOfCurrentSet);
         setProgressBar.updateProgressbar(set.getProgress(), String.valueOf(set.getReps()), String.valueOf(set.getMaxReps()));
     }
 
-    private void updateExerciseProgress() throws ResourceNotFoundException {
+    private void updateExerciseProgress() throws ResourceException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
         String currentValueText = String.valueOf(exercise.indexOfCurrentSet() + 1);
         String maxValueText = String.valueOf(exercise.countOfSets());

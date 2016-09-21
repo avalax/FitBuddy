@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.ResourceNotFoundException;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.R;
 
 class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
@@ -82,7 +82,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void deleteExercises() {
         try {
             editWorkoutApplicationService.deleteExercise(itemsChecked.list());
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't delete exercises", e.getMessage(), e);
         }
     }
@@ -90,7 +90,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void moveExerciseUp(int position) {
         try {
             editWorkoutApplicationService.moveExerciseAtPositionUp(position);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't move exercise up", e.getMessage(), e);
         }
     }
@@ -98,7 +98,7 @@ class ExerciseListMultiChoiceModeListener implements AbsListView.MultiChoiceMode
     private void moveExerciseDown(int position) {
         try {
             editWorkoutApplicationService.moveExerciseAtPositionDown(position);
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceException e) {
             Log.d("Can't move exercise", e.getMessage(), e);
         }
     }
