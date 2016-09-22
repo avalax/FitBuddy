@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteSetRepository implements SetRepository {
+    private static final String TABLE_SET = "sets";
     private SQLiteOpenHelper sqLiteOpenHelper;
 
     public SQLiteSetRepository(SQLiteOpenHelper sqLiteOpenHelper) {
@@ -24,11 +25,11 @@ public class SQLiteSetRepository implements SetRepository {
     public void save(ExerciseId exerciseId, Set set) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (set.getSetId() == null) {
-            long id = database.insertOrThrow("sets", null, getContentValues(exerciseId, set));
+            long id = database.insertOrThrow(TABLE_SET, null, getContentValues(exerciseId, set));
             set.setSetId(new SetId(String.valueOf(id)));
         } else {
             String[] args = {set.getSetId().getId()};
-            database.update("sets", getContentValues(exerciseId, set), "id=?", args);
+            database.update(TABLE_SET, getContentValues(exerciseId, set), "id=?", args);
         }
         database.close();
     }
@@ -39,7 +40,7 @@ public class SQLiteSetRepository implements SetRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("sets", "id=?", new String[]{id.getId()});
+        database.delete(TABLE_SET, "id=?", new String[]{id.getId()});
         database.close();
     }
 
@@ -47,7 +48,7 @@ public class SQLiteSetRepository implements SetRepository {
     public List<Set> allSetsBelongsTo(ExerciseId exerciseId) {
         List<Set> sets = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("sets", new String[]{"id", "weight", "reps"},
+        Cursor cursor = database.query(TABLE_SET, new String[]{"id", "weight", "reps"},
                 "exercise_id=?", new String[]{exerciseId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {

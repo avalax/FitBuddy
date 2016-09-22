@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
+    private static final String TABLE_FINISHED_WORKOUT = "finished_workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private FinishedExerciseRepository finishedExerciseRepository;
 
@@ -33,7 +34,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     @Override
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        long id = database.insertOrThrow("finished_workout", null, getContentValues(workout));
+        long id = database.insertOrThrow(TABLE_FINISHED_WORKOUT, null, getContentValues(workout));
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(String.valueOf(id));
         for (Exercise exercise : workout.exercisesOfWorkout()) {
             finishedExerciseRepository.save(finishedWorkoutId, exercise);
@@ -50,8 +51,8 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "workout_id", "name", "created"};
-        String[] args = {finishedWorkoutId.id()};
-        Cursor cursor = database.query("finished_workout", columns,
+        String[] args = {finishedWorkoutId.getId()};
+        Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
                 "id=?", args, null, null, null);
         if (cursor.moveToFirst()) {
             FinishedWorkout finishedWorkout = createFinishedWorkout(cursor);
@@ -70,7 +71,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         List<FinishedWorkout> finishedWorkouts = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "workout_id", "name", "created"};
-        Cursor cursor = database.query("finished_workout", columns,
+        Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
