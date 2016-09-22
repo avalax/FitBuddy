@@ -41,6 +41,7 @@ public class FitbuddySQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        // No upgrade script at this time
     }
 
     protected void insertFromStream(InputStream inputStream, SQLiteDatabase database)
