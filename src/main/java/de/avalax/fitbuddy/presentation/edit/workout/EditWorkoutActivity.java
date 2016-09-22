@@ -129,7 +129,7 @@ public class EditWorkoutActivity extends FragmentActivity
         } else if (item.getItemId() == R.id.action_delete_workout) {
             editEditWorkoutApplicationService.deleteWorkout();
             List<WorkoutListEntry> workouts = editEditWorkoutApplicationService.getWorkoutList();
-            if (workouts.size() > 0) {
+            if (!workouts.isEmpty()) {
                 WorkoutId workoutId = workouts.get(0).getWorkoutId();
                 try {
                     editEditWorkoutApplicationService.setWorkout(workoutId);

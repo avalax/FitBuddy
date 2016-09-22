@@ -12,6 +12,7 @@ import android.widget.NumberPicker;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
+import de.avalax.fitbuddy.exception.DialogListenerException;
 
 public class EditWeightDialogFragment extends DialogFragment {
 
@@ -35,8 +36,8 @@ public class EditWeightDialogFragment extends DialogFragment {
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement EditWeightDialogFragment.DialogListener");
+            throw new DialogListenerException(context.toString()
+                    + " must implement EditWeightDialogFragment.DialogListener", e);
         }
     }
 

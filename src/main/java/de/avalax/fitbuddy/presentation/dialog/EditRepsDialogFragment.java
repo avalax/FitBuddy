@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.exception.DialogListenerException;
 
 public class EditRepsDialogFragment extends DialogFragment {
     private static final String ARGS_REPS = "reps";
@@ -31,8 +32,8 @@ public class EditRepsDialogFragment extends DialogFragment {
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement EditRepsDialogFragment.DialogListener");
+            throw new DialogListenerException(context.toString()
+                    + " must implement EditRepsDialogFragment.DialogListener", e);
         }
     }
 

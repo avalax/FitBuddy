@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class JsonInWorkoutAdapter {
                 workout.addExercise(workout.countOfExercises(), exercise);
             }
             return workout;
-        } catch (RuntimeException re) {
+        } catch (JsonSyntaxException re) {
             throw new WorkoutParseException(re);
         }
     }

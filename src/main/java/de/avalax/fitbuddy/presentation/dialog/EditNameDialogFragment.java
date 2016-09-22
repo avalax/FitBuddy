@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.exception.DialogListenerException;
 
 public class EditNameDialogFragment extends DialogFragment {
     private static final String ARGS_NAME = "name";
@@ -33,8 +34,8 @@ public class EditNameDialogFragment extends DialogFragment {
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement EditNameDialogFragment.DialogListener");
+            throw new DialogListenerException(context.toString()
+                    + " must implement EditNameDialogFragment.DialogListener", e);
         }
     }
 
