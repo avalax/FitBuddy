@@ -110,46 +110,55 @@ public class EditWorkoutActivity extends FragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save_workout) {
-            try {
-                editEditWorkoutApplicationService.switchWorkout();
-            } catch (WorkoutException e) {
-                Log.d("Can't switch workout", e.getMessage(), e);
-            }
-            setResult(RESULT_OK);
-            finish();
-        } else if (item.getItemId() == R.id.action_add_workout) {
+        int itemId = item.getItemId();
+        if (R.id.action_save_workout == itemId) {
+            saveWorkout();
+        } else if (R.id.action_add_workout  == itemId) {
             showNewWorkoutAlertDialog();
-        } else if (item.getItemId() == R.id.action_change_workout_name) {
-            if (editEditWorkoutApplicationService.getWorkout() == null) {
-                editEditWorkoutApplicationService.createWorkout();
-                initActionNavigationBar();
-            }
+        } else if (R.id.action_change_workout_name == itemId) {
             editWorkoutName();
-        } else if (item.getItemId() == R.id.action_delete_workout) {
-            editEditWorkoutApplicationService.deleteWorkout();
-            List<WorkoutListEntry> workouts = editEditWorkoutApplicationService.getWorkoutList();
-            if (!workouts.isEmpty()) {
-                WorkoutId workoutId = workouts.get(0).getWorkoutId();
-                try {
-                    editEditWorkoutApplicationService.setWorkout(workoutId);
-                } catch (WorkoutException wnfw) {
-                    Log.d("MangeWorkoutActivity", wnfw.getMessage(), wnfw);
-                }
-            }
-            initActionNavigationBar();
-            exerciseListFragment.initListView();
-        } else if (item.getItemId() == R.id.action_add_exercise) {
-            if (editEditWorkoutApplicationService.getWorkout() == null) {
-                editEditWorkoutApplicationService.createWorkout();
-                initActionNavigationBar();
-            }
-            editEditWorkoutApplicationService.createExercise();
-            exerciseListFragment.initListView();
-        } else if (item.getItemId() == R.id.action_share_workout) {
+        } else if (R.id.action_delete_workout == itemId) {
+            deleteWorkout();
+        } else if (R.id.action_add_exercise == itemId) {
+            addExercise();
+        } else if (R.id.action_share_workout == itemId) {
             displayQrCode();
         }
         return true;
+    }
+
+    private void addExercise() {
+        if (editEditWorkoutApplicationService.getWorkout() == null) {
+            editEditWorkoutApplicationService.createWorkout();
+            initActionNavigationBar();
+        }
+        editEditWorkoutApplicationService.createExercise();
+        exerciseListFragment.initListView();
+    }
+
+    private void deleteWorkout() {
+        editEditWorkoutApplicationService.deleteWorkout();
+        List<WorkoutListEntry> workouts = editEditWorkoutApplicationService.getWorkoutList();
+        if (!workouts.isEmpty()) {
+            WorkoutId workoutId = workouts.get(0).getWorkoutId();
+            try {
+                editEditWorkoutApplicationService.setWorkout(workoutId);
+            } catch (WorkoutException wnfw) {
+                Log.d("MangeWorkoutActivity", wnfw.getMessage(), wnfw);
+            }
+        }
+        initActionNavigationBar();
+        exerciseListFragment.initListView();
+    }
+
+    private void saveWorkout() {
+        try {
+            editEditWorkoutApplicationService.switchWorkout();
+        } catch (WorkoutException e) {
+            Log.d("Can't switch workout", e.getMessage(), e);
+        }
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
@@ -242,6 +251,10 @@ public class EditWorkoutActivity extends FragmentActivity
     }
 
     private void editWorkoutName() {
+        if (editEditWorkoutApplicationService.getWorkout() == null) {
+            editEditWorkoutApplicationService.createWorkout();
+            initActionNavigationBar();
+        }
         FragmentManager fm = getSupportFragmentManager();
         String name = editEditWorkoutApplicationService.getWorkout().getName();
         String hint = getResources().getString(R.string.new_workout_name);
