@@ -72,6 +72,13 @@ public class WorkoutSessionTest {
         workoutSession.getWorkout();
     }
 
+    @Test
+    public void noPersistedWorkout_shouldReturnFalse() throws Exception {
+        boolean hasWorkout = workoutSession.hasWorkout();
+
+        assertThat(hasWorkout, equalTo(false));
+    }
+
     @Test(expected = WorkoutException.class)
     public void switchedToNullInstance_shouldThrowWorkoutNotFoundExceptiopn() throws Exception {
         workoutSession.switchWorkout(null);
@@ -88,6 +95,17 @@ public class WorkoutSessionTest {
         workoutSession.switchWorkout(workout);
 
         assertThat(workoutSession.getWorkout().getWorkoutId(), equalTo(workoutId));
+    }
+
+    @Test
+    public void switchWorkout_shouldHaveWorkout() throws Exception {
+        WorkoutId workoutId = new WorkoutId("42");
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
+
+        workoutSession.switchWorkout(workout);
+
+        assertThat(workoutSession.hasWorkout(), equalTo(true));
     }
 
     @Test

@@ -78,10 +78,9 @@ public class EditWorkoutApplicationService {
     }
 
     public void switchWorkout() throws WorkoutException {
-        try {
+        if (workoutSession.hasWorkout()) {
             Workout workoutToSave = workoutSession.getWorkout();
             finishedWorkoutRepository.saveWorkout(workoutToSave);
-        } catch (ResourceException ignored) {
         }
         workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);

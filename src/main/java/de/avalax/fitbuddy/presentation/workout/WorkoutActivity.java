@@ -51,20 +51,10 @@ public class WorkoutActivity extends FragmentActivity implements DialogListener 
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         workoutProgressBar = (ProgressBar) findViewById(R.id.workoutProgressBar);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float offset, int offsetPixels) {
-
-            }
-
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 updatePage(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

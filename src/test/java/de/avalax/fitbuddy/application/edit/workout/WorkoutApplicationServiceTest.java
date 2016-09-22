@@ -188,6 +188,7 @@ public class WorkoutApplicationServiceTest {
         public void switchWorkout_shouldPersistCurrentWorkout() throws Exception {
             BasicWorkout currentWorkoutToPersist = new BasicWorkout();
             currentWorkoutToPersist.setName("currentWorkoutToPersist");
+            when(workoutSession.hasWorkout()).thenReturn(true);
             when(workoutSession.getWorkout()).thenReturn(currentWorkoutToPersist);
 
             editWorkoutApplicationService.switchWorkout();
