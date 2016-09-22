@@ -23,11 +23,19 @@ public class WorkoutSession {
 
     public void switchWorkout(Workout workout) throws WorkoutException {
         this.workout = workout;
-        writeCurrentWorkoutToFile();
+        try {
+            writeCurrentWorkoutToFile();
+        } catch (IOException e) {
+            throw new WorkoutException(e);
+        }
     }
 
     public void saveCurrentWorkout() throws WorkoutException {
-        writeCurrentWorkoutToFile();
+        try {
+            writeCurrentWorkoutToFile();
+        } catch (IOException e) {
+            throw new WorkoutException(e);
+        }
     }
 
     public Workout getWorkout() throws WorkoutException {
@@ -52,17 +60,12 @@ public class WorkoutSession {
         return workout;
     }
 
-    private void writeCurrentWorkoutToFile() throws WorkoutException {
+    protected void writeCurrentWorkoutToFile() throws IOException {
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-            outputStream.writeObject(workout);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException ioe) {
-            throw new WorkoutException(ioe);
-        }
-
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        outputStream.writeObject(workout);
+        outputStream.flush();
+        outputStream.close();
     }
 
     public boolean hasWorkout() {

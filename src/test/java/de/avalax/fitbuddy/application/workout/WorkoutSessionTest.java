@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -20,13 +20,13 @@ import java.io.ObjectOutputStream;
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;
@@ -41,7 +41,7 @@ public class WorkoutSessionTest {
         outputStream.close();
     }
 
-    private Workout readWorkout() throws Exception {
+    private Workout readWorkout() throws IOException, ClassNotFoundException {
         Workout workout;
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
         FileInputStream fis = new FileInputStream(file);
@@ -106,6 +106,35 @@ public class WorkoutSessionTest {
         workoutSession.switchWorkout(workout);
 
         assertThat(workoutSession.hasWorkout(), equalTo(true));
+    }
+
+    @Test(expected = WorkoutException.class)
+    public void switchWorkout_shouldThrowWorkoutExceptionWhenIOExceptionOccurs() throws Exception {
+        WorkoutId workoutId = new WorkoutId("42");
+        Workout workout = new BasicWorkout();
+        workout.setWorkoutId(workoutId);
+        context = RuntimeEnvironment.application.getApplicationContext();
+        workoutSession = new WorkoutSession(context) {
+            @Override
+            protected void writeCurrentWorkoutToFile() throws IOException {
+                throw new IOException();
+            }
+        };
+
+        workoutSession.switchWorkout(workout);
+    }
+
+    @Test(expected = WorkoutException.class)
+    public void saveWorkout_shouldThrowWorkoutExceptionWhenIOExceptionOccurs() throws Exception {
+        context = RuntimeEnvironment.application.getApplicationContext();
+        workoutSession = new WorkoutSession(context) {
+            @Override
+            protected void writeCurrentWorkoutToFile() throws IOException {
+                throw new IOException();
+            }
+        };
+
+        workoutSession.saveCurrentWorkout();
     }
 
     @Test

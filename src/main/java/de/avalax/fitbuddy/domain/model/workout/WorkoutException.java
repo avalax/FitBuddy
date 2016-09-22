@@ -9,7 +9,7 @@ public class WorkoutException extends ResourceException {
         super();
     }
 
-    public WorkoutException(IOException ioe) {
-        super(ioe);
+    public WorkoutException(Throwable e) {
+        super(e);
     }
 }
