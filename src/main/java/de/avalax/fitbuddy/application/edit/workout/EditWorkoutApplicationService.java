@@ -10,7 +10,7 @@ import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;

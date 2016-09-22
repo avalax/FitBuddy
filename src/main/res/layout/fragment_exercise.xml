@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView
+    <de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView
         android:id="@+id/leftProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +13,7 @@
         components:background="@color/primary_background"
         components:progressbar="@drawable/primary_progress_bar" />
 
-    <de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView
+    <de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView
         android:id="@+id/rightProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

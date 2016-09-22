@@ -1,6 +1,6 @@
-package de.avalax.fitbuddy.domain.model.finishedExercise;
+package de.avalax.fitbuddy.domain.model.finished_exercise;
 
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import org.junit.Before;
 import org.junit.Test;
 

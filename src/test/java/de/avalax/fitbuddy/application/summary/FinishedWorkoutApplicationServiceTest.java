@@ -9,8 +9,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 
 import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;

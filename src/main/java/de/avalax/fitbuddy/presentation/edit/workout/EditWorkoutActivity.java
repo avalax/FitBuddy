@@ -86,7 +86,7 @@ public class EditWorkoutActivity extends FragmentActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        String workoutId = editEditWorkoutApplicationService.getWorkout().getWorkoutId().id();
+        String workoutId = editEditWorkoutApplicationService.getWorkout().getWorkoutId().getId();
         savedInstanceState.putString(WORKOUT_POSITION, workoutId);
     }
 

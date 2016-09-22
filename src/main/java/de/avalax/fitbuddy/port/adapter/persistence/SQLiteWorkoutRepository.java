@@ -35,7 +35,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             long id = database.insertOrThrow("workout", null, getContentValues(workout));
             workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
         } else {
-            String[] args = {workout.getWorkoutId().id()};
+            String[] args = {workout.getWorkoutId().getId()};
             database.update("workout", getContentValues(workout), "id=?", args);
         }
         database.close();
@@ -59,7 +59,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("workout", new String[]{"id", "name"},
-                "id=?", new String[]{workoutId.id()}, null, null, null);
+                "id=?", new String[]{workoutId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             Workout workout = createWorkout(cursor);
             cursor.close();
@@ -103,7 +103,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("workout", "id=" + workoutId.id(), null);
+        database.delete("workout", "id=" + workoutId.getId(), null);
         database.close();
     }
 }

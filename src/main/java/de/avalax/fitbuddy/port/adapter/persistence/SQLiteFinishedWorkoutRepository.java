@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.BasicFinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutException;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
@@ -99,8 +99,10 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
         values.put("name", workout.getName());
-        String workoutId = workout.getWorkoutId() != null ? workout.getWorkoutId().id() : null;
-        values.put("workout_id", workoutId);
+        if (workout.getWorkoutId() != null) {
+            String workoutId = workout.getWorkoutId().getId();
+            values.put("workout_id", workoutId);
+        }
         return values;
     }
 }

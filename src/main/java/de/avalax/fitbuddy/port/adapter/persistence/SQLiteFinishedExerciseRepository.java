@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.BasicFinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseId;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
+import de.avalax.fitbuddy.domain.model.finished_exercise.BasicFinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseId;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 
 public class SQLiteFinishedExerciseRepository implements FinishedExerciseRepository {

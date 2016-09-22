@@ -24,7 +24,7 @@ public class SetIdTest {
 
     @Test
     public void testId_shouldReturnId() throws Exception {
-        assertThat((new SetId("42")).id(), equalTo("42"));
-        assertThat(new SetId("21").id(), equalTo("21"));
+        assertThat((new SetId("42")).getId(), equalTo("42"));
+        assertThat(new SetId("21").getId(), equalTo("21"));
     }
 }

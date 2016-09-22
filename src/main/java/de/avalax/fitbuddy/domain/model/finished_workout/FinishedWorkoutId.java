@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model.finishedWorkout;
+package de.avalax.fitbuddy.domain.model.finished_workout;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ public class FinishedWorkoutId implements Serializable {
         this.id = id;
     }
 
-    public String id() {
+    public String getId() {
         return id;
     }
 

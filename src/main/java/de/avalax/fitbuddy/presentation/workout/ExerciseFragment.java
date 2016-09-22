@@ -18,8 +18,8 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
-import de.avalax.fitbuddy.presentation.workout.swipeBar.SwipeBarOnTouchListener;
-import de.avalax.fitbuddy.presentation.workout.swipeBar.VerticalProgressbarView;
+import de.avalax.fitbuddy.presentation.workout.swipe_bar.SwipeBarOnTouchListener;
+import de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView;
 
 public class ExerciseFragment extends Fragment {
 

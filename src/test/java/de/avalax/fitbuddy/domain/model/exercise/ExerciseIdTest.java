@@ -24,7 +24,7 @@ public class ExerciseIdTest {
 
     @Test
     public void testId_shouldReturnId() throws Exception {
-        assertThat((new ExerciseId("42")).id(), equalTo("42"));
-        assertThat(new ExerciseId("21").id(), equalTo("21"));
+        assertThat((new ExerciseId("42")).getId(), equalTo("42"));
+        assertThat(new ExerciseId("21").getId(), equalTo("21"));
     }
 }

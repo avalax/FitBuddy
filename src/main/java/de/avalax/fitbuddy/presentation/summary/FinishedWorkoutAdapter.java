@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 
 public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
     private int resource;

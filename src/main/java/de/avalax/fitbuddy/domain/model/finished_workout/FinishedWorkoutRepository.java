@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model.finishedWorkout;
+package de.avalax.fitbuddy.domain.model.finished_workout;
 
 import java.util.List;
 

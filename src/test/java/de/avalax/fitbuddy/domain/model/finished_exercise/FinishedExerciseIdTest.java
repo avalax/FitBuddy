@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.domain.model.finishedExercise;
+package de.avalax.fitbuddy.domain.model.finished_exercise;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class FinishedExerciseIdTest {
 
     @Test
     public void testId_shouldReturnId() throws Exception {
-        assertThat((new FinishedExerciseId("42")).id(), equalTo("42"));
-        assertThat(new FinishedExerciseId("21").id(), equalTo("21"));
+        assertThat((new FinishedExerciseId("42")).getId(), equalTo("42"));
+        assertThat(new FinishedExerciseId("21").getId(), equalTo("21"));
     }
 }

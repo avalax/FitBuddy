@@ -27,7 +27,7 @@ public class SQLiteSetRepository implements SetRepository {
             long id = database.insertOrThrow("sets", null, getContentValues(exerciseId, set));
             set.setSetId(new SetId(String.valueOf(id)));
         } else {
-            String[] args = {set.getSetId().id()};
+            String[] args = {set.getSetId().getId()};
             database.update("sets", getContentValues(exerciseId, set), "id=?", args);
         }
         database.close();
@@ -39,7 +39,7 @@ public class SQLiteSetRepository implements SetRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("sets", "id=?", new String[]{id.id()});
+        database.delete("sets", "id=?", new String[]{id.getId()});
         database.close();
     }
 
@@ -48,7 +48,7 @@ public class SQLiteSetRepository implements SetRepository {
         List<Set> sets = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("sets", new String[]{"id", "weight", "reps"},
-                "exercise_id=?", new String[]{exerciseId.id()}, null, null, null);
+                "exercise_id=?", new String[]{exerciseId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 SetId setId = new SetId(cursor.getString(0));
@@ -65,7 +65,7 @@ public class SQLiteSetRepository implements SetRepository {
 
     private ContentValues getContentValues(ExerciseId exerciseId, Set set) {
         ContentValues values = new ContentValues();
-        values.put("exercise_id", exerciseId.id());
+        values.put("exercise_id", exerciseId.getId());
         values.put("weight", set.getWeight());
         values.put("reps", set.getMaxReps());
         return values;

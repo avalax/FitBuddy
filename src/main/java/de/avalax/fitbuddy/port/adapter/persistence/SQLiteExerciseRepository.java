@@ -33,7 +33,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("exercise", "id=?", new String[]{exerciseId.id()});
+        database.delete("exercise", "id=?", new String[]{exerciseId.getId()});
         database.close();
     }
 
@@ -42,7 +42,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         List<Exercise> exercises = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query("exercise", new String[]{"id", "name"},
-                "workout_id=?", new String[]{workoutId.id()}, null, null, "position");
+                "workout_id=?", new String[]{workoutId.getId()}, null, null, "position");
         if (cursor.moveToFirst()) {
             do {
                 ExerciseId exerciseId = new ExerciseId(cursor.getString(0));
@@ -65,7 +65,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             ExerciseId exerciseId = new ExerciseId(String.valueOf(id));
             exercise.setExerciseId(exerciseId);
         } else {
-            String[] args = {exercise.getExerciseId().id()};
+            String[] args = {exercise.getExerciseId().getId()};
             database.update("exercise", contentValues, "id=?", args);
         }
         database.close();
@@ -76,7 +76,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
 
     private ContentValues getContentValues(WorkoutId workoutId, int position, Exercise exercise) {
         ContentValues values = new ContentValues();
-        values.put("workout_id", workoutId.id());
+        values.put("workout_id", workoutId.getId());
         values.put("name", exercise.getName());
         values.put("position", position);
         return values;

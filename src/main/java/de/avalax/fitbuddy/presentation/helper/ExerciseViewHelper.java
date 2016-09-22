@@ -1,11 +1,11 @@
 package de.avalax.fitbuddy.presentation.helper;
 
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.SetException;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 
 public class ExerciseViewHelper {
     private DecimalFormat decimalFormat;
@@ -22,11 +22,10 @@ public class ExerciseViewHelper {
         try {
             int indexOfCurrentSet = exercise.indexOfCurrentSet();
             double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
-            if (weight != 0) {
-                return decimalFormat.format(weight);
-            } else {
+            if (weight == 0) {
                 return "-";
             }
+            return decimalFormat.format(weight);
         } catch (SetException e) {
             return "-";
         }
