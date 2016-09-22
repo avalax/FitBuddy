@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
@@ -49,7 +50,7 @@ public class EditWorkoutActivity extends FragmentActivity
     @Inject
     protected WorkoutService workoutService;
     @Inject
-    de.avalax.fitbuddy.application.workout.WorkoutApplicationService workoutApplicationService;
+    WorkoutApplicationService workoutApplicationService;
     private ExerciseListFragment exerciseListFragment;
     private List<WorkoutListEntry> workoutList;
 
