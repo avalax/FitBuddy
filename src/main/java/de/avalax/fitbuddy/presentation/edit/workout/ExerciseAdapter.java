@@ -7,13 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+
+import java.util.List;
 
 import javax.inject.Inject;
-import java.util.List;
+
+import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     private List<Exercise> exercises;
@@ -31,24 +33,33 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        ExerciseViewHolder holder;
+        Exercise exercise = exercises.get(position);
         if (convertView == null) {
-            String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
-            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
-            convertView = vi.inflate(textViewResourceId, parent, false);
-            holder = new ExerciseViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.exercise_title);
-            holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);
-            holder.reps = (TextView) convertView.findViewById(R.id.repsTextView);
-            holder.sets = (TextView) convertView.findViewById(R.id.setsTextView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ExerciseViewHolder) convertView.getTag();
+            View newConvertView = createConvertView(parent);
+            newConvertView.setTag(createViewHolder(newConvertView, exercise));
+            return newConvertView;
         }
 
-        holder.setFromExercise(exercises.get(position));
-
+        ExerciseViewHolder holder = (ExerciseViewHolder) convertView.getTag();
+        holder.setFromExercise(exercise);
         return convertView;
+    }
+
+    @NonNull
+    private ExerciseViewHolder createViewHolder(View convertView, Exercise exercise) {
+        ExerciseViewHolder holder = new ExerciseViewHolder();
+        holder.name = (TextView) convertView.findViewById(R.id.exercise_title);
+        holder.weight = (TextView) convertView.findViewById(R.id.weightTextView);
+        holder.reps = (TextView) convertView.findViewById(R.id.repsTextView);
+        holder.sets = (TextView) convertView.findViewById(R.id.setsTextView);
+        holder.setFromExercise(exercise);
+        return holder;
+    }
+
+    private View createConvertView(@NonNull ViewGroup parent) {
+        String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
+        LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
+        return vi.inflate(textViewResourceId, parent, false);
     }
 
     class ExerciseViewHolder {
