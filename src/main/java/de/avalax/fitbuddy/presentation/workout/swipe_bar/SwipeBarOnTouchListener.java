@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.presentation.workout.swipeBar;
+package de.avalax.fitbuddy.presentation.workout.swipe_bar;
 
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;

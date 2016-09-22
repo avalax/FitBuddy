@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class FinishedWorkoutListFragment extends ListFragment {

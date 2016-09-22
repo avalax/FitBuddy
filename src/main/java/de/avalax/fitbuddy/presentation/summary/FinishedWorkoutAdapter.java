@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 
 public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
     private int resource;
@@ -27,21 +27,34 @@ public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        FinishedWorkoutViewHolder holder;
+        FinishedWorkout finishedWorkout = finishedWorkouts.get(position);
         if (convertView == null) {
-            String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
-            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
-            convertView = vi.inflate(resource, parent, false);
-            holder = new FinishedWorkoutViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.finished_workout_title);
-            holder.date = (TextView) convertView.findViewById(R.id.finished_workout_date);
-            convertView.setTag(holder);
-        } else {
-            holder = (FinishedWorkoutViewHolder) convertView.getTag();
+            View newConvertView = newConvertView(parent);
+            newConvertView.setTag(createViewHolder(newConvertView, finishedWorkout));
+            return newConvertView;
         }
 
-        holder.setFromFinishedWorkout(finishedWorkouts.get(position));
+        FinishedWorkoutViewHolder holder = (FinishedWorkoutViewHolder) convertView.getTag();
+        holder.setFromFinishedWorkout(finishedWorkout);
+        return convertView;
+    }
 
+    @NonNull
+    private FinishedWorkoutViewHolder createViewHolder(
+            View convertView,
+            FinishedWorkout finishedWorkout) {
+        FinishedWorkoutViewHolder holder = new FinishedWorkoutViewHolder();
+        holder.name = (TextView) convertView.findViewById(R.id.finished_workout_title);
+        holder.date = (TextView) convertView.findViewById(R.id.finished_workout_date);
+        holder.setFromFinishedWorkout(finishedWorkout);
+        return holder;
+    }
+
+    private View newConvertView(@NonNull ViewGroup parent) {
+        View convertView;
+        String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
+        LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
+        convertView = vi.inflate(resource, parent, false);
         return convertView;
     }
 

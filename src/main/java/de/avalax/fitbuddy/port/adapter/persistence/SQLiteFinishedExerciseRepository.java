@@ -9,14 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.BasicFinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseId;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
+import de.avalax.fitbuddy.domain.model.finished_exercise.BasicFinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseId;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 
 public class SQLiteFinishedExerciseRepository implements FinishedExerciseRepository {
+    private static final String TABLE_FINISHED_EXERCISE = "finished_exercise";
     private SQLiteOpenHelper sqLiteOpenHelper;
 
     public SQLiteFinishedExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
@@ -29,7 +30,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         for (Set set : exercise.setsOfExercise()) {
             ContentValues contentValues = getContentValues(finishedWorkoutId, exercise, set);
-            database.insertOrThrow("finished_exercise", null, contentValues);
+            database.insertOrThrow(TABLE_FINISHED_EXERCISE, null, contentValues);
         }
         database.close();
     }
@@ -39,7 +40,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
             Exercise exercise,
             Set set) {
         ContentValues values = new ContentValues();
-        values.put("finished_workout_id", finishedWorkoutId.id());
+        values.put("finished_workout_id", finishedWorkoutId.getId());
         values.put("name", exercise.getName());
         values.put("weight", set.getWeight());
         values.put("reps", set.getReps());
@@ -52,7 +53,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
         List<FinishedExercise> finishedExercises = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "name", "weight", "reps", "maxReps"};
-        String[] args = {finishedWorkoutId.id()};
+        String[] args = {finishedWorkoutId.getId()};
         Cursor cursor = database.query("finished_exercise", columns,
                 "finished_workout_id=?", args, null, null, null);
         if (cursor.moveToFirst()) {

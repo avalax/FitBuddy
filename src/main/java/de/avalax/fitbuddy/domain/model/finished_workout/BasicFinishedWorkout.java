@@ -1,8 +1,8 @@
-package de.avalax.fitbuddy.domain.model.finishedWorkout;
+package de.avalax.fitbuddy.domain.model.finished_workout;
 
 import java.util.List;
 
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 public class BasicFinishedWorkout implements FinishedWorkout {

@@ -15,7 +15,7 @@ import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -188,6 +188,7 @@ public class WorkoutApplicationServiceTest {
         public void switchWorkout_shouldPersistCurrentWorkout() throws Exception {
             BasicWorkout currentWorkoutToPersist = new BasicWorkout();
             currentWorkoutToPersist.setName("currentWorkoutToPersist");
+            when(workoutSession.hasWorkout()).thenReturn(true);
             when(workoutSession.getWorkout()).thenReturn(currentWorkoutToPersist);
 
             editWorkoutApplicationService.switchWorkout();

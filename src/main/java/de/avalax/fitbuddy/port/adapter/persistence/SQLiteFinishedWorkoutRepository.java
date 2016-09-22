@@ -9,17 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExercise;
-import de.avalax.fitbuddy.domain.model.finishedExercise.FinishedExerciseRepository;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.BasicFinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutId;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutException;
-import de.avalax.fitbuddy.domain.model.finishedWorkout.FinishedWorkoutRepository;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
+import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
+    private static final String TABLE_FINISHED_WORKOUT = "finished_workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private FinishedExerciseRepository finishedExerciseRepository;
 
@@ -33,7 +34,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     @Override
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        long id = database.insertOrThrow("finished_workout", null, getContentValues(workout));
+        long id = database.insertOrThrow(TABLE_FINISHED_WORKOUT, null, getContentValues(workout));
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(String.valueOf(id));
         for (Exercise exercise : workout.exercisesOfWorkout()) {
             finishedExerciseRepository.save(finishedWorkoutId, exercise);
@@ -50,8 +51,8 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "workout_id", "name", "created"};
-        String[] args = {finishedWorkoutId.id()};
-        Cursor cursor = database.query("finished_workout", columns,
+        String[] args = {finishedWorkoutId.getId()};
+        Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
                 "id=?", args, null, null, null);
         if (cursor.moveToFirst()) {
             FinishedWorkout finishedWorkout = createFinishedWorkout(cursor);
@@ -70,7 +71,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         List<FinishedWorkout> finishedWorkouts = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "workout_id", "name", "created"};
-        Cursor cursor = database.query("finished_workout", columns,
+        Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -99,8 +100,10 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
         values.put("name", workout.getName());
-        String workoutId = workout.getWorkoutId() != null ? workout.getWorkoutId().id() : null;
-        values.put("workout_id", workoutId);
+        if (workout.getWorkoutId() != null) {
+            String workoutId = workout.getWorkoutId().getId();
+            values.put("workout_id", workoutId);
+        }
         return values;
     }
 }

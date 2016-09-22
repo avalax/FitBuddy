@@ -18,6 +18,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class SQLiteWorkoutRepository implements WorkoutRepository {
+    private static final String TABLE_WORKOUT = "workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private ExerciseRepository exerciseRepository;
 
@@ -32,11 +33,11 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     public void save(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (workout.getWorkoutId() == null) {
-            long id = database.insertOrThrow("workout", null, getContentValues(workout));
+            long id = database.insertOrThrow(TABLE_WORKOUT, null, getContentValues(workout));
             workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
         } else {
-            String[] args = {workout.getWorkoutId().id()};
-            database.update("workout", getContentValues(workout), "id=?", args);
+            String[] args = {workout.getWorkoutId().getId()};
+            database.update(TABLE_WORKOUT, getContentValues(workout), "id=?", args);
         }
         database.close();
         int position = 1;
@@ -58,8 +59,8 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             throw new WorkoutException();
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("workout", new String[]{"id", "name"},
-                "id=?", new String[]{workoutId.id()}, null, null, null);
+        Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},
+                "id=?", new String[]{workoutId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             Workout workout = createWorkout(cursor);
             cursor.close();
@@ -82,7 +83,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     public List<WorkoutListEntry> getWorkoutList() {
         List<WorkoutListEntry> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query("workout", new String[]{"id", "name"},
+        Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -103,7 +104,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             return;
         }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete("workout", "id=" + workoutId.id(), null);
+        database.delete(TABLE_WORKOUT, "id=" + workoutId.getId(), null);
         database.close();
     }
 }

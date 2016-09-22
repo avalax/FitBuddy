@@ -1,6 +1,5 @@
-package de.avalax.fitbuddy.domain.model.finishedWorkout;
+package de.avalax.fitbuddy.domain.model.finished_workout;
 
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -24,7 +23,7 @@ public class FinishedWorkoutIdTest {
 
     @Test
     public void testId_shouldReturnId() throws Exception {
-        assertThat((new FinishedWorkoutId("42")).id(), equalTo("42"));
-        assertThat(new FinishedWorkoutId("21").id(), equalTo("21"));
+        assertThat((new FinishedWorkoutId("42")).getId(), equalTo("42"));
+        assertThat(new FinishedWorkoutId("21").getId(), equalTo("21"));
     }
 }

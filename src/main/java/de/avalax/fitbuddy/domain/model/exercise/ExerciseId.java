@@ -9,7 +9,7 @@ public class ExerciseId implements Serializable {
         this.id = id;
     }
 
-    public String id() {
+    public String getId() {
         return id;
     }
 
