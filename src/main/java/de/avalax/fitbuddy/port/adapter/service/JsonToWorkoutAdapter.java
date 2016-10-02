@@ -12,7 +12,7 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 
-public class JsonInWorkoutAdapter {
+public class JsonToWorkoutAdapter {
     private Gson gson = new Gson();
 
     public Workout createFromJson(String contents) throws WorkoutParseException {

@@ -19,16 +19,16 @@ import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseReposit
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedExerciseRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
-import de.avalax.fitbuddy.port.adapter.service.JsonInWorkoutAdapter;
-import de.avalax.fitbuddy.port.adapter.service.TranslatingWorkoutService;
-import de.avalax.fitbuddy.port.adapter.service.WorkoutInJsonAdapter;
+import de.avalax.fitbuddy.port.adapter.service.JsonToWorkoutAdapter;
+import de.avalax.fitbuddy.port.adapter.service.WorkoutParserJsonService;
+import de.avalax.fitbuddy.port.adapter.service.WorkoutToJsonAdapter;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
@@ -135,10 +135,10 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutService provideWorkoutService() {
-        JsonInWorkoutAdapter jsonInWorkoutAdapter = new JsonInWorkoutAdapter();
-        WorkoutInJsonAdapter workoutInJsonAdapter = new WorkoutInJsonAdapter();
-        return new TranslatingWorkoutService(jsonInWorkoutAdapter, workoutInJsonAdapter);
+    WorkoutParserService provideWorkoutService() {
+        JsonToWorkoutAdapter jsonToWorkoutAdapter = new JsonToWorkoutAdapter();
+        WorkoutToJsonAdapter workoutToJsonAdapter = new WorkoutToJsonAdapter();
+        return new WorkoutParserJsonService(jsonToWorkoutAdapter, workoutToJsonAdapter);
     }
 
     @Provides
@@ -149,13 +149,13 @@ public class FitbuddyModule {
             WorkoutRepository workoutRepository,
             ExerciseRepository exerciseRepository,
             SetRepository setRepository,
-            WorkoutService workoutService) {
+            WorkoutParserService workoutParserService) {
         return new EditWorkoutApplicationService(
                 workoutSession,
                 finishedWorkoutRepository,
                 workoutRepository,
                 exerciseRepository,
                 setRepository,
-                workoutService);
+                workoutParserService);
     }
 }

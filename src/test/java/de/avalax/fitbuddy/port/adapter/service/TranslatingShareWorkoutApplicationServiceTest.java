@@ -14,18 +14,18 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TranslatingShareWorkoutApplicationServiceTest {
     @InjectMocks
-    private TranslatingWorkoutService workoutService;
+    private WorkoutParserJsonService workoutService;
     @Mock
-    private JsonInWorkoutAdapter jsonInWorkoutAdapter;
+    private JsonToWorkoutAdapter jsonToWorkoutAdapter;
     @Mock
-    private WorkoutInJsonAdapter workoutInJsonAdapter;
+    private WorkoutToJsonAdapter workoutToJsonAdapter;
     @Mock
     private Workout workout;
 
     @Test
     public void aJsonString_shouldReturnAWorkout() throws Exception {
         String aJsonString = "json";
-        when(jsonInWorkoutAdapter.createFromJson(aJsonString)).thenReturn(workout);
+        when(jsonToWorkoutAdapter.createFromJson(aJsonString)).thenReturn(workout);
 
         Workout workout = workoutService.workoutFromJson(aJsonString);
 
@@ -35,7 +35,7 @@ public class TranslatingShareWorkoutApplicationServiceTest {
     @Test
     public void aWorkout_shouldReturnAQrCode() throws Exception {
         String aJsonString = "json";
-        when(workoutInJsonAdapter.fromWorkout(workout)).thenReturn(aJsonString);
+        when(workoutToJsonAdapter.fromWorkout(workout)).thenReturn(aJsonString);
 
         String json = workoutService.jsonFromWorkout(workout);
 

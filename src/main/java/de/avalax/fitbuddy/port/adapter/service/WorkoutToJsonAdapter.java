@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class WorkoutInJsonAdapter {
+public class WorkoutToJsonAdapter {
     private Gson gson = new Gson();
 
     public String fromWorkout(Workout workout) {

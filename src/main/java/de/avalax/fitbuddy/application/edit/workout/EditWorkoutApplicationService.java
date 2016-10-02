@@ -20,8 +20,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
 
 public class EditWorkoutApplicationService {
 
@@ -33,7 +33,7 @@ public class EditWorkoutApplicationService {
 
     private SetRepository setRepository;
 
-    private WorkoutService workoutService;
+    private WorkoutParserService workoutParserService;
 
     private WorkoutSession workoutSession;
 
@@ -51,13 +51,13 @@ public class EditWorkoutApplicationService {
             WorkoutRepository workoutRepository,
             ExerciseRepository exerciseRepository,
             SetRepository setRepository,
-            WorkoutService workoutService) {
+            WorkoutParserService workoutParserService) {
         this.workoutSession = workoutSession;
         this.finishedWorkoutRepository = finishedWorkoutRepository;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
         this.setRepository = setRepository;
-        this.workoutService = workoutService;
+        this.workoutParserService = workoutParserService;
         this.deletedExercises = new TreeMap<>();
     }
 
@@ -98,7 +98,7 @@ public class EditWorkoutApplicationService {
     }
 
     public void createWorkoutFromJson(String json) throws WorkoutParseException {
-        Workout workoutFromJson = workoutService.workoutFromJson(json);
+        Workout workoutFromJson = workoutParserService.workoutFromJson(json);
         workout = workoutFromJson;
         workoutRepository.save(workoutFromJson);
         setUnsavedChanges(false);

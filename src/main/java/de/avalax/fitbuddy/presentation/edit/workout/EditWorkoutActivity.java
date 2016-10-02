@@ -31,7 +31,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 
@@ -48,7 +48,7 @@ public class EditWorkoutActivity extends FragmentActivity
     @Inject
     protected EditWorkoutApplicationService editEditWorkoutApplicationService;
     @Inject
-    protected WorkoutService workoutService;
+    protected WorkoutParserService workoutParserService;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     private ExerciseListFragment exerciseListFragment;
@@ -248,7 +248,7 @@ public class EditWorkoutActivity extends FragmentActivity
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.addExtra("ENCODE_SHOW_CONTENTS", false);
         Workout workout = editEditWorkoutApplicationService.getWorkout();
-        integrator.shareText(workoutService.jsonFromWorkout(workout));
+        integrator.shareText(workoutParserService.jsonFromWorkout(workout));
     }
 
     private void editWorkoutName() {

@@ -11,19 +11,19 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class WorkoutInJsonAdapterTest {
-    private WorkoutInJsonAdapter workoutInJsonAdapter;
+public class WorkoutToJsonAdapterTest {
+    private WorkoutToJsonAdapter workoutToJsonAdapter;
     private Workout workout;
 
     @Before
     public void setUp() throws Exception {
-        workoutInJsonAdapter = new WorkoutInJsonAdapter();
+        workoutToJsonAdapter = new WorkoutToJsonAdapter();
         workout = new BasicWorkout();
     }
 
     @Test
     public void emptyWorkout_shouldReturnJson() throws Exception {
-        String json = workoutInJsonAdapter.fromWorkout(workout);
+        String json = workoutToJsonAdapter.fromWorkout(workout);
 
         assertThat(json, equalTo("[\"\",[]]"));
     }
@@ -32,7 +32,7 @@ public class WorkoutInJsonAdapterTest {
     public void emptyWorkoutWithName_shouldReturnJson() throws Exception {
         workout.setName("nameOfWorkout");
 
-        String json = workoutInJsonAdapter.fromWorkout(workout);
+        String json = workoutToJsonAdapter.fromWorkout(workout);
 
         assertThat(json, equalTo("[\"nameOfWorkout\",[]]"));
     }
@@ -44,7 +44,7 @@ public class WorkoutInJsonAdapterTest {
         Exercise exercise = workout.exerciseAtPosition(0);
         exercise.removeSet(exercise.setAtPosition(0));
 
-        String json = workoutInJsonAdapter.fromWorkout(workout);
+        String json = workoutToJsonAdapter.fromWorkout(workout);
 
         assertThat(json, equalTo("[\"nameOfWorkout\",[[\"\",[]]]]"));
     }
@@ -59,7 +59,7 @@ public class WorkoutInJsonAdapterTest {
         set.setMaxReps(15);
         set.setWeight(42);
 
-        String json = workoutInJsonAdapter.fromWorkout(workout);
+        String json = workoutToJsonAdapter.fromWorkout(workout);
 
         assertThat(json, equalTo("[\"nameOfWorkout\",[[\"bankdrücken\",[[42.0,15]]]]]"));
     }

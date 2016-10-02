@@ -24,8 +24,8 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutService;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,7 +48,7 @@ public class WorkoutApplicationServiceTest {
     private SetRepository setRepository;
 
     @Mock
-    private WorkoutService workoutService;
+    private WorkoutParserService workoutParserService;
 
     @Mock
     private WorkoutSession workoutSession;
@@ -91,7 +91,7 @@ public class WorkoutApplicationServiceTest {
 
     @Test
     public void createWorkoutFromJson_shouldPersistTheCreatedWorkout() throws Exception {
-        when(workoutService.workoutFromJson("jsonstring")).thenReturn(workout);
+        when(workoutParserService.workoutFromJson("jsonstring")).thenReturn(workout);
         editWorkoutApplicationService.createWorkoutFromJson("jsonstring");
         verify(workoutRepository).save(workout);
         assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
