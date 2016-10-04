@@ -153,7 +153,7 @@ task jacocoTestReport(type: JacocoReport) {
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = "7.1.1"
+    toolVersion = "7.1.2"
 }
 
 task checkstyle(type: Checkstyle) {
