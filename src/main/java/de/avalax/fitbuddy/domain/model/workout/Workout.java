@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.set.SetException;
@@ -16,15 +17,13 @@ public interface Workout extends Serializable {
 
     String getName();
 
-    double getProgress(int index) throws ExerciseException, SetException;
+    double getProgress(int index) throws ResourceException;
 
     Exercise createExercise();
 
     Exercise createExercise(int index);
 
     void addExercise(int index, Exercise exercise);
-
-    void replaceExercise(Exercise exercise);
 
     void deleteExercise(Exercise exercise);
 

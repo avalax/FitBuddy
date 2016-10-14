@@ -37,7 +37,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
-public class WorkoutApplicationServiceTest {
+public class EditWorkoutApplicationServiceTest {
 
     @Mock
     private WorkoutRepository workoutRepository;
@@ -97,13 +97,6 @@ public class WorkoutApplicationServiceTest {
         assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
     }
 
-    @Test
-    public void deleteUnknownWorkout_shouldDoNothing() throws Exception {
-        editWorkoutApplicationService.deleteWorkout();
-
-        verifyNoMoreInteractions(workoutRepository);
-    }
-
     public class givenAWorkoutWithOneExercise {
         private WorkoutId workoutId;
 
@@ -117,13 +110,13 @@ public class WorkoutApplicationServiceTest {
             exercise = workout.createExercise();
             exercise.setName("ExerciseOne");
 
-            editWorkoutApplicationService.setWorkout(workoutId);
+            editWorkoutApplicationService.loadWorkout(workoutId);
         }
 
         @Test
         public void changeWorkoutName_shouldSavePersistence() throws Exception {
             String name = "new name";
-            editWorkoutApplicationService.changeName(name);
+            editWorkoutApplicationService.changeName(workout, name);
 
             assertThat(workout.getName(), equalTo(name));
             verify(workoutRepository).save(workout);
@@ -132,29 +125,27 @@ public class WorkoutApplicationServiceTest {
 
         @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
-            editWorkoutApplicationService.deleteWorkout();
+            editWorkoutApplicationService.deleteWorkout(workout);
 
             verify(workoutRepository).delete(workoutId);
-            assertThat(editWorkoutApplicationService.getWorkout(), equalTo(null));
             assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(true));
             assertThat(editWorkoutApplicationService.hasDeletedWorkout(), equalTo(true));
         }
 
         @Test
         public void undoDeleteWorkout_shouldReinsertTheWorkoutToThePersistence() throws Exception {
-            editWorkoutApplicationService.deleteWorkout();
+            editWorkoutApplicationService.deleteWorkout(workout);
 
             editWorkoutApplicationService.undoDeleteWorkout();
 
             verify(workoutRepository).save(workout);
-            assertThat(editWorkoutApplicationService.getWorkout(), equalTo(workout));
             assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
             assertThat(editWorkoutApplicationService.hasDeletedWorkout(), equalTo(false));
         }
 
         @Test
         public void createExercise_shouldPersistTheExercise() throws Exception {
-            editWorkoutApplicationService.createExercise();
+            editWorkoutApplicationService.createExercise(workout);
 
             verify(exerciseRepository).save(workout.getWorkoutId(), 1, workout.exerciseAtPosition(1));
             assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
@@ -168,9 +159,8 @@ public class WorkoutApplicationServiceTest {
             changedExercise.setName("changed exercise");
             changedExercise.setExerciseId(exercise.getExerciseId());
 
-            editWorkoutApplicationService.saveExercise(changedExercise, 1);
+            editWorkoutApplicationService.saveExercise(workout.getWorkoutId(), changedExercise, 1);
 
-            assertThat(workout.exerciseAtPosition(1).getName(), equalTo("changed exercise"));
             verify(exerciseRepository).save(workout.getWorkoutId(), 1, changedExercise);
             assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
         }
@@ -178,7 +168,7 @@ public class WorkoutApplicationServiceTest {
         @Test
         public void switchWorkout_shouldSetWorkout() throws Exception {
             when(workoutSession.getWorkout()).thenThrow(new WorkoutException());
-            editWorkoutApplicationService.switchWorkout();
+            editWorkoutApplicationService.switchWorkout(workout);
 
             verify(workoutSession).switchWorkout(workout);
             assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
@@ -191,7 +181,7 @@ public class WorkoutApplicationServiceTest {
             when(workoutSession.hasWorkout()).thenReturn(true);
             when(workoutSession.getWorkout()).thenReturn(currentWorkoutToPersist);
 
-            editWorkoutApplicationService.switchWorkout();
+            editWorkoutApplicationService.switchWorkout(workout);
 
             verify(finishedWorkoutRepository).saveWorkout(currentWorkoutToPersist);
         }
@@ -199,7 +189,7 @@ public class WorkoutApplicationServiceTest {
         public class moveExercises {
             @Test
             public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
-                editWorkoutApplicationService.moveExerciseAtPositionUp(0);
+                editWorkoutApplicationService.moveExerciseAtPositionUp(workout, 0);
 
                 verify(workoutRepository, never()).save(workout);
                 assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
@@ -211,7 +201,7 @@ public class WorkoutApplicationServiceTest {
                 Exercise exerciseToMove = workout.createExercise();
                 exerciseToMove.setName("ExerciseTwo");
 
-                editWorkoutApplicationService.moveExerciseAtPositionUp(1);
+                editWorkoutApplicationService.moveExerciseAtPositionUp(workout, 1);
 
                 verify(workoutRepository).save(workout);
                 assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToMove));
@@ -222,7 +212,7 @@ public class WorkoutApplicationServiceTest {
             public void moveLastExerciseAtPositionDown_shouldDoNothing() throws Exception {
                 Exercise lastExercise = workout.createExercise();
 
-                editWorkoutApplicationService.moveExerciseAtPositionDown(1);
+                editWorkoutApplicationService.moveExerciseAtPositionDown(workout, 1);
 
                 verify(workoutRepository, never()).save(workout);
                 assertThat(workout.exerciseAtPosition(1), equalTo(lastExercise));
@@ -236,7 +226,7 @@ public class WorkoutApplicationServiceTest {
                 Exercise lastExercise = workout.createExercise();
                 lastExercise.setName("ExerciseLast");
 
-                editWorkoutApplicationService.moveExerciseAtPositionDown(1);
+                editWorkoutApplicationService.moveExerciseAtPositionDown(workout, 1);
 
                 verify(workoutRepository).save(workout);
                 assertThat(workout.exerciseAtPosition(2), equalTo(exerciseToMove));
@@ -258,7 +248,7 @@ public class WorkoutApplicationServiceTest {
                 exercise.setExerciseId(exerciseId);
                 positions.add(0);
 
-                editWorkoutApplicationService.deleteExercise(positions);
+                editWorkoutApplicationService.deleteExercise(workout, positions);
 
                 assertThat(workout.countOfExercises(), equalTo(0));
                 verify(exerciseRepository).delete(exerciseId);
@@ -270,12 +260,11 @@ public class WorkoutApplicationServiceTest {
             public void undoDeleteExercise_shouldReinsertTheExerciseToThePersistence() throws Exception {
                 int size = workout.countOfExercises();
                 positions.add(0);
-                editWorkoutApplicationService.deleteExercise(positions);
+                editWorkoutApplicationService.deleteExercise(workout, positions);
 
-                editWorkoutApplicationService.undoDeleteExercise();
+                editWorkoutApplicationService.undoDeleteExercise(workout);
 
                 verify(exerciseRepository).save(workout.getWorkoutId(), 0, exercise);
-                assertThat(editWorkoutApplicationService.getWorkout().countOfExercises(), equalTo(size));
                 assertThat(editWorkoutApplicationService.hasUnsavedChanges(), equalTo(false));
                 assertThat(editWorkoutApplicationService.hasDeletedExercise(), equalTo(false));
             }
@@ -286,8 +275,8 @@ public class WorkoutApplicationServiceTest {
                 workout.createExercise();
                 positions.add(1);
 
-                editWorkoutApplicationService.deleteExercise(positions);
-                editWorkoutApplicationService.undoDeleteExercise();
+                editWorkoutApplicationService.deleteExercise(workout, positions);
+                editWorkoutApplicationService.undoDeleteExercise(workout);
 
                 assertThat(workout.exerciseAtPosition(1), equalTo(exerciseToRestore));
             }
@@ -301,8 +290,8 @@ public class WorkoutApplicationServiceTest {
                 positions.add(1);
                 positions.add(0);
 
-                editWorkoutApplicationService.deleteExercise(positions);
-                editWorkoutApplicationService.undoDeleteExercise();
+                editWorkoutApplicationService.deleteExercise(workout, positions);
+                editWorkoutApplicationService.undoDeleteExercise(workout);
 
                 assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
                 assertThat(workout.exerciseAtPosition(1), equalTo(exerciseToRestore));
@@ -312,11 +301,11 @@ public class WorkoutApplicationServiceTest {
             public void undoDeleteExerciseAfterDeleteAnWorkout_shouldReinsertTheExercise() throws Exception {
                 positions.add(0);
                 editWorkoutApplicationService.createWorkout();
-                editWorkoutApplicationService.deleteWorkout();
-                editWorkoutApplicationService.setWorkout(workout.getWorkoutId());
-                editWorkoutApplicationService.deleteExercise(positions);
+                editWorkoutApplicationService.deleteWorkout(workout);
+                editWorkoutApplicationService.loadWorkout(workout.getWorkoutId());
+                editWorkoutApplicationService.deleteExercise(workout, positions);
 
-                editWorkoutApplicationService.undoDeleteExercise();
+                editWorkoutApplicationService.undoDeleteExercise(workout);
 
                 assertThat(editWorkoutApplicationService.hasDeletedExercise(), equalTo(false));
                 assertThat(editWorkoutApplicationService.hasDeletedWorkout(), equalTo(false));
@@ -325,8 +314,8 @@ public class WorkoutApplicationServiceTest {
             @Test
             public void undoDeleteWorkoutAfterDeleteAnExercise_shouldReinsertTheWorkout() throws Exception {
                 positions.add(0);
-                editWorkoutApplicationService.deleteExercise(positions);
-                editWorkoutApplicationService.deleteWorkout();
+                editWorkoutApplicationService.deleteExercise(workout, positions);
+                editWorkoutApplicationService.deleteWorkout(workout);
 
                 editWorkoutApplicationService.undoDeleteWorkout();
                 assertThat(editWorkoutApplicationService.hasDeletedExercise(), equalTo(false));

@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
@@ -51,17 +52,9 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public double getProgress(int position) throws ExerciseException, SetException {
+    public double getProgress(int position) throws ResourceException {
         Exercise exercise = exerciseAtPosition(position);
         return (position + exercise.getProgress()) / exercises.size();
-    }
-
-    @Override
-    public void replaceExercise(Exercise exercise) {
-        int indexOf = exercises.indexOf(exercise);
-        if (indexOf >= 0) {
-            exercises.set(indexOf, exercise);
-        }
     }
 
     @Override

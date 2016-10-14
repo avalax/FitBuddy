@@ -15,6 +15,7 @@ import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditNameDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
@@ -36,11 +37,14 @@ public class EditExerciseActivity extends FragmentActivity implements
 
     private EditExerciseDialogFragment editExerciseDialogFragment;
 
+    private WorkoutId workoutId;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
         ((FitbuddyApplication) getApplication()).inject(this);
+        workoutId = (WorkoutId) getIntent().getSerializableExtra("workoutId");
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
         position = getIntent().getIntExtra("position", -1);
         editExerciseDialogFragment = EditExerciseDialogFragment.newInstance(exercise);
@@ -59,7 +63,7 @@ public class EditExerciseActivity extends FragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save_exercise) {
-            editWorkoutApplicationService.saveExercise(exercise, position);
+            editWorkoutApplicationService.saveExercise(workoutId, exercise, position);
             setResult(RESULT_OK);
             finish();
         }

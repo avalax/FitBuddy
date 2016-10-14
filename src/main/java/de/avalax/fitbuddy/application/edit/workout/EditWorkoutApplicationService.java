@@ -37,12 +37,13 @@ public class EditWorkoutApplicationService {
 
     private WorkoutSession workoutSession;
 
+    @Deprecated
     private boolean unsavedChanges;
 
-    private Workout workout;
-
+    @Deprecated
     private Workout deletedWorkout;
 
+    @Deprecated
     private Map<Integer, Exercise> deletedExercises;
 
     public EditWorkoutApplicationService(
@@ -69,15 +70,11 @@ public class EditWorkoutApplicationService {
         return unsavedChanges;
     }
 
-    public Workout getWorkout() {
-        return workout;
+    public Workout loadWorkout(WorkoutId id) throws WorkoutException {
+        return workoutRepository.load(id);
     }
 
-    public void setWorkout(WorkoutId id) throws WorkoutException {
-        this.workout = workoutRepository.load(id);
-    }
-
-    public void switchWorkout() throws WorkoutException {
+    public void switchWorkout(Workout workout) throws WorkoutException {
         if (workoutSession.hasWorkout()) {
             Workout workoutToSave = workoutSession.getWorkout();
             finishedWorkoutRepository.saveWorkout(workoutToSave);
@@ -91,27 +88,24 @@ public class EditWorkoutApplicationService {
     }
 
     public Workout createWorkout() {
-        workout = new BasicWorkout();
+        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
         setUnsavedChanges(false);
         return workout;
     }
 
-    public void createWorkoutFromJson(String json) throws WorkoutParseException {
+    public Workout createWorkoutFromJson(String json) throws WorkoutParseException {
         Workout workoutFromJson = workoutParserService.workoutFromJson(json);
-        workout = workoutFromJson;
         workoutRepository.save(workoutFromJson);
         setUnsavedChanges(false);
+
+        return workoutFromJson;
     }
 
-    public void deleteWorkout() {
-        if (workout == null) {
-            return;
-        }
+    public void deleteWorkout(Workout workout) {
         workoutRepository.delete(workout.getWorkoutId());
         deletedExercises.clear();
         setUnsavedChanges(workout);
-        workout = null;
     }
 
     private void setUnsavedChanges(Workout workout) {
@@ -124,7 +118,7 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(true);
     }
 
-    public void undoDeleteExercise() {
+    public void undoDeleteExercise(Workout workout) {
         for (Map.Entry<Integer, Exercise> deletedExercise : deletedExercises.entrySet()) {
             int index = deletedExercise.getKey();
             Exercise exercise = deletedExercise.getValue();
@@ -135,14 +129,15 @@ public class EditWorkoutApplicationService {
         setUnsavedChanges(false);
     }
 
-    public void undoDeleteWorkout() {
-        workout = deletedWorkout;
-        workoutRepository.save(deletedWorkout);
+    public Workout undoDeleteWorkout() {
+        Workout restoredWorkout = deletedWorkout;
+        workoutRepository.save(restoredWorkout);
         deletedWorkout = null;
         setUnsavedChanges(false);
+        return restoredWorkout;
     }
 
-    public void deleteExercise(Collection<Integer> positions) throws ExerciseException {
+    public void deleteExercise(Workout workout, Collection<Integer> positions) throws ExerciseException {
         for (Integer position : positions) {
             Exercise exercise = workout.exerciseAtPosition(position);
             exerciseRepository.delete(exercise.getExerciseId());
@@ -152,13 +147,12 @@ public class EditWorkoutApplicationService {
         }
     }
 
-    public void saveExercise(Exercise exercise, int position) {
-        workout.replaceExercise(exercise);
-        exerciseRepository.save(workout.getWorkoutId(), position, exercise);
+    public void saveExercise(WorkoutId workoutId, Exercise exercise, int position) {
+        exerciseRepository.save(workoutId, position, exercise);
         setUnsavedChanges(false);
     }
 
-    public void createExercise() {
+    public void createExercise(Workout workout) {
         Exercise exercise = workout.createExercise();
         exerciseRepository.save(workout.getWorkoutId(), workout.countOfExercises() - 1, exercise);
         setUnsavedChanges(false);
@@ -172,7 +166,7 @@ public class EditWorkoutApplicationService {
         return !deletedExercises.isEmpty();
     }
 
-    public void changeName(String name) {
+    public void changeName(Workout workout, String name) {
         workout.setName(name);
         workoutRepository.save(workout);
         setUnsavedChanges(false);
@@ -212,14 +206,14 @@ public class EditWorkoutApplicationService {
     }
 
 
-    public void moveExerciseAtPositionUp(int position) throws ResourceException {
+    public void moveExerciseAtPositionUp(Workout workout, int position) throws ResourceException {
         if (workout.moveExerciseAtPositionUp(position)) {
             workoutRepository.save(workout);
         }
         setUnsavedChanges(false);
     }
 
-    public void moveExerciseAtPositionDown(int position) throws ResourceException {
+    public void moveExerciseAtPositionDown(Workout workout, int position) throws ResourceException {
         if (workout.moveExerciseAtPositionDown(position)) {
             workoutRepository.save(workout);
         }

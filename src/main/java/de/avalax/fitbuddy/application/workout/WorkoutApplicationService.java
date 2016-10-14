@@ -23,10 +23,12 @@ public class WorkoutApplicationService {
         this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 
+    @Deprecated
     public int countOfExercises() throws ResourceException {
         return getWorkout().countOfExercises();
     }
 
+    @Deprecated
     public Exercise requestExercise(int position) throws ResourceException {
         return getWorkout().exerciseAtPosition(position);
     }
@@ -62,6 +64,7 @@ public class WorkoutApplicationService {
         workoutSession.saveCurrentWorkout();
     }
 
+    @Deprecated
     public double weightOfCurrentSet(int index) throws ResourceException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.indexOfCurrentSet();
@@ -69,10 +72,12 @@ public class WorkoutApplicationService {
         return set.getWeight();
     }
 
+    @Deprecated
     public int indexOfCurrentExercise() throws ResourceException {
         return getWorkout().indexOfCurrentExercise();
     }
 
+    @Deprecated
     public WorkoutId currentWorkoutId() throws ResourceException {
         return workoutSession.getWorkout().getWorkoutId();
     }
@@ -84,15 +89,20 @@ public class WorkoutApplicationService {
         workoutSession.switchWorkout(newWorkout);
     }
 
+    @Deprecated
     public int workoutProgress(int exerciseIndex) throws ResourceException {
         return progressInPercent(getWorkout().getProgress(exerciseIndex));
     }
 
-    private int progressInPercent(double progess) {
-        return (int) Math.round(progess * 100);
+    private int progressInPercent(double progress) {
+        return (int) Math.round(progress * 100);
     }
 
     private Workout getWorkout() throws WorkoutException {
-        return workoutSession.getWorkout();
+        if (workoutSession.hasWorkout()) {
+            return workoutSession.getWorkout();
+        } else {
+            throw new WorkoutException();
+        }
     }
 }

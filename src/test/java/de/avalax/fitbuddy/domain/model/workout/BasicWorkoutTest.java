@@ -247,30 +247,6 @@ public class BasicWorkoutTest {
         }
 
         @Test
-        public void replaceExercise_shouldNotAddExerciseAtPosition() throws Exception {
-            Exercise exercise = new BasicExercise();
-            exercise.setExerciseId(new ExerciseId("42"));
-
-            workout.replaceExercise(exercise);
-
-            assertThat(workout.countOfExercises(), equalTo(0));
-        }
-
-        @Test
-        public void replaceExercise_shouldReplaceExerciseAtPosition() throws Exception {
-            Exercise exerciseToReplace = new BasicExercise();
-            ExerciseId exerciseId = new ExerciseId("42");
-            exerciseToReplace.setExerciseId(exerciseId);
-            Exercise exercise = workout.createExercise();
-            exercise.setExerciseId(exerciseId);
-
-            workout.replaceExercise(exerciseToReplace);
-
-            assertThat(workout.countOfExercises(), equalTo(1));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToReplace));
-        }
-
-        @Test
         public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
             Exercise exercise = workout.createExercise();
 

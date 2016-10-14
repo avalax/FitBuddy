@@ -1,36 +1,46 @@
 package de.avalax.fitbuddy.application.workout;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.*;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
 public class WorkoutApplicationServiceTest {
 
+    @Mock
     private WorkoutSession workoutSession;
 
-    private WorkoutApplicationService workoutApplicationService;
-
+    @Mock
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
+    @Mock
     private WorkoutRepository workoutRepository;
+
+    @InjectMocks
+    private WorkoutApplicationService workoutApplicationService;
 
     @Before
     public void setUp() throws Exception {
-        workoutSession = mock(WorkoutSession.class);
-        finishedWorkoutRepository = mock(FinishedWorkoutRepository.class);
-        workoutRepository = mock(WorkoutRepository.class);
-        workoutApplicationService = new WorkoutApplicationService(workoutSession, workoutRepository, finishedWorkoutRepository);
+        MockitoAnnotations.initMocks(this);
     }
 
     public class noWorkoutGiven {
@@ -40,57 +50,57 @@ public class WorkoutApplicationServiceTest {
         }
 
         @Test(expected = ResourceException.class)
-        public void currentWorkoutId_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void currentWorkoutId_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.currentWorkoutId();
         }
 
         @Test(expected = ResourceException.class)
-        public void indexOfCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void indexOfCurrentExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.indexOfCurrentExercise();
         }
 
         @Test(expected = ResourceException.class)
-        public void countOfExercises_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void countOfExercises_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.countOfExercises();
         }
 
         @Test(expected = ResourceException.class)
-        public void requestExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void requestExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.requestExercise(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void workoutProgress_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void workoutProgress_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.workoutProgress(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void setCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void setCurrentExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.setCurrentExercise(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void switchToSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void switchToSet_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.switchToSet(0, 0);
         }
 
         @Test(expected = ResourceException.class)
-        public void weightOfCurrentSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void weightOfCurrentSet_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.weightOfCurrentSet(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void addRepsToSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void addRepsToSet_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.addRepsToSet(0, 0);
         }
 
         @Test(expected = ResourceException.class)
-        public void updateWeightOfCurrentSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void updateWeightOfCurrentSet_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
 
         @Test(expected = ResourceException.class)
-        public void finishWorkout_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void finishWorkout_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.finishCurrentWorkout();
         }
     }
@@ -102,6 +112,7 @@ public class WorkoutApplicationServiceTest {
         public void setUp() throws Exception {
             workout = new BasicWorkout();
             when(workoutSession.getWorkout()).thenReturn(workout);
+            when(workoutSession.hasWorkout()).thenReturn(true);
         }
 
         @Test
@@ -120,32 +131,32 @@ public class WorkoutApplicationServiceTest {
         }
 
         @Test(expected = ResourceException.class)
-        public void workoutProgress_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void workoutProgress_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.workoutProgress(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void setCurrentExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void setCurrentExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.setCurrentExercise(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void switchToSetWithNoExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void switchToSetWithNoExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.switchToSet(0, 0);
         }
 
         @Test(expected = ResourceException.class)
-        public void weightOfCurrentSetWithNoExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void weightOfCurrentSetWithNoExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.weightOfCurrentSet(0);
         }
 
         @Test(expected = ResourceException.class)
-        public void addRepsToSetWithNoExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void addRepsToSetWithNoExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.addRepsToSet(0, 0);
         }
 
         @Test(expected = ResourceException.class)
-        public void updateWeightOfCurrentSetWithoutExercise_shouldThrowRessourceNotFoundExeption() throws Exception {
+        public void updateWeightOfCurrentSetWithoutExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
 
@@ -207,22 +218,22 @@ public class WorkoutApplicationServiceTest {
             }
 
             @Test(expected = ResourceException.class)
-            public void switchToSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+            public void switchToSetWithNoSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.switchToSet(1, 0);
             }
 
             @Test(expected = ResourceException.class)
-            public void weightOfCurrentSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+            public void weightOfCurrentSetWithNoSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.weightOfCurrentSet(1);
             }
 
             @Test(expected = ResourceException.class)
-            public void addRepsToSetWithNoSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+            public void addRepsToSetWithNoSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.addRepsToSet(1, 0);
             }
 
             @Test(expected = ResourceException.class)
-            public void updateWeightOfCurrentSetWithoutSet_shouldThrowRessourceNotFoundExeption() throws Exception {
+            public void updateWeightOfCurrentSetWithoutSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.updateWeightOfCurrentSet(1, 0);
             }
 

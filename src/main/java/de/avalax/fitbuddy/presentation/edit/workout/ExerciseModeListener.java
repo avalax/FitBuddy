@@ -7,20 +7,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
-import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 
 class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
     private ItemsWithCheckedState itemsChecked;
+    private Workout workout;
     private ExerciseListFragment exerciseListFragment;
     private EditWorkoutApplicationService editWorkoutApplicationService;
     private MenuItem moveExerciseUpMenuItem;
     private MenuItem moveExerciseDownMenuItem;
     private MenuItem deleteExerciseMenuItem;
 
-    ExerciseModeListener(ExerciseListFragment exerciseListFragment,
+    ExerciseModeListener(Workout workout, ExerciseListFragment exerciseListFragment,
                          EditWorkoutApplicationService editWorkoutApplicationService) {
+        this.workout = workout;
         this.exerciseListFragment = exerciseListFragment;
         this.editWorkoutApplicationService = editWorkoutApplicationService;
         this.itemsChecked = new ItemsWithCheckedState();
@@ -58,7 +62,7 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         if (item.getItemId() == R.id.action_add_exercise) {
-            editWorkoutApplicationService.createExercise();
+            editWorkoutApplicationService.createExercise(workout);
         }
         if (item.getItemId() == R.id.action_move_exercise_up) {
             for (int position : itemsChecked.list()) {
@@ -74,11 +78,19 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
 
         if (item.getItemId() == R.id.action_delete_exercise) {
             deleteExercises();
-            exerciseListFragment.initListView();
+            try {
+                exerciseListFragment.initListView(workout.getWorkoutId());
+            } catch (WorkoutException e) {
+                Log.d("Failed to init fragment", e.getMessage(), e);
+            }
             mode.finish();
             return false;
         }
-        exerciseListFragment.initListView();
+        try {
+            exerciseListFragment.initListView(workout.getWorkoutId());
+        } catch (WorkoutException e) {
+            Log.d("Failed to init fragment", e.getMessage(), e);
+        }
         itemsChecked.clear();
         updateMenuItems();
         return false;
@@ -86,7 +98,7 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
 
     private void deleteExercises() {
         try {
-            editWorkoutApplicationService.deleteExercise(itemsChecked.list());
+            editWorkoutApplicationService.deleteExercise(workout, itemsChecked.list());
         } catch (ResourceException e) {
             Log.d("Can't delete exercises", e.getMessage(), e);
         }
@@ -94,7 +106,7 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
 
     private void moveExerciseUp(int position) {
         try {
-            editWorkoutApplicationService.moveExerciseAtPositionUp(position);
+            editWorkoutApplicationService.moveExerciseAtPositionUp(workout, position);
         } catch (ResourceException e) {
             Log.d("Can't move exercise up", e.getMessage(), e);
         }
@@ -102,7 +114,7 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
 
     private void moveExerciseDown(int position) {
         try {
-            editWorkoutApplicationService.moveExerciseAtPositionDown(position);
+            editWorkoutApplicationService.moveExerciseAtPositionDown(workout, position);
         } catch (ResourceException e) {
             Log.d("Can't move exercise", e.getMessage(), e);
         }

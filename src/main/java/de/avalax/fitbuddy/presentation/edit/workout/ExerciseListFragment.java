@@ -20,6 +20,8 @@ import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
@@ -27,6 +29,7 @@ public class ExerciseListFragment extends ListFragment {
     @Inject
     protected EditWorkoutApplicationService editWorkoutService;
     private View footer;
+    private Workout workout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,13 +40,21 @@ public class ExerciseListFragment extends ListFragment {
         footer = view.findViewById(R.id.footer_undo);
         view.findViewById(R.id.button_undo).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                undoChanges();
+                try {
+                    undoChanges();
+                } catch (WorkoutException e) {
+                    Log.d("Can't undo", e.getMessage(), e);
+                }
             }
         });
 
         view.findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                addExercise();
+                try {
+                    addExercise();
+                } catch (WorkoutException e) {
+                    Log.d("Can't create exercise", e.getMessage(), e);
+                }
             }
         });
         return view;
@@ -53,7 +64,11 @@ public class ExerciseListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initContextualActionBar();
-        initListView();
+        try {
+            initListView((WorkoutId)getArguments().getSerializable("workoutId"));
+        } catch (WorkoutException e) {
+            Log.d("Can't init fragment", e.getMessage(), e);
+        }
 
         TextView textView = (TextView) getView().findViewById(R.id.unsavedChangesTextView);
         if (editWorkoutService.hasDeletedExercise()) {
@@ -64,15 +79,15 @@ public class ExerciseListFragment extends ListFragment {
     }
 
     private void initContextualActionBar() {
-        ExerciseModeListener listener = new ExerciseModeListener(this, editWorkoutService);
+        ExerciseModeListener listener = new ExerciseModeListener(workout, this, editWorkoutService);
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(listener);
     }
 
-    protected void initListView() {
+    protected void initListView(WorkoutId workoutId) throws WorkoutException {
         int visibility = editWorkoutService.hasUnsavedChanges() ? View.VISIBLE : View.GONE;
         footer.setVisibility(visibility);
-        Workout workout = editWorkoutService.getWorkout();
+        workout = editWorkoutService.loadWorkout(workoutId);
         List<Exercise> exercises = workout.exercisesOfWorkout();
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
@@ -87,8 +102,9 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Exercise exercise = editWorkoutService.getWorkout().exerciseAtPosition(position);
+            Exercise exercise = workout.exerciseAtPosition(position);
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+            intent.putExtra("workoutId", workout.getWorkoutId());
             intent.putExtra("exercise", exercise);
             intent.putExtra("position", position);
             getActivity().startActivityForResult(intent, EditWorkoutActivity.EDIT_EXERCISE);
@@ -97,23 +113,23 @@ public class ExerciseListFragment extends ListFragment {
         }
     }
 
-    private void undoChanges() {
+    private void undoChanges() throws WorkoutException {
         if (editWorkoutService.hasDeletedExercise()) {
-            editWorkoutService.undoDeleteExercise();
+            editWorkoutService.undoDeleteExercise(workout);
         } else if (editWorkoutService.hasDeletedWorkout()) {
             editWorkoutService.undoDeleteWorkout();
             ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
-        initListView();
+        initListView(workout.getWorkoutId());
     }
 
-    protected void addExercise() {
-        if (editWorkoutService.getWorkout() == null) {
-            editWorkoutService.createWorkout();
+    protected void addExercise() throws WorkoutException {
+        if (workout == null) {
+            workout = editWorkoutService.createWorkout();
             ((EditWorkoutActivity) getActivity()).initActionNavigationBar();
         }
-        editWorkoutService.createExercise();
-        initListView();
+        editWorkoutService.createExercise(workout);
+        initListView(workout.getWorkoutId());
     }
 
 }
