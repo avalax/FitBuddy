@@ -1,12 +1,11 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+import java.io.Serializable;
+import java.util.List;
+
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
-import de.avalax.fitbuddy.domain.model.set.SetException;
-
-import java.io.Serializable;
-import java.util.List;
 
 public interface Workout extends Serializable {
     WorkoutId getWorkoutId();

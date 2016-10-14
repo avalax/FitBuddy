@@ -65,7 +65,7 @@ public class ExerciseListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         initContextualActionBar();
         try {
-            initListView((WorkoutId)getArguments().getSerializable("workoutId"));
+            initListView((WorkoutId) getArguments().getSerializable("workoutId"));
         } catch (WorkoutException e) {
             Log.d("Can't init fragment", e.getMessage(), e);
         }

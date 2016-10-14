@@ -137,7 +137,8 @@ public class EditWorkoutApplicationService {
         return restoredWorkout;
     }
 
-    public void deleteExercise(Workout workout, Collection<Integer> positions) throws ExerciseException {
+    public void deleteExercise(Workout workout, Collection<Integer> positions)
+            throws ExerciseException {
         for (Integer position : positions) {
             Exercise exercise = workout.exerciseAtPosition(position);
             exerciseRepository.delete(exercise.getExerciseId());

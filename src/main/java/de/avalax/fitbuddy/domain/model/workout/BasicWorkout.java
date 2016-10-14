@@ -1,14 +1,13 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
-import de.avalax.fitbuddy.domain.model.set.SetException;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class BasicWorkout implements Workout {
     private List<Exercise> exercises;
