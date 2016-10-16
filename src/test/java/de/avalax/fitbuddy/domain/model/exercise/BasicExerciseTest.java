@@ -55,7 +55,7 @@ public class BasicExerciseTest {
 
     @Test
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
-    public void differntObject_shouldHaveDifferentIdentity() throws Exception {
+    public void differentObject_shouldHaveDifferentIdentity() throws Exception {
         exercise.setExerciseId(new ExerciseId("42"));
         assertThat(exercise.equals("42"), is(false));
     }
@@ -94,7 +94,7 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void toString_shouldReturnSetInformations() throws Exception {
+    public void toString_shouldReturnSetInformation() throws Exception {
         String name = "NameOfExercise";
         exercise.setName(name);
 

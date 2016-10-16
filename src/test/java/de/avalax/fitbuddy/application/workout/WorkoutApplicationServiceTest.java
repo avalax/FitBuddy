@@ -184,7 +184,7 @@ public class WorkoutApplicationServiceTest {
 
             @Before
             public void setUp() throws Exception {
-                exercise = workout.createExercise();
+                exercise = workout.getExercises().createExercise();
             }
 
             @Test
@@ -210,7 +210,7 @@ public class WorkoutApplicationServiceTest {
 
             @Test
             public void setCurrentExercise_shouldSetCurrentExercise() throws Exception {
-                workout.createExercise();
+                workout.getExercises().createExercise();
 
                 workoutApplicationService.setCurrentExercise(1);
 

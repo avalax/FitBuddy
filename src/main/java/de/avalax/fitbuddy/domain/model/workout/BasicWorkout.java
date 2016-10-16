@@ -1,28 +1,26 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercises;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
+import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 
 public class BasicWorkout implements Workout {
-    private List<Exercise> exercises;
+    private Exercises exercises;
     private String name;
     private WorkoutId workoutId;
-    private int exerciseIndex;
 
     public BasicWorkout(WorkoutId workoutId, String name, List<Exercise> exercises) {
         this.workoutId = workoutId;
-        this.exercises = exercises;
+        this.exercises = new BasicExercises(exercises);
         this.name = name;
     }
 
     public BasicWorkout() {
-        this.exercises = new ArrayList<>();
+        this.exercises = new BasicExercises(new ArrayList<Exercise>());
         this.name = "";
     }
 
@@ -52,87 +50,13 @@ public class BasicWorkout implements Workout {
 
     @Override
     public double getProgress(int position) throws ResourceException {
-        Exercise exercise = exerciseAtPosition(position);
-        return (position + exercise.getProgress()) / exercises.size();
+        Exercise exercise = exercises.exerciseAtPosition(position);
+        return (position + exercise.getProgress()) / exercises.exercisesOfWorkout().size();
     }
 
     @Override
-    public void deleteExercise(Exercise exercise) {
-        exercises.remove(exercise);
-    }
-
-    @Override
-    public Exercise exerciseAtPosition(int index) throws ExerciseException {
-        if (exercises.size() <= index || index < 0) {
-            throw new ExerciseException();
-        }
-        return exercises.get(index);
-    }
-
-    @Override
-    public Exercise createExercise() {
-        return createExercise(exercises.size());
-    }
-
-    @Override
-    public Exercise createExercise(int position) {
-        Exercise exercise = new BasicExercise();
-        exercise.createSet();
-        exercises.add(position, exercise);
-        return exercise;
-    }
-
-    @Override
-    public void addExercise(int position, Exercise exercise) {
-        exercises.add(position, exercise);
-    }
-
-    @Override
-    public void setCurrentExercise(int index) throws ExerciseException {
-        if (exercises.size() <= index || index < 0) {
-            throw new ExerciseException();
-        }
-        exerciseIndex = index;
-    }
-
-    @Override
-    public int indexOfCurrentExercise() throws ExerciseException {
-        if (exercises.isEmpty()) {
-            throw new ExerciseException();
-        }
-        return exerciseIndex;
-    }
-
-    @Override
-    public boolean moveExerciseAtPositionUp(int index) throws ExerciseException {
-        if (index == 0) {
-            return false;
-        }
-        Exercise exercise = exerciseAtPosition(index);
-        deleteExercise(exercise);
-        addExercise(index - 1, exercise);
-        return true;
-    }
-
-    @Override
-    public boolean moveExerciseAtPositionDown(int index) throws ExerciseException {
-        if (index + 1 == countOfExercises()) {
-            return false;
-        }
-        Exercise exercise = exerciseAtPosition(index);
-        deleteExercise(exercise);
-        addExercise(index + 1, exercise);
-        return true;
-    }
-
-    @Override
-    public int countOfExercises() {
-        return exercises.size();
-    }
-
-    @Override
-    public List<Exercise> exercisesOfWorkout() {
-        return Collections.unmodifiableList(exercises);
+    public Exercises getExercises() {
+        return exercises;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class SQLiteSetRepositoryTest {
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         Workout workout = new BasicWorkout();
         Exercise exercise = new BasicExercise();
-        workout.addExercise(0, exercise);
+        workout.getExercises().addExercise(0, exercise);
 
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();

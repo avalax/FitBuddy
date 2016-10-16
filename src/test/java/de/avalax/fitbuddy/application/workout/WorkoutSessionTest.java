@@ -155,18 +155,18 @@ public class WorkoutSessionTest {
         WorkoutId workoutId = new WorkoutId("42");
         Workout workout = new BasicWorkout();
         workout.setWorkoutId(workoutId);
-        workout.createExercise();
-        workout.createExercise();
+        workout.getExercises().createExercise();
+        workout.getExercises().createExercise();
         writeWorkout(workout);
         workoutSession = new WorkoutSession(context);
 
         Workout persistedWorkout = workoutSession.getWorkout();
-        assertThat(persistedWorkout.indexOfCurrentExercise(), equalTo(0));
-        persistedWorkout.setCurrentExercise(1);
+        assertThat(persistedWorkout.getExercises().indexOfCurrentExercise(), equalTo(0));
+        persistedWorkout.getExercises().setCurrentExercise(1);
         workoutSession.saveCurrentWorkout();
 
         Workout changedPersistedWorkout = readWorkout();
-        assertThat(changedPersistedWorkout.indexOfCurrentExercise(), equalTo(1));
-        assertThat(changedPersistedWorkout.countOfExercises(), equalTo(2));
+        assertThat(changedPersistedWorkout.getExercises().indexOfCurrentExercise(), equalTo(1));
+        assertThat(changedPersistedWorkout.getExercises().countOfExercises(), equalTo(2));
     }
 }

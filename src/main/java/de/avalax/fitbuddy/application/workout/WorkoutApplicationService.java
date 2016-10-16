@@ -25,23 +25,23 @@ public class WorkoutApplicationService {
 
     @Deprecated
     public int countOfExercises() throws ResourceException {
-        return getWorkout().countOfExercises();
+        return getWorkout().getExercises().countOfExercises();
     }
 
     @Deprecated
     public Exercise requestExercise(int position) throws ResourceException {
-        return getWorkout().exerciseAtPosition(position);
+        return getWorkout().getExercises().exerciseAtPosition(position);
     }
 
     public void switchToSet(int position, int moved) throws ResourceException {
-        Exercise exercise = getWorkout().exerciseAtPosition(position);
+        Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
         exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
     public void addRepsToSet(int position, int moved) throws ResourceException {
-        Exercise exercise = getWorkout().exerciseAtPosition(position);
+        Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
         int currentSetIndex = exercise.indexOfCurrentSet();
         Set set = exercise.setAtPosition(currentSetIndex);
         set.setReps(set.getReps() + moved);
@@ -51,7 +51,7 @@ public class WorkoutApplicationService {
     }
 
     public void setCurrentExercise(int index) throws ResourceException {
-        getWorkout().setCurrentExercise(index);
+        getWorkout().getExercises().setCurrentExercise(index);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
@@ -74,7 +74,7 @@ public class WorkoutApplicationService {
 
     @Deprecated
     public int indexOfCurrentExercise() throws ResourceException {
-        return getWorkout().indexOfCurrentExercise();
+        return getWorkout().getExercises().indexOfCurrentExercise();
     }
 
     @Deprecated

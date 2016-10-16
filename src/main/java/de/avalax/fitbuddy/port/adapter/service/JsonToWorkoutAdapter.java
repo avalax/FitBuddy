@@ -37,7 +37,7 @@ public class JsonToWorkoutAdapter {
                     set.setWeight(weight);
                     set.setMaxReps(maxReps);
                 }
-                workout.addExercise(workout.countOfExercises(), exercise);
+                workout.getExercises().addExercise(workout.getExercises().countOfExercises(), exercise);
             }
             return workout;
         } catch (JsonSyntaxException re) {

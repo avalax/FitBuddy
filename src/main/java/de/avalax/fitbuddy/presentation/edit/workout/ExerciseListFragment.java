@@ -88,7 +88,7 @@ public class ExerciseListFragment extends ListFragment {
         int visibility = editWorkoutService.hasUnsavedChanges() ? View.VISIBLE : View.GONE;
         footer.setVisibility(visibility);
         workout = editWorkoutService.loadWorkout(workoutId);
-        List<Exercise> exercises = workout.exercisesOfWorkout();
+        List<Exercise> exercises = workout.getExercises().exercisesOfWorkout();
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
     }
@@ -102,7 +102,7 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Exercise exercise = workout.exerciseAtPosition(position);
+            Exercise exercise = workout.getExercises().exerciseAtPosition(position);
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
             intent.putExtra("workoutId", workout.getWorkoutId());
             intent.putExtra("exercise", exercise);

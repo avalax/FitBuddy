@@ -122,7 +122,7 @@ public class EditWorkoutApplicationService {
         for (Map.Entry<Integer, Exercise> deletedExercise : deletedExercises.entrySet()) {
             int index = deletedExercise.getKey();
             Exercise exercise = deletedExercise.getValue();
-            workout.addExercise(index, exercise);
+            workout.getExercises().addExercise(index, exercise);
             exerciseRepository.save(workout.getWorkoutId(), index, exercise);
         }
         deletedExercises.clear();
@@ -140,9 +140,9 @@ public class EditWorkoutApplicationService {
     public void deleteExercise(Workout workout, Collection<Integer> positions)
             throws ExerciseException {
         for (Integer position : positions) {
-            Exercise exercise = workout.exerciseAtPosition(position);
+            Exercise exercise = workout.getExercises().exerciseAtPosition(position);
             exerciseRepository.delete(exercise.getExerciseId());
-            workout.deleteExercise(exercise);
+            workout.getExercises().deleteExercise(exercise);
             setUnsavedChanges(position, exercise);
             deletedWorkout = null;
         }
@@ -154,8 +154,9 @@ public class EditWorkoutApplicationService {
     }
 
     public void createExercise(Workout workout) {
-        Exercise exercise = workout.createExercise();
-        exerciseRepository.save(workout.getWorkoutId(), workout.countOfExercises() - 1, exercise);
+        Exercise exercise = workout.getExercises().createExercise();
+        int countOfExercises = workout.getExercises().countOfExercises();
+        exerciseRepository.save(workout.getWorkoutId(), countOfExercises - 1, exercise);
         setUnsavedChanges(false);
     }
 
@@ -208,14 +209,14 @@ public class EditWorkoutApplicationService {
 
 
     public void moveExerciseAtPositionUp(Workout workout, int position) throws ResourceException {
-        if (workout.moveExerciseAtPositionUp(position)) {
+        if (workout.getExercises().moveExerciseAtPositionUp(position)) {
             workoutRepository.save(workout);
         }
         setUnsavedChanges(false);
     }
 
     public void moveExerciseAtPositionDown(Workout workout, int position) throws ResourceException {
-        if (workout.moveExerciseAtPositionDown(position)) {
+        if (workout.getExercises().moveExerciseAtPositionDown(position)) {
             workoutRepository.save(workout);
         }
         setUnsavedChanges(false);

@@ -74,7 +74,7 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
         Workout workout = new BasicWorkout();
-        Exercise exercise = workout.createExercise(0);
+        Exercise exercise = workout.getExercises().createExercise(0);
 
         workoutRepository.save(workout);
 
@@ -123,16 +123,16 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
         Workout workout = new BasicWorkout();
-        Exercise exercise1 = workout.createExercise(0);
-        Exercise exercise2 = workout.createExercise(1);
+        Exercise exercise1 = workout.getExercises().createExercise(0);
+        Exercise exercise2 = workout.getExercises().createExercise(1);
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
         Workout loadedWorkout = workoutRepository.load(workoutId);
 
-        assertThat(loadedWorkout.countOfExercises(), equalTo(2));
-        assertThat(loadedWorkout.exerciseAtPosition(0), equalTo(exercise1));
-        assertThat(loadedWorkout.exerciseAtPosition(1), equalTo(exercise2));
+        assertThat(loadedWorkout.getExercises().countOfExercises(), equalTo(2));
+        assertThat(loadedWorkout.getExercises().exerciseAtPosition(0), equalTo(exercise1));
+        assertThat(loadedWorkout.getExercises().exerciseAtPosition(1), equalTo(exercise2));
     }
 
     @Test

@@ -80,7 +80,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldAlsoInsertExerciseInformationsIntoDatabase() throws Exception {
-        Exercise exercise = workout.createExercise();
+        Exercise exercise = workout.getExercises().createExercise();
         exercise.setName("finished exercise");
         Set set = exercise.setAtPosition(0);
         set.setWeight(42.21);

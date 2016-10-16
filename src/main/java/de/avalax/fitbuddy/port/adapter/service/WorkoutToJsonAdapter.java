@@ -16,7 +16,7 @@ public class WorkoutToJsonAdapter {
         Collection<Object> collection = new ArrayList<>();
         collection.add(workout.getName());
         List<Object> exercises = new ArrayList<>();
-        for (Exercise exercise : workout.exercisesOfWorkout()) {
+        for (Exercise exercise : workout.getExercises().exercisesOfWorkout()) {
             exercises.add(fromExercise(exercise));
         }
         collection.add(exercises);

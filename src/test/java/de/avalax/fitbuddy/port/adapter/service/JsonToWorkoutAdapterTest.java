@@ -37,7 +37,7 @@ public class JsonToWorkoutAdapterTest {
         Workout workout = jsonToWorkoutAdapter.createFromJson("[\"\",[]]");
 
         assertThat(workout.getName(), equalTo(""));
-        assertThat(workout.countOfExercises(), equalTo(0));
+        assertThat(workout.getExercises().countOfExercises(), equalTo(0));
     }
 
     @Test
@@ -51,9 +51,9 @@ public class JsonToWorkoutAdapterTest {
     public void jsonWithOneExecise_shouldReturnWorkoutWithExercise() throws Exception {
         Workout workout = jsonToWorkoutAdapter.createFromJson("[\"\",[[\"bankdrücken\",[[12,80],[12,80],[12,80]]]]]");
 
-        assertThat(workout.countOfExercises(), equalTo(1));
-        assertThat(workout.exerciseAtPosition(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.exerciseAtPosition(0).countOfSets(), equalTo(3));
-        assertThat(workout.exerciseAtPosition(0).setAtPosition(0).getMaxReps(), is(12));
+        assertThat(workout.getExercises().countOfExercises(), equalTo(1));
+        assertThat(workout.getExercises().exerciseAtPosition(0).getName(), equalTo("bankdrücken"));
+        assertThat(workout.getExercises().exerciseAtPosition(0).countOfSets(), equalTo(3));
+        assertThat(workout.getExercises().exerciseAtPosition(0).setAtPosition(0).getMaxReps(), is(12));
     }
 }

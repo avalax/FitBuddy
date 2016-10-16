@@ -99,34 +99,34 @@ public class BasicWorkoutTest {
 
     @Test(expected = ExerciseException.class)
     public void indexOfCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
-        workout.indexOfCurrentExercise();
+        workout.getExercises().indexOfCurrentExercise();
     }
 
     @Test(expected = ExerciseException.class)
     public void setCurrentExercise_shouldThrowExerciseNotFoundException() throws Exception {
-        workout.setCurrentExercise(0);
+        workout.getExercises().setCurrentExercise(0);
     }
 
     @Test(expected = ExerciseException.class)
     public void setCurrentExerciseToNegativ_shouldThrowExerciseNotFoundException() throws Exception {
-        workout.setCurrentExercise(-1);
+        workout.getExercises().setCurrentExercise(-1);
     }
 
     @Test
     public void setCurrentExercise_shouldReturnIndexOfCurrentExercise() throws Exception {
-        workout.createExercise();
+        workout.getExercises().createExercise();
 
-        workout.setCurrentExercise(0);
+        workout.getExercises().setCurrentExercise(0);
 
-        assertThat(workout.indexOfCurrentExercise(), equalTo(0));
+        assertThat(workout.getExercises().indexOfCurrentExercise(), equalTo(0));
     }
 
     @Test
     public void exercisesOfWorkout_shouldReturnExercises() throws Exception {
-        Exercise exercise = workout.createExercise();
-        Exercise exercise2 = workout.createExercise();
+        Exercise exercise = workout.getExercises().createExercise();
+        Exercise exercise2 = workout.getExercises().createExercise();
 
-        assertThat(workout.exercisesOfWorkout(), containsInAnyOrder(exercise, exercise2));
+        assertThat(workout.getExercises().exercisesOfWorkout(), containsInAnyOrder(exercise, exercise2));
     }
 
     @Test
@@ -145,169 +145,169 @@ public class BasicWorkoutTest {
 
         @Before
         public void setUp() throws Exception {
-            exercise = workout.createExercise();
+            exercise = workout.getExercises().createExercise();
             exercise.setName("ExerciseOne");
         }
 
         @Test(expected = ExerciseException.class)
         public void moveUnknownExerciseUp_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.moveExerciseAtPositionUp(1);
+            workout.getExercises().moveExerciseAtPositionUp(1);
         }
 
         @Test
         public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
-            boolean moved = workout.moveExerciseAtPositionUp(0);
+            boolean moved = workout.getExercises().moveExerciseAtPositionUp(0);
 
             assertThat(moved, is(false));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void moveExerciseAtPositionUp_shouldPlaceTheExerciseAtTheRightPosition() throws Exception {
-            Exercise exerciseToMove = workout.createExercise();
+            Exercise exerciseToMove = workout.getExercises().createExercise();
             exerciseToMove.setName("ExerciseTwo");
 
-            boolean moved = workout.moveExerciseAtPositionUp(1);
+            boolean moved = workout.getExercises().moveExerciseAtPositionUp(1);
 
             assertThat(moved, is(true));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exerciseToMove));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exerciseToMove));
         }
 
 
         @Test(expected = ExerciseException.class)
         public void moveUnknownExerciseDown_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.moveExerciseAtPositionDown(-1);
+            workout.getExercises().moveExerciseAtPositionDown(-1);
         }
 
         @Test
         public void moveLastExerciseAtPositionDown_shouldDoNothing() throws Exception {
-            Exercise lastExercise = workout.createExercise();
+            Exercise lastExercise = workout.getExercises().createExercise();
 
-            boolean moved = workout.moveExerciseAtPositionDown(1);
+            boolean moved = workout.getExercises().moveExerciseAtPositionDown(1);
 
             assertThat(moved, is(false));
-            assertThat(workout.exerciseAtPosition(1), equalTo(lastExercise));
+            assertThat(workout.getExercises().exerciseAtPosition(1), equalTo(lastExercise));
         }
 
         @Test
         public void moveExerciseAtPositionDown_shouldPlaceTheExerciseAtTheSecondPosition() throws Exception {
-            Exercise exerciseToMove = workout.createExercise();
+            Exercise exerciseToMove = workout.getExercises().createExercise();
             exerciseToMove.setName("ExerciseToMove");
-            Exercise lastExercise = workout.createExercise();
+            Exercise lastExercise = workout.getExercises().createExercise();
             lastExercise.setName("ExerciseLast");
 
-            boolean moved = workout.moveExerciseAtPositionDown(1);
+            boolean moved = workout.getExercises().moveExerciseAtPositionDown(1);
 
             assertThat(moved, is(true));
-            assertThat(workout.exerciseAtPosition(2), equalTo(exerciseToMove));
+            assertThat(workout.getExercises().exerciseAtPosition(2), equalTo(exerciseToMove));
         }
     }
 
     public class givenAWorkoutForExerciseManipulation {
         @Test
         public void countOfExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
-            assertThat(workout.countOfExercises(), equalTo(0));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(0));
         }
 
         @Test(expected = ExerciseException.class)
         public void exerciseAtPosition_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.exerciseAtPosition(0);
+            workout.getExercises().exerciseAtPosition(0);
         }
 
         @Test(expected = ExerciseException.class)
         public void exerciseAtNegativePosition_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.exerciseAtPosition(-1);
+            workout.getExercises().exerciseAtPosition(-1);
         }
 
         @Test
         public void createExercise_shouldAddExerciseToWorkout() throws Exception {
-            Exercise exercise = workout.createExercise();
+            Exercise exercise = workout.getExercises().createExercise();
 
-            assertThat(workout.countOfExercises(), equalTo(1));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(1));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void createExercise_shouldAddExerciseBeforePosition() throws Exception {
-            workout.createExercise();
-            Exercise exercise = workout.createExercise(0);
+            workout.getExercises().createExercise();
+            Exercise exercise = workout.getExercises().createExercise(0);
 
-            assertThat(workout.countOfExercises(), equalTo(2));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(2));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void createExercise_shouldAddExerciseAfterPosition() throws Exception {
-            workout.createExercise();
+            workout.getExercises().createExercise();
 
-            Exercise exercise = workout.createExercise(1);
+            Exercise exercise = workout.getExercises().createExercise(1);
 
-            assertThat(workout.countOfExercises(), equalTo(2));
-            assertThat(workout.exerciseAtPosition(1), equalTo(exercise));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(2));
+            assertThat(workout.getExercises().exerciseAtPosition(1), equalTo(exercise));
         }
 
         @Test
         public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
-            Exercise exercise = workout.createExercise();
+            Exercise exercise = workout.getExercises().createExercise();
 
-            workout.deleteExercise(exercise);
+            workout.getExercises().deleteExercise(exercise);
 
-            assertThat(workout.countOfExercises(), equalTo(0));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(0));
         }
 
         @Test
         public void deleteExercise_shouldRemoveLastOfTwoExercisesAtPosition() throws Exception {
-            Exercise exercise = workout.createExercise();
-            Exercise exerciseToDelete = workout.createExercise();
+            Exercise exercise = workout.getExercises().createExercise();
+            Exercise exerciseToDelete = workout.getExercises().createExercise();
 
-            workout.deleteExercise(exerciseToDelete);
+            workout.getExercises().deleteExercise(exerciseToDelete);
 
-            assertThat(workout.countOfExercises(), equalTo(1));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(1));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void deleteExerciseClone_shouldRemoveExercises() throws Exception {
             ExerciseId exerciseId = new ExerciseId("42");
-            Exercise exercise = workout.createExercise();
+            Exercise exercise = workout.getExercises().createExercise();
             exercise.setExerciseId(exerciseId);
 
             Exercise clonedExercise = new BasicExercise();
             clonedExercise.setExerciseId(exerciseId);
 
-            workout.deleteExercise(clonedExercise);
+            workout.getExercises().deleteExercise(clonedExercise);
 
-            assertThat(workout.countOfExercises(), equalTo(0));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(0));
         }
 
         @Test
         public void deleteExercise_shouldRemoveFirstOfTwoExercisesAtPosition() throws Exception {
-            Exercise exerciseToDelete = workout.createExercise();
-            Exercise exercise = workout.createExercise();
+            Exercise exerciseToDelete = workout.getExercises().createExercise();
+            Exercise exercise = workout.getExercises().createExercise();
 
-            workout.deleteExercise(exerciseToDelete);
+            workout.getExercises().deleteExercise(exerciseToDelete);
 
-            assertThat(workout.countOfExercises(), equalTo(1));
-            assertThat(workout.exerciseAtPosition(0), equalTo(exercise));
+            assertThat(workout.getExercises().countOfExercises(), equalTo(1));
+            assertThat(workout.getExercises().exerciseAtPosition(0), equalTo(exercise));
         }
 
         @Test
         public void deleteExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-            workout.deleteExercise(mock(Exercise.class));
+            workout.getExercises().deleteExercise(mock(Exercise.class));
         }
 
         public class givenAnExerciseProgress {
             @Test
             public void getProgress_shouldReturnZeroProgress() throws Exception {
-                workout.createExercise();
+                workout.getExercises().createExercise();
 
                 assertThat(workout.getProgress(0), equalTo(0.0));
             }
 
             @Test
             public void getProgress_shouldReturnFullProgress() throws Exception {
-                workout.createExercise();
-                Exercise exercise = workout.createExercise();
+                workout.getExercises().createExercise();
+                Exercise exercise = workout.getExercises().createExercise();
                 Set set = exercise.setAtPosition(0);
                 set.setMaxReps(1);
                 set.setReps(1);
@@ -317,8 +317,8 @@ public class BasicWorkoutTest {
 
             @Test
             public void getProgress_shouldReturn1point5() throws Exception {
-                workout.createExercise();
-                Exercise exercise = workout.createExercise();
+                workout.getExercises().createExercise();
+                Exercise exercise = workout.getExercises().createExercise();
                 Set set = exercise.setAtPosition(0);
                 set.setMaxReps(2);
                 set.setReps(1);
