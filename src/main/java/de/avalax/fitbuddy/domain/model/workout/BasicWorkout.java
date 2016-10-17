@@ -98,7 +98,7 @@ public class BasicWorkout implements Workout {
     private static class BasicWorkoutMemento implements WorkoutMemento {
         private final BasicExercises exercises;
 
-        private BasicWorkoutMemento(Exercises exercises) {
+        BasicWorkoutMemento(Exercises exercises) {
             List<Exercise> exerciseList = new ArrayList<>();
             for (Exercise exercise : exercises) {
                 exerciseList.add(exercise);

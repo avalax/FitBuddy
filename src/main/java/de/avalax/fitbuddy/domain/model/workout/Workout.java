@@ -22,7 +22,7 @@ public interface Workout extends Serializable {
 
     void setMemento(WorkoutMemento memento);
 
-    public interface WorkoutMemento {
+    interface WorkoutMemento {
         Exercises getExercises();
     }
 }
