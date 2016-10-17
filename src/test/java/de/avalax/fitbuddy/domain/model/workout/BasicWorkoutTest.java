@@ -128,7 +128,7 @@ public class BasicWorkoutTest {
         Exercise exercise = workout.getExercises().createExercise();
         Exercise exercise2 = workout.getExercises().createExercise();
 
-        assertThat(workout.getExercises().exercisesOfWorkout(), containsInAnyOrder(exercise, exercise2));
+        assertThat(workout.getExercises(), containsInAnyOrder(exercise, exercise2));
     }
 
     @Test

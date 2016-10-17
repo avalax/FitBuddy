@@ -1,13 +1,14 @@
 package de.avalax.fitbuddy.port.adapter.service;
 
 import com.google.gson.Gson;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 public class WorkoutToJsonAdapter {
     private Gson gson = new Gson();
@@ -16,7 +17,7 @@ public class WorkoutToJsonAdapter {
         Collection<Object> collection = new ArrayList<>();
         collection.add(workout.getName());
         List<Object> exercises = new ArrayList<>();
-        for (Exercise exercise : workout.getExercises().exercisesOfWorkout()) {
+        for (Exercise exercise : workout.getExercises()) {
             exercises.add(fromExercise(exercise));
         }
         collection.add(exercises);

@@ -41,7 +41,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         }
         database.close();
         int position = 1;
-        for (Exercise exercise : workout.getExercises().exercisesOfWorkout()) {
+        for (Exercise exercise : workout.getExercises()) {
             exerciseRepository.save(workout.getWorkoutId(), position, exercise);
             position++;
         }

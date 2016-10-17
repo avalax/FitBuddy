@@ -51,7 +51,7 @@ public class BasicWorkout implements Workout {
     @Override
     public double getProgress(int position) throws ResourceException {
         Exercise exercise = exercises.exerciseAtPosition(position);
-        return (position + exercise.getProgress()) / exercises.exercisesOfWorkout().size();
+        return (position + exercise.getProgress()) / exercises.countOfExercises();
     }
 
     @Override
@@ -99,7 +99,11 @@ public class BasicWorkout implements Workout {
         private final BasicExercises exercises;
 
         private BasicWorkoutMemento(Exercises exercises) {
-            this.exercises = new BasicExercises(new ArrayList<>(exercises.exercisesOfWorkout()));
+            List<Exercise> exerciseList = new ArrayList<>();
+            for (Exercise exercise :exercises) {
+                exerciseList.add(exercise);
+            }
+            this.exercises = new BasicExercises(exerciseList);
         }
 
         @Override

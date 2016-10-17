@@ -11,6 +11,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,7 +90,7 @@ public class ExerciseListFragment extends ListFragment {
         int visibility = editWorkoutService.hasUnsavedChanges() ? View.VISIBLE : View.GONE;
         footer.setVisibility(visibility);
         workout = editWorkoutService.loadWorkout(workoutId);
-        List<Exercise> exercises = workout.getExercises().exercisesOfWorkout();
+        List<Exercise> exercises = Lists.newArrayList(workout.getExercises());
         ListAdapter adapter = new ExerciseAdapter(getActivity(), R.layout.item_exercise, exercises);
         setListAdapter(adapter);
     }
