@@ -17,4 +17,12 @@ public interface Workout extends Serializable {
     double getProgress(int index) throws ResourceException;
 
     Exercises getExercises();
+
+    WorkoutMemento createMemento();
+
+    void setMemento(WorkoutMemento memento);
+
+    public interface WorkoutMemento {
+        Exercises getExercises();
+    }
 }

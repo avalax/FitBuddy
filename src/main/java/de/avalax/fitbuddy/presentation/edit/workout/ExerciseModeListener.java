@@ -98,7 +98,7 @@ class ExerciseModeListener implements AbsListView.MultiChoiceModeListener {
 
     private void deleteExercises() {
         try {
-            editWorkoutApplicationService.deleteExercise(workout, itemsChecked.list());
+            editWorkoutApplicationService.deleteExercises(workout, itemsChecked.list());
         } catch (ResourceException e) {
             Log.d("Can't delete exercises", e.getMessage(), e);
         }

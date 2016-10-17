@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class BasicExercises implements Exercises {
@@ -88,6 +89,11 @@ public class BasicExercises implements Exercises {
     @Override
     public List<Exercise> exercisesOfWorkout() {
         return Collections.unmodifiableList(exercises);
+    }
+
+    @Override
+    public Iterator<Exercise> iterator() {
+        return exercises.iterator();
     }
 
     @Override

@@ -60,6 +60,18 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
+    public WorkoutMemento createMemento() {
+        return new BasicWorkoutMemento(exercises);
+    }
+
+    @Override
+    public void setMemento(WorkoutMemento memento) {
+        if (memento != null) {
+            this.exercises = memento.getExercises();
+        }
+    }
+
+    @Override
     public String toString() {
         if (workoutId == null) {
             return "BasicWorkout [name=" + name + "]";
@@ -81,5 +93,18 @@ public class BasicWorkout implements Workout {
             return super.hashCode();
         }
         return workoutId.hashCode();
+    }
+
+    private class BasicWorkoutMemento implements WorkoutMemento {
+        private final BasicExercises exercises;
+
+        private BasicWorkoutMemento(Exercises exercises) {
+            this.exercises = new BasicExercises(new ArrayList<>(exercises.exercisesOfWorkout()));
+        }
+
+        @Override
+        public Exercises getExercises() {
+            return exercises;
+        }
     }
 }
