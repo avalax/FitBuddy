@@ -117,22 +117,22 @@ public class BasicExerciseTest {
 
         @Test
         public void countOfSets_shouldReturnZeroOnConstruction() throws Exception {
-            assertThat(exercise.getSets().countOfSets(), equalTo(0));
+            assertThat(exercise.getSets().size(), equalTo(0));
         }
 
         @Test
         public void addSet_shouldAddSetToExercise() throws Exception {
             Set set = exercise.getSets().createSet();
 
-            assertThat(exercise.getSets().setAtPosition(0), equalTo(set));
+            assertThat(exercise.getSets().get(0), equalTo(set));
         }
 
         @Test
         public void removeSet_shouldRemoveSetFromExercise() throws Exception {
             Set set = exercise.getSets().createSet();
 
-            exercise.getSets().removeSet(set);
-            assertThat(exercise.getSets().countOfSets(), equalTo(0));
+            exercise.getSets().remove(set);
+            assertThat(exercise.getSets().size(), equalTo(0));
         }
 
         @Test
@@ -140,7 +140,7 @@ public class BasicExerciseTest {
             exercise.getSets().createSet();
             Set set = exercise.getSets().createSet();
 
-            Set setAtPosition = exercise.getSets().setAtPosition(1);
+            Set setAtPosition = exercise.getSets().get(1);
 
             assertThat(setAtPosition, equalTo(set));
         }
@@ -168,17 +168,17 @@ public class BasicExerciseTest {
         public void setCurrentSet_shouldThrowSetNotFoundException() throws Exception {
             exercise.getSets().createSet();
 
-            exercise.getSets().setCurrentSet(exercise.getSets().countOfSets() + 1);
+            exercise.getSets().setCurrentSet(exercise.getSets().size() + 1);
         }
 
         @Test(expected = SetException.class)
         public void setAtPosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
-            exercise.getSets().setAtPosition(0);
+            exercise.getSets().get(0);
         }
 
         @Test(expected = SetException.class)
         public void setAtNegativePosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
-            exercise.getSets().setAtPosition(-1);
+            exercise.getSets().get(-1);
         }
 
         @Test

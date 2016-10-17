@@ -130,9 +130,9 @@ public class EditWorkoutApplicationService {
         memento = workout.createMemento();
         setUnsavedChanges(true);
         for (Integer position : positions) {
-            Exercise exercise = workout.getExercises().exerciseAtPosition(position);
+            Exercise exercise = workout.getExercises().get(position);
             exerciseRepository.delete(exercise.getExerciseId());
-            workout.getExercises().deleteExercise(exercise);
+            workout.getExercises().delete(exercise);
         }
     }
 
@@ -143,7 +143,7 @@ public class EditWorkoutApplicationService {
 
     public void createExercise(Workout workout) {
         Exercise exercise = workout.getExercises().createExercise();
-        int countOfExercises = workout.getExercises().countOfExercises();
+        int countOfExercises = workout.getExercises().size();
         exerciseRepository.save(workout.getWorkoutId(), countOfExercises - 1, exercise);
         setUnsavedChanges(false);
     }
@@ -163,14 +163,14 @@ public class EditWorkoutApplicationService {
     }
 
     public void changeSetAmount(Exercise exercise, int amount) throws ResourceException {
-        int countOfSets = exercise.getSets().countOfSets();
+        int countOfSets = exercise.getSets().size();
         if (amount == countOfSets) {
             return;
         }
         if (amount < countOfSets) {
             for (int i = 0; i < countOfSets - amount; i++) {
-                Set set = exercise.getSets().setAtPosition(i);
-                exercise.getSets().removeSet(set);
+                Set set = exercise.getSets().get(i);
+                exercise.getSets().remove(set);
                 setRepository.delete(set.getSetId());
             }
         } else {
@@ -178,7 +178,7 @@ public class EditWorkoutApplicationService {
             int maxReps;
             try {
                 int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-                Set set = exercise.getSets().setAtPosition(indexOfCurrentSet);
+                Set set = exercise.getSets().get(indexOfCurrentSet);
                 weight = set.getWeight();
                 maxReps = set.getMaxReps();
             } catch (SetException e) {

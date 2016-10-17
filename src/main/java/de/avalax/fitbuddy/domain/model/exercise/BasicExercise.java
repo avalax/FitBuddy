@@ -31,12 +31,12 @@ public class BasicExercise implements Exercise {
 
     @Override
     public double getProgress() throws SetException {
-        if (sets.countOfSets() == 0) {
+        if (sets.size() == 0) {
             return 0;
         }
-        Set set = sets.setAtPosition(sets.indexOfCurrentSet());
-        double repsProgress = set.getProgress() / sets.countOfSets();
-        double setsProgress = (sets.indexOfCurrentSet()) / (double) sets.countOfSets();
+        Set set = sets.get(sets.indexOfCurrentSet());
+        double repsProgress = set.getProgress() / sets.size();
+        double setsProgress = (sets.indexOfCurrentSet()) / (double) sets.size();
         return setsProgress + repsProgress;
     }
 

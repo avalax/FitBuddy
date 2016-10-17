@@ -25,25 +25,25 @@ public class WorkoutApplicationService {
 
     @Deprecated
     public int countOfExercises() throws ResourceException {
-        return getWorkout().getExercises().countOfExercises();
+        return getWorkout().getExercises().size();
     }
 
     @Deprecated
     public Exercise requestExercise(int position) throws ResourceException {
-        return getWorkout().getExercises().exerciseAtPosition(position);
+        return getWorkout().getExercises().get(position);
     }
 
     public void switchToSet(int position, int moved) throws ResourceException {
-        Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
+        Exercise exercise = getWorkout().getExercises().get(position);
         exercise.getSets().setCurrentSet(exercise.getSets().indexOfCurrentSet() + moved);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
     public void addRepsToSet(int position, int moved) throws ResourceException {
-        Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
+        Exercise exercise = getWorkout().getExercises().get(position);
         int currentSetIndex = exercise.getSets().indexOfCurrentSet();
-        Set set = exercise.getSets().setAtPosition(currentSetIndex);
+        Set set = exercise.getSets().get(currentSetIndex);
         set.setReps(set.getReps() + moved);
 
         //TODO only saveWorkout by android lifecycle
@@ -59,7 +59,7 @@ public class WorkoutApplicationService {
     public void updateWeightOfCurrentSet(int index, double weight) throws ResourceException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-        exercise.getSets().setAtPosition(indexOfCurrentSet).setWeight(weight);
+        exercise.getSets().get(indexOfCurrentSet).setWeight(weight);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
@@ -68,7 +68,7 @@ public class WorkoutApplicationService {
     public double weightOfCurrentSet(int index) throws ResourceException {
         Exercise exercise = requestExercise(index);
         int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-        Set set = exercise.getSets().setAtPosition(indexOfCurrentSet);
+        Set set = exercise.getSets().get(indexOfCurrentSet);
         return set.getWeight();
     }
 

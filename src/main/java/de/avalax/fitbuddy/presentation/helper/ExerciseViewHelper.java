@@ -21,7 +21,7 @@ public class ExerciseViewHelper {
         }
         try {
             int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-            double weight = exercise.getSets().setAtPosition(indexOfCurrentSet).getWeight();
+            double weight = exercise.getSets().get(indexOfCurrentSet).getWeight();
             if (weight == 0) {
                 return "-";
             }
@@ -44,7 +44,7 @@ public class ExerciseViewHelper {
         }
         try {
             int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-            return exercise.getSets().setAtPosition(indexOfCurrentSet).getMaxReps();
+            return exercise.getSets().get(indexOfCurrentSet).getMaxReps();
         } catch (SetException e) {
             return 0;
         }
@@ -54,6 +54,6 @@ public class ExerciseViewHelper {
         if (exercise == null) {
             return 0;
         }
-        return exercise.getSets().countOfSets();
+        return exercise.getSets().size();
     }
 }

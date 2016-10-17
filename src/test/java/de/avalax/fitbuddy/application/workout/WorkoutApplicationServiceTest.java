@@ -242,7 +242,7 @@ public class WorkoutApplicationServiceTest {
 
                 @Before
                 public void setUp() throws Exception {
-                    set = exercise.getSets().setAtPosition(0);
+                    set = exercise.getSets().createSet();
                 }
 
                 @Test

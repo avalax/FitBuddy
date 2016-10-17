@@ -146,7 +146,7 @@ public class EditWorkoutApplicationServiceTest {
         public void createExercise_shouldPersistTheExercise() throws Exception {
             editWorkoutApplicationService.createExercise(workout);
 
-            Exercise expectedExercise = workout.getExercises().exerciseAtPosition(1);
+            Exercise expectedExercise = workout.getExercises().get(1);
             verify(exerciseRepository).save(workout.getWorkoutId(), 1, expectedExercise);
             assertThat(editWorkoutApplicationService.hasUnsavedChanges()).isFalse();
         }
@@ -348,7 +348,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                verify(setRepository).save(exerciseId, exercise.getSets().setAtPosition(0));
+                verify(setRepository).save(exerciseId, exercise.getSets().get(0));
             }
 
             @Test
@@ -359,7 +359,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 2);
 
-                assertThat(exercise.getSets().countOfSets()).isEqualTo(2);
+                assertThat(exercise.getSets().size()).isEqualTo(2);
             }
 
             @Test
@@ -373,7 +373,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                assertThat(exercise.getSets().setAtPosition(0)).isEqualTo(set2);
+                assertThat(exercise.getSets().get(0)).isEqualTo(set2);
                 verify(setRepository).delete(set1.getSetId());
             }
 
@@ -388,7 +388,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                assertThat(exercise.getSets().countOfSets()).isEqualTo(1);
+                assertThat(exercise.getSets().size()).isEqualTo(1);
             }
 
             @Test
@@ -402,7 +402,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 2);
 
-                Set newSet = exercise.getSets().setAtPosition(1);
+                Set newSet = exercise.getSets().get(1);
 
                 assertThat(newSet.getMaxReps()).isEqualTo(12);
                 assertThat(newSet.getWeight()).isEqualTo(42.0);

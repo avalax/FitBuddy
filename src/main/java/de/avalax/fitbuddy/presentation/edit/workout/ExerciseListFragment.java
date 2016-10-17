@@ -104,7 +104,7 @@ public class ExerciseListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         try {
-            Exercise exercise = workout.getExercises().exerciseAtPosition(position);
+            Exercise exercise = workout.getExercises().get(position);
             Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
             intent.putExtra("workoutId", workout.getWorkoutId());
             intent.putExtra("exercise", exercise);

@@ -56,7 +56,7 @@ public class WorkoutSessionTest {
     public void tearDown() throws Exception {
         if (file != null) {
             if (!file.delete()) {
-                throw new Exception("could not delete file " + file.getAbsolutePath());
+                throw new Exception("could not remove file " + file.getAbsolutePath());
             }
         }
     }
@@ -167,6 +167,6 @@ public class WorkoutSessionTest {
 
         Workout changedPersistedWorkout = readWorkout();
         assertThat(changedPersistedWorkout.getExercises().indexOfCurrentExercise(), equalTo(1));
-        assertThat(changedPersistedWorkout.getExercises().countOfExercises(), equalTo(2));
+        assertThat(changedPersistedWorkout.getExercises().size(), equalTo(2));
     }
 }

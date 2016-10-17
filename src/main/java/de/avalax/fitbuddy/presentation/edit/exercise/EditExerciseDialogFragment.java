@@ -98,7 +98,7 @@ public class EditExerciseDialogFragment extends Fragment {
     private void changeWeight() {
         try {
             int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-            double weight = exercise.getSets().setAtPosition(indexOfCurrentSet).getWeight();
+            double weight = exercise.getSets().get(indexOfCurrentSet).getWeight();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             EditWeightDialogFragment.newInstance(weight).show(fm, "fragment_edit_weight");
         } catch (SetException e) {
@@ -108,7 +108,7 @@ public class EditExerciseDialogFragment extends Fragment {
 
     private void changeSets() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        int sets = exercise.getSets().countOfSets();
+        int sets = exercise.getSets().size();
         EditSetsDialogFragment.newInstance(sets).show(fm, "fragment_edit_sets");
     }
 
@@ -116,7 +116,7 @@ public class EditExerciseDialogFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         try {
             int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-            int reps = exercise.getSets().setAtPosition(indexOfCurrentSet).getMaxReps();
+            int reps = exercise.getSets().get(indexOfCurrentSet).getMaxReps();
             EditRepsDialogFragment.newInstance(reps).show(fm, "fragment_edit_reps");
         } catch (SetException e) {
             Log.d("can't change reps", e.getMessage(), e);

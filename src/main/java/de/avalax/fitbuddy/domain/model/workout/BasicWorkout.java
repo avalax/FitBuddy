@@ -50,8 +50,8 @@ public class BasicWorkout implements Workout {
 
     @Override
     public double getProgress(int position) throws ResourceException {
-        Exercise exercise = exercises.exerciseAtPosition(position);
-        return (position + exercise.getProgress()) / exercises.countOfExercises();
+        Exercise exercise = exercises.get(position);
+        return (position + exercise.getProgress()) / exercises.size();
     }
 
     @Override

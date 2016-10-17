@@ -21,7 +21,7 @@ public class BasicSets implements Sets {
     }
 
     @Override
-    public Set setAtPosition(int position) throws SetException {
+    public Set get(int position) throws SetException {
         if (sets.size() <= position || position < 0) {
             throw new SetException();
         }
@@ -37,7 +37,7 @@ public class BasicSets implements Sets {
     }
 
     @Override
-    public int countOfSets() {
+    public int size() {
         return sets.size();
     }
 
@@ -49,7 +49,7 @@ public class BasicSets implements Sets {
     }
 
     @Override
-    public void removeSet(Set set) {
+    public void remove(Set set) {
         sets.remove(set);
     }
 

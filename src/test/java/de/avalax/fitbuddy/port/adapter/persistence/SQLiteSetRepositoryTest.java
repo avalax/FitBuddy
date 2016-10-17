@@ -13,7 +13,6 @@ import java.util.List;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -54,8 +53,7 @@ public class SQLiteSetRepositoryTest {
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         Workout workout = new BasicWorkout();
-        Exercise exercise = new BasicExercise();
-        workout.getExercises().addExercise(0, exercise);
+        Exercise exercise = workout.getExercises().createExercise();
 
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();

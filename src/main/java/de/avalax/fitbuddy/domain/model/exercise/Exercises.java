@@ -5,13 +5,11 @@ import java.io.Serializable;
 public interface Exercises extends Serializable, Iterable<Exercise> {
     Exercise createExercise();
 
-    Exercise createExercise(int index);
+    Exercise get(int index) throws ExerciseException;
 
-    void addExercise(int index, Exercise exercise);
+    void delete(Exercise exercise);
 
-    void deleteExercise(Exercise exercise);
-
-    Exercise exerciseAtPosition(int index) throws ExerciseException;
+    int size();
 
     void setCurrentExercise(int index) throws ExerciseException;
 
@@ -20,6 +18,4 @@ public interface Exercises extends Serializable, Iterable<Exercise> {
     boolean moveExerciseAtPositionUp(int index) throws ExerciseException;
 
     boolean moveExerciseAtPositionDown(int index) throws ExerciseException;
-
-    int countOfExercises();
 }

@@ -75,9 +75,9 @@ public class SQLiteFinishedExerciseRepositoryTest {
         FinishedExercise finishedExercise = finishedExercises.get(0);
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercise.getWeight(), equalTo(exercise.getSets().setAtPosition(0).getWeight()));
-        assertThat(finishedExercise.getReps(), equalTo(exercise.getSets().setAtPosition(0).getReps()));
-        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.getSets().setAtPosition(0).getMaxReps()));
+        assertThat(finishedExercise.getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
+        assertThat(finishedExercise.getReps(), equalTo(exercise.getSets().get(0).getReps()));
+        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
     }
 
     @Test

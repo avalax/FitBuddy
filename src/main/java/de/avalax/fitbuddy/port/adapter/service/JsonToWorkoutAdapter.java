@@ -5,7 +5,6 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.List;
 
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
@@ -26,7 +25,7 @@ public class JsonToWorkoutAdapter {
             workout.setName((String) jsonWorkout.get(0));
 
             for (List jsonExercise : jsonExercises) {
-                Exercise exercise = new BasicExercise();
+                Exercise exercise = workout.getExercises().createExercise();
                 exercise.setName((String) jsonExercise.get(0));
 
                 List<List> jsonSets = (List<List>) jsonExercise.get(1);
@@ -37,8 +36,6 @@ public class JsonToWorkoutAdapter {
                     set.setWeight(weight);
                     set.setMaxReps(maxReps);
                 }
-                int countOfExercises = workout.getExercises().countOfExercises();
-                workout.getExercises().addExercise(countOfExercises, exercise);
             }
             return workout;
         } catch (JsonSyntaxException re) {

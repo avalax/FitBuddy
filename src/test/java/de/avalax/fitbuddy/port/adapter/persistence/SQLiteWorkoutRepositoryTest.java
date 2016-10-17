@@ -18,9 +18,9 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import static org.hamcrest.CoreMatchers.any;
@@ -74,7 +74,7 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
         Workout workout = new BasicWorkout();
-        Exercise exercise = workout.getExercises().createExercise(0);
+        Exercise exercise = workout.getExercises().createExercise();
 
         workoutRepository.save(workout);
 
@@ -123,16 +123,16 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
         Workout workout = new BasicWorkout();
-        Exercise exercise1 = workout.getExercises().createExercise(0);
-        Exercise exercise2 = workout.getExercises().createExercise(1);
+        Exercise exercise1 = workout.getExercises().createExercise();
+        Exercise exercise2 = workout.getExercises().createExercise();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
         Workout loadedWorkout = workoutRepository.load(workoutId);
 
-        assertThat(loadedWorkout.getExercises().countOfExercises(), equalTo(2));
-        assertThat(loadedWorkout.getExercises().exerciseAtPosition(0), equalTo(exercise1));
-        assertThat(loadedWorkout.getExercises().exerciseAtPosition(1), equalTo(exercise2));
+        assertThat(loadedWorkout.getExercises().size(), equalTo(2));
+        assertThat(loadedWorkout.getExercises().get(0), equalTo(exercise1));
+        assertThat(loadedWorkout.getExercises().get(1), equalTo(exercise2));
     }
 
     @Test

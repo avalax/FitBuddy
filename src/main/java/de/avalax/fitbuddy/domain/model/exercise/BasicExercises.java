@@ -12,12 +12,12 @@ public class BasicExercises implements Exercises {
     }
 
     @Override
-    public void deleteExercise(Exercise exercise) {
+    public void delete(Exercise exercise) {
         exercises.remove(exercise);
     }
 
     @Override
-    public Exercise exerciseAtPosition(int index) throws ExerciseException {
+    public Exercise get(int index) throws ExerciseException {
         if (exercises.size() <= index || index < 0) {
             throw new ExerciseException();
         }
@@ -26,20 +26,9 @@ public class BasicExercises implements Exercises {
 
     @Override
     public Exercise createExercise() {
-        return createExercise(exercises.size());
-    }
-
-    @Override
-    public Exercise createExercise(int position) {
         Exercise exercise = new BasicExercise();
-        exercise.getSets().createSet();
-        exercises.add(position, exercise);
+        exercises.add(exercise);
         return exercise;
-    }
-
-    @Override
-    public void addExercise(int position, Exercise exercise) {
-        exercises.add(position, exercise);
     }
 
     @Override
@@ -63,25 +52,25 @@ public class BasicExercises implements Exercises {
         if (index == 0) {
             return false;
         }
-        Exercise exercise = exerciseAtPosition(index);
-        deleteExercise(exercise);
-        addExercise(index - 1, exercise);
+        Exercise exercise = get(index);
+        delete(exercise);
+        exercises.add(index - 1, exercise);
         return true;
     }
 
     @Override
     public boolean moveExerciseAtPositionDown(int index) throws ExerciseException {
-        if (index + 1 == countOfExercises()) {
+        if (index + 1 == size()) {
             return false;
         }
-        Exercise exercise = exerciseAtPosition(index);
-        deleteExercise(exercise);
-        addExercise(index + 1, exercise);
+        Exercise exercise = get(index);
+        delete(exercise);
+        exercises.add(index + 1, exercise);
         return true;
     }
 
     @Override
-    public int countOfExercises() {
+    public int size() {
         return exercises.size();
     }
 
