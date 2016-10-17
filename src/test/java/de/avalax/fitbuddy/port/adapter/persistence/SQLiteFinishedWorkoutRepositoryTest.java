@@ -82,7 +82,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
     public void saveWorkout_shouldAlsoInsertExerciseInformationsIntoDatabase() throws Exception {
         Exercise exercise = workout.getExercises().createExercise();
         exercise.setName("finished exercise");
-        Set set = exercise.setAtPosition(0);
+        Set set = exercise.getSets().setAtPosition(0);
         set.setWeight(42.21);
         set.setMaxReps(15);
         set.setReps(12);
@@ -93,9 +93,9 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         List<FinishedExercise> finishedExercises = finishedWorkout.getFinishedExercises();
         assertThat(finishedExercises, hasSize(1));
         assertThat(finishedExercises.get(0).getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercises.get(0).getWeight(), equalTo(exercise.setAtPosition(0).getWeight()));
-        assertThat(finishedExercises.get(0).getReps(), equalTo(exercise.setAtPosition(0).getReps()));
-        assertThat(finishedExercises.get(0).getMaxReps(), equalTo(exercise.setAtPosition(0).getMaxReps()));
+        assertThat(finishedExercises.get(0).getWeight(), equalTo(exercise.getSets().setAtPosition(0).getWeight()));
+        assertThat(finishedExercises.get(0).getReps(), equalTo(exercise.getSets().setAtPosition(0).getReps()));
+        assertThat(finishedExercises.get(0).getMaxReps(), equalTo(exercise.getSets().setAtPosition(0).getMaxReps()));
     }
 
     @Test

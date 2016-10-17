@@ -163,22 +163,22 @@ public class EditWorkoutApplicationService {
     }
 
     public void changeSetAmount(Exercise exercise, int amount) throws ResourceException {
-        int countOfSets = exercise.countOfSets();
+        int countOfSets = exercise.getSets().countOfSets();
         if (amount == countOfSets) {
             return;
         }
         if (amount < countOfSets) {
             for (int i = 0; i < countOfSets - amount; i++) {
-                Set set = exercise.setAtPosition(i);
-                exercise.removeSet(set);
+                Set set = exercise.getSets().setAtPosition(i);
+                exercise.getSets().removeSet(set);
                 setRepository.delete(set.getSetId());
             }
         } else {
             double weight;
             int maxReps;
             try {
-                int indexOfCurrentSet = exercise.indexOfCurrentSet();
-                Set set = exercise.setAtPosition(indexOfCurrentSet);
+                int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+                Set set = exercise.getSets().setAtPosition(indexOfCurrentSet);
                 weight = set.getWeight();
                 maxReps = set.getMaxReps();
             } catch (SetException e) {
@@ -186,7 +186,7 @@ public class EditWorkoutApplicationService {
                 maxReps = 0;
             }
             for (int i = 0; i < amount - countOfSets; i++) {
-                Set set = exercise.createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(maxReps);
                 set.setWeight(weight);
                 setRepository.save(exercise.getExerciseId(), set);
@@ -194,7 +194,6 @@ public class EditWorkoutApplicationService {
         }
         setUnsavedChanges(false);
     }
-
 
     public void moveExerciseAtPositionUp(Workout workout, int position) throws ResourceException {
         if (workout.getExercises().moveExerciseAtPositionUp(position)) {

@@ -73,10 +73,10 @@ public class EditExerciseActivity extends FragmentActivity implements
     @Override
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         double weight = editWeightDialogFragment.getWeight();
-        int countOfSets = exercise.countOfSets();
+        int countOfSets = exercise.getSets().countOfSets();
         for (int i = 0; i < countOfSets; i++) {
             try {
-                Set set = exercise.setAtPosition(i);
+                Set set = exercise.getSets().setAtPosition(i);
                 set.setWeight(weight);
             } catch (SetException e) {
                 Log.d("can't update weight", e.getMessage(), e);
@@ -99,10 +99,10 @@ public class EditExerciseActivity extends FragmentActivity implements
     @Override
     public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
         int reps = editRepsDialogFragment.getReps();
-        int countOfSets = exercise.countOfSets();
+        int countOfSets = exercise.getSets().countOfSets();
         for (int i = 0; i < countOfSets; i++) {
             try {
-                Set set = exercise.setAtPosition(i);
+                Set set = exercise.getSets().setAtPosition(i);
                 set.setMaxReps(reps);
             } catch (SetException e) {
                 Log.d("can't update max reps", e.getMessage(), e);

@@ -42,7 +42,7 @@ public class WorkoutToJsonAdapterTest {
         workout.setName("nameOfWorkout");
         workout.getExercises().createExercise();
         Exercise exercise = workout.getExercises().exerciseAtPosition(0);
-        exercise.removeSet(exercise.setAtPosition(0));
+        exercise.getSets().removeSet(exercise.getSets().setAtPosition(0));
 
         String json = workoutToJsonAdapter.fromWorkout(workout);
 
@@ -55,7 +55,7 @@ public class WorkoutToJsonAdapterTest {
         workout.getExercises().createExercise();
         Exercise exercise = workout.getExercises().exerciseAtPosition(0);
         exercise.setName("bankdrücken");
-        Set set = exercise.setAtPosition(0);
+        Set set = exercise.getSets().setAtPosition(0);
         set.setMaxReps(15);
         set.setWeight(42);
 

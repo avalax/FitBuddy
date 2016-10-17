@@ -70,7 +70,7 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
             database.update(TABLE_EXERCISE, contentValues, "id=?", args);
         }
         database.close();
-        for (Set set : exercise.setsOfExercise()) {
+        for (Set set : exercise.getSets()) {
             setRepository.save(exercise.getExerciseId(), set);
         }
     }

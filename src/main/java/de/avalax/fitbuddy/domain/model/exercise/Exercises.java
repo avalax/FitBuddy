@@ -2,7 +2,7 @@ package de.avalax.fitbuddy.domain.model.exercise;
 
 import java.io.Serializable;
 
-public interface Exercises  extends Serializable, Iterable<Exercise> {
+public interface Exercises extends Serializable, Iterable<Exercise> {
     Exercise createExercise();
 
     Exercise createExercise(int index);

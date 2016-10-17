@@ -106,8 +106,8 @@ public class ExerciseFragment extends Fragment {
 
     private void updateSetProgress() throws ResourceException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        Set set = exercise.setAtPosition(indexOfCurrentSet);
+        int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+        Set set = exercise.getSets().setAtPosition(indexOfCurrentSet);
         double progress = set.getProgress();
         String reps = String.valueOf(set.getReps());
         String maxReps = String.valueOf(set.getMaxReps());
@@ -116,8 +116,8 @@ public class ExerciseFragment extends Fragment {
 
     private void updateExerciseProgress() throws ResourceException {
         Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-        String currentValue = String.valueOf(exercise.indexOfCurrentSet() + 1);
-        String maxValue = String.valueOf(exercise.countOfSets());
+        String currentValue = String.valueOf(exercise.getSets().indexOfCurrentSet() + 1);
+        String maxValue = String.valueOf(exercise.getSets().countOfSets());
         exerciseProgressBar.updateProgressbar(exercise.getProgress(), currentValue, maxValue);
     }
 

@@ -333,7 +333,7 @@ public class EditWorkoutApplicationServiceTest {
             @Test
             public void changeSetAmountToSameAmount_shouldDoNothing() throws Exception {
                 Exercise exercise = new BasicExercise();
-                exercise.createSet();
+                exercise.getSets().createSet();
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
@@ -348,7 +348,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                verify(setRepository).save(exerciseId, exercise.setAtPosition(0));
+                verify(setRepository).save(exerciseId, exercise.getSets().setAtPosition(0));
             }
 
             @Test
@@ -359,7 +359,7 @@ public class EditWorkoutApplicationServiceTest {
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 2);
 
-                assertThat(exercise.countOfSets()).isEqualTo(2);
+                assertThat(exercise.getSets().countOfSets()).isEqualTo(2);
             }
 
             @Test
@@ -367,13 +367,13 @@ public class EditWorkoutApplicationServiceTest {
                 ExerciseId exerciseId = new ExerciseId("21");
                 Exercise exercise = new BasicExercise();
                 exercise.setExerciseId(exerciseId);
-                Set set1 = exercise.createSet();
+                Set set1 = exercise.getSets().createSet();
                 set1.setSetId(new SetId("42"));
-                Set set2 = exercise.createSet();
+                Set set2 = exercise.getSets().createSet();
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                assertThat(exercise.setAtPosition(0)).isEqualTo(set2);
+                assertThat(exercise.getSets().setAtPosition(0)).isEqualTo(set2);
                 verify(setRepository).delete(set1.getSetId());
             }
 
@@ -382,13 +382,13 @@ public class EditWorkoutApplicationServiceTest {
                 ExerciseId exerciseId = new ExerciseId("21");
                 Exercise exercise = new BasicExercise();
                 exercise.setExerciseId(exerciseId);
-                exercise.createSet();
-                exercise.createSet();
-                exercise.createSet();
+                exercise.getSets().createSet();
+                exercise.getSets().createSet();
+                exercise.getSets().createSet();
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 1);
 
-                assertThat(exercise.countOfSets()).isEqualTo(1);
+                assertThat(exercise.getSets().countOfSets()).isEqualTo(1);
             }
 
             @Test
@@ -396,13 +396,13 @@ public class EditWorkoutApplicationServiceTest {
                 ExerciseId exerciseId = new ExerciseId("21");
                 Exercise exercise = new BasicExercise();
                 exercise.setExerciseId(exerciseId);
-                Set set = exercise.createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(12);
                 set.setWeight(42.0);
 
                 editWorkoutApplicationService.changeSetAmount(exercise, 2);
 
-                Set newSet = exercise.setAtPosition(1);
+                Set newSet = exercise.getSets().setAtPosition(1);
 
                 assertThat(newSet.getMaxReps()).isEqualTo(12);
                 assertThat(newSet.getWeight()).isEqualTo(42.0);

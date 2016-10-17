@@ -33,7 +33,7 @@ public class JsonToWorkoutAdapter {
                 for (List jsonSet : jsonSets) {
                     double weight = (double) jsonSet.get(1);
                     int maxReps = (int) ((double) jsonSet.get(0));
-                    Set set = exercise.createSet();
+                    Set set = exercise.getSets().createSet();
                     set.setWeight(weight);
                     set.setMaxReps(maxReps);
                 }

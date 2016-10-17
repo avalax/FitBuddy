@@ -16,7 +16,7 @@ public class ExerciseViewHelperTest {
 
     private Exercise createExerciseWithWeight(double weight) {
         Exercise exercise = new BasicExercise();
-        Set set = exercise.createSet();
+        Set set = exercise.getSets().createSet();
         set.setWeight(weight);
         return exercise;
     }
@@ -29,14 +29,14 @@ public class ExerciseViewHelperTest {
 
     private Exercise createExerciseWithMaxReps(int maxReps) {
         Exercise exercise = new BasicExercise();
-        Set set = exercise.createSet();
+        Set set = exercise.getSets().createSet();
         set.setMaxReps(maxReps);
         return exercise;
     }
 
     private BasicExercise createExerciseWithOneSet() {
         BasicExercise exercise = new BasicExercise();
-        exercise.createSet();
+        exercise.getSets().createSet();
         return exercise;
     }
 

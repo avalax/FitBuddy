@@ -35,15 +35,15 @@ public class WorkoutApplicationService {
 
     public void switchToSet(int position, int moved) throws ResourceException {
         Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
-        exercise.setCurrentSet(exercise.indexOfCurrentSet() + moved);
+        exercise.getSets().setCurrentSet(exercise.getSets().indexOfCurrentSet() + moved);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
 
     public void addRepsToSet(int position, int moved) throws ResourceException {
         Exercise exercise = getWorkout().getExercises().exerciseAtPosition(position);
-        int currentSetIndex = exercise.indexOfCurrentSet();
-        Set set = exercise.setAtPosition(currentSetIndex);
+        int currentSetIndex = exercise.getSets().indexOfCurrentSet();
+        Set set = exercise.getSets().setAtPosition(currentSetIndex);
         set.setReps(set.getReps() + moved);
 
         //TODO only saveWorkout by android lifecycle
@@ -58,8 +58,8 @@ public class WorkoutApplicationService {
 
     public void updateWeightOfCurrentSet(int index, double weight) throws ResourceException {
         Exercise exercise = requestExercise(index);
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        exercise.setAtPosition(indexOfCurrentSet).setWeight(weight);
+        int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+        exercise.getSets().setAtPosition(indexOfCurrentSet).setWeight(weight);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }
@@ -67,8 +67,8 @@ public class WorkoutApplicationService {
     @Deprecated
     public double weightOfCurrentSet(int index) throws ResourceException {
         Exercise exercise = requestExercise(index);
-        int indexOfCurrentSet = exercise.indexOfCurrentSet();
-        Set set = exercise.setAtPosition(indexOfCurrentSet);
+        int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+        Set set = exercise.getSets().setAtPosition(indexOfCurrentSet);
         return set.getWeight();
     }
 

@@ -63,7 +63,7 @@ public class SQLiteFinishedExerciseRepositoryTest {
 
     @Test
     public void saveExercise_shouldInsertExerciseWithSetInformation() throws Exception {
-        Set set = exercise.createSet();
+        Set set = exercise.getSets().createSet();
         set.setWeight(12.34);
         set.setMaxReps(15);
         set.setReps(12);
@@ -75,16 +75,16 @@ public class SQLiteFinishedExerciseRepositoryTest {
         FinishedExercise finishedExercise = finishedExercises.get(0);
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercise.getWeight(), equalTo(exercise.setAtPosition(0).getWeight()));
-        assertThat(finishedExercise.getReps(), equalTo(exercise.setAtPosition(0).getReps()));
-        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.setAtPosition(0).getMaxReps()));
+        assertThat(finishedExercise.getWeight(), equalTo(exercise.getSets().setAtPosition(0).getWeight()));
+        assertThat(finishedExercise.getReps(), equalTo(exercise.getSets().setAtPosition(0).getReps()));
+        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.getSets().setAtPosition(0).getMaxReps()));
     }
 
     @Test
     public void saveExercise_shouldInsertExerciseWithAllSets() throws Exception {
-        exercise.createSet();
-        exercise.createSet();
-        exercise.createSet();
+        exercise.getSets().createSet();
+        exercise.getSets().createSet();
+        exercise.getSets().createSet();
         finishedExerciseRepository.save(finishedWorkoutId, exercise);
 
         List<FinishedExercise> finishedExercises = finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);

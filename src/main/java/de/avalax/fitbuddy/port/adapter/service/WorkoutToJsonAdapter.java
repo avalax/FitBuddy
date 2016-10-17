@@ -28,7 +28,7 @@ public class WorkoutToJsonAdapter {
         List<Object> exportedExercise = new ArrayList<>();
         exportedExercise.add(exercise.getName());
         List<Object> sets = new ArrayList<>();
-        for (Set set : exercise.setsOfExercise()) {
+        for (Set set : exercise.getSets()) {
             sets.add(fromSet(set));
         }
         exportedExercise.add(sets);

@@ -53,7 +53,7 @@ public class JsonToWorkoutAdapterTest {
 
         assertThat(workout.getExercises().countOfExercises(), equalTo(1));
         assertThat(workout.getExercises().exerciseAtPosition(0).getName(), equalTo("bankdrücken"));
-        assertThat(workout.getExercises().exerciseAtPosition(0).countOfSets(), equalTo(3));
-        assertThat(workout.getExercises().exerciseAtPosition(0).setAtPosition(0).getMaxReps(), is(12));
+        assertThat(workout.getExercises().exerciseAtPosition(0).getSets().countOfSets(), equalTo(3));
+        assertThat(workout.getExercises().exerciseAtPosition(0).getSets().setAtPosition(0).getMaxReps(), is(12));
     }
 }

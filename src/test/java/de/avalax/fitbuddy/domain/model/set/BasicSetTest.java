@@ -142,7 +142,7 @@ public class BasicSetTest {
     }
 
     @Test
-    public void toString_shouldReturnSetInformations() throws Exception {
+    public void toString_shouldReturnSetInformation() throws Exception {
         double weight = 12.5;
         int maxReps = 15;
         set.setMaxReps(maxReps);

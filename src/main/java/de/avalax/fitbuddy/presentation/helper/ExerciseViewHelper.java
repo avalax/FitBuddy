@@ -20,8 +20,8 @@ public class ExerciseViewHelper {
             return "-";
         }
         try {
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            double weight = exercise.setAtPosition(indexOfCurrentSet).getWeight();
+            int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+            double weight = exercise.getSets().setAtPosition(indexOfCurrentSet).getWeight();
             if (weight == 0) {
                 return "-";
             }
@@ -43,8 +43,8 @@ public class ExerciseViewHelper {
             return 0;
         }
         try {
-            int indexOfCurrentSet = exercise.indexOfCurrentSet();
-            return exercise.setAtPosition(indexOfCurrentSet).getMaxReps();
+            int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
+            return exercise.getSets().setAtPosition(indexOfCurrentSet).getMaxReps();
         } catch (SetException e) {
             return 0;
         }
@@ -54,6 +54,6 @@ public class ExerciseViewHelper {
         if (exercise == null) {
             return 0;
         }
-        return exercise.countOfSets();
+        return exercise.getSets().countOfSets();
     }
 }

@@ -9,7 +9,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class BasicExercisesTest {
     @Test
-    public void toString_shouldReturnSetInformation() throws Exception {
+    public void toString_shouldReturnExercisesInformation() throws Exception {
         String name = "NameOfExercise";
         Exercise exercise = new BasicExercise();
         exercise.setName(name);

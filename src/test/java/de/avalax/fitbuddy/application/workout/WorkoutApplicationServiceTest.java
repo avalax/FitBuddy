@@ -242,7 +242,7 @@ public class WorkoutApplicationServiceTest {
 
                 @Before
                 public void setUp() throws Exception {
-                    set = exercise.setAtPosition(0);
+                    set = exercise.getSets().setAtPosition(0);
                 }
 
                 @Test
@@ -258,22 +258,22 @@ public class WorkoutApplicationServiceTest {
                 public void switchToSetSet_shouldSwitchTheFirstSet() throws Exception {
                     workoutApplicationService.switchToSet(0, 0);
 
-                    assertThat(exercise.indexOfCurrentSet(), equalTo(0));
+                    assertThat(exercise.getSets().indexOfCurrentSet(), equalTo(0));
                 }
 
                 @Test
                 public void switchToSetSet_shouldSwitchTheSecondSet() throws Exception {
-                    exercise.createSet();
+                    exercise.getSets().createSet();
 
                     workoutApplicationService.switchToSet(0, 1);
 
-                    assertThat(exercise.indexOfCurrentSet(), equalTo(1));
+                    assertThat(exercise.getSets().indexOfCurrentSet(), equalTo(1));
                 }
 
                 @Test
                 public void weightOfCurrentSet_shouldReturnWeight() throws Exception {
                     set.setWeight(42.5);
-                    exercise.setCurrentSet(0);
+                    exercise.getSets().setCurrentSet(0);
 
                     double weightOfCurrentSet = workoutApplicationService.weightOfCurrentSet(0);
 

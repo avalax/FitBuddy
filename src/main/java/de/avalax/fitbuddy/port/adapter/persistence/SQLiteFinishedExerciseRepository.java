@@ -28,7 +28,7 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
     @Override
     public void save(FinishedWorkoutId finishedWorkoutId, Exercise exercise) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        for (Set set : exercise.setsOfExercise()) {
+        for (Set set : exercise.getSets()) {
             ContentValues contentValues = getContentValues(finishedWorkoutId, exercise, set);
             database.insertOrThrow(TABLE_FINISHED_EXERCISE, null, contentValues);
         }

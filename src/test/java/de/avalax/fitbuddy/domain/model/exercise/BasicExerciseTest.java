@@ -117,76 +117,76 @@ public class BasicExerciseTest {
 
         @Test
         public void countOfSets_shouldReturnZeroOnConstruction() throws Exception {
-            assertThat(exercise.countOfSets(), equalTo(0));
+            assertThat(exercise.getSets().countOfSets(), equalTo(0));
         }
 
         @Test
         public void addSet_shouldAddSetToExercise() throws Exception {
-            Set set = exercise.createSet();
+            Set set = exercise.getSets().createSet();
 
-            assertThat(exercise.setAtPosition(0), equalTo(set));
+            assertThat(exercise.getSets().setAtPosition(0), equalTo(set));
         }
 
         @Test
         public void removeSet_shouldRemoveSetFromExercise() throws Exception {
-            Set set = exercise.createSet();
+            Set set = exercise.getSets().createSet();
 
-            exercise.removeSet(set);
-            assertThat(exercise.countOfSets(), equalTo(0));
+            exercise.getSets().removeSet(set);
+            assertThat(exercise.getSets().countOfSets(), equalTo(0));
         }
 
         @Test
         public void setAtPosition_shouldReturnSecondSet() throws Exception {
-            exercise.createSet();
-            Set set = exercise.createSet();
+            exercise.getSets().createSet();
+            Set set = exercise.getSets().createSet();
 
-            Set setAtPosition = exercise.setAtPosition(1);
+            Set setAtPosition = exercise.getSets().setAtPosition(1);
 
             assertThat(setAtPosition, equalTo(set));
         }
 
         @Test(expected = SetException.class)
         public void setCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
-            exercise.setCurrentSet(1);
+            exercise.getSets().setCurrentSet(1);
         }
 
         @Test(expected = SetException.class)
         public void indexOFCurrentSetWithoutSets_shouldThrowSetNotFoundException() throws Exception {
-            exercise.indexOfCurrentSet();
+            exercise.getSets().indexOfCurrentSet();
         }
 
         @Test(expected = SetException.class)
         public void setCurrentSetToNegativIndex_shouldThrowSetNotFoundException() throws Exception {
-            exercise.createSet();
+            exercise.getSets().createSet();
 
-            exercise.setCurrentSet(-1);
+            exercise.getSets().setCurrentSet(-1);
 
-            assertThat(exercise.indexOfCurrentSet(), equalTo(0));
+            assertThat(exercise.getSets().indexOfCurrentSet(), equalTo(0));
         }
 
         @Test(expected = SetException.class)
         public void setCurrentSet_shouldThrowSetNotFoundException() throws Exception {
-            exercise.createSet();
+            exercise.getSets().createSet();
 
-            exercise.setCurrentSet(exercise.countOfSets() + 1);
+            exercise.getSets().setCurrentSet(exercise.getSets().countOfSets() + 1);
         }
 
         @Test(expected = SetException.class)
         public void setAtPosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
-            exercise.setAtPosition(0);
+            exercise.getSets().setAtPosition(0);
         }
 
         @Test(expected = SetException.class)
         public void setAtNegativePosition_shouldThrowSetNotFoundExceptionWhenNoSetsAvailable() throws Exception {
-            exercise.setAtPosition(-1);
+            exercise.getSets().setAtPosition(-1);
         }
 
         @Test
         public void setsOfExercise_shouldReturnSets() throws Exception {
-            Set set = exercise.createSet();
-            Set set2 = exercise.createSet();
+            Set set = exercise.getSets().createSet();
+            Set set2 = exercise.getSets().createSet();
 
-            assertThat(exercise.setsOfExercise(), containsInAnyOrder(set, set2));
+            assertThat(exercise.getSets(), containsInAnyOrder(set, set2));
         }
 
         public class givenAnExerciseProgress {
@@ -197,7 +197,7 @@ public class BasicExerciseTest {
 
             @Test
             public void oneSetWithoutReps_shouldHaveZeroProgress() throws Exception {
-                Set set = exercise.createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(0);
 
@@ -206,7 +206,7 @@ public class BasicExerciseTest {
 
             @Test
             public void oneSetWithMaxReps_shouldHaveFullProgress() throws Exception {
-                Set set = exercise.createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(100);
                 assertThat(exercise.getProgress(), equalTo(1.0));
@@ -214,7 +214,7 @@ public class BasicExerciseTest {
 
             @Test
             public void oneSetWithHalfReps_shouldHaveHalfProgress() throws Exception {
-                Set set = exercise.createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(50);
                 assertThat(exercise.getProgress(), equalTo(0.5));
@@ -222,31 +222,31 @@ public class BasicExerciseTest {
 
             @Test
             public void twoSetsWithoutReps_shouldHaveHalfProgress() throws Exception {
-                exercise.createSet();
-                Set set = exercise.createSet();
+                exercise.getSets().createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(0);
-                exercise.setCurrentSet(1);
+                exercise.getSets().setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.5));
             }
 
             @Test
             public void twoSetsWithMaxReps_shouldHaveFallProgress() throws Exception {
-                exercise.createSet();
-                Set set = exercise.createSet();
+                exercise.getSets().createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(100);
-                exercise.setCurrentSet(1);
+                exercise.getSets().setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(1.0));
             }
 
             @Test
             public void twoSetsWithHalfReps_shouldHave75Progress() throws Exception {
-                exercise.createSet();
-                Set set = exercise.createSet();
+                exercise.getSets().createSet();
+                Set set = exercise.getSets().createSet();
                 set.setMaxReps(100);
                 set.setReps(50);
-                exercise.setCurrentSet(1);
+                exercise.getSets().setCurrentSet(1);
                 assertThat(exercise.getProgress(), equalTo(0.75));
             }
         }

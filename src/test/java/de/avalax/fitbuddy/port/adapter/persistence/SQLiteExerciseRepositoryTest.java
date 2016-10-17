@@ -101,7 +101,7 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void saveExercise_shouldAlsoSaveSets() {
         Exercise exercise = new BasicExercise();
-        Set set = exercise.createSet();
+        Set set = exercise.getSets().createSet();
 
         exerciseRepository.save(workoutId, 1, exercise);
 
@@ -131,15 +131,15 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
         Exercise exercise = new BasicExercise();
-        Set set1 = exercise.createSet();
-        Set set2 = exercise.createSet();
+        Set set1 = exercise.getSets().createSet();
+        Set set2 = exercise.getSets().createSet();
 
         exerciseRepository.save(workoutId, 1, exercise);
 
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        assertThat(exercises.get(0).countOfSets(), equalTo(2));
-        assertThat(exercises.get(0).setAtPosition(0), equalTo(set1));
-        assertThat(exercises.get(0).setAtPosition(1), equalTo(set2));
+        assertThat(exercises.get(0).getSets().countOfSets(), equalTo(2));
+        assertThat(exercises.get(0).getSets().setAtPosition(0), equalTo(set1));
+        assertThat(exercises.get(0).getSets().setAtPosition(1), equalTo(set2));
     }
 
     @Test

@@ -32,7 +32,7 @@ public class BasicExercises implements Exercises {
     @Override
     public Exercise createExercise(int position) {
         Exercise exercise = new BasicExercise();
-        exercise.createSet();
+        exercise.getSets().createSet();
         exercises.add(position, exercise);
         return exercise;
     }
