@@ -95,12 +95,12 @@ public class BasicWorkout implements Workout {
         return workoutId.hashCode();
     }
 
-    private class BasicWorkoutMemento implements WorkoutMemento {
+    private static class BasicWorkoutMemento implements WorkoutMemento {
         private final BasicExercises exercises;
 
         private BasicWorkoutMemento(Exercises exercises) {
             List<Exercise> exerciseList = new ArrayList<>();
-            for (Exercise exercise :exercises) {
+            for (Exercise exercise : exercises) {
                 exerciseList.add(exercise);
             }
             this.exercises = new BasicExercises(exerciseList);
