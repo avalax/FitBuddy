@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.2.2'
     }
 }
 
@@ -29,12 +29,12 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-    compileSdkVersion 24
-    buildToolsVersion '24.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -92,13 +92,13 @@ dependencies {
         exclude module: 'commons-logging'
         exclude module: 'httpclient'
     }
-    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    androidTestCompile 'com.android.support:support-annotations:25.0.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.5'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:support-v4:25.0.0'
     compile 'com.squareup.dagger:dagger:1.2.5'
     compile 'com.google.zxing:android-integration:3.3.0'
 }
