@@ -15,19 +15,6 @@ import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 
 public class FitbuddyApplication extends Application {
-    @Singleton
-    @Component(modules = FitbuddyModule.class)
-    public interface ApplicationComponent {
-        void inject(WorkoutActivity workoutActivity);
-        void inject(EditWorkoutActivity editWorkoutActivity);
-        void inject(ExerciseFragment exerciseFragment);
-        void inject(ExerciseListFragment exerciseListFragment);
-        void inject(EditExerciseActivity editExerciseActivity);
-        void inject(ExerciseAdapter exerciseAdapter);
-        void inject(EditExerciseDialogFragment editExerciseDialogFragment);
-        void inject(FinishedWorkoutListFragment finishedWorkoutListFragment);
-    }
-
     private ApplicationComponent component;
 
     @Override
@@ -40,5 +27,18 @@ public class FitbuddyApplication extends Application {
 
     public ApplicationComponent getComponent() {
         return component;
+    }
+
+    @Singleton
+    @Component(modules = FitbuddyModule.class)
+    public interface ApplicationComponent {
+        void inject(WorkoutActivity workoutActivity);
+        void inject(EditWorkoutActivity editWorkoutActivity);
+        void inject(ExerciseFragment exerciseFragment);
+        void inject(ExerciseListFragment exerciseListFragment);
+        void inject(EditExerciseActivity editExerciseActivity);
+        void inject(ExerciseAdapter exerciseAdapter);
+        void inject(EditExerciseDialogFragment editExerciseDialogFragment);
+        void inject(FinishedWorkoutListFragment finishedWorkoutListFragment);
     }
 }
