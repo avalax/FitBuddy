@@ -59,7 +59,7 @@ public class EditWorkoutActivity extends FragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
-        ((FitbuddyApplication) getApplication()).component().inject(this);
+        ((FitbuddyApplication) getApplication()).getComponent().inject(this);
         init(savedInstanceState);
     }
 

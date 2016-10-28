@@ -25,7 +25,7 @@ public class FinishedWorkoutListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((FitbuddyApplication) getActivity().getApplication()).component().inject(this);
+        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         View view = inflater.inflate(R.layout.fragment_finished_workout_list, container, false);
         initListView();
         return view;

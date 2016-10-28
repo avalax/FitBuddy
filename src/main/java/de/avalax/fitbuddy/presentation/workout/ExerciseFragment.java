@@ -45,7 +45,7 @@ public class ExerciseFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
-        ((FitbuddyApplication) getActivity().getApplication()).component().inject(this);
+        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         exerciseIndex = getArguments().getInt(ARGS_EXERCISE_INDEX);
         return view;
     }

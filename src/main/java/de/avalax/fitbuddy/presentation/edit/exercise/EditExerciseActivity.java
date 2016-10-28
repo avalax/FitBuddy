@@ -43,7 +43,7 @@ public class EditExerciseActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_workout);
-        ((FitbuddyApplication) getApplication()).component().inject(this);
+        ((FitbuddyApplication) getApplication()).getComponent().inject(this);
         workoutId = (WorkoutId) getIntent().getSerializableExtra("workoutId");
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
         position = getIntent().getIntExtra("position", -1);

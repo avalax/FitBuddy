@@ -38,7 +38,7 @@ public class FitbuddyApplication extends Application {
                 .build();
     }
 
-    public ApplicationComponent component() {
+    public ApplicationComponent getComponent() {
         return component;
     }
 }
