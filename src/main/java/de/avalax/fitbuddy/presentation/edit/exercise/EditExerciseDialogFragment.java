@@ -42,7 +42,7 @@ public class EditExerciseDialogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_edit, container, false);
-        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
+        ((FitbuddyApplication) getActivity().getApplication()).component().inject(this);
         this.exercise = (Exercise) getArguments().getSerializable(ARGS_EXERCISE);
         init(view);
         return view;

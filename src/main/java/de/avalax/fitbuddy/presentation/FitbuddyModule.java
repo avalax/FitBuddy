@@ -18,8 +18,8 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedExerciseRepository;
@@ -29,26 +29,9 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.JsonToWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutParserJsonService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutToJsonAdapter;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseDialogFragment;
-import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
-import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
-import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
-import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
-import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
-import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 
-@Module(injects = {
-        WorkoutActivity.class,
-        EditWorkoutActivity.class,
-        ExerciseFragment.class,
-        ExerciseListFragment.class,
-        EditExerciseActivity.class,
-        ExerciseAdapter.class,
-        EditExerciseDialogFragment.class,
-        FinishedWorkoutListFragment.class
-})
+@Module
 public class FitbuddyModule {
     private Context context;
 

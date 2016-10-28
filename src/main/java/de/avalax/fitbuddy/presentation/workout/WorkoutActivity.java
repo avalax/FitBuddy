@@ -40,7 +40,7 @@ public class WorkoutActivity extends FragmentActivity implements DialogListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-        ((FitbuddyApplication) getApplication()).inject(this);
+        ((FitbuddyApplication) getApplication()).component().inject(this);
         init();
     }
 

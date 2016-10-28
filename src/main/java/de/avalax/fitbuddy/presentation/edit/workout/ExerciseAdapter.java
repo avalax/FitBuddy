@@ -26,7 +26,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
     public ExerciseAdapter(Context context, int textViewResourceId, List<Exercise> exercises) {
         super(context, textViewResourceId, exercises);
         this.textViewResourceId = textViewResourceId;
-        ((FitbuddyApplication) context.getApplicationContext()).inject(this);
+        ((FitbuddyApplication) context.getApplicationContext()).component().inject(this);
         this.exercises = exercises;
     }
 

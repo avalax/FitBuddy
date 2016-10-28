@@ -36,7 +36,7 @@ public class ExerciseListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((FitbuddyApplication) getActivity().getApplication()).inject(this);
+        ((FitbuddyApplication) getActivity().getApplication()).component().inject(this);
         View view = inflater.inflate(R.layout.fragment_exercise_list, container, false);
         footer = view.findViewById(R.id.footer_undo);
         view.findViewById(R.id.button_undo).setOnClickListener(new View.OnClickListener() {
