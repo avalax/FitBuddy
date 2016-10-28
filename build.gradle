@@ -123,21 +123,18 @@ task jacocoTestReport(type: JacocoReport) {
 
     classDirectories = fileTree(
             dir: "${project.buildDir}/intermediates/classes/debug",
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/*$ViewBinder*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       '**/*InjectAdapter*.class',
-                       '**/*$ModuleAdapter*.class',
-                       '**/*Application*.class',
-                       '**/*Module.class',
-                       '**/*Fragment*.class',
-                       '**/*Activity*.class',
-                       '**/*View.class',
-                       '**/*Listener*.class']
-    )
+            excludes:   ['**/R.class',
+                        '**/R$*.class',
+                        '**/BuildConfig.*',
+                        '**/Manifest*.*',
+                        '**/FitbuddyModule*.*',
+                        '**/*_MembersInjector.*',
+                        '**/*Application*.class',
+                        '**/*Fragment*.class',
+                        '**/*Activity*.class',
+                        '**/*View.class',
+                        '**/*Listener*.class']
+                        )
 
     sourceDirectories = files('src/main/java')
     executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
@@ -147,14 +144,6 @@ task jacocoTestReport(type: JacocoReport) {
         html.enabled = true
         xml.destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         html.destination = "${project.buildDir}/reports/jacoco/test"
-    }
-
-    doFirst {
-        new File("${project.buildDir}/intermediates/classes").eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
     }
 }
 
