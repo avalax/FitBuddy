@@ -44,4 +44,5 @@
     <string name="workout_delete">delete workout</string>
     <string name="workout_new_workout">add new workout</string>
     <string name="workout_share">share workout</string>
+    <string name="continue_workout">continue workout</string>
 </resources>
