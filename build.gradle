@@ -183,11 +183,8 @@ pmd{
 task pmd(type: Pmd, group: 'reporting', description: 'Inspect sourcecode for bugs') {
     ruleSetFiles = files("pmd.xml")
     ignoreFailures = true
-    ruleSets = []
-    source 'src'
-    include '**/*.java'
+    source 'src/main/java'
     exclude '**/gen/**'
-    exclude '**/test/**'
 
     reports {
         xml.enabled = true

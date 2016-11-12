@@ -1,3 +1,5 @@
+package de.avalax.fitbuddy;
+
 import javax.inject.Singleton;
 
 import dagger.Component;

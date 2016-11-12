@@ -1,3 +1,5 @@
+package de.avalax.fitbuddy;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.test.filters.LargeTest;
@@ -11,7 +13,6 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
