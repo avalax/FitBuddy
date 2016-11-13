@@ -7,6 +7,7 @@ android:
     - tools
     - build-tools-25.0.0
     - android-25
+    - android-24
     - extra-android-m2repository
     - sys-img-arm64-v8a-android-24
 before_script:
