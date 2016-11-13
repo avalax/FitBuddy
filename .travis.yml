@@ -9,12 +9,12 @@ android:
     - android-25
     - android-24
     - extra-android-m2repository
-    - sys-img-arm64-v8a-android-24
+    - sys-img-armeabi-v7a-android-24
 before_script:
   - ./gradlew dependencies
   # Create and start emulator
   - android list targets
-  - echo no | android create avd --force -n test -t android-24 --abi "default/arm64-v8a"
+  - echo no | android create avd --force -n test -t android-24 --abi "default/arm64-v7a"
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
