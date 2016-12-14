@@ -33,7 +33,7 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
         minSdkVersion 19
