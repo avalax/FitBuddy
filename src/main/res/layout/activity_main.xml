@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_container"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/continue_workout_button"
+    android:layout_height="match_parent"
+    tools:context=".presentation.MainActivity">
+    <fragment
+        android:id="@+id/toolbar_fragment"
+        android:name="de.avalax.fitbuddy.presentation.welcome_screen.WelcomeScreenFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/continue_workout"
-        android:onClick="continueWorkout" />
-</RelativeLayout>
+        android:layout_height="match_parent" />
+</LinearLayout>

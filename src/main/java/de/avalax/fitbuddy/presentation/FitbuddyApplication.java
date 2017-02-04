@@ -11,6 +11,7 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
+import de.avalax.fitbuddy.presentation.welcome_screen.WelcomeScreenFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 
@@ -20,7 +21,11 @@ public class FitbuddyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        component = DaggerFitbuddyApplication_ApplicationComponent.builder()
+        component = createComponent();
+    }
+
+    protected ApplicationComponent createComponent() {
+        return DaggerFitbuddyApplication_ApplicationComponent.builder()
                 .fitbuddyModule(new FitbuddyModule(this))
                 .build();
     }
@@ -40,5 +45,6 @@ public class FitbuddyApplication extends Application {
         void inject(ExerciseAdapter exerciseAdapter);
         void inject(EditExerciseDialogFragment editExerciseDialogFragment);
         void inject(FinishedWorkoutListFragment finishedWorkoutListFragment);
+        void inject(WelcomeScreenFragment welcomeScreenFragment);
     }
 }
