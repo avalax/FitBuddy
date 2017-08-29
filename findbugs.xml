@@ -3,13 +3,10 @@
     <Match>
         <Class name="~.*\.R\$.*"/>
     </Match>
-    <Match>
-        <Class name="~.*\.Manifest\$.*"/>
-    </Match>
 	<Match>
-		<Class name="~.*\.*Test" />
-		<Not>
-			<Bug code="IJU" /> 
-		</Not>
+		<Bug pattern="UWF_UNWRITTEN_FIELD" type="UWF_UNWRITTEN_FIELD"/>
+	 </Match>
+	 <Match>
+		<Bug pattern="NP_UNWRITTEN_FIELD" type="NP_UNWRITTEN_FIELD"/>
 	 </Match>
 </FindBugsFilter>
