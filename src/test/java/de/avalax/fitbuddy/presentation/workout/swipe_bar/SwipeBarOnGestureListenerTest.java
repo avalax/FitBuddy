@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
+@Config(constants = BuildConfig.class)
 public class SwipeBarOnGestureListenerTest {
     private static final int SWIPE_MOVE_MAX = 12;
     private static final int SWIPE_MIN_DISTANCE = 30;

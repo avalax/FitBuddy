@@ -27,7 +27,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
+@Config(constants = BuildConfig.class)
 public class WorkoutSessionTest {
     private WorkoutSession workoutSession;
     private Context context;

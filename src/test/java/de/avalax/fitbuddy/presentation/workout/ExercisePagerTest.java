@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
+@Config(constants = BuildConfig.class)
 public class ExercisePagerTest {
 
     private ExercisePager exercisePager;

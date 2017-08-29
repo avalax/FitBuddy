@@ -26,7 +26,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
+@Config(constants = BuildConfig.class)
 public class FinishedWorkoutAdapterTest {
     private FinishedWorkoutAdapter finishedWorkoutAdapter;
     private FinishedWorkout finishedWorkout;
@@ -35,7 +35,7 @@ public class FinishedWorkoutAdapterTest {
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
         List<FinishedWorkout> finishedWorkouts = new ArrayList<>();
-        finishedWorkout = new BasicFinishedWorkout(new FinishedWorkoutId("42"),new WorkoutId("21"),"name","2014-12-24", Collections.<FinishedExercise>emptyList());
+        finishedWorkout = new BasicFinishedWorkout(new FinishedWorkoutId("42"), new WorkoutId("21"), "name", "2014-12-24", Collections.<FinishedExercise>emptyList());
         finishedWorkouts.add(finishedWorkout);
         finishedWorkoutAdapter = new FinishedWorkoutAdapter(context, R.layout.item_finished_workout, finishedWorkouts);
     }
@@ -46,8 +46,8 @@ public class FinishedWorkoutAdapterTest {
 
         FinishedWorkoutAdapter.FinishedWorkoutViewHolder viewHolder = (FinishedWorkoutAdapter.FinishedWorkoutViewHolder) view.getTag();
 
-        assertThat(viewHolder.name.getText().toString(),equalTo(finishedWorkout.getName()));
-        assertThat(viewHolder.date.getText().toString(),equalTo("2014-12-24"));
+        assertThat(viewHolder.name.getText().toString(), equalTo(finishedWorkout.getName()));
+        assertThat(viewHolder.date.getText().toString(), equalTo("2014-12-24"));
     }
 
     @Test
@@ -56,6 +56,6 @@ public class FinishedWorkoutAdapterTest {
 
         View reusedView = finishedWorkoutAdapter.getView(0, view, null);
 
-        assertThat(reusedView,equalTo(view));
+        assertThat(reusedView, equalTo(view));
     }
 }

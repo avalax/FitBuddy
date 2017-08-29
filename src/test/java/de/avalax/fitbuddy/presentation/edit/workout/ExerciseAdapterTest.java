@@ -24,7 +24,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, manifest = "src/main/AndroidManifest.xml", sdk=21)
+@Config(constants = BuildConfig.class)
 public class ExerciseAdapterTest {
     private ExerciseAdapter exerciseAdapter;
     private Exercise exercise;
@@ -45,10 +45,10 @@ public class ExerciseAdapterTest {
 
         ExerciseAdapter.ExerciseViewHolder viewHolder = (ExerciseAdapter.ExerciseViewHolder) view.getTag();
 
-        assertThat(viewHolder.name.getText().toString(),equalTo(exerciseAdapter.exerciseViewHelper.nameOfExercise(exercise)));
-        assertThat(viewHolder.reps.getText().toString(),equalTo(String.valueOf(exerciseAdapter.exerciseViewHelper.maxRepsOfExercise(exercise))));
-        assertThat(viewHolder.sets.getText().toString(),equalTo(String.valueOf(exerciseAdapter.exerciseViewHelper.setCountOfExercise(exercise))));
-        assertThat(viewHolder.weight.getText().toString(),equalTo(exerciseAdapter.exerciseViewHelper.weightOfExercise(exercise)));
+        assertThat(viewHolder.name.getText().toString(), equalTo(exerciseAdapter.exerciseViewHelper.nameOfExercise(exercise)));
+        assertThat(viewHolder.reps.getText().toString(), equalTo(String.valueOf(exerciseAdapter.exerciseViewHelper.maxRepsOfExercise(exercise))));
+        assertThat(viewHolder.sets.getText().toString(), equalTo(String.valueOf(exerciseAdapter.exerciseViewHelper.setCountOfExercise(exercise))));
+        assertThat(viewHolder.weight.getText().toString(), equalTo(exerciseAdapter.exerciseViewHelper.weightOfExercise(exercise)));
     }
 
     @Test
@@ -57,6 +57,6 @@ public class ExerciseAdapterTest {
 
         View reusedView = exerciseAdapter.getView(0, view, null);
 
-        assertThat(reusedView,equalTo(view));
+        assertThat(reusedView, equalTo(view));
     }
 }
