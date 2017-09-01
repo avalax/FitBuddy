@@ -33,12 +33,12 @@ public class FinishedWorkoutListFragment extends ListFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        view.findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
+        /**view.findViewById(android.R.id.empty).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finishActivity();
             }
-        });
+        });**/
     }
 
     protected void initListView() {
