@@ -50,6 +50,7 @@ android {
 		abortOnError false
     }
 	testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
             all {
@@ -106,6 +107,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation 'com.android.support:support-v4:26.0.1'
     implementation 'com.google.zxing:android-integration:3.3.0'
