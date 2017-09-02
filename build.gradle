@@ -4,7 +4,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta2'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta4'
     }
 }
 
@@ -24,7 +24,6 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-    buildTypeMatching 'debug', 'release'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
