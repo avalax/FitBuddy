@@ -5,8 +5,4 @@
         <attr name="imageDrawable" format="integer" />
         <attr name="backgroundColor" format="color" />
     </declare-styleable>
-    <declare-styleable name="EnterValueBar">
-        <attr name="value" format="string" />
-        <attr name="label" format="string" />
-    </declare-styleable>
 </resources>
