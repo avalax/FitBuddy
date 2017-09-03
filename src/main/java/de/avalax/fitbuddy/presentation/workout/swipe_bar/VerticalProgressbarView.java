@@ -40,10 +40,10 @@ public class VerticalProgressbarView extends FrameLayout {
     }
 
     private void attributes(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ProgressBar);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VerticalProgressbarView);
         int color = ContextCompat.getColor(getContext(), R.color.primary_background);
-        imageView.setImageDrawable(a.getDrawable(R.styleable.ProgressBar_progressbar));
-        imageView.setBackgroundColor(a.getColor(R.styleable.ProgressBar_background, color));
+        imageView.setImageDrawable(a.getDrawable(R.styleable.VerticalProgressbarView_imageDrawable));
+        imageView.setBackgroundColor(a.getColor(R.styleable.VerticalProgressbarView_backgroundColor, color));
         a.recycle();
     }
 

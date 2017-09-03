@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ProgressBar">
+    <declare-styleable name="VerticalProgressbarView">
         <attr name="progressbar" format="reference" />
-        <attr name="imageLevel" format="integer" />
-        <attr name="background" format="color" />
+        <attr name="imageDrawable" format="integer" />
+        <attr name="backgroundColor" format="color" />
     </declare-styleable>
     <declare-styleable name="EnterValueBar">
         <attr name="value" format="string" />
