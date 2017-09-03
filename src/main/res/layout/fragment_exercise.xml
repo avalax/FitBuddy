@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        components:background="@color/primary_background"
+        components:backgroundColor="@color/primary_background"
         components:progressbar="@drawable/primary_progress_bar" />
 
     <de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView
@@ -18,6 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        components:background="@color/secondary_background"
+        components:backgroundColor="@color/secondary_background"
         components:progressbar="@drawable/secondary_progress_bar" />
 </LinearLayout>
