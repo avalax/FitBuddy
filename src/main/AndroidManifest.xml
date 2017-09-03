@@ -22,7 +22,16 @@
                 <data android:scheme="http" android:host="fitbuddy.de" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.MainActivity" />
+        <activity android:name=".presentation.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="fitbuddy.de" />
+            </intent-filter>
+        </activity>
         <activity android:name=".presentation.edit.workout.EditWorkoutActivity"/>
         <activity android:name=".presentation.edit.exercise.EditExerciseActivity"/>
         <activity android:name=".presentation.summary.FinishedWorkoutActivity"/>

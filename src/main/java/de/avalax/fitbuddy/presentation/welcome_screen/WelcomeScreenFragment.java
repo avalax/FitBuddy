@@ -27,8 +27,7 @@ public class WelcomeScreenFragment extends Fragment {
     }
 
     private void init(View view) {
-        View continueWorkoutButton = view.findViewById(R.id.continue_workout_button);
-        continueWorkoutButton.setEnabled(workoutSession.hasWorkout());
+
     }
 
 

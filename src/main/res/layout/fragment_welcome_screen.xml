@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/product_list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/continue_workout_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/continue_workout"
-        android:onClick="continueWorkout" />
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/shr_list_margin"
+    android:layout_marginRight="@dimen/shr_list_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
