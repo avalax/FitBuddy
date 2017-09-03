@@ -34,15 +34,15 @@ public class VerticalProgressbarView extends FrameLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.view_vertical_progressbar, this);
-        maxValueTextView = (TextView) findViewById(R.id.maxValueTextView);
-        valueTextView = (TextView) findViewById(R.id.valueTextView);
-        imageView = (ImageView) findViewById(R.id.verticalProgressBar);
+        maxValueTextView = findViewById(R.id.maxValueTextView);
+        valueTextView = findViewById(R.id.valueTextView);
+        imageView = findViewById(R.id.verticalProgressBar);
     }
 
     private void attributes(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VerticalProgressbarView);
         int color = ContextCompat.getColor(getContext(), R.color.primary_background);
-        imageView.setImageDrawable(a.getDrawable(R.styleable.VerticalProgressbarView_imageDrawable));
+        imageView.setImageDrawable(a.getDrawable(R.styleable.VerticalProgressbarView_progressbarDrawable));
         imageView.setBackgroundColor(a.getColor(R.styleable.VerticalProgressbarView_backgroundColor, color));
         a.recycle();
     }
@@ -50,12 +50,11 @@ public class VerticalProgressbarView extends FrameLayout {
     public void updateProgressbar(double progress, String currentValue, String maxValue) {
         valueTextView.setText(currentValue);
         maxValueTextView.setText(maxValue);
-        imageView.setImageLevel(calculateProgressbarHeight(progress, 1));
+        imageView.setImageLevel(calculateProgressbarHeight(progress));
         postInvalidate();
     }
 
-    private int calculateProgressbarHeight(double currentValue, int maxValue) {
-        double scale = currentValue / maxValue;
-        return (int) Math.round(scale * 10000);
+    private int calculateProgressbarHeight(double progress) {
+        return (int) Math.round(progress * 10000);
     }
 }

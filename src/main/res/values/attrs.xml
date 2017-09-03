@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="VerticalProgressbarView">
-        <attr name="progressbar" format="reference" />
-        <attr name="imageDrawable" format="integer" />
+        <attr name="progressbarDrawable" format="reference" />
         <attr name="backgroundColor" format="color" />
     </declare-styleable>
 </resources>
