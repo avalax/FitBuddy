@@ -46,6 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         WorkoutListFragment workoutListFragment = (WorkoutListFragment) getSupportFragmentManager()
                 .findFragmentById((R.id.toolbar_fragment));
-        workoutListFragment.updateWorkoutsFromRepository();
+        workoutListFragment.addWorkout(workout);
     }
 }

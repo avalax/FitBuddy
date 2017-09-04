@@ -19,7 +19,7 @@ public class WorkoutRecyclerView extends RecyclerView {
     public WorkoutRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
     }
@@ -30,7 +30,7 @@ public class WorkoutRecyclerView extends RecyclerView {
         updateEmptyView();
     }
 
-    private void updateEmptyView() {
+    public void updateEmptyView() {
         if (mEmptyView != null && getAdapter() != null) {
             boolean showEmptyView = getAdapter().getItemCount() == 0;
             mEmptyView.setVisibility(showEmptyView ? VISIBLE : GONE);

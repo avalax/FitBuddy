@@ -13,16 +13,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class WorkoutListFragment extends Fragment {
 
-    private WorkoutRecyclerView recyclerView;
-
     @Inject
     WorkoutRepository workoutRepository;
+
+    private WorkoutAdapter workoutAdapter;
+
+    private List<WorkoutListEntry> workoutListEntries;
+    private WorkoutRecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,25 +36,27 @@ public class WorkoutListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        updateWorkoutsFromRepository();
+        workoutListEntries = workoutRepository.getWorkoutList();
+        workoutAdapter = new WorkoutAdapter(getActivity(), workoutListEntries);
+        recyclerView.setAdapter(workoutAdapter);
         return view;
     }
 
-    public void updateWorkoutsFromRepository() {
-        List<WorkoutListEntry> workouts = workoutRepository.getWorkoutList();
-        WorkoutAdapter workoutAdapter = new WorkoutAdapter(getActivity(), workouts);
-        recyclerView.setAdapter(workoutAdapter);
+    public void addWorkout(Workout workout) {
+        workoutListEntries.add(new WorkoutListEntry(workout.getWorkoutId(), workout.getName()));
+        workoutAdapter.notifyItemInserted(workoutListEntries.size() - 1);
+        recyclerView.updateEmptyView();
     }
 
     private class WorkoutAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        private List<WorkoutListEntry> mAttractionList;
+        private List<WorkoutListEntry> workoutListEntries;
         private Context mContext;
 
-        WorkoutAdapter(Context context, List<WorkoutListEntry> attractions) {
+        WorkoutAdapter(Context context, List<WorkoutListEntry> workoutListEntries) {
             super();
             mContext = context;
-            mAttractionList = attractions;
+            this.workoutListEntries = workoutListEntries;
         }
 
         @Override
@@ -62,7 +68,7 @@ public class WorkoutListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            //WorkoutListEntry workout = mAttractionList.get(position);
+            //WorkoutListEntry workout = workoutListEntries.get(position);
         }
 
         @Override
@@ -72,7 +78,7 @@ public class WorkoutListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mAttractionList == null ? 0 : mAttractionList.size();
+            return workoutListEntries == null ? 0 : workoutListEntries.size();
         }
     }
 
