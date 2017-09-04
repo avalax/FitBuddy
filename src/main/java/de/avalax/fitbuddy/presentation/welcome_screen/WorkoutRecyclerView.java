@@ -8,14 +8,6 @@ import android.view.View;
 public class WorkoutRecyclerView extends RecyclerView {
     private View mEmptyView;
 
-    private AdapterDataObserver mDataObserver = new AdapterDataObserver() {
-        @Override
-        public void onChanged() {
-            super.onChanged();
-            updateEmptyView();
-        }
-    };
-
     public WorkoutRecyclerView(Context context) {
         super(context);
     }
@@ -27,29 +19,18 @@ public class WorkoutRecyclerView extends RecyclerView {
     public WorkoutRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
-    /**
-     * Designate a view as the empty view. When the backing adapter has no
-     * data this view will be made visible and the recycler view hidden.
-     *
-     */
+    
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
     }
 
     @Override
     public void setAdapter(RecyclerView.Adapter adapter) {
-        if (getAdapter() != null) {
-            getAdapter().unregisterAdapterDataObserver(mDataObserver);
-        }
-        if (adapter != null) {
-            adapter.registerAdapterDataObserver(mDataObserver);
-        }
         super.setAdapter(adapter);
         updateEmptyView();
     }
 
-    void updateEmptyView() {
+    private void updateEmptyView() {
         if (mEmptyView != null && getAdapter() != null) {
             boolean showEmptyView = getAdapter().getItemCount() == 0;
             mEmptyView.setVisibility(showEmptyView ? VISIBLE : GONE);
