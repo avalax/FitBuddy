@@ -21,7 +21,6 @@ public class WorkoutListFragment extends Fragment {
 
     private WorkoutRecyclerView recyclerView;
 
-    private WorkoutAdapter mAdapter;
     @Inject
     WorkoutRepository workoutRepository;
 
@@ -39,16 +38,16 @@ public class WorkoutListFragment extends Fragment {
 
     public void updateWorkoutsFromRepository() {
         List<WorkoutListEntry> workouts = workoutRepository.getWorkoutList();
-        mAdapter = new WorkoutAdapter(getActivity(), workouts);
-        recyclerView.setAdapter(mAdapter);
+        WorkoutAdapter workoutAdapter = new WorkoutAdapter(getActivity(), workouts);
+        recyclerView.setAdapter(workoutAdapter);
     }
 
     private class WorkoutAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        public List<WorkoutListEntry> mAttractionList;
+        private List<WorkoutListEntry> mAttractionList;
         private Context mContext;
 
-        public WorkoutAdapter(Context context, List<WorkoutListEntry> attractions) {
+        WorkoutAdapter(Context context, List<WorkoutListEntry> attractions) {
             super();
             mContext = context;
             mAttractionList = attractions;
@@ -78,7 +77,7 @@ public class WorkoutListFragment extends Fragment {
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
         }
     }
