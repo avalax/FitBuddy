@@ -49,5 +49,5 @@
     <string name="menu_home">Start</string>
     <string name="menu_workout">Workout</string>
     <string name="menu_summary">Summary</string>
-    <string name="no_workout_default_text">Click to add workout</string>
+    <string name="empty_workout_list">Click to add workout</string>
 </resources>

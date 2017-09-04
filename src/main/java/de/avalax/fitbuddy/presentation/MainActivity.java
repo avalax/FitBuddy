@@ -4,10 +4,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+
+import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    protected WorkoutRepository workoutRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +30,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    // Menu icons are inflated just as they were with actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        ((FitbuddyApplication) getApplication()).getComponent().inject(this);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void onAddWorkoutButtonClick(View view) {
+        Workout workout = new BasicWorkout();
+        Exercise exercise = workout.getExercises().createExercise();
+        Set set = exercise.getSets().createSet();
+        set.setReps(12);
+        workoutRepository.save(workout);
+
+        WorkoutListFragment viewById = (WorkoutListFragment) getSupportFragmentManager()
+                .findFragmentById((R.id.toolbar_fragment));
+        viewById.updateWorkoutsFromRepository();
     }
 }

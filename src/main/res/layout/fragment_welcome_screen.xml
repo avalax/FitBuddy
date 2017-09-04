@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.welcome_screen.WorkoutListFragment">
 
-
-    <!-- <android.support.v7.widget.RecyclerView
-        android:id="@+id/workout_list"
+    <de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/shr_list_margin"
         android:layout_marginRight="@dimen/shr_list_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" /> -->
+        android:scrollbars="vertical"
+        app:layoutManager="GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:spanCount="@integer/list_columns" />
 
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@android:id/empty"
+        style="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/no_workout_default_text" />
+        android:text="@string/empty_workout_list" />
+
+</LinearLayout>

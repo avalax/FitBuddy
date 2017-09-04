@@ -6,9 +6,10 @@
 
     <fragment
         android:id="@+id/toolbar_fragment"
-        android:name="de.avalax.fitbuddy.presentation.welcome_screen.WelcomeScreenFragment"
+        android:name="de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -23,6 +24,22 @@
             app:titleTextColor="@color/main_text" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_workout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="onAddWorkoutButtonClick"
+        android:src="@drawable/ic_fab_add_workout"
+        android:tint="@color/main_text"
+        app:backgroundTint="@color/primary_background" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

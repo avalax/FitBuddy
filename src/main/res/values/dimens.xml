@@ -3,4 +3,5 @@
     <dimen name="bar_font_size">68sp</dimen>
     <dimen name="padding_bar_text">40dp</dimen>
     <dimen name="shr_list_margin">12dp</dimen>
+    <integer name="list_columns">1</integer>
 </resources>
