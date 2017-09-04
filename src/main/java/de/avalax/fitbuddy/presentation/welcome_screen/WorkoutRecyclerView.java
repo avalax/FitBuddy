@@ -49,7 +49,7 @@ public class WorkoutRecyclerView extends RecyclerView {
         updateEmptyView();
     }
 
-    private void updateEmptyView() {
+    void updateEmptyView() {
         if (mEmptyView != null && getAdapter() != null) {
             boolean showEmptyView = getAdapter().getItemCount() == 0;
             mEmptyView.setVisibility(showEmptyView ? VISIBLE : GONE);

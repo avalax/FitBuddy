@@ -62,7 +62,7 @@ public class WorkoutListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            WorkoutListEntry workout = mAttractionList.get(position);
+            //WorkoutListEntry workout = mAttractionList.get(position);
         }
 
         @Override
@@ -77,7 +77,7 @@ public class WorkoutListFragment extends Fragment {
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
-        private ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
         }
     }
