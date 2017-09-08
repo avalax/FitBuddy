@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAddWorkoutButtonClick(View view) {
         Workout workout = new BasicWorkout();
+        workout.setName("test workout name");
         Exercise exercise = workout.getExercises().createExercise();
         Set set = exercise.getSets().createSet();
         set.setReps(12);

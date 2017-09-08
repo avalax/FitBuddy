@@ -17,6 +17,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsChecked;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsNotChecked;
 import static org.hamcrest.Matchers.not;
@@ -53,6 +54,11 @@ public class FitbuddyAcceptanceTest {
 
         onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.card_title)).check(matches(withText("test workout name")));
+        onView(withId(R.id.card_subtitle)).check(matches(withText("Executed 0 times")));
+        onView(withId(R.id.card_date)).check(matches(withText("never")));
+        onView(withId(R.id.btn_select_workout)).check(matches(withText("START")));
+        onView(withId(R.id.btn_share_workout)).check(matches(isDisplayed()));
     }
 
     @After

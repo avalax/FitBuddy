@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/toolbar_fragment"
-        android:name="de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,11 +12,18 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_background"
+            android:background="@color/primaryColor"
             app:layout_collapseMode="pin"
-            app:titleTextColor="@color/main_text" />
+            app:titleTextColor="?android:textColorPrimaryInverse" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <fragment
+        android:id="@+id/toolbar_fragment"
+        android:name="de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_workout"
@@ -38,16 +38,16 @@
         android:layout_marginTop="10dp"
         android:onClick="onAddWorkoutButtonClick"
         android:src="@drawable/ic_fab_add_workout"
-        android:tint="@color/main_text"
-        app:backgroundTint="@color/primary_background" />
+        android:tint="?android:textColorPrimaryInverse"
+        app:backgroundTint="@color/secondaryColor" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/main_text"
-        app:itemBackground="@color/main_text"
+        android:background="@color/cardsColor"
+        app:itemBackground="@color/cardsColor"
         app:itemIconTint="@drawable/navigation_colors"
         app:itemTextColor="@drawable/navigation_colors"
         app:menu="@menu/navigation_menu" />

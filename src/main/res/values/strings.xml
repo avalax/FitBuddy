@@ -46,8 +46,13 @@
     <string name="workout_share">share workout</string>
     <string name="continue_workout">continue workout</string>
 
+    <string name="placeholder_title">Title</string>
+    <string name="placeholder_subtitle">Subtitle</string>
     <string name="menu_home">Start</string>
     <string name="menu_workout">Workout</string>
     <string name="menu_summary">Summary</string>
     <string name="empty_workout_list">Click to add workout</string>
+    <string name="btn_start_workout">START</string>
+    <string name="date_never">never</string>
+    <string name="btn_share_workout">share workout</string>
 </resources>

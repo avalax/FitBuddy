@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -68,7 +69,9 @@ public class WorkoutListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            //WorkoutListEntry workout = workoutListEntries.get(position);
+            WorkoutListEntry workout = workoutListEntries.get(position);
+            holder.getTitleTextView().setText(workout.getName());
+            holder.getSubtitleTextView().setText("Executed 0 times");
         }
 
         @Override
@@ -83,8 +86,28 @@ public class WorkoutListFragment extends Fragment {
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
-        ViewHolder(View view) {
-            super(view);
+        private final TextView titleTextView;
+        private final TextView dateTextView;
+        private final TextView subtitleTextView;
+
+        ViewHolder(View v) {
+            super(v);
+            titleTextView = v.findViewById(R.id.card_title);
+            subtitleTextView = v.findViewById(R.id.card_subtitle);
+            dateTextView = v.findViewById(R.id.card_date);
+
+        }
+
+        TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        public TextView getDateTextView() {
+            return dateTextView;
+        }
+
+        public TextView getSubtitleTextView() {
+            return subtitleTextView;
         }
     }
 }

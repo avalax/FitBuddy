@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 
 public class WorkoutListEntry {
     private final WorkoutId workoutId;
+
     private final String name;
 
     public WorkoutListEntry(WorkoutId workoutId, String name) {
@@ -11,6 +12,10 @@ public class WorkoutListEntry {
 
     public WorkoutId getWorkoutId() {
         return workoutId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

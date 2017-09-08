@@ -14,7 +14,7 @@
         android:lines="1"
         android:text="@string/new_exercise_name"
         android:textAppearance="@android:style/TextAppearance.Holo.Large"
-        android:textColor="@color/primary_progressbar"/>
+        android:textColor="@color/primaryColor"/>
 
     <TextView
         android:id="@+id/setsTextView"

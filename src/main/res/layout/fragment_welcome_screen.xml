@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/shr_list_margin"
         android:layout_marginRight="@dimen/shr_list_margin"
+        android:layout_marginBottom="54dp"
         android:scrollbars="vertical"
         app:layoutManager="GridLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

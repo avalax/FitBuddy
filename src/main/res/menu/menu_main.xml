@@ -5,6 +5,6 @@
         android:icon="@drawable/ic_menu_support"
         app:showAsAction="ifRoom"
         android:title="Support"
-        android:tint="@color/main_text">
+        android:tint="?android:textColorPrimaryInverse">
     </item>
 </menu>
