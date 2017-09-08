@@ -131,12 +131,7 @@ versioneye {
 
 apply plugin: 'jacoco'
 
-jacoco {
-    toolVersion = "0.7.9"
-}
-
-task jacocoTestReport(type: JacocoReport) {
-	dependsOn project.tasks.withType(Test)
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
 
@@ -156,7 +151,10 @@ task jacocoTestReport(type: JacocoReport) {
                         )
 
     sourceDirectories = files('src/main/java')
-    executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ])
 
     reports {
         xml.enabled = true
