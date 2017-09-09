@@ -13,6 +13,8 @@ import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -51,10 +53,13 @@ public class FitbuddyAcceptanceTest {
     @Test
     public void oneWorkoutAdded_shouldBeDisplayed() throws Exception {
         onView(withId(R.id.fab_add_workout)).perform(click());
+        onView(withId(R.id.edit_text_name)).perform(typeText("new workout"), closeSoftKeyboard());
+        onView(withId(R.id.fab_add_exercise)).perform(click());
+        onView(withId(R.id.toolbar_save_workout)).perform(click());
 
         onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.card_title)).check(matches(withText("test workout name")));
+        onView(withId(R.id.card_title)).check(matches(withText("new workout")));
         onView(withId(R.id.card_subtitle)).check(matches(withText("Executed 0 times")));
         onView(withId(R.id.card_date)).check(matches(withText("never")));
         onView(withId(R.id.btn_select_workout)).check(matches(withText("START")));
