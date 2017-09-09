@@ -24,12 +24,17 @@ public class WorkoutListEntryTest {
     }
 
     @Test
-    public void toString_shouldReturnWorkoutInformations() throws Exception {
+    public void testGetName() throws Exception {
+        assertThat(workoutListEntry.getName(), equalTo(name));
+    }
+
+    @Test
+    public void toString_shouldReturnWorkoutInformation() throws Exception {
         assertThat(workoutListEntry.toString(), equalTo(name));
     }
 
     @Test
-    public void toStringWithEmptyName_shouldReturnPlaceholer() throws Exception {
+    public void toStringWithEmptyName_shouldReturnPlaceholder() throws Exception {
         workoutListEntry = new WorkoutListEntry(workoutId, "");
         assertThat(workoutListEntry.toString(), equalTo("unnamed workout"));
     }
