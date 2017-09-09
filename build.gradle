@@ -2,10 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         google()
-        maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta4'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta5'
     }
 }
 
@@ -123,10 +122,6 @@ dependencies {
         exclude module: 'design'
     }
     androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
-}
-
-versioneye {
-    exclude 'androidJacocoAgent', 'androidJacocoAnt', 'jacocoAgent', 'debugRuntimeClasspath'
 }
 
 apply plugin: 'jacoco'
