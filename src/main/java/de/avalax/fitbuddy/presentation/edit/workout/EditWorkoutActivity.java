@@ -20,6 +20,9 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 public class EditWorkoutActivity extends AppCompatActivity {
 
     private static final int EDIT_EXERCISE = 2;
@@ -62,10 +65,10 @@ public class EditWorkoutActivity extends AppCompatActivity {
             String weight = data.getStringExtra("weight");
             Exercise exercise = workout.getExercises().createExercise();
             exercise.setName(name);
-            for (int i = 0; i < Integer.valueOf(sets); i++) {
+            for (int i = 0; i < parseInt(sets); i++) {
                 Set set = exercise.getSets().createSet();
-                set.setReps(Integer.valueOf(reps));
-                set.setWeight(Double.valueOf(weight));
+                set.setReps(parseInt(reps));
+                set.setWeight(parseDouble(weight));
             }
 
             ExerciseListFragment workoutListFragment = (ExerciseListFragment)
