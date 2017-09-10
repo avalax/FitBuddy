@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_WORKOUT && resultCode == Activity.RESULT_OK) {
-            WorkoutId workout_id = (WorkoutId) data.getSerializableExtra("workout_id");
-            addWorkoutToList(workout_id);
+            WorkoutId workoutId = (WorkoutId) data.getSerializableExtra("workout_id");
+            addWorkoutToList(workoutId);
         }
     }
 
-    private void addWorkoutToList(WorkoutId workout_id) {
+    private void addWorkoutToList(WorkoutId workoutId) {
         try {
-            Workout workout = workoutRepository.load(workout_id);
+            Workout workout = workoutRepository.load(workoutId);
             WorkoutListFragment workoutListFragment = (WorkoutListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
             workoutListFragment.addWorkout(workout);
