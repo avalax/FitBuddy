@@ -7,7 +7,7 @@
     tools:context=".presentation.edit.workout.ExerciseListFragment">
 
     <EditText
-        android:id="@+id/edit_text_name"
+        android:id="@+id/edit_text_workout_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

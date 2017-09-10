@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class EditWorkoutActivity extends AppCompatActivity {
 
+    private static final int EDIT_EXERCISE = 2;
     @Inject
     protected WorkoutRepository workoutRepository;
     private EditText nameEditText;
@@ -34,7 +36,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_edit_workout);
         setSupportActionBar(toolbar);
-        nameEditText = findViewById(R.id.edit_text_name);
+        nameEditText = findViewById(R.id.edit_text_workout_name);
         workout = new BasicWorkout();
     }
 
@@ -46,16 +48,31 @@ public class EditWorkoutActivity extends AppCompatActivity {
     }
 
     public void onAddExerciseButtonClick(View view) {
-        Exercise exercise = workout.getExercises().createExercise();
-        Set set = exercise.getSets().createSet();
-        set.setReps(12);
-        workoutRepository.save(workout);
-
-        ExerciseListFragment workoutListFragment = (ExerciseListFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.toolbar_fragment);
-        workoutListFragment.addExercise(exercise);
+        Intent intent = new Intent(this, EditExerciseActivity.class);
+        startActivityForResult(intent, EDIT_EXERCISE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
+            String name = data.getStringExtra("name");
+            String sets = data.getStringExtra("sets");
+            String reps = data.getStringExtra("reps");
+            String weight = data.getStringExtra("weight");
+            Exercise exercise = workout.getExercises().createExercise();
+            exercise.setName(name);
+            for (int i = 0; i < Integer.valueOf(sets); i++) {
+                Set set = exercise.getSets().createSet();
+                set.setReps(Integer.valueOf(reps));
+                set.setWeight(Double.valueOf(weight));
+            }
+
+            ExerciseListFragment workoutListFragment = (ExerciseListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+            workoutListFragment.addExercise(exercise);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
