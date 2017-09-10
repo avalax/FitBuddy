@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,18 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/edit_text_exercise_sets"
+    <de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="54dp"
+        android:layout_marginLeft="@dimen/shr_list_margin"
+        android:layout_marginRight="@dimen/shr_list_margin"
+        android:scrollbars="vertical"
+        app:layoutManager="GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:spanCount="@integer/list_columns" />
 
-    <EditText
-        android:id="@+id/edit_text_exercise_reps"
+    <TextView
+        android:id="@android:id/empty"
+        style="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/edit_text_exercise_weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/empty_set_list" />
 </LinearLayout>

@@ -56,17 +56,24 @@ public class FitbuddyAcceptanceTest {
         onView(withId(R.id.edit_text_workout_name)).perform(typeText("new workout"), closeSoftKeyboard());
         onView(withId(R.id.fab_add_exercise)).perform(click());
         onView(withId(R.id.edit_text_exercise_name)).perform(typeText("new exercise"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_exercise_sets)).perform(typeText("3"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_exercise_reps)).perform(typeText("12"), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_exercise_weight)).perform(typeText("42"), closeSoftKeyboard());
+        onView(withId(R.id.fab_add_set)).perform(click());
+        onView(withId(R.id.edit_text_set_reps)).perform(typeText("12"), closeSoftKeyboard());
+        onView(withId(R.id.edit_text_set_weight)).perform(typeText("42"), closeSoftKeyboard());
 
+        onView(withId(R.id.toolbar_save_set)).perform(click());
+
+        //onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
+        //onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
+        //onView(withId(R.id.item_title)).check(matches(withText("12")));
+        //onView(withId(R.id.item_subtitle)).check(matches(withText("42")));
         onView(withId(R.id.toolbar_save_exercise)).perform(click());
+
         //onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         //onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         //onView(withId(R.id.item_title)).check(matches(withText("new exercise")));
         //onView(withId(R.id.item_subtitle)).check(matches(withText("3 x 12 reps")));
-
         onView(withId(R.id.toolbar_save_workout)).perform(click());
+
         onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(R.id.card_title)).check(matches(withText("new workout")));

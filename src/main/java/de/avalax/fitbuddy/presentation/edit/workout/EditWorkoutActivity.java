@@ -15,13 +15,11 @@ import javax.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.Sets;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-
-import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 
 public class EditWorkoutActivity extends AppCompatActivity {
 
@@ -60,15 +58,13 @@ public class EditWorkoutActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
             String name = data.getStringExtra("name");
-            String sets = data.getStringExtra("sets");
-            String reps = data.getStringExtra("reps");
-            String weight = data.getStringExtra("weight");
+            Sets sets = (Sets) data.getSerializableExtra("sets");
             Exercise exercise = workout.getExercises().createExercise();
             exercise.setName(name);
-            for (int i = 0; i < parseInt(sets); i++) {
+            for (Set s : sets) {
                 Set set = exercise.getSets().createSet();
-                set.setReps(parseInt(reps));
-                set.setWeight(parseDouble(weight));
+                set.setReps(s.getMaxReps());
+                set.setWeight(s.getWeight());
             }
 
             ExerciseListFragment workoutListFragment = (ExerciseListFragment)

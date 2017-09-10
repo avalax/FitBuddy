@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_edit_exercise"
+            android:id="@+id/toolbar_edit_set"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primaryColor"
@@ -20,21 +20,8 @@
 
     <fragment
         android:id="@+id/toolbar_fragment"
-        android:name="de.avalax.fitbuddy.presentation.edit.workout.EditExerciseFragment"
+        android:name="de.avalax.fitbuddy.presentation.edit.workout.EditSetFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_set"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:onClick="onAddSetButtonClick"
-        android:src="@drawable/ic_fab_add"
-        android:tint="?android:textColorPrimaryInverse"
-        app:backgroundTint="@color/secondaryColor" />
 </android.support.design.widget.CoordinatorLayout>

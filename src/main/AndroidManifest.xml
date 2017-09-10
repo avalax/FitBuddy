@@ -36,6 +36,7 @@
         <activity android:name=".presentation.edit.exercise.EditExerciseActivity"/>
         <activity android:name=".presentation.summary.FinishedWorkoutActivity"/>
         <activity android:name=".presentation.edit.workout.EditExerciseActivity" />
+        <activity android:name=".presentation.edit.workout.EditSetActivity" />
     </application>
 
 </manifest>

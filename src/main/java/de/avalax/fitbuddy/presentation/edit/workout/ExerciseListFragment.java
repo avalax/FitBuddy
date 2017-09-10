@@ -14,21 +14,17 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class ExerciseListFragment extends Fragment {
 
     private ExerciseAdapter exerciseAdapter;
-
     private List<Exercise> exerciseListEntries;
     private WorkoutRecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
-
         View view = inflater.inflate(R.layout.fragment_edit_workout, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
