@@ -49,10 +49,10 @@ public class EditExerciseFragment extends Fragment {
         private List<Set> sets;
         private Context mContext;
 
-        SetAdapter(Context context, List<Set> exercises) {
+        SetAdapter(Context context, List<Set> sets) {
             super();
             mContext = context;
-            this.sets = exercises;
+            this.sets = sets;
         }
 
         @Override
@@ -64,9 +64,9 @@ public class EditExerciseFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Set exercise = sets.get(position);
-            holder.getTitleTextView().setText(valueOf(exercise.getMaxReps()));
-            holder.getSubtitleTextView().setText(valueOf(exercise.getWeight()));
+            Set set = sets.get(position);
+            holder.getTitleTextView().setText(valueOf(set.getMaxReps()));
+            holder.getSubtitleTextView().setText(valueOf(set.getWeight()));
         }
 
         @Override

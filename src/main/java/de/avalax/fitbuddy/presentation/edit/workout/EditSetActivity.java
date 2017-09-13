@@ -37,8 +37,8 @@ public class EditSetActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
-            intent.putExtra("reps", repsEditText.getText().toString());
-            intent.putExtra("weight", weightEditText.getText().toString());
+            intent.putExtra("reps", Integer.parseInt(repsEditText.getText().toString()));
+            intent.putExtra("weight", Double.parseDouble(weightEditText.getText().toString()));
             setResult(RESULT_OK, intent);
             finish();
             return true;

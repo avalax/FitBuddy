@@ -14,6 +14,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class ExerciseListFragment extends Fragment {
@@ -62,7 +63,7 @@ public class ExerciseListFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             Exercise exercise = exercises.get(position);
             holder.getTitleTextView().setText(exercise.getName());
-            holder.getSubtitleTextView().setText("3 x 12 reps");
+                holder.getSubtitleTextView().setText("1 x 12");
         }
 
         @Override

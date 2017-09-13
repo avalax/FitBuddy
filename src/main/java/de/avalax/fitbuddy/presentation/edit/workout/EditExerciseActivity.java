@@ -56,9 +56,9 @@ public class EditExerciseActivity extends AppCompatActivity {
             set.setMaxReps(reps);
             set.setWeight(weight);
 
-            EditExerciseFragment workoutListFragment = (EditExerciseFragment)
+            EditExerciseFragment setListFragment = (EditExerciseFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
-            workoutListFragment.addSet(set);
+            setListFragment.addSet(set);
         }
     }
 
