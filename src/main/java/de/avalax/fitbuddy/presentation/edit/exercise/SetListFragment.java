@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.presentation.edit.workout;
+package de.avalax.fitbuddy.presentation.edit.exercise;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,15 +14,14 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 import static java.lang.String.valueOf;
 
-public class EditExerciseFragment extends Fragment {
+public class SetListFragment extends Fragment {
 
-    private SetAdapter exerciseAdapter;
-    private List<Set> exerciseListEntries;
+    private SetAdapter setAdapter;
+    private List<Set> sets;
     private WorkoutRecyclerView recyclerView;
 
     @Override
@@ -32,15 +31,15 @@ public class EditExerciseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_exercise, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        exerciseListEntries = new ArrayList<>();
-        exerciseAdapter = new SetAdapter(getActivity(), exerciseListEntries);
-        recyclerView.setAdapter(exerciseAdapter);
+        sets = new ArrayList<>();
+        setAdapter = new SetAdapter(getActivity(), sets);
+        recyclerView.setAdapter(setAdapter);
         return view;
     }
 
-    public void addSet(Set exercise) {
-        exerciseListEntries.add(exercise);
-        exerciseAdapter.notifyItemInserted(exerciseListEntries.size() - 1);
+    public void addSet(Set set) {
+        sets.add(set);
+        setAdapter.notifyItemInserted(sets.size() - 1);
         recyclerView.updateEmptyView();
     }
 

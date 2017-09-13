@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/toolbar_fragment"
-        android:name="de.avalax.fitbuddy.presentation.edit.workout.EditExerciseFragment"
+        android:name="de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

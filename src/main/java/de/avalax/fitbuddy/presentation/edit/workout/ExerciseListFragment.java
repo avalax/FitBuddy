@@ -14,13 +14,12 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class ExerciseListFragment extends Fragment {
 
     private ExerciseAdapter exerciseAdapter;
-    private List<Exercise> exerciseListEntries;
+    private List<Exercise> exercises;
     private WorkoutRecyclerView recyclerView;
 
     @Override
@@ -29,20 +28,19 @@ public class ExerciseListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_workout, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        exerciseListEntries = new ArrayList<>();
-        exerciseAdapter = new ExerciseAdapter(getActivity(), exerciseListEntries);
+        exercises = new ArrayList<>();
+        exerciseAdapter = new ExerciseAdapter(getActivity(), exercises);
         recyclerView.setAdapter(exerciseAdapter);
         return view;
     }
 
     public void addExercise(Exercise exercise) {
-        exerciseListEntries.add(exercise);
-        exerciseAdapter.notifyItemInserted(exerciseListEntries.size() - 1);
+        exercises.add(exercise);
+        exerciseAdapter.notifyItemInserted(exercises.size() - 1);
         recyclerView.updateEmptyView();
     }
 
     private class ExerciseAdapter extends RecyclerView.Adapter<ViewHolder> {
-
         private List<Exercise> exercises;
         private Context mContext;
 
@@ -91,7 +89,7 @@ public class ExerciseListFragment extends Fragment {
             return titleTextView;
         }
 
-        public TextView getSubtitleTextView() {
+        TextView getSubtitleTextView() {
             return subtitleTextView;
         }
     }

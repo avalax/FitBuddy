@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.presentation.edit.workout;
+package de.avalax.fitbuddy.presentation.edit.set;
 
 import android.content.Intent;
 import android.os.Bundle;
