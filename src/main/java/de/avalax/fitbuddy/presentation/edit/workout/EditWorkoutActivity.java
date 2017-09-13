@@ -64,7 +64,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             exercise.setName(name);
             for (Set s : sets) {
                 Set set = exercise.getSets().createSet();
-                set.setReps(s.getMaxReps());
+                set.setMaxReps(s.getMaxReps());
                 set.setWeight(s.getWeight());
             }
 

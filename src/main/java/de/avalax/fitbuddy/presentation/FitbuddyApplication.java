@@ -8,6 +8,7 @@ import dagger.Component;
 import de.avalax.fitbuddy.presentation.edit.exerciseold.EditExerciseActivity;
 import de.avalax.fitbuddy.presentation.edit.exerciseold.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
+import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
@@ -50,5 +51,7 @@ public class FitbuddyApplication extends Application {
         void inject(WorkoutListFragment workoutListFragment);
 
         void inject(MainActivity workoutListFragment);
+
+        void inject(ExerciseListFragment exerciseListFragment);
     }
 }

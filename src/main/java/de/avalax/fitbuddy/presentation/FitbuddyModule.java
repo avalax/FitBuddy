@@ -141,4 +141,10 @@ public class FitbuddyModule {
                 setRepository,
                 workoutParserService);
     }
+
+    @Provides
+    @Singleton
+    de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService provideEditWorkoutApplicationService() {
+        return new de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService();
+    }
 }

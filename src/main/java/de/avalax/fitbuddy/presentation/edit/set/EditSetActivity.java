@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 import de.avalax.fitbuddy.R;
 
+import static java.lang.Double.*;
+import static java.lang.Integer.parseInt;
+
 public class EditSetActivity extends AppCompatActivity {
 
     private EditText repsEditText;
@@ -37,8 +40,8 @@ public class EditSetActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
-            intent.putExtra("reps", Integer.parseInt(repsEditText.getText().toString()));
-            intent.putExtra("weight", Double.parseDouble(weightEditText.getText().toString()));
+            intent.putExtra("maxReps", parseInt(repsEditText.getText().toString()));
+            intent.putExtra("weight", parseDouble(weightEditText.getText().toString()));
             setResult(RESULT_OK, intent);
             finish();
             return true;

@@ -51,10 +51,10 @@ public class EditExerciseActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
-            int reps = data.getIntExtra("reps", 0);
+            int maxReps = data.getIntExtra("maxReps", 0);
             double weight = data.getDoubleExtra("weight", 0);
             Set set = sets.createSet();
-            set.setMaxReps(reps);
+            set.setMaxReps(maxReps);
             set.setWeight(weight);
 
             SetListFragment setListFragment = (SetListFragment)

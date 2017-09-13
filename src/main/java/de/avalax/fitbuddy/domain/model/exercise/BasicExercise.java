@@ -15,12 +15,12 @@ public class BasicExercise implements Exercise {
 
     public BasicExercise() {
         this.name = "";
-        this.sets = new BasicSets(new ArrayList<Set>());
+        this.sets = new BasicSets(new ArrayList<>());
     }
 
     public BasicExercise(ExerciseId exerciseId, String name, List<Set> sets) {
         this.exerciseId = exerciseId;
-        this.name = name;
+        setName(name);
         this.sets = new BasicSets(sets);
     }
 

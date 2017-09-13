@@ -12,8 +12,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class ExerciseListFragment extends Fragment {
@@ -22,10 +25,14 @@ public class ExerciseListFragment extends Fragment {
     private List<Exercise> exercises;
     private WorkoutRecyclerView recyclerView;
 
+    @Inject
+    protected EditWorkoutApplicationService editWorkoutApplicationService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_workout, container, false);
+        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         exercises = new ArrayList<>();
@@ -60,8 +67,11 @@ public class ExerciseListFragment extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Exercise exercise = exercises.get(position);
-            holder.getTitleTextView().setText(exercise.getName());
-                holder.getSubtitleTextView().setText("1 x 12");
+            String title = editWorkoutApplicationService.title(exercise);
+            String subtitle = editWorkoutApplicationService.subtitle(exercise);
+
+            holder.getTitleTextView().setText(title);
+            holder.getSubtitleTextView().setText(subtitle);
         }
 
         @Override

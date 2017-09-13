@@ -27,7 +27,6 @@ public class SetListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_edit_exercise, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
@@ -44,19 +43,18 @@ public class SetListFragment extends Fragment {
     }
 
     private class SetAdapter extends RecyclerView.Adapter<ViewHolder> {
-
         private List<Set> sets;
-        private Context mContext;
+        private Context context;
 
         SetAdapter(Context context, List<Set> sets) {
             super();
-            mContext = context;
+            this.context = context;
             this.sets = sets;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
+            LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.item_set, parent, false);
             return new ViewHolder(view);
         }
@@ -93,7 +91,7 @@ public class SetListFragment extends Fragment {
             return titleTextView;
         }
 
-        public TextView getSubtitleTextView() {
+        TextView getSubtitleTextView() {
             return subtitleTextView;
         }
     }

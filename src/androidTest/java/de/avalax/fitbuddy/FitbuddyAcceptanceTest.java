@@ -51,7 +51,6 @@ public class FitbuddyAcceptanceTest {
         application.hasShownSetAddedToExercise("12", "42.0");
 
         application.saveExercise();
-        //TODO: hardcoded 1 x 12
         application.hasShownExerciseAddedToWorkout("new exercise", "1 x 12");
 
         application.saveWorkout();

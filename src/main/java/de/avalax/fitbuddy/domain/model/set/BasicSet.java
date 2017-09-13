@@ -13,8 +13,8 @@ public class BasicSet implements Set {
 
     public BasicSet(SetId setId, double weight, int maxReps) {
         this.setId = setId;
-        this.weight = weight;
-        this.maxReps = maxReps;
+        setWeight(weight);
+        setMaxReps(maxReps);
     }
 
     @Override
