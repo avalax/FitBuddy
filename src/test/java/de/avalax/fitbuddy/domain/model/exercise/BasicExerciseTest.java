@@ -95,6 +95,11 @@ public class BasicExerciseTest {
         }
 
         @Test
+        public void getName_shouldReturnNameFromInitialization() throws Exception {
+            assertThat(exercise.getName(), equalTo(""));
+        }
+
+        @Test
         public void countOfSets_shouldReturnZeroOnConstruction() throws Exception {
             assertThat(exercise.getSets().size(), equalTo(0));
         }

@@ -14,6 +14,7 @@ public class BasicExercise implements Exercise {
     private ExerciseId exerciseId;
 
     public BasicExercise() {
+        this.name = "";
         this.sets = new BasicSets(new ArrayList<>());
     }
 
