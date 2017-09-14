@@ -47,8 +47,7 @@ public class FitbuddyAcceptanceTest {
         //TODO: use and verify number picker / weight chooser
 
         application.saveSet();
-        //TODO: 42 instead of 42.0
-        application.hasShownSetAddedToExercise("12", "42.0");
+        application.hasShownSetAddedToExercise("12", "42");
 
         application.saveExercise();
         application.hasShownExerciseAddedToWorkout("new exercise", "1 x 12");

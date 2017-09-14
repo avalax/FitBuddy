@@ -29,6 +29,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.JsonToWorkoutAdapter;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutParserJsonService;
 import de.avalax.fitbuddy.port.adapter.service.WorkoutToJsonAdapter;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseApplicationService;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 @Module
@@ -146,5 +147,11 @@ public class FitbuddyModule {
     @Singleton
     de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService provideEditWorkoutApplicationService() {
         return new de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService();
+    }
+
+    @Provides
+    @Singleton
+    EditExerciseApplicationService provideEditExerciseApplicationService() {
+        return new EditExerciseApplicationService();
     }
 }

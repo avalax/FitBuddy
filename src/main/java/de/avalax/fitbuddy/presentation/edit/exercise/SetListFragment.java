@@ -12,11 +12,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
-
-import static java.lang.String.valueOf;
 
 public class SetListFragment extends Fragment {
 
@@ -24,10 +25,14 @@ public class SetListFragment extends Fragment {
     private List<Set> sets;
     private WorkoutRecyclerView recyclerView;
 
+    @Inject
+    protected EditExerciseApplicationService editExerciseApplicationService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_exercise, container, false);
+        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         sets = new ArrayList<>();
@@ -62,8 +67,11 @@ public class SetListFragment extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Set set = sets.get(position);
-            holder.getTitleTextView().setText(valueOf(set.getMaxReps()));
-            holder.getSubtitleTextView().setText(valueOf(set.getWeight()));
+            String title = editExerciseApplicationService.title(set);
+            String subtitle = editExerciseApplicationService.subtitle(set);
+
+            holder.getTitleTextView().setText(title);
+            holder.getSubtitleTextView().setText(subtitle);
         }
 
         @Override

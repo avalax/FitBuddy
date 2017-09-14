@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.domain.model.set;
 
 public class BasicSetBuilder {
     private int maxReps;
+    private double weight;
 
     public static BasicSetBuilder aSet() {
         return new BasicSetBuilder();
@@ -13,6 +14,11 @@ public class BasicSetBuilder {
     }
 
     public Set build() {
-        return new BasicSet(null, 0.0, maxReps);
+        return new BasicSet(null, weight, maxReps);
+    }
+
+    public BasicSetBuilder withWeight(double weight) {
+        this.weight = weight;
+        return this;
     }
 }
