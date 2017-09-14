@@ -3,15 +3,13 @@ package de.avalax.fitbuddy.presentation.edit.workout;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
 
 import static de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder.anExercise;
-import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.*;
+import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)

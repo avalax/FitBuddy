@@ -61,28 +61,12 @@ public class BasicExerciseTest {
     }
 
     @Test
-    public void nullValue_shouldSetNameToEmptyString() throws Exception {
-        exercise.setName(null);
-
-        assertThat(exercise.getName(), equalTo(""));
-    }
-
-    @Test
     public void setName_shouldSetNameOfExercise() throws Exception {
         String name = "newName";
 
         exercise.setName(name);
 
         assertThat(exercise.getName(), equalTo(name));
-    }
-
-    @Test
-    public void setNameWithSpace_shouldSetTrimedName() throws Exception {
-        String name = " newName ";
-
-        exercise.setName(name);
-
-        assertThat(exercise.getName(), equalTo("newName"));
     }
 
     @Test
@@ -108,11 +92,6 @@ public class BasicExerciseTest {
         @Before
         public void setUp() throws Exception {
             exercise = new BasicExercise();
-        }
-
-        @Test
-        public void getName_shouldReturnNameFromInitialization() throws Exception {
-            assertThat(exercise.getName(), equalTo(""));
         }
 
         @Test

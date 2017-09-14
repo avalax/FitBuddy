@@ -11,7 +11,12 @@ import static android.text.TextUtils.join;
 
 public class EditWorkoutApplicationService {
     public String title(Exercise exercise) {
-        return exercise.getName();
+        String name = exercise.getName();
+        if (name == null) {
+            return "";
+        }
+        return name;
+
     }
 
     public String subtitle(Exercise exercise) {

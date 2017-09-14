@@ -14,13 +14,12 @@ public class BasicExercise implements Exercise {
     private ExerciseId exerciseId;
 
     public BasicExercise() {
-        this.name = "";
         this.sets = new BasicSets(new ArrayList<>());
     }
 
     public BasicExercise(ExerciseId exerciseId, String name, List<Set> sets) {
         this.exerciseId = exerciseId;
-        setName(name);
+        this.name = name;
         this.sets = new BasicSets(sets);
     }
 
@@ -52,11 +51,7 @@ public class BasicExercise implements Exercise {
 
     @Override
     public void setName(String name) {
-        if (name == null) {
-            this.name = "";
-        } else {
-            this.name = name.trim();
-        }
+        this.name = name;
     }
 
     @Override
