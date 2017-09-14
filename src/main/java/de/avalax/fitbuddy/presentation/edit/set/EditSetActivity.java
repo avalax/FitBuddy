@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import de.avalax.fitbuddy.R;
 
-import static java.lang.Double.*;
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 public class EditSetActivity extends AppCompatActivity {
