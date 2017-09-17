@@ -3,7 +3,7 @@ package de.avalax.fitbuddy.presentation.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,7 @@ import android.widget.NumberPicker;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.exception.DialogListenerException;
 
-public class EditRepsDialogFragment extends DialogFragment {
+public class EditRepsDialogFragment extends AppCompatDialogFragment {
     private static final String ARGS_REPS = "reps";
     private NumberPicker repsNumberPicker;
     private DialogListener listener;

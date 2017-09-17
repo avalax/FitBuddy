@@ -6,17 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
+import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
+import static java.lang.String.valueOf;
 
-public class EditSetActivity extends AppCompatActivity {
+public class EditSetActivity extends AppCompatActivity implements
+        EditWeightDialogFragment.DialogListener,
+        EditRepsDialogFragment.DialogListener {
 
-    private EditText repsEditText;
-    private EditText weightEditText;
+    private TextView weightTextView;
+    private TextView repsTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,8 +30,8 @@ public class EditSetActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_edit_set);
         setSupportActionBar(toolbar);
-        repsEditText = findViewById(R.id.edit_text_set_reps);
-        weightEditText = findViewById(R.id.edit_text_set_weight);
+        repsTextView = findViewById(R.id.set_reps_text_view);
+        weightTextView = findViewById(R.id.set_weight_text_view);
     }
 
     @Override
@@ -40,12 +45,24 @@ public class EditSetActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
-            intent.putExtra("maxReps", parseInt(repsEditText.getText().toString()));
-            intent.putExtra("weight", parseDouble(weightEditText.getText().toString()));
+            intent.putExtra("maxReps", parseInt(repsTextView.getText().toString()));
+            intent.putExtra("weight", parseDouble(weightTextView.getText().toString()));
             setResult(RESULT_OK, intent);
             finish();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
+        int reps = editRepsDialogFragment.getReps();
+        repsTextView.setText(valueOf(reps));
+    }
+
+    @Override
+    public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
+        double weight = editWeightDialogFragment.getWeight();
+        weightTextView.setText(valueOf(weight));
     }
 }

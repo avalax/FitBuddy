@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.runner;
 
-import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
 import java.util.List;

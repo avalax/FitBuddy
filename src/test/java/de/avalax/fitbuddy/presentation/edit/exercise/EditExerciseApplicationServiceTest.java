@@ -13,7 +13,6 @@ public class EditExerciseApplicationServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        Locale.setDefault(Locale.Category.FORMAT, Locale.ENGLISH);
         service = new EditExerciseApplicationService();
     }
 

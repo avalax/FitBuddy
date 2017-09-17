@@ -1,6 +1,15 @@
 package de.avalax.fitbuddy.runner;
 
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
+import android.view.View;
+import android.widget.NumberPicker;
+
+import org.hamcrest.Matcher;
+
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -13,6 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsChecked;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsNotChecked;
+import static java.lang.Integer.parseInt;
 import static org.hamcrest.Matchers.not;
 
 public class ApplicationRunner {
@@ -49,8 +59,18 @@ public class ApplicationRunner {
 
     public void addSet(String reps, String weight) {
         onView(withId(R.id.fab_add_set)).perform(click());
-        onView(withId(R.id.edit_text_set_reps)).perform(typeText(reps), closeSoftKeyboard());
-        onView(withId(R.id.edit_text_set_weight)).perform(typeText(weight), closeSoftKeyboard());
+
+        onView(withId(R.id.set_reps)).perform(click());
+        onView(withId(R.id.repsNumberPicker)).perform(setNumberPicker(parseInt(reps)));
+        onView(withId(R.id.done_button)).perform(click());
+
+        String[] weightSplit = weight.split("\\.");
+        onView(withId(R.id.set_weight)).perform(click());
+        onView(withId(R.id.numberPicker)).perform(setNumberPicker(parseInt(weightSplit[0])));
+        WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
+        int position = weightDecimalPlaces.getPosition(Double.parseDouble("0." + weightSplit[1]));
+        onView(withId(R.id.decimalPlaces)).perform(setNumberPicker(position));
+        onView(withId(R.id.done_button)).perform(click());
     }
 
     public void saveSet() {
@@ -87,5 +107,29 @@ public class ApplicationRunner {
         onView(withId(R.id.card_date)).check(matches(withText("never")));
         onView(withId(R.id.btn_select_workout)).check(matches(withText("START")));
         onView(withId(R.id.btn_share_workout)).check(matches(isDisplayed()));
+    }
+
+    public void hasShownSetDetails(String reps, String weight) {
+        onView(withId(R.id.set_reps_text_view)).check(matches(withText(reps)));
+        onView(withId(R.id.set_weight_text_view)).check(matches(withText(weight)));
+    }
+
+    private static ViewAction setNumberPicker(final int value) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((NumberPicker) view).setValue(value);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set the value into a NumberPicker";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
+            }
+        };
     }
 }

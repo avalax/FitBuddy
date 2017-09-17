@@ -43,14 +43,14 @@ public class FitbuddyAcceptanceTest {
         application.addExercise("new exercise");
         application.hasShownAddNewSetHint();
 
-        application.addSet("12", "42");
-        //TODO: use and verify number picker / weight chooser
+        application.addSet("15", "42.5");
+        application.hasShownSetDetails("15", "42.5");
 
         application.saveSet();
-        application.hasShownSetAddedToExercise("12", "42");
+        application.hasShownSetAddedToExercise("15", "42.5");
 
         application.saveExercise();
-        application.hasShownExerciseAddedToWorkout("new exercise", "1 x 12");
+        application.hasShownExerciseAddedToWorkout("new exercise", "1 x 15");
 
         application.saveWorkout();
         application.hasShownWorkoutAdded();
