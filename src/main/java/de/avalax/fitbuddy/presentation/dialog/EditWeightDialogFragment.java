@@ -46,28 +46,26 @@ public class EditWeightDialogFragment extends AppCompatDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
-        Button button = (Button) view.findViewById(R.id.done_button);
+        Button button = view.findViewById(R.id.done_button);
         Double weight = getArguments().getDouble(ARGS_WEIGHT);
         getDialog().setTitle(R.string.dialog_change_weight);
 
-        numberPicker = (NumberPicker) view.findViewById(R.id.numberPicker);
+        numberPicker = view.findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(999);
         numberPicker.setValue((int) Math.floor(weight));
 
         String[] labels = weightDecimalPlaces.getLabels();
         int decimalPlaces = weightDecimalPlaces.getPosition(weight - Math.floor(weight));
-        decimalPlacesNumberPicker = (NumberPicker) view.findViewById(R.id.decimalPlaces);
+        decimalPlacesNumberPicker = view.findViewById(R.id.decimalPlaces);
         decimalPlacesNumberPicker.setMinValue(0);
         decimalPlacesNumberPicker.setMaxValue(labels.length - 1);
         decimalPlacesNumberPicker.setValue(decimalPlaces);
         decimalPlacesNumberPicker.setDisplayedValues(labels);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                listener.onDialogPositiveClick(EditWeightDialogFragment.this);
-                getDialog().dismiss();
-            }
+        button.setOnClickListener(v -> {
+            listener.onDialogPositiveClick(EditWeightDialogFragment.this);
+            getDialog().dismiss();
         });
 
         return view;

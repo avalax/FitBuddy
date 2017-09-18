@@ -42,20 +42,18 @@ public class EditSetsDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_sets, container, false);
-        Button button = (Button) view.findViewById(R.id.done_button);
+        Button button = view.findViewById(R.id.done_button);
         Integer sets = getArguments().getInt(ARGS_SETS);
         getDialog().setTitle(R.string.dialog_change_sets);
 
-        setsNumberPicker = (NumberPicker) view.findViewById(R.id.setsNumberPicker);
+        setsNumberPicker = view.findViewById(R.id.setsNumberPicker);
         setsNumberPicker.setMinValue(0);
         setsNumberPicker.setMaxValue(999);
         setsNumberPicker.setValue(sets);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                listener.onDialogPositiveClick(EditSetsDialogFragment.this);
-                getDialog().dismiss();
-            }
+        button.setOnClickListener(v -> {
+            listener.onDialogPositiveClick(EditSetsDialogFragment.this);
+            getDialog().dismiss();
         });
 
         return view;

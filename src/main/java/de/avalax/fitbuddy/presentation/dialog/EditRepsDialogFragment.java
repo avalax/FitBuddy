@@ -42,20 +42,18 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_reps, container, false);
-        Button button = (Button) view.findViewById(R.id.done_button);
+        Button button = view.findViewById(R.id.done_button);
         Integer reps = getArguments().getInt(ARGS_REPS);
         getDialog().setTitle(R.string.dialog_change_reps);
 
-        repsNumberPicker = (NumberPicker) view.findViewById(R.id.repsNumberPicker);
+        repsNumberPicker = view.findViewById(R.id.repsNumberPicker);
         repsNumberPicker.setMinValue(0);
         repsNumberPicker.setMaxValue(999);
         repsNumberPicker.setValue(reps);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                listener.onDialogPositiveClick(EditRepsDialogFragment.this);
-                getDialog().dismiss();
-            }
+        button.setOnClickListener(v -> {
+            listener.onDialogPositiveClick(EditRepsDialogFragment.this);
+            getDialog().dismiss();
         });
 
         return view;

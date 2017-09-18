@@ -45,18 +45,16 @@ public class EditNameDialogFragment extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_name, container, false);
         String name = getArguments().getString(ARGS_NAME);
-        Button button = (Button) view.findViewById(R.id.done_button);
+        Button button = view.findViewById(R.id.done_button);
         getDialog().setTitle(R.string.dialog_change_name);
 
-        nameEditText = (EditText) view.findViewById(R.id.nameEditText);
+        nameEditText = view.findViewById(R.id.nameEditText);
         nameEditText.setText(name);
         nameEditText.setHint(getArguments().getString(ARGS_HINT));
 
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                listener.onDialogPositiveClick(EditNameDialogFragment.this);
-                getDialog().dismiss();
-            }
+        button.setOnClickListener(v -> {
+            listener.onDialogPositiveClick(EditNameDialogFragment.this);
+            getDialog().dismiss();
         });
 
         return view;
