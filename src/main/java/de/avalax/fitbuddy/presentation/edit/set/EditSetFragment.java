@@ -17,17 +17,9 @@ public class EditSetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_set, container, false);
-        view.findViewById(R.id.set_weight).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                changeWeight();
-            }
-        });
+        view.findViewById(R.id.set_weight).setOnClickListener(v -> changeWeight());
 
-        view.findViewById(R.id.set_reps).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                changeReps();
-            }
-        });
+        view.findViewById(R.id.set_reps).setOnClickListener(v -> changeReps());
         return view;
     }
 
