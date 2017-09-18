@@ -152,6 +152,6 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     EditExerciseApplicationService provideEditExerciseApplicationService() {
-        return new EditExerciseApplicationService();
+        return new EditExerciseApplicationService(context);
     }
 }
