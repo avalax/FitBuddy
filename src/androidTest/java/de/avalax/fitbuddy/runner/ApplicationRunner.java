@@ -2,10 +2,15 @@ package de.avalax.fitbuddy.runner;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import de.avalax.fitbuddy.R;
@@ -16,6 +21,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -49,6 +55,12 @@ public class ApplicationRunner {
 
     public void addWorkout(String name) {
         onView(withId(R.id.fab_add_workout)).perform(click());
+        onView(withId(R.id.edit_text_workout_name)).perform(typeText(name), closeSoftKeyboard());
+    }
+
+    public void changeWorkout(int position, String name) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, clickChildButtonWithId(R.id.btn_edit_workout)));
         onView(withId(R.id.edit_text_workout_name)).perform(typeText(name), closeSoftKeyboard());
     }
 
@@ -99,14 +111,16 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_workout)).perform(click());
     }
 
-    public void hasShownWorkoutAdded() {
-        onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
+    public void hasShownWorkoutAdded(int position, String name) {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.card_title)).check(matches(withText("new workout")));
-        onView(withId(R.id.card_subtitle)).check(matches(withText("Executed 0 times")));
-        onView(withId(R.id.card_date)).check(matches(withText("never")));
-        onView(withId(R.id.btn_select_workout)).check(matches(withText("START")));
-        onView(withId(R.id.btn_share_workout)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.list))
+                .perform(RecyclerViewActions.scrollToPosition(position))
+                .check(matches(itemAtPosition(position, withText(name),R.id.card_title)))
+                .check(matches(itemAtPosition(position, withText("Executed 0 times"),R.id.card_subtitle)))
+                .check(matches(itemAtPosition(position, withText("never"),R.id.card_date)))
+                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout),R.id.btn_start_workout)))
+                .check(matches(itemAtPosition(position, withText(R.string.btn_edit_workout),R.id.btn_edit_workout)))
+                .check(matches(itemAtPosition(position, isDisplayed(),R.id.btn_share_workout)));
     }
 
     public void hasShownSetDetails(String reps, String weight) {
@@ -129,6 +143,43 @@ public class ApplicationRunner {
             @Override
             public Matcher<View> getConstraints() {
                 return ViewMatchers.isAssignableFrom(NumberPicker.class);
+            }
+        };
+    }
+
+    public static ViewAction clickChildButtonWithId(final int id) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                View v = view.findViewById(id);
+                v.performClick();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(Button.class);
+            }
+        };
+    }
+
+    public static Matcher<View> itemAtPosition(int position, Matcher<View> itemMatcher, int id) {
+
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has view id " + itemMatcher + " at position " + position);
+            }
+
+            @Override
+            public boolean matchesSafely(final RecyclerView recyclerView) {
+                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
+                View targetView = viewHolder.itemView.findViewById(id);
+                return itemMatcher.matches(targetView);
             }
         };
     }

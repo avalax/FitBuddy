@@ -4,6 +4,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,13 +16,6 @@ import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class FitbuddyAcceptanceTest {
-
-    /**
-     * private int actionBarTitleId() {
-     * Resources resources = activityRule.getActivity().getResources();
-     * return resources.getIdentifier("action_bar_title", "id", "android");
-     * }
-     **/
 
     private ApplicationRunner application = new ApplicationRunner();
 
@@ -36,7 +30,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void oneWorkoutAdded_shouldBeDisplayed() throws Exception {
+    public void newWorkout_shouldBeDisplayed() throws Exception {
         application.addWorkout("new workout");
         application.hasShownAddNewExerciseHint();
 
@@ -53,11 +47,24 @@ public class FitbuddyAcceptanceTest {
         application.hasShownExerciseAddedToWorkout("new exercise", "1 x 15");
 
         application.saveWorkout();
-        application.hasShownWorkoutAdded();
+        application.hasShownWorkoutAdded(0, "new workout");
     }
 
-    //TODO:
-    //         onView(withId(R.id.toolbar_support)).check(matches(isDisplayed()));
+    @Test
+    @Ignore("implementation missing")
+    public void existingWorkout_shouldDisplayChanges() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("old workout");
+        application.addExercise("new exercise");
+        application.addSet("15", "42.5");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.changeWorkout(0, "new workout");
+        application.saveWorkout();
+        application.hasShownWorkoutAdded(0, "new workout");
+    }
 
     @After
     public void tearDown() throws Exception {

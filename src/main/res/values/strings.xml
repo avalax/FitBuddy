@@ -54,6 +54,7 @@
     <string name="empty_exercise_list">Click to add exercise</string>
     <string name="empty_set_list">Click to add set</string>
     <string name="btn_start_workout">START</string>
+    <string name="btn_edit_workout">EDIT</string>
     <string name="date_never">never</string>
     <string name="btn_share_workout">share workout</string>
     <string name="default_weight">-</string>
