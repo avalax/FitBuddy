@@ -1,12 +1,15 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -15,9 +18,13 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
+
+import static de.avalax.fitbuddy.presentation.MainActivity.EDIT_WORKOUT;
 
 public class WorkoutListFragment extends Fragment {
 
@@ -49,6 +56,13 @@ public class WorkoutListFragment extends Fragment {
         recyclerView.updateEmptyView();
     }
 
+    public void updateWorkout(Integer position, Workout workout) {
+        WorkoutListEntry entry = new WorkoutListEntry(workout.getWorkoutId(), workout.getName());
+        workoutListEntries.set(position, entry);
+        workoutAdapter.notifyItemChanged(position);
+        recyclerView.updateEmptyView();
+    }
+
     private class WorkoutAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private List<WorkoutListEntry> workoutListEntries;
@@ -69,9 +83,20 @@ public class WorkoutListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            WorkoutListEntry workout = workoutListEntries.get(position);
-            holder.getTitleTextView().setText(workout.getName());
+            WorkoutListEntry workoutListEntry = workoutListEntries.get(position);
+            holder.getTitleTextView().setText(workoutListEntry.getName());
             holder.getSubtitleTextView().setText("Executed 0 times");
+            holder.getEditWorkoutButton().setOnClickListener(view -> {
+                Intent intent = new Intent(getActivity(), EditWorkoutActivity.class);
+                try {
+                    Workout workout = workoutRepository.load(workoutListEntry.getWorkoutId());
+                    intent.putExtra("workout", workout);
+                    intent.putExtra("position", holder.getAdapterPosition());
+                } catch (WorkoutException we) {
+                    Log.d("db", we.getMessage(), we);
+                }
+                getActivity().startActivityForResult(intent, EDIT_WORKOUT);
+            });
         }
 
         @Override
@@ -89,13 +114,14 @@ public class WorkoutListFragment extends Fragment {
         private final TextView titleTextView;
         private final TextView dateTextView;
         private final TextView subtitleTextView;
+        private final Button editWorkoutButton;
 
         ViewHolder(View v) {
             super(v);
             titleTextView = v.findViewById(R.id.card_title);
             subtitleTextView = v.findViewById(R.id.card_subtitle);
             dateTextView = v.findViewById(R.id.card_date);
-
+            editWorkoutButton = v.findViewById(R.id.btn_edit_workout);
         }
 
         TextView getTitleTextView() {
@@ -108,6 +134,10 @@ public class WorkoutListFragment extends Fragment {
 
         public TextView getSubtitleTextView() {
             return subtitleTextView;
+        }
+
+        public Button getEditWorkoutButton() {
+            return editWorkoutButton;
         }
     }
 }

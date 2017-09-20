@@ -19,6 +19,7 @@ import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.*;
@@ -58,10 +59,18 @@ public class ApplicationRunner {
         onView(withId(R.id.edit_text_workout_name)).perform(typeText(name), closeSoftKeyboard());
     }
 
-    public void changeWorkout(int position, String name) {
+    public void selectWorkout(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, clickChildButtonWithId(R.id.btn_edit_workout)));
-        onView(withId(R.id.edit_text_workout_name)).perform(typeText(name), closeSoftKeyboard());
+    }
+
+    public void changeWorkout(String name) {
+        onView(withId(R.id.edit_text_workout_name)).perform(replaceText(name), closeSoftKeyboard());
+    }
+
+
+    public void hasShownOldWorkoutNameInEditView(String name) {
+        onView(withId(R.id.edit_text_workout_name)).check(matches(withText(name)));
     }
 
     public void addExercise(String name) {

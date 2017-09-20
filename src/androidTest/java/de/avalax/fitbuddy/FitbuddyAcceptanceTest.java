@@ -4,7 +4,6 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +50,6 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    @Ignore("implementation missing")
     public void existingWorkout_shouldDisplayChanges() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("old workout");
@@ -61,7 +59,9 @@ public class FitbuddyAcceptanceTest {
         application.saveExercise();
         application.saveWorkout();
 
-        application.changeWorkout(0, "new workout");
+        application.selectWorkout(0);
+        application.hasShownOldWorkoutNameInEditView("old workout");
+        application.changeWorkout("new workout");
         application.saveWorkout();
         application.hasShownWorkoutAdded(0, "new workout");
     }

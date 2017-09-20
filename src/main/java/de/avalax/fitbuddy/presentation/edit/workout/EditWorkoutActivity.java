@@ -39,7 +39,11 @@ public class EditWorkoutActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_edit_workout);
         setSupportActionBar(toolbar);
         nameEditText = findViewById(R.id.edit_text_workout_name);
-        workout = new BasicWorkout();
+        workout = (Workout) getIntent().getSerializableExtra("workout");
+        if (workout == null) {
+            workout = new BasicWorkout();
+        }
+        nameEditText.setText(workout.getName());
     }
 
     @Override
@@ -81,6 +85,8 @@ public class EditWorkoutActivity extends AppCompatActivity {
             workoutRepository.save(workout);
             Intent intent = new Intent();
             intent.putExtra("workout_id", workout.getWorkoutId());
+            int position = getIntent().getIntExtra("position", -1);
+            intent.putExtra("position", position);
             setResult(RESULT_OK, intent);
             finish();
             return true;

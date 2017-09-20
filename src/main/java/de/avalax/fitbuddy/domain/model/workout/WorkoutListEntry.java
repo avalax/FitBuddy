@@ -1,5 +1,7 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
+@Deprecated
+// Use Workout instead
 public class WorkoutListEntry {
     private final WorkoutId workoutId;
 
