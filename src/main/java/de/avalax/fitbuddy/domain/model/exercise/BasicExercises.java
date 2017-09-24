@@ -70,6 +70,16 @@ public class BasicExercises implements Exercises {
     }
 
     @Override
+    public void add(Exercise exercise) {
+        exercises.add(exercise);
+    }
+
+    @Override
+    public void set(int position, Exercise exercise) {
+        exercises.set(position, exercise);
+    }
+
+    @Override
     public int size() {
         return exercises.size();
     }

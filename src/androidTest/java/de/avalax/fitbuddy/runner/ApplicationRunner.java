@@ -78,6 +78,19 @@ public class ApplicationRunner {
         onView(withId(R.id.edit_text_exercise_name)).perform(typeText(name), closeSoftKeyboard());
     }
 
+    public void selectExercise(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, click()));
+    }
+
+    public void hasShownOldExerciseNameInEditView(String name) {
+        onView(withId(R.id.edit_text_exercise_name)).check(matches(withText(name)));
+    }
+
+    public void changeExercise(String name) {
+        onView(withId(R.id.edit_text_exercise_name)).perform(replaceText(name), closeSoftKeyboard());
+    }
+
     public void addSet(String reps, String weight) {
         onView(withId(R.id.fab_add_set)).perform(click());
 
@@ -109,7 +122,7 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_exercise)).perform(click());
     }
 
-    public void hasShownExerciseAddedToWorkout(String name, String details) {
+    public void hasShownExerciseDetails(String name, String details) {
         onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(R.id.item_title)).check(matches(withText(name)));
@@ -120,7 +133,7 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_workout)).perform(click());
     }
 
-    public void hasShownWorkoutAdded(int position, String name) {
+    public void hasShownWorkoutDetails(int position, String name) {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))

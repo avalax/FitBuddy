@@ -10,29 +10,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.set.BasicSets;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.Sets;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
     private static final int EDIT_SET = 3;
     private EditText nameEditText;
-    private Sets sets;
+    private Exercise exercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
-
         Toolbar toolbar = findViewById(R.id.toolbar_edit_exercise);
         setSupportActionBar(toolbar);
         nameEditText = findViewById(R.id.edit_text_exercise_name);
-        sets = new BasicSets(new ArrayList<>());
+        exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        nameEditText.setText(exercise.getName());
     }
 
     @Override
@@ -53,7 +50,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
             int maxReps = data.getIntExtra("maxReps", 0);
             double weight = data.getDoubleExtra("weight", 0);
-            Set set = sets.createSet();
+            Set set = exercise.getSets().createSet();
             set.setMaxReps(maxReps);
             set.setWeight(weight);
 
@@ -67,8 +64,10 @@ public class EditExerciseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_exercise) {
             Intent intent = new Intent();
-            intent.putExtra("name", nameEditText.getText().toString());
-            intent.putExtra("sets", sets);
+            exercise.setName(nameEditText.getText().toString());
+            intent.putExtra("exercise", exercise);
+            int position = getIntent().getIntExtra("position", -1);
+            intent.putExtra("position", position);
             setResult(RESULT_OK, intent);
             finish();
             return true;

@@ -13,10 +13,8 @@ import android.widget.EditText;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.Sets;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
@@ -24,7 +22,8 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 public class EditWorkoutActivity extends AppCompatActivity {
 
-    private static final int EDIT_EXERCISE = 2;
+    public static final int ADD_EXERCISE = 3;
+    public static final int EDIT_EXERCISE = 4;
     @Inject
     protected WorkoutRepository workoutRepository;
     private EditText nameEditText;
@@ -40,9 +39,6 @@ public class EditWorkoutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         nameEditText = findViewById(R.id.edit_text_workout_name);
         workout = (Workout) getIntent().getSerializableExtra("workout");
-        if (workout == null) {
-            workout = new BasicWorkout();
-        }
         nameEditText.setText(workout.getName());
     }
 
@@ -55,27 +51,29 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
     public void onAddExerciseButtonClick(View view) {
         Intent intent = new Intent(this, EditExerciseActivity.class);
-        startActivityForResult(intent, EDIT_EXERCISE);
+        intent.putExtra("exercise", new BasicExercise());
+        startActivityForResult(intent, ADD_EXERCISE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
-            String name = data.getStringExtra("name");
-            Sets sets = (Sets) data.getSerializableExtra("sets");
-            Exercise exercise = workout.getExercises().createExercise();
-            exercise.setName(name);
-            for (Set s : sets) {
-                Set set = exercise.getSets().createSet();
-                set.setMaxReps(s.getMaxReps());
-                set.setWeight(s.getWeight());
-            }
-
-            ExerciseListFragment workoutListFragment = (ExerciseListFragment)
+        if (requestCode == ADD_EXERCISE && resultCode == Activity.RESULT_OK) {
+            Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
+            workout.getExercises().add(exercise);
+            ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
-            workoutListFragment.addExercise(exercise);
+            exerciseListFragment.addExercise();
         }
+        if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
+            Integer position = data.getIntExtra("position", -1);
+            Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
+            workout.getExercises().set(position, exercise);
+            ExerciseListFragment exerciseListFragment1 = (ExerciseListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+            exerciseListFragment1.updateExercise(position, exercise);
+        }
+
     }
 
     @Override
@@ -84,7 +82,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             workout.setName(nameEditText.getText().toString());
             workoutRepository.save(workout);
             Intent intent = new Intent();
-            intent.putExtra("workout_id", workout.getWorkoutId());
+            intent.putExtra("workout", workout);
             int position = getIntent().getIntExtra("position", -1);
             intent.putExtra("position", position);
             setResult(RESULT_OK, intent);

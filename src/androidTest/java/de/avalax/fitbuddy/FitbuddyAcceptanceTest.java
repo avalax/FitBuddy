@@ -43,17 +43,17 @@ public class FitbuddyAcceptanceTest {
         application.hasShownSetAddedToExercise("15", "42.5");
 
         application.saveExercise();
-        application.hasShownExerciseAddedToWorkout("new exercise", "1 x 15");
+        application.hasShownExerciseDetails("new exercise", "1 x 15");
 
         application.saveWorkout();
-        application.hasShownWorkoutAdded(0, "new workout");
+        application.hasShownWorkoutDetails(0, "new workout");
     }
 
     @Test
     public void existingWorkout_shouldDisplayChanges() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("old workout");
-        application.addExercise("new exercise");
+        application.addExercise("old exercise");
         application.addSet("15", "42.5");
         application.saveSet();
         application.saveExercise();
@@ -62,8 +62,17 @@ public class FitbuddyAcceptanceTest {
         application.selectWorkout(0);
         application.hasShownOldWorkoutNameInEditView("old workout");
         application.changeWorkout("new workout");
+
+        application.selectExercise(0);
+        application.hasShownOldExerciseNameInEditView("old exercise");
+        application.changeExercise("new exercise");
+
+        //TODO: edit set
+
+        application.saveExercise();
+        application.hasShownExerciseDetails("new exercise", "1 x 15");
         application.saveWorkout();
-        application.hasShownWorkoutAdded(0, "new workout");
+        application.hasShownWorkoutDetails(0, "new workout");
     }
 
     @After
