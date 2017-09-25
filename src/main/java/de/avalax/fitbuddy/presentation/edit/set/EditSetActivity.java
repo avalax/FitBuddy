@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
@@ -50,7 +49,7 @@ public class EditSetActivity extends AppCompatActivity implements
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
             set.setMaxReps(parseInt(repsTextView.getText().toString()));
-            set.setWeight( parseDouble(weightTextView.getText().toString()));
+            set.setWeight(parseDouble(weightTextView.getText().toString()));
             int position = getIntent().getIntExtra("position", -1);
             intent.putExtra("position", position);
             intent.putExtra("set", set);
