@@ -16,7 +16,7 @@ public class EditExerciseApplicationService {
     private final DecimalFormat decimalFormat;
 
     public EditExerciseApplicationService(Context context) {
-        defaultWeight = context.getResources().getString(R.string.default_weight);
+        defaultWeight = context.getResources().getString(R.string.default_set_weight);
         String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
         String groupingSeparator = context.getResources().getString(R.string.grouping_separator);
         DecimalFormatSymbols otherSymbols = formatSymbols(decimalSeparator, groupingSeparator);

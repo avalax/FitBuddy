@@ -21,6 +21,16 @@ public class BasicSets implements Sets {
     }
 
     @Override
+    public void add(Set set) {
+        sets.add(set);
+    }
+
+    @Override
+    public void set(int position, Set set) {
+        sets.set(position, set);
+    }
+
+    @Override
     public Set get(int position) throws SetException {
         if (sets.size() <= position || position < 0) {
             throw new SetException();

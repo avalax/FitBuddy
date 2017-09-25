@@ -1,28 +1,33 @@
 package de.avalax.fitbuddy.presentation.edit.exercise;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetException;
+import de.avalax.fitbuddy.domain.model.set.Sets;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
+
+import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity.EDIT_SET;
 
 public class SetListFragment extends Fragment {
 
     private SetAdapter setAdapter;
-    private List<Set> sets;
+    private Sets sets;
     private WorkoutRecyclerView recyclerView;
 
     @Inject
@@ -35,23 +40,28 @@ public class SetListFragment extends Fragment {
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        sets = new ArrayList<>();
+        Exercise exercise = (Exercise) getActivity().getIntent().getSerializableExtra("exercise");
+        sets = exercise.getSets();
         setAdapter = new SetAdapter(getActivity(), sets);
         recyclerView.setAdapter(setAdapter);
         return view;
     }
 
-    public void addSet(Set set) {
-        sets.add(set);
+    public void notifyItemInserted() {
         setAdapter.notifyItemInserted(sets.size() - 1);
         recyclerView.updateEmptyView();
     }
 
+    public void notifyItemChanged(int position) {
+        setAdapter.notifyItemChanged(position);
+        recyclerView.updateEmptyView();
+    }
+
     private class SetAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private List<Set> sets;
+        private Sets sets;
         private Context context;
 
-        SetAdapter(Context context, List<Set> sets) {
+        SetAdapter(Context context, Sets sets) {
             super();
             this.context = context;
             this.sets = sets;
@@ -66,12 +76,23 @@ public class SetListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Set set = sets.get(position);
-            String title = editExerciseApplicationService.title(set);
-            String subtitle = editExerciseApplicationService.subtitle(set);
+            try {
+                Set set = sets.get(position);
+                String title = editExerciseApplicationService.title(set);
+                String subtitle = editExerciseApplicationService.subtitle(set);
 
-            holder.getTitleTextView().setText(title);
-            holder.getSubtitleTextView().setText(subtitle);
+                holder.getTitleTextView().setText(title);
+                holder.getSubtitleTextView().setText(subtitle);
+
+                holder.getView().setOnClickListener(view -> {
+                    Intent intent = new Intent(getActivity(), EditSetActivity.class);
+                    intent.putExtra("set", set);
+                    intent.putExtra("position", holder.getAdapterPosition());
+                    getActivity().startActivityForResult(intent, EDIT_SET);
+                });
+            } catch (SetException e) {
+                Log.e("SetException", e.getMessage(), e);
+            }
         }
 
         @Override
@@ -101,6 +122,10 @@ public class SetListFragment extends Fragment {
 
         TextView getSubtitleTextView() {
             return subtitleTextView;
+        }
+
+        View getView() {
+            return itemView;
         }
     }
 }

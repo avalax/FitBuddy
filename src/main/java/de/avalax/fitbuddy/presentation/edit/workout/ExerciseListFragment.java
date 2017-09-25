@@ -47,12 +47,12 @@ public class ExerciseListFragment extends Fragment {
         return view;
     }
 
-    public void addExercise() {
+    public void notifyItemInserted() {
         exercisesAdapter.notifyItemInserted(exercises.size() - 1);
         recyclerView.updateEmptyView();
     }
 
-    public void updateExercise(Integer position, Exercise exercise) {
+    public void notifyItemChanged(Integer position) {
         exercisesAdapter.notifyItemChanged(position);
         recyclerView.updateEmptyView();
     }
@@ -123,7 +123,7 @@ public class ExerciseListFragment extends Fragment {
             return subtitleTextView;
         }
 
-        public View getView() {
+        View getView() {
             return itemView;
         }
     }

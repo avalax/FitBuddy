@@ -5,6 +5,8 @@ import java.io.Serializable;
 public interface Sets extends Serializable, Iterable<Set> {
     Set createSet();
 
+    @Deprecated
+    // Remove exception
     Set get(int index) throws SetException;
 
     void remove(Set set);
@@ -14,4 +16,8 @@ public interface Sets extends Serializable, Iterable<Set> {
     void setCurrentSet(int index) throws SetException;
 
     int indexOfCurrentSet() throws SetException;
+
+    void add(Set set);
+
+    void set(int position, Set set);
 }

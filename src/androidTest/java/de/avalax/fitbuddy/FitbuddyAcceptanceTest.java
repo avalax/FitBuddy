@@ -67,10 +67,15 @@ public class FitbuddyAcceptanceTest {
         application.hasShownOldExerciseNameInEditView("old exercise");
         application.changeExercise("new exercise");
 
-        //TODO: edit set
+        application.selectSet(0);
+        application.hasShownOldSetDetails("15", "42.5");
+        application.changeSet("12", "47.5");
+
+        application.saveSet();
+        application.hasShownSetAddedToExercise("12", "47.5");
 
         application.saveExercise();
-        application.hasShownExerciseDetails("new exercise", "1 x 15");
+        application.hasShownExerciseDetails("new exercise", "1 x 12");
         application.saveWorkout();
         application.hasShownWorkoutDetails(0, "new workout");
     }

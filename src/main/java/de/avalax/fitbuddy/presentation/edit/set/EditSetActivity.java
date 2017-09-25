@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 
@@ -22,6 +24,7 @@ public class EditSetActivity extends AppCompatActivity implements
 
     private TextView weightTextView;
     private TextView repsTextView;
+    private Set set;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class EditSetActivity extends AppCompatActivity implements
 
         Toolbar toolbar = findViewById(R.id.toolbar_edit_set);
         setSupportActionBar(toolbar);
+        set = (Set) getIntent().getSerializableExtra("set");
         repsTextView = findViewById(R.id.set_reps_text_view);
         weightTextView = findViewById(R.id.set_weight_text_view);
     }
@@ -45,8 +49,11 @@ public class EditSetActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
-            intent.putExtra("maxReps", parseInt(repsTextView.getText().toString()));
-            intent.putExtra("weight", parseDouble(weightTextView.getText().toString()));
+            set.setMaxReps(parseInt(repsTextView.getText().toString()));
+            set.setWeight( parseDouble(weightTextView.getText().toString()));
+            int position = getIntent().getIntExtra("position", -1);
+            intent.putExtra("position", position);
+            intent.putExtra("set", set);
             setResult(RESULT_OK, intent);
             finish();
             return true;

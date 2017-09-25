@@ -75,7 +75,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseWeight"
-                android:text="@string/default_weight"
+                android:text="-"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>
@@ -112,7 +112,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseSets"
-                android:text="@string/default_exercise_sets"
+                android:text="3"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>
@@ -149,7 +149,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/labelExerciseReps"
-                android:text="@string/default_exercise_repetitions"
+                android:text="12"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
         </RelativeLayout>

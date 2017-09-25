@@ -30,7 +30,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/set_reps_label_text_view"
-            android:text="@string/default_exercise_repetitions"
+            android:text="@string/default_set_reps"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"/>
     </RelativeLayout>
@@ -60,7 +60,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/set_weight_label_text_view"
-            android:text="@string/default_weight"
+            android:text="@string/default_set_weight"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"/>
     </RelativeLayout>

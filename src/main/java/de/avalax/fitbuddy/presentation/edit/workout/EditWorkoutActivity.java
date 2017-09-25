@@ -63,15 +63,15 @@ public class EditWorkoutActivity extends AppCompatActivity {
             workout.getExercises().add(exercise);
             ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
-            exerciseListFragment.addExercise();
+            exerciseListFragment.notifyItemInserted();
         }
         if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
             Integer position = data.getIntExtra("position", -1);
             Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
             workout.getExercises().set(position, exercise);
-            ExerciseListFragment exerciseListFragment1 = (ExerciseListFragment)
+            ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
-            exerciseListFragment1.updateExercise(position, exercise);
+            exerciseListFragment.notifyItemChanged(position);
         }
 
     }

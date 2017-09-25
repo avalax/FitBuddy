@@ -29,9 +29,7 @@
     <string name="default_exercise_name">new exercise</string>
     <string name="label_exercise_weight">Weight</string>
     <string name="label_exercise_sets">Sets</string>
-    <string name="default_exercise_sets">3</string>
     <string name="label_exercise_repetitions">Repetitions</string>
-    <string name="default_exercise_repetitions">12</string>
     <string name="exercise_save">save changes</string>
     <string name="exercise_add">add exercise</string>
     <string name="exercise_move_up">move up</string>
@@ -57,7 +55,8 @@
     <string name="btn_edit_workout">EDIT</string>
     <string name="date_never">never</string>
     <string name="btn_share_workout">share workout</string>
-    <string name="default_weight">-</string>
+    <string name="default_set_weight">-</string>
+    <string name="default_set_reps">0</string>
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
 </resources>

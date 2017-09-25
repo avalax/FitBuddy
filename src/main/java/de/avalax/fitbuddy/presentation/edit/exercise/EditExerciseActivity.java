@@ -12,12 +12,14 @@ import android.widget.EditText;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
-    private static final int EDIT_SET = 3;
+    public static final int EDIT_SET = 5;
+    public static final int ADD_SET = 6;
     private EditText nameEditText;
     private Exercise exercise;
 
@@ -41,22 +43,29 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     public void onAddSetButtonClick(View view) {
         Intent intent = new Intent(this, EditSetActivity.class);
-        startActivityForResult(intent, EDIT_SET);
+        intent.putExtra("set", new BasicSet());
+        startActivityForResult(intent, ADD_SET);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
-            int maxReps = data.getIntExtra("maxReps", 0);
-            double weight = data.getDoubleExtra("weight", 0);
-            Set set = exercise.getSets().createSet();
-            set.setMaxReps(maxReps);
-            set.setWeight(weight);
+        if (requestCode == ADD_SET && resultCode == Activity.RESULT_OK) {
+            Set set = (Set) data.getSerializableExtra("set");
+            exercise.getSets().add(set);
 
             SetListFragment setListFragment = (SetListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
-            setListFragment.addSet(set);
+            setListFragment.notifyItemInserted();
+        }
+        if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
+            Integer position = data.getIntExtra("position", -1);
+            Set set = (Set) data.getSerializableExtra("set");
+            exercise.getSets().set(position, set);
+
+            SetListFragment setListFragment = (SetListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+            setListFragment.notifyItemChanged(position);
         }
     }
 

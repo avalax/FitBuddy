@@ -107,6 +107,30 @@ public class ApplicationRunner {
         onView(withId(R.id.done_button)).perform(click());
     }
 
+    public void selectSet(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, click()));
+    }
+
+    public void hasShownOldSetDetails(String reps, String weight) {
+        onView(withId(R.id.set_reps_text_view)).check(matches(withText(reps)));
+        onView(withId(R.id.set_weight_text_view)).check(matches(withText(weight)));
+    }
+
+    public void changeSet(String reps, String weight) {
+        onView(withId(R.id.set_reps)).perform(click());
+        onView(withId(R.id.repsNumberPicker)).perform(setNumberPicker(parseInt(reps)));
+        onView(withId(R.id.done_button)).perform(click());
+
+        String[] weightSplit = weight.split("\\.");
+        onView(withId(R.id.set_weight)).perform(click());
+        onView(withId(R.id.numberPicker)).perform(setNumberPicker(parseInt(weightSplit[0])));
+        WeightDecimalPlaces weightDecimalPlaces = new WeightDecimalPlaces();
+        int position = weightDecimalPlaces.getPosition(Double.parseDouble("0." + weightSplit[1]));
+        onView(withId(R.id.decimalPlaces)).perform(setNumberPicker(position));
+        onView(withId(R.id.done_button)).perform(click());
+    }
+
     public void saveSet() {
         onView(withId(R.id.toolbar_save_set)).perform(click());
     }
