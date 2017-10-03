@@ -5,10 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
+import static java.util.Collections.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
@@ -112,10 +115,10 @@ public class BasicExerciseTest {
         }
 
         @Test
-        public void removeSet_shouldRemoveSetFromExercise() throws Exception {
+        public void removeAll_shouldRemoveSetFromExercise() throws Exception {
             Set set = exercise.getSets().createSet();
 
-            exercise.getSets().remove(set);
+            exercise.getSets().removeAll(singleton(set));
             assertThat(exercise.getSets().size(), equalTo(0));
         }
 

@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_delete_sets"
+        android:icon="@drawable/ic_action_delete"
+        android:title="@string/sets_to_delete_count"
+        app:showAsAction="always|withText" />
+</menu>

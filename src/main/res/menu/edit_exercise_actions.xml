@@ -1,7 +1,8 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_save_exercise"
         android:icon="@drawable/ic_action_accept"
-        android:showAsAction="always"
-        android:title="@string/exercise_save" />
+        android:title="@string/exercise_save"
+        app:showAsAction="always" />
 </menu>

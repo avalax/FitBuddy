@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
@@ -20,6 +21,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+
+import static java.util.Collections.singleton;
 
 public class EditWorkoutApplicationService {
 
@@ -170,7 +173,7 @@ public class EditWorkoutApplicationService {
         if (amount < countOfSets) {
             for (int i = 0; i < countOfSets - amount; i++) {
                 Set set = exercise.getSets().get(i);
-                exercise.getSets().remove(set);
+                exercise.getSets().removeAll(singleton(set));
                 setRepository.delete(set.getSetId());
             }
         } else {

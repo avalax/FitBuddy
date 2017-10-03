@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.domain.model.set;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -59,8 +60,8 @@ public class BasicSets implements Sets {
     }
 
     @Override
-    public void remove(Set set) {
-        sets.remove(set);
+    public void removeAll(Collection<Set> set) {
+        sets.removeAll(set);
     }
 
     @Override

@@ -5,7 +5,9 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -19,17 +21,20 @@ import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.*;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsChecked;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsNotChecked;
+import static de.avalax.fitbuddy.runner.ToastMatcher.isToast;
 import static java.lang.Integer.parseInt;
+import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.not;
 
 public class ApplicationRunner {
@@ -135,6 +140,31 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_set)).perform(click());
     }
 
+    public void enterSetSelectionMode(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, longClick()));
+        onView(withId(R.id.toolbar_delete_sets)).check(matches(withtMenuTitle(valueOf(1))));
+    }
+
+    public void selectSets(int... positions) {
+        for (int position : positions) {
+            onView(withId(android.R.id.list)).perform(
+                    actionOnItemAtPosition(position, click()));
+        }
+    }
+
+    public void hasShownDeleteSetsCount(int count) {
+        onView(withId(R.id.toolbar_delete_sets)).check(matches(withtMenuTitle(valueOf(count))));
+    }
+
+    public void deleteSelectedSets() {
+        onView(withId(R.id.toolbar_delete_sets)).perform(click());
+    }
+
+    public void hasShownCantSaveExerciseWithoutSets() {
+        onView(withText(R.string.message_save_exercise_without_sets)).inRoot(isToast()).check(matches(isDisplayed()));
+    }
+
     public void hasShownSetAddedToExercise(String reps, String weight) {
         onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
@@ -161,12 +191,12 @@ public class ApplicationRunner {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))
-                .check(matches(itemAtPosition(position, withText(name),R.id.card_title)))
-                .check(matches(itemAtPosition(position, withText("Executed 0 times"),R.id.card_subtitle)))
-                .check(matches(itemAtPosition(position, withText("never"),R.id.card_date)))
-                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout),R.id.btn_start_workout)))
-                .check(matches(itemAtPosition(position, withText(R.string.btn_edit_workout),R.id.btn_edit_workout)))
-                .check(matches(itemAtPosition(position, isDisplayed(),R.id.btn_share_workout)));
+                .check(matches(itemAtPosition(position, withText(name), R.id.card_title)))
+                .check(matches(itemAtPosition(position, withText("Executed 0 times"), R.id.card_subtitle)))
+                .check(matches(itemAtPosition(position, withText("never"), R.id.card_date)))
+                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout), R.id.btn_start_workout)))
+                .check(matches(itemAtPosition(position, withText(R.string.btn_edit_workout), R.id.btn_edit_workout)))
+                .check(matches(itemAtPosition(position, isDisplayed(), R.id.btn_share_workout)));
     }
 
     public void hasShownSetDetails(String reps, String weight) {
@@ -209,6 +239,21 @@ public class ApplicationRunner {
             @Override
             public Matcher<View> getConstraints() {
                 return ViewMatchers.isAssignableFrom(Button.class);
+            }
+        };
+    }
+
+    public static Matcher<View> withtMenuTitle(String label) {
+        return new BoundedMatcher<View, ActionMenuItemView>(ActionMenuItemView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has label " + label);
+            }
+
+            @Override
+            public boolean matchesSafely(final ActionMenuItemView actionMenuItemView) {
+                MenuItem supportMenuItem = actionMenuItemView.getItemData();
+                return label.matches(supportMenuItem.getTitle().toString());
             }
         };
     }

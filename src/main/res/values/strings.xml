@@ -59,4 +59,6 @@
     <string name="default_set_reps">0</string>
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
+    <string name="message_save_exercise_without_sets">Please add at least one set</string>
+    <string name="sets_to_delete_count">-</string>
 </resources>

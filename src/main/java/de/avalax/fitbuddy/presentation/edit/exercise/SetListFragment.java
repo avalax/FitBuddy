@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
+import static android.graphics.Color.*;
 import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity.EDIT_SET;
 
 public class SetListFragment extends Fragment {
@@ -57,14 +59,20 @@ public class SetListFragment extends Fragment {
         recyclerView.updateEmptyView();
     }
 
+    public void removeSelections() {
+        setAdapter.removeSelections();
+    }
+
     private class SetAdapter extends RecyclerView.Adapter<ViewHolder> {
         private Sets sets;
         private Context context;
+        private java.util.Set<Set> selections;
 
         SetAdapter(Context context, Sets sets) {
             super();
             this.context = context;
             this.sets = sets;
+            this.selections = new ArraySet<>();
         }
 
         @Override
@@ -83,13 +91,57 @@ public class SetListFragment extends Fragment {
 
                 holder.getTitleTextView().setText(title);
                 holder.getSubtitleTextView().setText(subtitle);
+                holder.deselect();
 
                 holder.getView().setOnClickListener(view -> {
-                    Intent intent = new Intent(getActivity(), EditSetActivity.class);
-                    intent.putExtra("set", set);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                    getActivity().startActivityForResult(intent, EDIT_SET);
+                    if (!selections.isEmpty()) {
+                        if (isSelected(holder)) {
+                            deselect(holder);
+                        } else {
+                            select(holder);
+                        }
+                    } else {
+                        Intent intent = new Intent(getActivity(), EditSetActivity.class);
+                        intent.putExtra("set", set);
+                        intent.putExtra("position", holder.getAdapterPosition());
+                        getActivity().startActivityForResult(intent, EDIT_SET);
+                    }
                 });
+                holder.getView().setOnLongClickListener(view -> {
+                    select(holder);
+                    return true;
+                });
+            } catch (SetException e) {
+                Log.e("SetException", e.getMessage(), e);
+            }
+        }
+
+        private boolean isSelected(ViewHolder holder) {
+            boolean isSelected = false;
+            try {
+                isSelected = selections.contains(sets.get(holder.getAdapterPosition()));
+
+            } catch (SetException e) {
+                Log.e("SetException", e.getMessage(), e);
+            }
+            return isSelected;
+        }
+
+        private void deselect(ViewHolder holder) {
+            try {
+                selections.remove(sets.get(holder.getAdapterPosition()));
+                holder.deselect();
+                ((EditExerciseActivity) getActivity()).updateToolbar(selections.size());
+            } catch (SetException e) {
+                Log.e("SetException", e.getMessage(), e);
+            }
+        }
+
+        private void select(ViewHolder holder) {
+            try {
+                selections.add(sets.get(holder.getAdapterPosition()));
+                holder.select();
+                ((EditExerciseActivity) getActivity()).updateToolbar(selections.size());
             } catch (SetException e) {
                 Log.e("SetException", e.getMessage(), e);
             }
@@ -103,6 +155,14 @@ public class SetListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return sets == null ? 0 : sets.size();
+        }
+
+        private void removeSelections() {
+            sets.removeAll(selections);
+            selections.clear();
+            notifyDataSetChanged();
+            recyclerView.updateEmptyView();
+            ((EditExerciseActivity) getActivity()).updateToolbar(selections.size());
         }
     }
 
@@ -126,6 +186,15 @@ public class SetListFragment extends Fragment {
 
         View getView() {
             return itemView;
+        }
+
+        void select() {
+            int color = itemView.getResources().getColor(R.color.primaryDarkColor);
+            itemView.setBackgroundColor(color);
+        }
+
+        void deselect() {
+            itemView.setBackgroundColor(TRANSPARENT);
         }
     }
 }
