@@ -96,17 +96,17 @@ public class SetListFragment extends Fragment {
                 holder.deselect();
 
                 holder.getView().setOnClickListener(view -> {
-                    if (!selections.isEmpty()) {
+                    if (selections.isEmpty()) {
+                        Intent intent = new Intent(getActivity(), EditSetActivity.class);
+                        intent.putExtra("set", set);
+                        intent.putExtra("position", holder.getAdapterPosition());
+                        getActivity().startActivityForResult(intent, EDIT_SET);
+                    } else {
                         if (isSelected(holder)) {
                             deselect(holder);
                         } else {
                             select(holder);
                         }
-                    } else {
-                        Intent intent = new Intent(getActivity(), EditSetActivity.class);
-                        intent.putExtra("set", set);
-                        intent.putExtra("position", holder.getAdapterPosition());
-                        getActivity().startActivityForResult(intent, EDIT_SET);
                     }
                 });
                 holder.getView().setOnLongClickListener(view -> {
