@@ -23,7 +23,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
-import static android.graphics.Color.*;
+import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity.EDIT_SET;
 
 public class SetListFragment extends Fragment {
@@ -61,6 +61,8 @@ public class SetListFragment extends Fragment {
 
     public void removeSelections() {
         setAdapter.removeSelections();
+        recyclerView.updateEmptyView();
+        ((EditExerciseActivity) getActivity()).updateToolbar(0);
     }
 
     private class SetAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -161,8 +163,6 @@ public class SetListFragment extends Fragment {
             sets.removeAll(selections);
             selections.clear();
             notifyDataSetChanged();
-            recyclerView.updateEmptyView();
-            ((EditExerciseActivity) getActivity()).updateToolbar(selections.size());
         }
     }
 

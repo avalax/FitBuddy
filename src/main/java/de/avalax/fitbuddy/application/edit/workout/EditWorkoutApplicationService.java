@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
