@@ -20,7 +20,6 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
-import de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
@@ -109,7 +108,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             setListFragment.removeSelections();
             return true;
         }
-            return false;
+        return false;
     }
 
     public void updateToolbar(int selectionCount) {

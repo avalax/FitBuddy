@@ -12,7 +12,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class ExerciseListFragment extends Fragment {

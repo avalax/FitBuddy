@@ -2,13 +2,12 @@ package de.avalax.fitbuddy.domain.model.exercise;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 public interface Exercises extends Serializable, Iterable<Exercise> {
     Exercise createExercise();
 
     @Deprecated
-    // Remove exception
+        // Remove exception
     Exercise get(int index) throws ExerciseException;
 
     int size();
