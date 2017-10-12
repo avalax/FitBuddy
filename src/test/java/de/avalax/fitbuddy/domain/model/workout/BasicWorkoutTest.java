@@ -14,6 +14,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout.WorkoutMemento;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
+import static java.util.Collections.singleton;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -233,7 +234,7 @@ public class BasicWorkoutTest {
         public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
             Exercise exercise = workout.getExercises().createExercise();
 
-            workout.getExercises().delete(exercise);
+            workout.getExercises().removeAll(singleton(exercise));
 
             assertThat(workout.getExercises().size(), equalTo(0));
         }
@@ -243,7 +244,7 @@ public class BasicWorkoutTest {
             Exercise exercise = workout.getExercises().createExercise();
             Exercise exerciseToDelete = workout.getExercises().createExercise();
 
-            workout.getExercises().delete(exerciseToDelete);
+            workout.getExercises().removeAll(singleton(exerciseToDelete));
 
             assertThat(workout.getExercises().size(), equalTo(1));
             assertThat(workout.getExercises().get(0), equalTo(exercise));
@@ -258,7 +259,7 @@ public class BasicWorkoutTest {
             Exercise clonedExercise = new BasicExercise();
             clonedExercise.setExerciseId(exerciseId);
 
-            workout.getExercises().delete(clonedExercise);
+            workout.getExercises().removeAll(singleton(clonedExercise));
 
             assertThat(workout.getExercises().size(), equalTo(0));
         }
@@ -268,7 +269,7 @@ public class BasicWorkoutTest {
             Exercise exerciseToDelete = workout.getExercises().createExercise();
             Exercise exercise = workout.getExercises().createExercise();
 
-            workout.getExercises().delete(exerciseToDelete);
+            workout.getExercises().removeAll(singleton(exerciseToDelete));
 
             assertThat(workout.getExercises().size(), equalTo(1));
             assertThat(workout.getExercises().get(0), equalTo(exercise));
@@ -276,7 +277,7 @@ public class BasicWorkoutTest {
 
         @Test
         public void deleteExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-            workout.getExercises().delete(mock(Exercise.class));
+            workout.getExercises().removeAll(singleton(mock(Exercise.class)));
         }
 
         public class givenAnExerciseProgress {
@@ -322,7 +323,7 @@ public class BasicWorkoutTest {
             public void anExercisesDeletedAfterMemento_shouldUndDeletionBySetMemento() throws Exception {
                 Exercise exercise = workout.getExercises().createExercise();
                 WorkoutMemento memento = workout.createMemento();
-                workout.getExercises().delete(exercise);
+                workout.getExercises().removeAll(singleton(exercise));
 
                 workout.setMemento(memento);
 

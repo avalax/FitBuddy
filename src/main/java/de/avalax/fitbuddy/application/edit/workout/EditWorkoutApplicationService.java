@@ -134,7 +134,7 @@ public class EditWorkoutApplicationService {
         for (Integer position : positions) {
             Exercise exercise = workout.getExercises().get(position);
             exerciseRepository.delete(exercise.getExerciseId());
-            workout.getExercises().delete(exercise);
+            workout.getExercises().removeAll(singleton(exercise));
         }
     }
 

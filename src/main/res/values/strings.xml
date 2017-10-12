@@ -60,5 +60,6 @@
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
     <string name="message_save_exercise_without_sets">Please add at least one set</string>
+    <string name="message_save_workout_without_exercices">Please add at least one exercise</string>
     <string name="sets_to_delete_count">-</string>
 </resources>

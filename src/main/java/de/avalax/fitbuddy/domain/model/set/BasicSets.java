@@ -60,8 +60,8 @@ public class BasicSets implements Sets {
     }
 
     @Override
-    public void removeAll(Collection<Set> set) {
-        sets.removeAll(set);
+    public void removeAll(Collection<Set> sets) {
+        this.sets.removeAll(sets);
     }
 
     @Override

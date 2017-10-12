@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.domain.model.exercise;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class BasicExercises implements Exercises {
     }
 
     @Override
-    public void delete(Exercise exercise) {
-        exercises.remove(exercise);
+    public void removeAll(Collection<Exercise> exercises) {
+        this.exercises.removeAll(exercises);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class BasicExercises implements Exercises {
             return false;
         }
         Exercise exercise = get(index);
-        delete(exercise);
+        exercises.remove(exercise);
         exercises.add(index - 1, exercise);
         return true;
     }
@@ -64,7 +65,7 @@ public class BasicExercises implements Exercises {
             return false;
         }
         Exercise exercise = get(index);
-        delete(exercise);
+        exercises.remove(exercise);
         exercises.add(index + 1, exercise);
         return true;
     }

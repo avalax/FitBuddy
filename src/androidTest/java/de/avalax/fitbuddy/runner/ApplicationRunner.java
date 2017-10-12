@@ -172,6 +172,31 @@ public class ApplicationRunner {
         onView(withId(R.id.item_subtitle)).check(matches(withText(weight)));
     }
 
+    public void enterExerciseSelectionMode(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, longClick()));
+        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withtMenuTitle(valueOf(1))));
+    }
+
+    public void selectExercises(int... positions) {
+        for (int position : positions) {
+            onView(withId(android.R.id.list)).perform(
+                    actionOnItemAtPosition(position, click()));
+        }
+    }
+
+    public void hasShownDeleteExerciseCount(int count) {
+        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withtMenuTitle(valueOf(count))));
+    }
+
+    public void deleteSelectedExercices() {
+        onView(withId(R.id.toolbar_delete_exercices)).perform(click());
+    }
+
+    public void hasShownCantSaveWorkoutWithoutExercices() {
+        onView(withText(R.string.message_save_workout_without_exercices)).inRoot(isToast()).check(matches(isDisplayed()));
+    }
+
     public void saveExercise() {
         onView(withId(R.id.toolbar_save_exercise)).perform(click());
     }

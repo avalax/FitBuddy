@@ -81,7 +81,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.toolbar_save_exercise) {
             if (exercise.getSets().size() == 0) {
                 Context context = getApplicationContext();
-                makeText(context, R.string.message_save_exercise_without_sets, LENGTH_SHORT).show();
+                makeText(context, R.string.message_save_exercise_without_sets, LENGTH_SHORT)
+                        .show();
             } else {
                 Intent intent = new Intent();
                 exercise.setName(nameEditText.getText().toString());

@@ -108,6 +108,35 @@ public class FitbuddyAcceptanceTest {
         application.hasShownCantSaveExerciseWithoutSets();
     }
 
+    @Test
+    public void existingWorkoutWithTwoExercises_shouldInteractWithExerciseListAndDisplaySaveNotPossibleMessage() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("old workout");
+        application.addExercise("first exercise");
+        application.addSet("1", "42.5");
+        application.saveSet();
+        application.saveExercise();
+        application.addExercise("second exercise");
+        application.addSet("1", "42.5");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.selectWorkout(0);
+
+        application.enterExerciseSelectionMode(0);
+        application.selectExercises(1);
+        application.hasShownDeleteExerciseCount(2);
+        application.selectExercises(0);
+        application.hasShownDeleteExerciseCount(1);
+        application.selectExercises(0);
+        application.hasShownDeleteExerciseCount(2);
+        application.deleteSelectedExercices();
+        application.hasShownAddNewExerciseHint();
+        application.saveWorkout();
+        application.hasShownCantSaveWorkoutWithoutExercices();
+    }
+
     @After
     public void tearDown() throws Exception {
         activityRule.deleteWorkouts();
