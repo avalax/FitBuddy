@@ -146,6 +146,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
                         '**/*Fragment*.class',
                         '**/*Activity*.class',
                         '**/*View.class',
+                        '**/*Adapter.class',
                         '**/*Listener*.class']
                         )
 
