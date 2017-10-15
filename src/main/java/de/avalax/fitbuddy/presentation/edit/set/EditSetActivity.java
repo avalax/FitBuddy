@@ -30,7 +30,7 @@ public class EditSetActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_set);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_edit_set);
+        Toolbar toolbar = findViewById(R.id.toolbar_set_edit);
         setSupportActionBar(toolbar);
         set = (Set) getIntent().getSerializableExtra("set");
         repsTextView = findViewById(R.id.set_reps_text_view);

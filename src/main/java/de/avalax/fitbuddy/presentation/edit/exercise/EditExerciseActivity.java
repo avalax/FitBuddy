@@ -33,7 +33,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
-        Toolbar toolbar = findViewById(R.id.toolbar_edit_exercise);
+        Toolbar toolbar = findViewById(R.id.toolbar_exercise_edit);
         setSupportActionBar(toolbar);
         nameEditText = findViewById(R.id.edit_text_exercise_name);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");

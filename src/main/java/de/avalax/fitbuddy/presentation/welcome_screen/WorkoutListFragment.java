@@ -1,16 +1,10 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,13 +12,9 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
-
-import static de.avalax.fitbuddy.presentation.MainActivity.EDIT_WORKOUT;
+import de.avalax.fitbuddy.presentation.MainActivity;
 
 public class WorkoutListFragment extends Fragment {
 
@@ -32,8 +22,7 @@ public class WorkoutListFragment extends Fragment {
     WorkoutRepository workoutRepository;
 
     private WorkoutAdapter workoutAdapter;
-
-    private List<WorkoutListEntry> workoutListEntries;
+    private List<Workout> workouts;
     private WorkoutRecyclerView recyclerView;
 
     @Override
@@ -44,100 +33,27 @@ public class WorkoutListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        workoutListEntries = workoutRepository.getWorkoutList();
-        workoutAdapter = new WorkoutAdapter(getActivity(), workoutListEntries);
+        workouts = workoutRepository.getWorkouts();
+        workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(), workouts);
         recyclerView.setAdapter(workoutAdapter);
         return view;
     }
 
     public void addWorkout(Workout workout) {
-        workoutListEntries.add(new WorkoutListEntry(workout.getWorkoutId(), workout.getName()));
-        workoutAdapter.notifyItemInserted(workoutListEntries.size() - 1);
+        workouts.add(workout);
+        workoutAdapter.notifyItemInserted(workouts.size() - 1);
         recyclerView.updateEmptyView();
     }
 
     public void updateWorkout(Integer position, Workout workout) {
-        WorkoutListEntry entry = new WorkoutListEntry(workout.getWorkoutId(), workout.getName());
-        workoutListEntries.set(position, entry);
+        workouts.set(position, workout);
         workoutAdapter.notifyItemChanged(position);
         recyclerView.updateEmptyView();
     }
 
-    private class WorkoutAdapter extends RecyclerView.Adapter<ViewHolder> {
-
-        private List<WorkoutListEntry> workoutListEntries;
-        private Context mContext;
-
-        WorkoutAdapter(Context context, List<WorkoutListEntry> workoutListEntries) {
-            super();
-            mContext = context;
-            this.workoutListEntries = workoutListEntries;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            View view = inflater.inflate(R.layout.card_workout, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            WorkoutListEntry workoutListEntry = workoutListEntries.get(position);
-            holder.getTitleTextView().setText(workoutListEntry.getName());
-            holder.getSubtitleTextView().setText("Executed 0 times");
-            holder.getEditWorkoutButton().setOnClickListener(view -> {
-                Intent intent = new Intent(getActivity(), EditWorkoutActivity.class);
-                try {
-                    Workout workout = workoutRepository.load(workoutListEntry.getWorkoutId());
-                    intent.putExtra("workout", workout);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                } catch (WorkoutException we) {
-                    Log.d("db", we.getMessage(), we);
-                }
-                getActivity().startActivityForResult(intent, EDIT_WORKOUT);
-            });
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemCount() {
-            return workoutListEntries == null ? 0 : workoutListEntries.size();
-        }
+    public void removeWorkout(Workout workout) {
+        workouts.remove(workout);
+        recyclerView.updateEmptyView();
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView titleTextView;
-        private final TextView dateTextView;
-        private final TextView subtitleTextView;
-        private final Button editWorkoutButton;
-
-        ViewHolder(View v) {
-            super(v);
-            titleTextView = v.findViewById(R.id.card_title);
-            subtitleTextView = v.findViewById(R.id.card_subtitle);
-            dateTextView = v.findViewById(R.id.card_date);
-            editWorkoutButton = v.findViewById(R.id.btn_edit_workout);
-        }
-
-        TextView getTitleTextView() {
-            return titleTextView;
-        }
-
-        public TextView getDateTextView() {
-            return dateTextView;
-        }
-
-        public TextView getSubtitleTextView() {
-            return subtitleTextView;
-        }
-
-        public Button getEditWorkoutButton() {
-            return editWorkoutButton;
-        }
-    }
 }

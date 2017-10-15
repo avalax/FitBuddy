@@ -23,7 +23,6 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -69,15 +68,6 @@ public class EditWorkoutApplicationServiceTest {
     @Test
     public void afterInitialization_shouldHideUnsavedChanges() throws Exception {
         assertThat(editWorkoutApplicationService.hasUnsavedChanges()).isFalse();
-    }
-
-    @Test
-    public void getWorkoutList_shouldWorkoutListFromRepository() throws Exception {
-        List<WorkoutListEntry> workoutListEntries = new ArrayList<>();
-        workoutListEntries.add(new WorkoutListEntry(new WorkoutId("42"), "new workout"));
-        when(workoutRepository.getWorkoutList()).thenReturn(workoutListEntries);
-        List<WorkoutListEntry> workoutList = editWorkoutApplicationService.getWorkoutList();
-        assertThat(workoutList).containsAll(workoutListEntries);
     }
 
     @Test

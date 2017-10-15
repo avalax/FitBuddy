@@ -36,19 +36,7 @@
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp" />
 
-        <ImageButton
-            android:id="@+id/btn_share_workout"
-            style="@android:style/Widget.ImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="8dp"
-            android:background="@color/cardsColor"
-            android:contentDescription="@string/btn_share_workout"
-            android:src="@drawable/ic_share" />
-
-        <Button
+        <TextView
             android:id="@+id/btn_start_workout"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
@@ -58,18 +46,6 @@
             android:layout_gravity="end"
             android:layout_marginStart="8dp"
             android:text="@string/btn_start_workout"
-            android:textColor="@color/secondaryColor"
-            android:theme="@style/Widget.AppCompat.Toolbar.Button.Navigation" />
-
-        <Button
-            android:id="@+id/btn_edit_workout"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/btn_start_workout"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:text="@string/btn_edit_workout"
             android:textColor="@color/secondaryColor"
             android:theme="@style/Widget.AppCompat.Toolbar.Button.Navigation" />
 

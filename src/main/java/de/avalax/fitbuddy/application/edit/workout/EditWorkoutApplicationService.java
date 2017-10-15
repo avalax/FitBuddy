@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.application.edit.workout;
 
 import java.util.Collection;
-import java.util.List;
 
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.ResourceException;
@@ -16,7 +15,6 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParseException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -79,10 +77,6 @@ public class EditWorkoutApplicationService {
         }
         workoutSession.switchWorkout(workout);
         setUnsavedChanges(false);
-    }
-
-    public List<WorkoutListEntry> getWorkoutList() {
-        return workoutRepository.getWorkoutList();
     }
 
     public Workout createWorkout() {

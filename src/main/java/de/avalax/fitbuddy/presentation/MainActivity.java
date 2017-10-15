@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int EDIT_WORKOUT = 2;
     @Inject
     protected WorkoutRepository workoutRepository;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -45,6 +48,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EditWorkoutActivity.class);
         intent.putExtra("workout", new BasicWorkout());
         startActivityForResult(intent, ADD_WORKOUT);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.toolbar_edit_workout) {
+            startActivityForResult(item.getIntent(), EDIT_WORKOUT);
+            return true;
+        }
+        if (item.getItemId() == R.id.toolbar_delete_workout) {
+            Workout workout = (Workout) item.getIntent().getSerializableExtra("workout");
+            workoutRepository.delete(workout.getWorkoutId());
+            removeWorkoutFromList(workout);
+            mainToolbar();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -57,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == EDIT_WORKOUT && resultCode == Activity.RESULT_OK) {
             Workout workout = (Workout) data.getSerializableExtra("workout");
             Integer position = data.getIntExtra("position", -1);
-            updateWorkout(position, workout);
+            updateWorkoutInList(position, workout);
         }
     }
 
-    private void updateWorkout(Integer position, Workout workout) {
+    private void updateWorkoutInList(Integer position, Workout workout) {
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
         workoutListFragment.updateWorkout(position, workout);
@@ -71,5 +90,28 @@ public class MainActivity extends AppCompatActivity {
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
         workoutListFragment.addWorkout(workout);
+    }
+
+    private void removeWorkoutFromList(Workout workout) {
+        WorkoutListFragment workoutListFragment = (WorkoutListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+        workoutListFragment.removeWorkout(workout);
+    }
+
+    public void updateEditToolbar(int position, Workout workout) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main_edit_workout, menu);
+        Intent intent = new Intent(this, EditWorkoutActivity.class);
+        intent.putExtra("workout", workout);
+        intent.putExtra("position", position);
+        MenuItem item = menu.findItem(R.id.toolbar_edit_workout);
+        item.setIntent(intent);
+        MenuItem itemDelete = menu.findItem(R.id.toolbar_delete_workout);
+        itemDelete.setIntent(intent);
+    }
+
+    private void mainToolbar() {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
     }
 }

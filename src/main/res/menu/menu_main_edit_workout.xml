@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_delete_workout"
+        android:icon="@drawable/ic_action_delete"
+        app:showAsAction="ifRoom"
+        android:title="DELETE"
+        android:tint="?android:textColorPrimaryInverse">
+    </item>
+    <item
+        android:id="@+id/toolbar_edit_workout"
+        android:icon="@drawable/ic_action_edit"
+        app:showAsAction="ifRoom"
+        android:title="EDIT"
+        android:tint="?android:textColorPrimaryInverse">
+    </item>
+</menu>

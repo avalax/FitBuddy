@@ -20,7 +20,6 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import static org.hamcrest.CoreMatchers.any;
@@ -150,9 +149,9 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void emptyWorkoutList_shouldReturnTheListOfWorkouts() throws Exception {
-        List<WorkoutListEntry> workoutList = workoutRepository.getWorkoutList();
+        List<Workout> workouts = workoutRepository.getWorkouts();
 
-        assertThat(workoutList.size(), equalTo(0));
+        assertThat(workouts.size(), equalTo(0));
     }
 
     @Test
@@ -160,13 +159,13 @@ public class SQLiteWorkoutRepositoryTest {
         WorkoutId workoutId = createWorkout("workout1");
         WorkoutId workoutId2 = createWorkout("workout2");
 
-        List<WorkoutListEntry> workoutList = workoutRepository.getWorkoutList();
+        List<Workout> workouts = workoutRepository.getWorkouts();
 
-        assertThat(workoutList.size(), equalTo(2));
-        assertThat(workoutList.get(0).getWorkoutId(), equalTo(workoutId));
-        assertThat(workoutList.get(0).toString(), equalTo("workout1"));
-        assertThat(workoutList.get(1).getWorkoutId(), equalTo(workoutId2));
-        assertThat(workoutList.get(1).toString(), equalTo("workout2"));
+        assertThat(workouts.size(), equalTo(2));
+        assertThat(workouts.get(0).getWorkoutId(), equalTo(workoutId));
+        assertThat(workouts.get(0).getName(), equalTo("workout1"));
+        assertThat(workouts.get(1).getWorkoutId(), equalTo(workoutId2));
+        assertThat(workouts.get(1).getName(), equalTo("workout2"));
     }
 
     @Test

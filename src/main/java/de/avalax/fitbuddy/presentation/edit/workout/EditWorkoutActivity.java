@@ -41,7 +41,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_workout);
         ((FitbuddyApplication) getApplication()).getComponent().inject(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_edit_workout);
+        Toolbar toolbar = findViewById(R.id.toolbar_workout_edit);
         setSupportActionBar(toolbar);
         nameEditText = findViewById(R.id.edit_text_workout_name);
         workout = (Workout) getIntent().getSerializableExtra("workout");

@@ -14,7 +14,6 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class SQLiteWorkoutRepository implements WorkoutRepository {
@@ -80,17 +79,15 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public List<WorkoutListEntry> getWorkoutList() {
-        List<WorkoutListEntry> workoutList = new ArrayList<>();
+    public List<Workout> getWorkouts() {
+        List<Workout> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                WorkoutId workoutId = new WorkoutId(cursor.getString(0));
-                String name = cursor.getString(1);
-                WorkoutListEntry entry = new WorkoutListEntry(workoutId, name);
-                workoutList.add(entry);
+                Workout workout = createWorkout(cursor);
+                workoutList.add(workout);
             } while (cursor.moveToNext());
         }
         cursor.close();

@@ -44,6 +44,11 @@ public class ApplicationRunner {
         onView(withId(R.id.navigation_statistics_item)).check(matches(bottomNavItemIsNotChecked()));
     }
 
+
+    public void showsSupportMenuItem() {
+        onView(withId(R.id.toolbar_support)).check(matches(isDisplayed()));
+    }
+
     public void hasShownAddNewWorkoutHint() {
         onView(withId(android.R.id.empty)).check(matches(withText(R.string.empty_workout_list)));
         onView(withId(android.R.id.list)).check(matches(not(isDisplayed())));
@@ -64,15 +69,21 @@ public class ApplicationRunner {
         onView(withId(R.id.edit_text_workout_name)).perform(typeText(name), closeSoftKeyboard());
     }
 
-    public void selectWorkout(int position) {
+    public void editWorkout(int position) {
         onView(withId(android.R.id.list)).perform(
-                actionOnItemAtPosition(position, clickChildButtonWithId(R.id.btn_edit_workout)));
+                actionOnItemAtPosition(position, longClick()));
+        onView(withId(R.id.toolbar_edit_workout)).perform(click());
     }
 
     public void changeWorkout(String name) {
         onView(withId(R.id.edit_text_workout_name)).perform(replaceText(name), closeSoftKeyboard());
     }
 
+
+    public void deleteWorkout(int position) {
+        onView(withId(android.R.id.list)).perform(actionOnItemAtPosition(position, longClick()));
+        onView(withId(R.id.toolbar_delete_workout)).perform(click());
+    }
 
     public void hasShownOldWorkoutNameInEditView(String name) {
         onView(withId(R.id.edit_text_workout_name)).check(matches(withText(name)));
@@ -83,7 +94,7 @@ public class ApplicationRunner {
         onView(withId(R.id.edit_text_exercise_name)).perform(typeText(name), closeSoftKeyboard());
     }
 
-    public void selectExercise(int position) {
+    public void editExercise(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, click()));
     }
@@ -112,7 +123,7 @@ public class ApplicationRunner {
         onView(withId(R.id.done_button)).perform(click());
     }
 
-    public void selectSet(int position) {
+    public void editSet(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, click()));
     }
@@ -219,9 +230,7 @@ public class ApplicationRunner {
                 .check(matches(itemAtPosition(position, withText(name), R.id.card_title)))
                 .check(matches(itemAtPosition(position, withText("Executed 0 times"), R.id.card_subtitle)))
                 .check(matches(itemAtPosition(position, withText("never"), R.id.card_date)))
-                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout), R.id.btn_start_workout)))
-                .check(matches(itemAtPosition(position, withText(R.string.btn_edit_workout), R.id.btn_edit_workout)))
-                .check(matches(itemAtPosition(position, isDisplayed(), R.id.btn_share_workout)));
+                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout), R.id.btn_start_workout)));
     }
 
     public void hasShownSetDetails(String reps, String weight) {

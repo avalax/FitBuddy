@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.avalax.fitbuddy.domain.model.workout.WorkoutListEntry;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
@@ -28,8 +28,8 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     }
 
     public void deleteWorkouts() {
-        List<WorkoutListEntry> workoutList = workoutRepository.getWorkoutList();
-        for (WorkoutListEntry workoutListEntry : workoutList) {
+        List<Workout> workoutList = workoutRepository.getWorkouts();
+        for (Workout workoutListEntry : workoutList) {
             workoutRepository.delete(workoutListEntry.getWorkoutId());
         }
     }

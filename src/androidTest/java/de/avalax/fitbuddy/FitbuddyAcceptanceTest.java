@@ -26,6 +26,7 @@ public class FitbuddyAcceptanceTest {
     public void initialStart_shouldShowEmptyStartFragment() throws Exception {
         application.showsStartBottomNavAsActive();
         application.hasShownAddNewWorkoutHint();
+        application.showsSupportMenuItem();
     }
 
     @Test
@@ -59,15 +60,15 @@ public class FitbuddyAcceptanceTest {
         application.saveExercise();
         application.saveWorkout();
 
-        application.selectWorkout(0);
+        application.editWorkout(0);
         application.hasShownOldWorkoutNameInEditView("old workout");
         application.changeWorkout("new workout");
 
-        application.selectExercise(0);
+        application.editExercise(0);
         application.hasShownOldExerciseNameInEditView("old exercise");
         application.changeExercise("new exercise");
 
-        application.selectSet(0);
+        application.editSet(0);
         application.hasShownOldSetDetails("15", "42.5");
         application.changeSet("12", "47.5");
 
@@ -92,8 +93,8 @@ public class FitbuddyAcceptanceTest {
         application.saveExercise();
         application.saveWorkout();
 
-        application.selectWorkout(0);
-        application.selectExercise(0);
+        application.editWorkout(0);
+        application.editExercise(0);
 
         application.enterSetSelectionMode(0);
         application.selectSets(1);
@@ -122,7 +123,7 @@ public class FitbuddyAcceptanceTest {
         application.saveExercise();
         application.saveWorkout();
 
-        application.selectWorkout(0);
+        application.editWorkout(0);
 
         application.enterExerciseSelectionMode(0);
         application.selectExercises(1);
@@ -135,6 +136,22 @@ public class FitbuddyAcceptanceTest {
         application.hasShownAddNewExerciseHint();
         application.saveWorkout();
         application.hasShownCantSaveWorkoutWithoutExercices();
+    }
+
+    @Test
+    public void existingWorkout_shouldBeDeleted() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("an exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.deleteWorkout(0);
+
+        application.hasShownAddNewWorkoutHint();
+        application.showsSupportMenuItem();
     }
 
     @After
