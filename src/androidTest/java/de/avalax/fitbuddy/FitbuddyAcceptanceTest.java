@@ -154,6 +154,29 @@ public class FitbuddyAcceptanceTest {
         application.showsSupportMenuItem();
     }
 
+    @Test
+    public void startExistingWorkout_shouldDisplayWorkoutStarted() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("an exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.selectWorkout(0);
+        application.showsWorkoutScreen("an exercise", "42.0 kg");
+
+        application.navigateToStart();
+        application.showsWorkoutIsActive(0);
+
+        application.navigateToWorkout();
+        application.showsWorkoutScreen("an exercise", "42.0 kg");
+
+        application.backPressed();
+        application.showsWorkoutIsActive(0);
+    }
+
     @After
     public void tearDown() throws Exception {
         activityRule.deleteWorkouts();

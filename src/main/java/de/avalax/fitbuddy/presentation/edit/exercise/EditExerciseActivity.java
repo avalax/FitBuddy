@@ -62,7 +62,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             exercise.getSets().add(set);
 
             SetListFragment setListFragment = (SetListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.notifyItemInserted();
         }
         if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
@@ -71,7 +71,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             exercise.getSets().set(position, set);
 
             SetListFragment setListFragment = (SetListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.notifyItemChanged(position);
         }
     }
@@ -96,7 +96,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.toolbar_delete_sets) {
             SetListFragment setListFragment = (SetListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.removeSelections();
             return true;
         }

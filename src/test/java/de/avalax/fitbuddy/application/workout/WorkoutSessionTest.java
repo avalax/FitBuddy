@@ -24,6 +24,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -67,9 +68,9 @@ public class WorkoutSessionTest {
         workoutSession = new WorkoutSession(context);
     }
 
-    @Test(expected = WorkoutException.class)
-    public void noPersistedWorkout_shouldThrowWorkoutNotFoundException() throws Exception {
-        workoutSession.getWorkout();
+    @Test
+    public void noPersistedWorkout_shouldReturnNull() throws Exception {
+        assertThat(workoutSession.getWorkout(), nullValue());
     }
 
     @Test
@@ -79,11 +80,11 @@ public class WorkoutSessionTest {
         assertThat(hasWorkout, equalTo(false));
     }
 
-    @Test(expected = WorkoutException.class)
-    public void switchedToNullInstance_shouldThrowWorkoutNotFoundExceptiopn() throws Exception {
+    @Test
+    public void switchedToNullInstance_shouldReturnNull() throws Exception {
         workoutSession.switchWorkout(null);
 
-        workoutSession.getWorkout();
+        assertThat(workoutSession.getWorkout(), nullValue());
     }
 
     @Test

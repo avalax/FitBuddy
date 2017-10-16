@@ -3,38 +3,52 @@ package de.avalax.fitbuddy.presentation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
+import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private static final int ADD_WORKOUT = 1;
+    public static final int ADD_WORKOUT = 1;
     public static final int EDIT_WORKOUT = 2;
     @Inject
     protected WorkoutRepository workoutRepository;
     private Menu menu;
+    private BottomNavigationView bottomNavigation;
+    @Inject
+    protected WorkoutSession workoutSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(this);
 
         ((FitbuddyApplication) getApplication()).getComponent().inject(this);
+
+        Fragment workoutListFragment = new WorkoutListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_content, workoutListFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 
     @Override
@@ -42,12 +56,6 @@ public class MainActivity extends AppCompatActivity {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    public void onAddWorkoutButtonClick(View view) {
-        Intent intent = new Intent(this, EditWorkoutActivity.class);
-        intent.putExtra("workout", new BasicWorkout());
-        startActivityForResult(intent, ADD_WORKOUT);
     }
 
     @Override
@@ -82,19 +90,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateWorkoutInList(Integer position, Workout workout) {
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
         workoutListFragment.updateWorkout(position, workout);
     }
 
     private void addWorkoutToList(Workout workout) {
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
         workoutListFragment.addWorkout(workout);
     }
 
     private void removeWorkoutFromList(Workout workout) {
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
         workoutListFragment.removeWorkout(workout);
     }
 
@@ -113,5 +121,45 @@ public class MainActivity extends AppCompatActivity {
     private void mainToolbar() {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
+    }
+
+    public void selectWorkout(Workout workout) {
+        try {
+            workoutSession.switchWorkout(workout);
+        } catch (WorkoutException e) {
+            Log.e("WorkoutException", e.getMessage(), e);
+        }
+        bottomNavigation.setSelectedItemId(R.id.navigation_workout_item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.navigation_workout_item) {
+            Fragment workoutFragment = new WorkoutFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_content, workoutFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+            return true;
+        }
+        if (item.getItemId() == R.id.navigation_start_item) {
+            Fragment workoutListFragment = new WorkoutListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_content, workoutListFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (bottomNavigation.getSelectedItemId() != R.id.navigation_start_item) {
+            bottomNavigation.setSelectedItemId(R.id.navigation_start_item);
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

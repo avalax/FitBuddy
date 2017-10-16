@@ -9,16 +9,19 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
+    private WorkoutSession workoutSession;
     private List<Workout> workouts;
     private MainActivity activity;
 
-    WorkoutAdapter(MainActivity activity, List<Workout> workouts) {
+    WorkoutAdapter(MainActivity activity, WorkoutSession workoutSession, List<Workout> workouts) {
         super();
         this.activity = activity;
+        this.workoutSession = workoutSession;
         this.workouts = workouts;
     }
 
@@ -34,6 +37,15 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText("Executed 0 times");
+        if (workoutSession.hasWorkout()
+                && workout.getWorkoutId().equals(workoutSession.getWorkout().getWorkoutId())) {
+            holder.getStatusTextView().setText(R.string.workout_active);
+        } else {
+            holder.getStatusTextView().setText(R.string.workout_not_active);
+        }
+        holder.getView().setOnClickListener(view -> {
+            activity.selectWorkout(workout);
+        });
         holder.getView().setOnLongClickListener(view -> {
             activity.updateEditToolbar(position, workout);
             return true;
@@ -54,12 +66,14 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         private final TextView titleTextView;
         private final TextView dateTextView;
         private final TextView subtitleTextView;
+        private final TextView statusTextView;
 
         ViewHolder(View v) {
             super(v);
             titleTextView = v.findViewById(R.id.card_title);
             subtitleTextView = v.findViewById(R.id.card_subtitle);
             dateTextView = v.findViewById(R.id.card_date);
+            statusTextView = v.findViewById(R.id.card_status);
         }
 
         TextView getTitleTextView() {
@@ -76,6 +90,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
         public View getView() {
             return itemView;
+        }
+
+        public TextView getStatusTextView() {
+            return statusTextView;
         }
     }
 }

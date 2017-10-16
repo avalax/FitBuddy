@@ -14,6 +14,8 @@ public interface Sets extends Serializable, Iterable<Set> {
 
     void setCurrentSet(int index) throws SetException;
 
+    @Deprecated
+    // Remove exception
     int indexOfCurrentSet() throws SetException;
 
     void add(Set set);

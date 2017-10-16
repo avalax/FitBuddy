@@ -19,7 +19,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:id="@+id/toolbar_fragment"
+        android:id="@+id/fragment_content"
         android:name="de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

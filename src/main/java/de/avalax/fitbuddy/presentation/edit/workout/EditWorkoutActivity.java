@@ -69,7 +69,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
             workout.getExercises().add(exercise);
             ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             exerciseListFragment.notifyItemInserted();
         }
         if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
@@ -77,7 +77,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
             workout.getExercises().set(position, exercise);
             ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             exerciseListFragment.notifyItemChanged(position);
         }
 
@@ -104,7 +104,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.toolbar_delete_exercices) {
             ExerciseListFragment setListFragment = (ExerciseListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.toolbar_fragment);
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.removeSelections();
             return true;
         }

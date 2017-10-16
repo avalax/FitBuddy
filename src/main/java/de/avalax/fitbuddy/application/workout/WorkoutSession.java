@@ -38,10 +38,7 @@ public class WorkoutSession {
         }
     }
 
-    public Workout getWorkout() throws WorkoutException {
-        if (workout == null) {
-            throw new WorkoutException();
-        }
+    public Workout getWorkout() {
         return workout;
     }
 

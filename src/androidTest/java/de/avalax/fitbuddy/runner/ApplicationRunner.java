@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.runner;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -18,6 +19,7 @@ import org.hamcrest.Matcher;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,6 +30,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsChecked;
@@ -73,6 +76,17 @@ public class ApplicationRunner {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, longClick()));
         onView(withId(R.id.toolbar_edit_workout)).perform(click());
+    }
+
+
+    public void selectWorkout(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, click()));
+    }
+
+    public void showsWorkoutIsActive(int position) {
+        onView(withId(R.id.card_status))
+                .check(matches(withText(R.string.workout_active)));
     }
 
     public void changeWorkout(String name) {
@@ -177,7 +191,6 @@ public class ApplicationRunner {
     }
 
     public void hasShownSetAddedToExercise(String reps, String weight) {
-        onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(R.id.item_title)).check(matches(withText(reps)));
         onView(withId(R.id.item_subtitle)).check(matches(withText(weight)));
@@ -230,12 +243,30 @@ public class ApplicationRunner {
                 .check(matches(itemAtPosition(position, withText(name), R.id.card_title)))
                 .check(matches(itemAtPosition(position, withText("Executed 0 times"), R.id.card_subtitle)))
                 .check(matches(itemAtPosition(position, withText("never"), R.id.card_date)))
-                .check(matches(itemAtPosition(position, withText(R.string.btn_start_workout), R.id.btn_start_workout)));
+                .check(matches(itemAtPosition(position, withText(R.string.workout_not_active), R.id.card_status)));
     }
 
     public void hasShownSetDetails(String reps, String weight) {
         onView(withId(R.id.set_reps_text_view)).check(matches(withText(reps)));
         onView(withId(R.id.set_weight_text_view)).check(matches(withText(weight)));
+    }
+
+    public void showsWorkoutScreen(String exerciseName, String weight) {
+        onView(withId(R.id.exercises_bar_name)).check(matches(withText(exerciseName)));
+        onView(withId(R.id.exercises_bar_weight)).check(matches(withText(weight)));
+    }
+
+
+    public void navigateToStart() {
+        onView(withId(R.id.navigation_start_item)).perform(click());
+    }
+
+    public void navigateToWorkout() {
+        onView(withId(R.id.navigation_workout_item)).perform(click());
+    }
+
+    public void backPressed() {
+        onView(isRoot()).perform(ViewActions.pressBack());
     }
 
     private static ViewAction setNumberPicker(final int value) {

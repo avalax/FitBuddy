@@ -14,6 +14,8 @@ public interface Exercises extends Serializable, Iterable<Exercise> {
 
     void setCurrentExercise(int index) throws ExerciseException;
 
+    @Deprecated
+    // remove exception
     int indexOfCurrentExercise() throws ExerciseException;
 
     boolean moveExerciseAtPositionUp(int index) throws ExerciseException;
