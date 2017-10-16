@@ -87,7 +87,7 @@ public class EditWorkoutApplicationServiceTest {
 
     @Test
     public void isActiveWorkout_shouldReturnFalse() throws Exception {
-        assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
+        assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isFalse();
     }
 
     public class givenAWorkoutWithOneExercise {
@@ -102,12 +102,13 @@ public class EditWorkoutApplicationServiceTest {
             when(workoutRepository.load(workoutId)).thenReturn(workout);
             exercise = workout.getExercises().createExercise();
             exercise.setName("ExerciseOne");
-
-            editWorkoutApplicationService.loadWorkout(workoutId);
         }
 
         @Test
         public void isActiveWorkout_shouldReturnTrue() throws Exception {
+            when(workoutSession.hasWorkout()).thenReturn(true);
+            when(workoutSession.getWorkout()).thenReturn(workout);
+            
             assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
         }
 
