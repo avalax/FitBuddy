@@ -77,16 +77,13 @@ public class WorkoutApplicationService {
         return getWorkout().getExercises().indexOfCurrentExercise();
     }
 
-    @Deprecated
-    public WorkoutId currentWorkoutId() throws ResourceException {
-        return workoutSession.getWorkout().getWorkoutId();
-    }
-
     public void finishCurrentWorkout() throws ResourceException {
-        Workout workout = workoutSession.getWorkout();
-        finishedWorkoutRepository.saveWorkout(workout);
-        Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
-        workoutSession.switchWorkout(newWorkout);
+        if (workoutSession.hasWorkout()) {
+            Workout workout = workoutSession.getWorkout();
+            finishedWorkoutRepository.saveWorkout(workout);
+            Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
+            workoutSession.switchWorkout(newWorkout);
+        }
     }
 
     @Deprecated

@@ -21,6 +21,7 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -44,16 +45,6 @@ public class WorkoutApplicationServiceTest {
     }
 
     public class noWorkoutGiven {
-        @Before
-        public void setUp() throws Exception {
-            when(workoutSession.getWorkout()).thenThrow(new WorkoutException());
-        }
-
-        @Test(expected = ResourceException.class)
-        public void currentWorkoutId_shouldThrowResourceNotFoundException() throws Exception {
-            workoutApplicationService.currentWorkoutId();
-        }
-
         @Test(expected = ResourceException.class)
         public void indexOfCurrentExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.indexOfCurrentExercise();
@@ -99,9 +90,11 @@ public class WorkoutApplicationServiceTest {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
 
-        @Test(expected = ResourceException.class)
-        public void finishWorkout_shouldThrowResourceNotFoundException() throws Exception {
+        @Test
+        public void finishWorkout_shouldDoNothing() throws Exception {
             workoutApplicationService.finishCurrentWorkout();
+
+            verifyZeroInteractions(finishedWorkoutRepository, workoutRepository);
         }
     }
 
@@ -113,16 +106,6 @@ public class WorkoutApplicationServiceTest {
             workout = new BasicWorkout();
             when(workoutSession.getWorkout()).thenReturn(workout);
             when(workoutSession.hasWorkout()).thenReturn(true);
-        }
-
-        @Test
-        public void currentWorkoutId_shouldReturnWorkoutId() throws Exception {
-            WorkoutId workoutId = new WorkoutId("42");
-            workout.setWorkoutId(workoutId);
-
-            WorkoutId currentWorkoutId = workoutApplicationService.currentWorkoutId();
-
-            assertThat(currentWorkoutId, equalTo(workoutId));
         }
 
         @Test(expected = ResourceException.class)

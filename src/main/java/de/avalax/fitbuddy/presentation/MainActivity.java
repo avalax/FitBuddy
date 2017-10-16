@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -23,7 +23,8 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static final int ADD_WORKOUT = 1;
     public static final int EDIT_WORKOUT = 2;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Menu menu;
     private BottomNavigationView bottomNavigation;
     @Inject
-    protected WorkoutSession workoutSession;
+    protected EditWorkoutApplicationService editWorkoutApplicationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void selectWorkout(Workout workout) {
         try {
-            workoutSession.switchWorkout(workout);
+            editWorkoutApplicationService.switchWorkout(workout);
         } catch (WorkoutException e) {
             Log.e("WorkoutException", e.getMessage(), e);
         }
@@ -157,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onBackPressed() {
         if (bottomNavigation.getSelectedItemId() != R.id.navigation_start_item) {
             bottomNavigation.setSelectedItemId(R.id.navigation_start_item);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
