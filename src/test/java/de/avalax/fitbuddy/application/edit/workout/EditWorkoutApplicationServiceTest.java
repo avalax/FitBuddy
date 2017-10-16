@@ -21,7 +21,6 @@ import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -157,7 +156,6 @@ public class EditWorkoutApplicationServiceTest {
 
         @Test
         public void switchWorkout_shouldSetWorkout() throws Exception {
-            when(workoutSession.getWorkout()).thenThrow(new WorkoutException());
             editWorkoutApplicationService.switchWorkout(workout);
 
             verify(workoutSession).switchWorkout(workout);
