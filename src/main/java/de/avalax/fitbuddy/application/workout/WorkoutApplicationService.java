@@ -6,7 +6,6 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepositor
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class WorkoutApplicationService {

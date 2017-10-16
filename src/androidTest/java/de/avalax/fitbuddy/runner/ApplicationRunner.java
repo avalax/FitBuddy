@@ -226,7 +226,6 @@ public class ApplicationRunner {
     }
 
     public void hasShownExerciseDetails(String name, String details) {
-        onView(withId(android.R.id.list)).check(matches(hasChildCount(1)));
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(R.id.item_title)).check(matches(withText(name)));
         onView(withId(R.id.item_subtitle)).check(matches(withText(details)));

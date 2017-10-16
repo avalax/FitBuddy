@@ -26,7 +26,6 @@ import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public static final int ADD_WORKOUT = 1;
     public static final int EDIT_WORKOUT = 2;
     @Inject
     protected WorkoutRepository workoutRepository;
@@ -78,10 +77,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_WORKOUT && resultCode == Activity.RESULT_OK) {
-            Workout workout = (Workout) data.getSerializableExtra("workout");
-            addWorkoutToList(workout);
-        }
         if (requestCode == EDIT_WORKOUT && resultCode == Activity.RESULT_OK) {
             Workout workout = (Workout) data.getSerializableExtra("workout");
             Integer position = data.getIntExtra("position", -1);
@@ -93,12 +88,6 @@ public class MainActivity extends AppCompatActivity
         WorkoutListFragment workoutListFragment = (WorkoutListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_content);
         workoutListFragment.updateWorkout(position, workout);
-    }
-
-    private void addWorkoutToList(Workout workout) {
-        WorkoutListFragment workoutListFragment = (WorkoutListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-        workoutListFragment.addWorkout(workout);
     }
 
     private void removeWorkoutFromList(Workout workout) {

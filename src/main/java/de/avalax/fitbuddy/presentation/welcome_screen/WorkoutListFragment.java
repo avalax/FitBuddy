@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,9 +24,9 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 
-import static de.avalax.fitbuddy.presentation.MainActivity.ADD_WORKOUT;
-
 public class WorkoutListFragment extends Fragment implements View.OnClickListener {
+
+    private static final int ADD_WORKOUT = 1;
 
     @Inject
     WorkoutRepository workoutRepository;
@@ -54,12 +55,6 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
-    public void addWorkout(Workout workout) {
-        workouts.add(workout);
-        workoutAdapter.notifyItemInserted(workouts.size() - 1);
-        recyclerView.updateEmptyView();
-    }
-
     public void updateWorkout(Integer position, Workout workout) {
         workouts.set(position, workout);
         workoutAdapter.notifyItemChanged(position);
@@ -73,10 +68,20 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        //TODO: use this fragment in handle result
         Intent intent = new Intent(getActivity(), EditWorkoutActivity.class);
         intent.putExtra("workout", new BasicWorkout());
-        getActivity().startActivityForResult(intent, ADD_WORKOUT);
+        startActivityForResult(intent, ADD_WORKOUT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_WORKOUT && resultCode == Activity.RESULT_OK) {
+            Workout workout = (Workout) data.getSerializableExtra("workout");
+            workouts.add(workout);
+            workoutAdapter.notifyItemInserted(workouts.size() - 1);
+            recyclerView.updateEmptyView();
+        }
     }
 }
 
