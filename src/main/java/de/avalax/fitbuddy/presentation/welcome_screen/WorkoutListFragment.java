@@ -15,7 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -30,7 +30,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
     @Inject
     WorkoutRepository workoutRepository;
     @Inject
-    WorkoutSession workoutSession;
+    EditWorkoutApplicationService workoutSession;
 
     private WorkoutAdapter workoutAdapter;
     private List<Workout> workouts;

@@ -81,8 +81,7 @@ public class WorkoutApplicationService {
         if (workoutSession.hasWorkout()) {
             Workout workout = workoutSession.getWorkout();
             finishedWorkoutRepository.saveWorkout(workout);
-            Workout newWorkout = workoutRepository.load(workout.getWorkoutId());
-            workoutSession.switchWorkout(newWorkout);
+            workoutSession.switchWorkout(null);
         }
     }
 

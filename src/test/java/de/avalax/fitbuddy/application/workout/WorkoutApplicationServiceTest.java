@@ -19,6 +19,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -144,22 +145,11 @@ public class WorkoutApplicationServiceTest {
         }
 
         @Test
-        public void finishWorkout_shouldPersistCurrentWorkout() throws Exception {
+        public void finishWorkout_shouldPersistAndRemoveCurrentWorkoutFromSession() throws Exception {
             workoutApplicationService.finishCurrentWorkout();
 
             verify(finishedWorkoutRepository).saveWorkout(workout);
-        }
-
-        @Test
-        public void finishWorkout_shouldResetCurrentWorkout() throws Exception {
-            WorkoutId workoutId = workout.getWorkoutId();
-            BasicWorkout newWorkoutFromRepository = new BasicWorkout();
-            newWorkoutFromRepository.setName("newWorkoutFromRepository");
-            when(workoutRepository.load(workoutId)).thenReturn(newWorkoutFromRepository);
-
-            workoutApplicationService.finishCurrentWorkout();
-
-            verify(workoutSession).switchWorkout(newWorkoutFromRepository);
+            verify(workoutSession).switchWorkout(null);
         }
 
         public class anExerciseGiven {

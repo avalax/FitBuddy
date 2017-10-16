@@ -11,8 +11,9 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -23,7 +24,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 public class WorkoutFragment extends Fragment {
 
     @Inject
-    WorkoutSession workoutSession;
+    WorkoutApplicationService workoutApplicationService;
 
     private TextView exerciseNameTextView;
     private TextView exerciseWeightTextView;
@@ -36,17 +37,12 @@ public class WorkoutFragment extends Fragment {
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         exerciseNameTextView = view.findViewById(R.id.exercises_bar_name);
         exerciseWeightTextView = view.findViewById(R.id.exercises_bar_weight);
-        Workout workout = workoutSession.getWorkout();
         try {
-            int exerciseIndex = workout.getExercises().indexOfCurrentExercise();
-            Exercise exercise = workout.getExercises().get(exerciseIndex);
-            int setIndex = exercise.getSets().indexOfCurrentSet();
-            Set set = exercise.getSets().get(setIndex);
-            exerciseNameTextView.setText(exercise.getName());
-            exerciseWeightTextView.setText(set.getWeight() + " kg");
+            exerciseNameTextView.setText(workoutApplicationService.requestExercise(0).getName());
+            exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(0) + " kg");
 
-        } catch (ExerciseException | SetException e) {
-            Log.e("ExerciseException", e.getMessage(), e);
+        } catch (ResourceException e) {
+            Log.e("ResourceException", e.getMessage(), e);
         }
 
         return view;

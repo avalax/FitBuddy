@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
@@ -17,7 +18,7 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     @Inject
     WorkoutRepository workoutRepository;
     @Inject
-    WorkoutSession workoutSession;
+    WorkoutApplicationService workoutApplicationService;
 
     public FitbuddyActivityTestRule(Class<MainActivity> activityClass) {
         super(activityClass);
@@ -35,6 +36,6 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
         for (Workout workoutListEntry : workoutList) {
             workoutRepository.delete(workoutListEntry.getWorkoutId());
         }
-        workoutSession.switchWorkout(null);
+        workoutApplicationService.finishCurrentWorkout();
     }
 }

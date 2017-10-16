@@ -204,4 +204,9 @@ public class EditWorkoutApplicationService {
         }
         setUnsavedChanges(false);
     }
+
+    public boolean isActiveWorkout(Workout workout) {
+        return workoutSession.hasWorkout() &&
+                workoutSession.getWorkout().getWorkoutId().equals(workout.getWorkoutId());
+    }
 }

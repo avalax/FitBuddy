@@ -9,16 +9,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
-    private WorkoutSession workoutSession;
+    private EditWorkoutApplicationService workoutSession;
     private List<Workout> workouts;
     private MainActivity activity;
 
-    WorkoutAdapter(MainActivity activity, WorkoutSession workoutSession, List<Workout> workouts) {
+    WorkoutAdapter(MainActivity activity, EditWorkoutApplicationService workoutSession, List<Workout> workouts) {
         super();
         this.activity = activity;
         this.workoutSession = workoutSession;
@@ -37,8 +37,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText("Executed 0 times");
-        if (workoutSession.hasWorkout()
-                && workout.getWorkoutId().equals(workoutSession.getWorkout().getWorkoutId())) {
+        if (workoutSession.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);
         } else {
             holder.getStatusTextView().setText(R.string.workout_not_active);

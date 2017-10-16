@@ -34,17 +34,12 @@ import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 @Module
 public class FitbuddyModule {
-    private Context context;
+    private final WorkoutSession workoutSession;
+    private final Context context;
 
     public FitbuddyModule(Context context) {
         this.context = context;
-    }
-
-
-    @Provides
-    @Singleton
-    WorkoutSession provideWorkoutSession() {
-        return new WorkoutSession(context);
+        this.workoutSession = new WorkoutSession(context);
     }
 
     @Provides
@@ -94,7 +89,6 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutApplicationService provideWorkoutApplicationService(
-            WorkoutSession workoutSession,
             WorkoutRepository workoutRepository,
             FinishedWorkoutRepository finishedWorkoutRepository) {
         return new WorkoutApplicationService(
@@ -128,7 +122,6 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     EditWorkoutApplicationService provideManageWorkout(
-            WorkoutSession workoutSession,
             FinishedWorkoutRepository finishedWorkoutRepository,
             WorkoutRepository workoutRepository,
             ExerciseRepository exerciseRepository,

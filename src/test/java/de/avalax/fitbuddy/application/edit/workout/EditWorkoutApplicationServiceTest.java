@@ -85,6 +85,11 @@ public class EditWorkoutApplicationServiceTest {
         assertThat(editWorkoutApplicationService.hasUnsavedChanges()).isFalse();
     }
 
+    @Test
+    public void isActiveWorkout_shouldReturnFalse() throws Exception {
+        assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
+    }
+
     public class givenAWorkoutWithOneExercise {
         private WorkoutId workoutId;
 
@@ -99,6 +104,11 @@ public class EditWorkoutApplicationServiceTest {
             exercise.setName("ExerciseOne");
 
             editWorkoutApplicationService.loadWorkout(workoutId);
+        }
+
+        @Test
+        public void isActiveWorkout_shouldReturnTrue() throws Exception {
+            assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
         }
 
         @Test
