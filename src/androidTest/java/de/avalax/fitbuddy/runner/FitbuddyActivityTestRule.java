@@ -6,17 +6,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
 import static de.avalax.fitbuddy.runner.TestFitbuddyApplication.TestComponent;
 
 public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     @Inject
-    WorkoutRepository workoutRepository;
+    EditWorkoutApplicationService editWorkoutApplicationService;
     @Inject
     WorkoutApplicationService workoutApplicationService;
 
@@ -31,10 +30,10 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
         ((TestComponent) application.getComponent()).inject(this);
     }
 
-    public void deleteWorkouts() throws Exception{
-        List<Workout> workoutList = workoutRepository.getWorkouts();
-        for (Workout workoutListEntry : workoutList) {
-            workoutRepository.delete(workoutListEntry.getWorkoutId());
+    public void deleteWorkouts() throws Exception {
+        List<Workout> workouts = editWorkoutApplicationService.loadAllWorkouts();
+        for (Workout workout : workouts) {
+            editWorkoutApplicationService.deleteWorkout(workout);
         }
         workoutApplicationService.finishCurrentWorkout();
     }

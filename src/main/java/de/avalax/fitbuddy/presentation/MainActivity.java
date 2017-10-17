@@ -18,7 +18,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
@@ -27,12 +26,10 @@ public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static final int EDIT_WORKOUT = 2;
-    @Inject
-    protected WorkoutRepository workoutRepository;
     private Menu menu;
     private BottomNavigationView bottomNavigation;
     @Inject
-    protected EditWorkoutApplicationService editWorkoutApplicationService;
+    EditWorkoutApplicationService editWorkoutApplicationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (item.getItemId() == R.id.toolbar_delete_workout) {
             Workout workout = (Workout) item.getIntent().getSerializableExtra("workout");
-            workoutRepository.delete(workout.getWorkoutId());
+            editWorkoutApplicationService.deleteWorkout(workout);
             removeWorkoutFromList(workout);
             mainToolbar();
             return true;

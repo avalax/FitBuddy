@@ -9,7 +9,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 
 import static android.text.TextUtils.join;
 
-public class EditWorkoutApplicationService {
+public class EditWorkoutViewHelper {
     public String title(Exercise exercise) {
         String name = exercise.getName();
         if (name == null) {

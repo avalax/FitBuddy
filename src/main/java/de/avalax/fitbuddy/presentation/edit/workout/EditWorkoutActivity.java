@@ -17,7 +17,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
@@ -30,7 +29,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
     public static final int ADD_EXERCISE = 3;
     public static final int EDIT_EXERCISE = 4;
     @Inject
-    protected WorkoutRepository workoutRepository;
+    de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService editWorkoutApplicationService;
     private EditText nameEditText;
     private Workout workout;
     private Menu menu;
@@ -92,7 +91,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
                         .show();
             } else {
                 workout.setName(nameEditText.getText().toString());
-                workoutRepository.save(workout);
+                editWorkoutApplicationService.saveWorkout(workout);
                 Intent intent = new Intent();
                 intent.putExtra("workout", workout);
                 int position = getIntent().getIntExtra("position", -1);

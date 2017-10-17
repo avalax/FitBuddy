@@ -16,13 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class EditExerciseApplicationServiceTest {
-    private EditExerciseApplicationService service;
+public class EditExerciseViewHelperTest {
+    private EditExerciseViewHelper service;
 
     @Before
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
-        service = new EditExerciseApplicationService(context);
+        service = new EditExerciseViewHelper(context);
     }
 
     @Test

@@ -7,7 +7,7 @@ public interface WorkoutRepository {
 
     Workout load(WorkoutId id) throws WorkoutException;
 
-    List<Workout> getWorkouts();
+    List<Workout> loadAll();
 
     void delete(WorkoutId id);
 }

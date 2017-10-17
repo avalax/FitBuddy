@@ -149,7 +149,7 @@ public class SQLiteWorkoutRepositoryTest {
 
     @Test
     public void emptyWorkoutList_shouldReturnTheListOfWorkouts() throws Exception {
-        List<Workout> workouts = workoutRepository.getWorkouts();
+        List<Workout> workouts = workoutRepository.loadAll();
 
         assertThat(workouts.size(), equalTo(0));
     }
@@ -159,7 +159,7 @@ public class SQLiteWorkoutRepositoryTest {
         WorkoutId workoutId = createWorkout("workout1");
         WorkoutId workoutId2 = createWorkout("workout2");
 
-        List<Workout> workouts = workoutRepository.getWorkouts();
+        List<Workout> workouts = workoutRepository.loadAll();
 
         assertThat(workouts.size(), equalTo(2));
         assertThat(workouts.get(0).getWorkoutId(), equalTo(workoutId));

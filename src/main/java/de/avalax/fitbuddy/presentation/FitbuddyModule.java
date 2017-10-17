@@ -18,7 +18,6 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutParserService;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
@@ -26,70 +25,34 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedExerciseReposit
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
-import de.avalax.fitbuddy.port.adapter.service.JsonToWorkoutAdapter;
-import de.avalax.fitbuddy.port.adapter.service.WorkoutParserJsonService;
-import de.avalax.fitbuddy.port.adapter.service.WorkoutToJsonAdapter;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseApplicationService;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 
 @Module
 public class FitbuddyModule {
     private final WorkoutSession workoutSession;
     private final Context context;
+    private final WorkoutRepository workoutRepository;
+    private final FinishedWorkoutRepository finishedWorkoutRepository;
 
     public FitbuddyModule(Context context) {
         this.context = context;
         this.workoutSession = new WorkoutSession(context);
+        SQLiteOpenHelper sqLiteOpenHelper =
+                new FitbuddySQLiteOpenHelper("fitbuddy", 1, context, R.raw.fitbuddy_db);
+        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
+        ExerciseRepository exerciseRepository =
+                new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
+        workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
+        FinishedExerciseRepository finishedExerciseRepository
+                = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
+        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
     }
 
     @Provides
     @Singleton
-    SQLiteOpenHelper provideSQLiteOpenHelper() {
-        return new FitbuddySQLiteOpenHelper("fitbuddy", 1, context, R.raw.fitbuddy_db);
-    }
-
-    @Provides
-    @Singleton
-    WorkoutRepository provideWorkoutRepository(
-            SQLiteOpenHelper sqLiteOpenHelper,
-            ExerciseRepository exerciseRepository) {
-        return new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-    }
-
-    @Provides
-    @Singleton
-    ExerciseRepository provideExerciseRepository(
-            SQLiteOpenHelper sqLiteOpenHelper,
-            SetRepository setRepository) {
-        return new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
-    }
-
-    @Provides
-    @Singleton
-    SetRepository provideSetRepository(
-            SQLiteOpenHelper sqLiteOpenHelper) {
-        return new SQLiteSetRepository(sqLiteOpenHelper);
-    }
-
-    @Provides
-    @Singleton
-    FinishedWorkoutRepository provideFinishWorkoutRepository(
-            SQLiteOpenHelper sqLiteOpenHelper,
-            FinishedExerciseRepository finishedExerciseRepository) {
-        return new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
-    }
-
-    @Provides
-    @Singleton
-    FinishedExerciseRepository provideFinishedExerciseRepository(
-            SQLiteOpenHelper sqLiteOpenHelper) {
-        return new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
-    }
-
-    @Provides
-    @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService(
-            FinishedWorkoutRepository finishedWorkoutRepository) {
+    WorkoutApplicationService provideWorkoutApplicationService() {
         return new WorkoutApplicationService(
                 workoutSession,
                 finishedWorkoutRepository);
@@ -97,8 +60,7 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService(
-            FinishedWorkoutRepository finishedWorkoutRepository) {
+    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService() {
         return new FinishedWorkoutApplicationService(finishedWorkoutRepository);
     }
 
@@ -111,38 +73,22 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutParserService provideWorkoutService() {
-        JsonToWorkoutAdapter jsonToWorkoutAdapter = new JsonToWorkoutAdapter();
-        WorkoutToJsonAdapter workoutToJsonAdapter = new WorkoutToJsonAdapter();
-        return new WorkoutParserJsonService(jsonToWorkoutAdapter, workoutToJsonAdapter);
-    }
-
-    @Provides
-    @Singleton
-    EditWorkoutApplicationService provideManageWorkout(
-            FinishedWorkoutRepository finishedWorkoutRepository,
-            WorkoutRepository workoutRepository,
-            ExerciseRepository exerciseRepository,
-            SetRepository setRepository,
-            WorkoutParserService workoutParserService) {
+    EditWorkoutApplicationService provideManageWorkout() {
         return new EditWorkoutApplicationService(
                 workoutSession,
                 finishedWorkoutRepository,
-                workoutRepository,
-                exerciseRepository,
-                setRepository,
-                workoutParserService);
+                workoutRepository);
     }
 
     @Provides
     @Singleton
-    de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService provideEditWorkoutApplicationService() {
-        return new de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutApplicationService();
+    EditWorkoutViewHelper provideEditWorkoutViewHelper() {
+        return new EditWorkoutViewHelper();
     }
 
     @Provides
     @Singleton
-    EditExerciseApplicationService provideEditExerciseApplicationService() {
-        return new EditExerciseApplicationService(context);
+    EditExerciseViewHelper provideEditExerciseApplicationService() {
+        return new EditExerciseViewHelper(context);
     }
 }

@@ -21,7 +21,7 @@ public class SetListFragment extends Fragment {
     private WorkoutRecyclerView recyclerView;
 
     @Inject
-    protected EditExerciseApplicationService editExerciseApplicationService;
+    protected EditExerciseViewHelper editExerciseViewHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +32,7 @@ public class SetListFragment extends Fragment {
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         Exercise exercise = (Exercise) getActivity().getIntent().getSerializableExtra("exercise");
         sets = exercise.getSets();
-        adapter = new SetAdapter(getActivity(), sets, editExerciseApplicationService);
+        adapter = new SetAdapter(getActivity(), sets, editExerciseViewHelper);
         recyclerView.setAdapter(adapter);
         return view;
     }

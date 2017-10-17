@@ -10,12 +10,12 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 
 import static java.lang.String.valueOf;
 
-public class EditExerciseApplicationService {
+public class EditExerciseViewHelper {
 
     private final String defaultWeight;
     private final DecimalFormat decimalFormat;
 
-    public EditExerciseApplicationService(Context context) {
+    public EditExerciseViewHelper(Context context) {
         defaultWeight = context.getResources().getString(R.string.default_set_weight);
         String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
         String groupingSeparator = context.getResources().getString(R.string.grouping_separator);

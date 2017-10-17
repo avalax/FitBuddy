@@ -15,14 +15,14 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseApplicationService;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 public class EditSetFragment extends Fragment {
 
     private Set set;
 
     @Inject
-    protected EditExerciseApplicationService editExerciseApplicationService;
+    protected EditExerciseViewHelper editExerciseViewHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,9 +34,9 @@ public class EditSetFragment extends Fragment {
         view.findViewById(R.id.set_reps).setOnClickListener(v -> changeMaxReps());
         set = (Set) getActivity().getIntent().getSerializableExtra("set");
         TextView repsTextView = view.findViewById(R.id.set_reps_text_view);
-        repsTextView.setText(editExerciseApplicationService.title(set));
+        repsTextView.setText(editExerciseViewHelper.title(set));
         TextView weightTextView = view.findViewById(R.id.set_weight_text_view);
-        weightTextView.setText(editExerciseApplicationService.subtitle(set));
+        weightTextView.setText(editExerciseViewHelper.subtitle(set));
         return view;
     }
 

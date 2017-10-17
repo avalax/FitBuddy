@@ -21,7 +21,7 @@ public class ExerciseListFragment extends Fragment {
     private WorkoutRecyclerView recyclerView;
 
     @Inject
-    protected EditWorkoutApplicationService editWorkoutApplicationService;
+    protected EditWorkoutViewHelper editWorkoutApplicationService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

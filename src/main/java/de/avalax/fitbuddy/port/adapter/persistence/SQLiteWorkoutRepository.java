@@ -79,7 +79,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public List<Workout> getWorkouts() {
+    public List<Workout> loadAll() {
         List<Workout> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},

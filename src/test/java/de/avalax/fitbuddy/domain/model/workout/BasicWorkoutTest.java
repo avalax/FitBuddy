@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.domain.model.workout;
 
 
-import org.assertj.core.api.Java6Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,6 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.Workout.WorkoutMemento;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static java.util.Collections.singleton;
@@ -308,26 +306,6 @@ public class BasicWorkoutTest {
                 set.setReps(1);
 
                 assertThat(workout.getProgress(1), equalTo(0.75));
-            }
-        }
-
-        public class memento {
-            @Test
-            public void null_shouldNotChangeExercises() throws Exception {
-                workout.setMemento(null);
-
-                Java6Assertions.assertThat(workout.getExercises()).isEmpty();
-            }
-
-            @Test
-            public void anExercisesDeletedAfterMemento_shouldUndDeletionBySetMemento() throws Exception {
-                Exercise exercise = workout.getExercises().createExercise();
-                WorkoutMemento memento = workout.createMemento();
-                workout.getExercises().removeAll(singleton(exercise));
-
-                workout.setMemento(memento);
-
-                Java6Assertions.assertThat(workout.getExercises()).containsExactly(exercise);
             }
         }
     }

@@ -20,17 +20,17 @@ import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity
 
 public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
     private Sets sets;
-    private EditExerciseApplicationService editExerciseApplicationService;
+    private EditExerciseViewHelper editExerciseViewHelper;
     private Activity activity;
     private java.util.Set<Set> selections;
 
     public SetAdapter(Activity activity,
                       Sets sets,
-                      EditExerciseApplicationService editExerciseApplicationService) {
+                      EditExerciseViewHelper editExerciseViewHelper) {
         super();
         this.activity = activity;
         this.sets = sets;
-        this.editExerciseApplicationService = editExerciseApplicationService;
+        this.editExerciseViewHelper = editExerciseViewHelper;
         this.selections = new ArraySet<>();
     }
 
@@ -45,8 +45,8 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
     public void onBindViewHolder(SelectableViewHolder holder, int position) {
         try {
             Set set = sets.get(position);
-            String title = editExerciseApplicationService.title(set);
-            String subtitle = editExerciseApplicationService.subtitle(set);
+            String title = editExerciseViewHelper.title(set);
+            String subtitle = editExerciseViewHelper.subtitle(set);
 
             holder.getTitleTextView().setText(title);
             holder.getSubtitleTextView().setText(subtitle);
