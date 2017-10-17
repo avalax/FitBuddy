@@ -89,11 +89,9 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     WorkoutApplicationService provideWorkoutApplicationService(
-            WorkoutRepository workoutRepository,
             FinishedWorkoutRepository finishedWorkoutRepository) {
         return new WorkoutApplicationService(
                 workoutSession,
-                workoutRepository,
                 finishedWorkoutRepository);
     }
 

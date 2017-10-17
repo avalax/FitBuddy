@@ -10,15 +10,12 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class WorkoutApplicationService {
     private WorkoutSession workoutSession;
-    private WorkoutRepository workoutRepository;
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
     public WorkoutApplicationService(
             WorkoutSession workoutSession,
-            WorkoutRepository workoutRepository,
             FinishedWorkoutRepository finishedWorkoutRepository) {
         this.workoutSession = workoutSession;
-        this.workoutRepository = workoutRepository;
         this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 
