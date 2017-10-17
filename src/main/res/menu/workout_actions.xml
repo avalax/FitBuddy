@@ -1,18 +1,19 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_change_weight"
         android:title="@string/title_weight"
-        android:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_switch_workout"
         android:title="@string/action_switch_workout"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_finish_workout"
         android:title="@string/action_finish_workout"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_display_finished_workouts"
         android:title="@string/action_display_finished_workouts"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>

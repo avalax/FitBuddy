@@ -6,8 +6,6 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment;
-import de.avalax.fitbuddy.presentation.edit.exerciseold.EditExerciseActivity;
-import de.avalax.fitbuddy.presentation.edit.exerciseold.EditExerciseDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
@@ -44,10 +42,6 @@ public class FitbuddyApplication extends Application {
         void inject(EditWorkoutActivity editWorkoutActivity);
 
         void inject(ExerciseFragment exerciseFragment);
-
-        void inject(EditExerciseActivity editExerciseActivity);
-
-        void inject(EditExerciseDialogFragment editExerciseDialogFragment);
 
         void inject(FinishedWorkoutListFragment finishedWorkoutListFragment);
 

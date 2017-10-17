@@ -26,6 +26,7 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutActivity;
 
+@Deprecated
 public class WorkoutActivity extends FragmentActivity implements DialogListener {
     private static final int MANAGE_WORKOUT = 1;
     private ViewPager viewPager;

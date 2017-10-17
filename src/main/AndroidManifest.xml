@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.avalax.fitbuddy"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto">
 
     <application
@@ -10,33 +9,26 @@
         android:fullBackupContent="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:supportsRtl="true">
-        <activity android:name=".presentation.workout.WorkoutActivity">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="fitbuddy.de" />
+
+                <data
+                    android:host="fitbuddy.de"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.MainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="fitbuddy.de" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".presentation.edit.workout.EditWorkoutActivity"/>
-        <activity android:name=".presentation.edit.exerciseold.EditExerciseActivity"/>
-        <activity android:name=".presentation.summary.FinishedWorkoutActivity"/>
+        <activity android:name=".presentation.edit.workout.EditWorkoutActivity" />
         <activity android:name=".presentation.edit.exercise.EditExerciseActivity" />
         <activity android:name=".presentation.edit.set.EditSetActivity" />
+        <activity android:name=".presentation.summary.FinishedWorkoutActivity" />
     </application>
 
 </manifest>
