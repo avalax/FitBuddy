@@ -108,7 +108,7 @@ public class EditWorkoutApplicationServiceTest {
         public void isActiveWorkout_shouldReturnTrue() throws Exception {
             when(workoutSession.hasWorkout()).thenReturn(true);
             when(workoutSession.getWorkout()).thenReturn(workout);
-            
+
             assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
         }
 

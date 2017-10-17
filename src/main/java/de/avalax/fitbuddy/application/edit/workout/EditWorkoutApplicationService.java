@@ -206,7 +206,7 @@ public class EditWorkoutApplicationService {
     }
 
     public boolean isActiveWorkout(Workout workout) {
-        return workoutSession.hasWorkout() &&
-                workoutSession.getWorkout().getWorkoutId().equals(workout.getWorkoutId());
+        return workoutSession.hasWorkout()
+                && workoutSession.getWorkout().getWorkoutId().equals(workout.getWorkoutId());
     }
 }

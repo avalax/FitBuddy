@@ -11,14 +11,8 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetException;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class WorkoutFragment extends Fragment {
