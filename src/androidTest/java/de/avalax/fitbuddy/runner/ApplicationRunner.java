@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -19,7 +20,6 @@ import org.hamcrest.Matcher;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,7 +28,7 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -38,6 +38,7 @@ import static de.avalax.fitbuddy.runner.BottomNavigationMatcher.bottomNavItemIsN
 import static de.avalax.fitbuddy.runner.ToastMatcher.isToast;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 public class ApplicationRunner {
@@ -168,7 +169,7 @@ public class ApplicationRunner {
     public void enterSetSelectionMode(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, longClick()));
-        onView(withId(R.id.toolbar_delete_sets)).check(matches(withtMenuTitle(valueOf(1))));
+        onView(withId(R.id.toolbar_delete_sets)).check(matches(withMenuTitle(valueOf(1))));
     }
 
     public void selectSets(int... positions) {
@@ -179,7 +180,7 @@ public class ApplicationRunner {
     }
 
     public void hasShownDeleteSetsCount(int count) {
-        onView(withId(R.id.toolbar_delete_sets)).check(matches(withtMenuTitle(valueOf(count))));
+        onView(withId(R.id.toolbar_delete_sets)).check(matches(withMenuTitle(valueOf(count))));
     }
 
     public void deleteSelectedSets() {
@@ -199,7 +200,7 @@ public class ApplicationRunner {
     public void enterExerciseSelectionMode(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, longClick()));
-        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withtMenuTitle(valueOf(1))));
+        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withMenuTitle(valueOf(1))));
     }
 
     public void selectExercises(int... positions) {
@@ -210,7 +211,7 @@ public class ApplicationRunner {
     }
 
     public void hasShownDeleteExerciseCount(int count) {
-        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withtMenuTitle(valueOf(count))));
+        onView(withId(R.id.toolbar_delete_exercices)).check(matches(withMenuTitle(valueOf(count))));
     }
 
     public void deleteSelectedExercices() {
@@ -268,6 +269,19 @@ public class ApplicationRunner {
         onView(isRoot()).perform(ViewActions.pressBack());
     }
 
+    public void addRepToExercise() {
+        onView(withId(R.id.leftProgressBar)).perform(click());
+    }
+
+    public void hasShownRepsExecuted(int reps) {
+        onView(allOf(withId(R.id.valueTextView), isDescendantOfA(withId(R.id.leftProgressBar))))
+                .check(matches(withText(valueOf(reps))));
+    }
+
+    public void hasShownWorkoutProgress(int progress) {
+        onView(withId(R.id.workoutProgressBar)).check(matches(progress(progress)));
+    }
+
     private static ViewAction setNumberPicker(final int value) {
         return new ViewAction() {
             @Override
@@ -307,7 +321,7 @@ public class ApplicationRunner {
         };
     }
 
-    public static Matcher<View> withtMenuTitle(String label) {
+    public static Matcher<View> withMenuTitle(String label) {
         return new BoundedMatcher<View, ActionMenuItemView>(ActionMenuItemView.class) {
             @Override
             public void describeTo(Description description) {
@@ -318,6 +332,20 @@ public class ApplicationRunner {
             public boolean matchesSafely(final ActionMenuItemView actionMenuItemView) {
                 MenuItem supportMenuItem = actionMenuItemView.getItemData();
                 return label.matches(supportMenuItem.getTitle().toString());
+            }
+        };
+    }
+
+    public static Matcher<View> progress(int progress) {
+        return new BoundedMatcher<View, ProgressBar>(ProgressBar.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has progress " + progress);
+            }
+
+            @Override
+            public boolean matchesSafely(final ProgressBar progressBar) {
+                return progress == progressBar.getProgress();
             }
         };
     }

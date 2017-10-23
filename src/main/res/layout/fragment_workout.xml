@@ -13,4 +13,10 @@
         android:id="@+id/exercises_bar_weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <fragment
+        android:name="de.avalax.fitbuddy.presentation.workout.ExerciseFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_exercise" />
 </LinearLayout>

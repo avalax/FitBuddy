@@ -142,10 +142,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (bottomNavigation.getSelectedItemId() != R.id.navigation_start_item) {
-            bottomNavigation.setSelectedItemId(R.id.navigation_start_item);
-        } else {
+        if (bottomNavigation.getSelectedItemId() == R.id.navigation_start_item) {
             super.onBackPressed();
+        } else {
+            bottomNavigation.setSelectedItemId(R.id.navigation_start_item);
         }
     }
 }

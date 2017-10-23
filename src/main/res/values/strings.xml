@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitBuddy</string>
-    <string name="title_weight">%1$skg</string>
     <string name="vertical_bar_contentDescription">progressBar</string>
     <string name="vertical_bar_default_text">0</string>
-    <string name="action_switch_workout">switch workout</string>
-    <string name="action_finish_workout">finish workout</string>
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
     <string name="decimal_point">,</string>
     <string name="dialog_change_sets">change sets</string>
     <string name="dialog_change_reps">change reps</string>
     <string name="dialog_change_name">change name</string>
-    <string name="action_display_finished_workouts">finished workouts</string>
     <string name="label_exercise_weight">Weight</string>
     <string name="label_exercise_repetitions">Repetitions</string>
 

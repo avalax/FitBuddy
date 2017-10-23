@@ -52,7 +52,7 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
         repsNumberPicker.setValue(reps);
 
         button.setOnClickListener(v -> {
-            listener.onDialogPositiveClick(EditRepsDialogFragment.this);
+            listener.onDialogPositiveClick(this);
             getDialog().dismiss();
         });
 

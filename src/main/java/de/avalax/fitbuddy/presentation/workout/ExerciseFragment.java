@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 
@@ -23,22 +24,15 @@ import de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView
 
 public class ExerciseFragment extends Fragment {
 
-    private static final String ARGS_EXERCISE_INDEX = "exerciseIndex";
     private VerticalProgressbarView setProgressBar;
     private VerticalProgressbarView exerciseProgressBar;
+    private ProgressBar workoutProgressBar;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
     ExerciseViewHelper exerciseViewHelper;
-    private int exerciseIndex;
 
-    public static ExerciseFragment newInstance(int exerciseIndex) {
-        ExerciseFragment fragment = new ExerciseFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARGS_EXERCISE_INDEX, exerciseIndex);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private int exerciseIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,15 +40,16 @@ public class ExerciseFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
-        exerciseIndex = getArguments().getInt(ARGS_EXERCISE_INDEX);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        setProgressBar = (VerticalProgressbarView) view.findViewById(R.id.leftProgressBar);
-        exerciseProgressBar = (VerticalProgressbarView) view.findViewById(R.id.rightProgressBar);
+        setProgressBar = view.findViewById(R.id.leftProgressBar);
+        exerciseProgressBar = view.findViewById(R.id.rightProgressBar);
+        workoutProgressBar = view.findViewById(R.id.workoutProgressBar);
         try {
+            exerciseIndex = workoutApplicationService.indexOfCurrentExercise();
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
             int reps = exerciseViewHelper.maxRepsOfExercise(exercise);
             int sets = exerciseViewHelper.setCountOfExercise(exercise);
@@ -81,7 +76,7 @@ public class ExerciseFragment extends Fragment {
                             }
                         }
                     });
-
+            updateWorkoutProgress();
             updateExerciseProgress();
             updateSetProgress();
         } catch (ResourceException e) {
@@ -122,10 +117,23 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void updateWorkoutProgress() {
-        ((WorkoutActivity) getActivity()).updateWorkoutProgress(exerciseIndex);
+        try {
+            int workoutProgress = workoutApplicationService.workoutProgress(exerciseIndex);
+            workoutProgressBar.setProgress(workoutProgress);
+        } catch (ResourceException e) {
+            Log.d("Can't change progress", e.getMessage(), e);
+        }
     }
 
     private void updatePage() {
-        ((WorkoutActivity) getActivity()).updatePage(exerciseIndex);
+        try {
+            workoutApplicationService.setCurrentExercise(exerciseIndex);
+            updateWorkoutProgress();
+            //TODO: Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+            //TODO: setTitle(exerciseViewHelper.nameOfExercise(exercise));
+            //TODO: menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise));
+        } catch (ResourceException e) {
+            Log.d("can't update page", e.getMessage(), e);
+        }
     }
 }

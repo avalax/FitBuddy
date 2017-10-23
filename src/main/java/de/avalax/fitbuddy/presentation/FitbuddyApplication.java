@@ -12,7 +12,6 @@ import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
-import de.avalax.fitbuddy.presentation.workout.WorkoutActivity;
 import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
 
 public class FitbuddyApplication extends Application {
@@ -37,7 +36,6 @@ public class FitbuddyApplication extends Application {
     @Singleton
     @Component(modules = FitbuddyModule.class)
     public interface ApplicationComponent {
-        void inject(WorkoutActivity workoutActivity);
 
         void inject(EditWorkoutActivity editWorkoutActivity);
 

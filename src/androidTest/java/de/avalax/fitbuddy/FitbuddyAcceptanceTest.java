@@ -155,7 +155,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void startExistingWorkout_shouldDisplayWorkoutStarted() throws Exception {
+    public void switchFragments_shouldDisplayCorrectFramentHighlighted() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("an exercise");
@@ -175,6 +175,26 @@ public class FitbuddyAcceptanceTest {
 
         application.backPressed();
         application.showsWorkoutIsActive(0);
+    }
+
+    @Test
+    public void doWorkout_shouldDisplaySwipeEvents() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("an exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.selectWorkout(0);
+
+        application.hasShownWorkoutProgress(0);
+        application.addRepToExercise();
+        application.hasShownRepsExecuted(1);
+        application.hasShownWorkoutProgress(8);
+
+        //TODO: nextExercise
     }
 
     @After
