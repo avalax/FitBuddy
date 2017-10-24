@@ -6,9 +6,7 @@
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
     <string name="decimal_point">,</string>
-    <string name="dialog_change_sets">change sets</string>
     <string name="dialog_change_reps">change reps</string>
-    <string name="dialog_change_name">change name</string>
     <string name="label_exercise_weight">Weight</string>
     <string name="label_exercise_repetitions">Repetitions</string>
 
