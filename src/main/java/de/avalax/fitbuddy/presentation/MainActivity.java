@@ -20,7 +20,7 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
-import de.avalax.fitbuddy.presentation.workout.WorkoutFragment;
+import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.navigation_workout_item) {
-            Fragment workoutFragment = new WorkoutFragment();
+            Fragment exerciseFragment = new ExerciseFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_content, workoutFragment)
+                    .replace(R.id.fragment_content, exerciseFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
             return true;

@@ -25,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
@@ -252,8 +253,8 @@ public class ApplicationRunner {
     }
 
     public void showsWorkoutScreen(String exerciseName, String weight) {
-        onView(withId(R.id.exercises_bar_name)).check(matches(withText(exerciseName)));
-        onView(withId(R.id.exercises_bar_weight)).check(matches(withText(weight)));
+        onView(withId(R.id.exercises_bar_exercise_name)).check(matches(withText(exerciseName)));
+        onView(withId(R.id.exercises_bar_set_weight)).check(matches(withText(weight)));
     }
 
 
@@ -273,9 +274,22 @@ public class ApplicationRunner {
         onView(withId(R.id.leftProgressBar)).perform(click());
     }
 
+    public void switchToNextSet() {
+        onView(withId(R.id.rightProgressBar)).perform(click());
+    }
+
     public void hasShownRepsExecuted(int reps) {
         onView(allOf(withId(R.id.valueTextView), isDescendantOfA(withId(R.id.leftProgressBar))))
                 .check(matches(withText(valueOf(reps))));
+    }
+
+    public void hasShownActiveSets(int sets) {
+        onView(allOf(withId(R.id.valueTextView), isDescendantOfA(withId(R.id.rightProgressBar))))
+                .check(matches(withText(valueOf(sets))));
+    }
+
+    public void switchToNextExercise() {
+        onView(withId(R.id.pager_exercise)).perform(swipeLeft());
     }
 
     public void hasShownWorkoutProgress(int progress) {

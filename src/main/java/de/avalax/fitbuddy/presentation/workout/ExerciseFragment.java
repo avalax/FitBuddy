@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -27,6 +28,8 @@ public class ExerciseFragment extends Fragment {
     private VerticalProgressbarView setProgressBar;
     private VerticalProgressbarView exerciseProgressBar;
     private ProgressBar workoutProgressBar;
+    private TextView exerciseNameTextView;
+    private TextView exerciseWeightTextView;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
@@ -48,6 +51,9 @@ public class ExerciseFragment extends Fragment {
         setProgressBar = view.findViewById(R.id.leftProgressBar);
         exerciseProgressBar = view.findViewById(R.id.rightProgressBar);
         workoutProgressBar = view.findViewById(R.id.workoutProgressBar);
+        exerciseNameTextView = view.findViewById(R.id.exercises_bar_exercise_name);
+        exerciseWeightTextView = view.findViewById(R.id.exercises_bar_set_weight);
+
         try {
             exerciseIndex = workoutApplicationService.indexOfCurrentExercise();
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
@@ -76,9 +82,9 @@ public class ExerciseFragment extends Fragment {
                             }
                         }
                     });
-            updateWorkoutProgress();
             updateExerciseProgress();
             updateSetProgress();
+            updatePage();
         } catch (ResourceException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
@@ -128,10 +134,9 @@ public class ExerciseFragment extends Fragment {
     private void updatePage() {
         try {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
+            exerciseNameTextView.setText(workoutApplicationService.requestExercise(0).getName());
+            exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(0) + " kg");
             updateWorkoutProgress();
-            //TODO: Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            //TODO: setTitle(exerciseViewHelper.nameOfExercise(exercise));
-            //TODO: menuItem.setTitle(exerciseViewHelper.weightOfExercise(exercise));
         } catch (ResourceException e) {
             Log.d("can't update page", e.getMessage(), e);
         }

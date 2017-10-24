@@ -181,20 +181,36 @@ public class FitbuddyAcceptanceTest {
     public void doWorkout_shouldDisplaySwipeEvents() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("a workout");
-        application.addExercise("an exercise");
+        application.addExercise("first exercise");
         application.addSet("12", "42.0");
+        application.saveSet();
+        application.addSet("12", "55.0");
+        application.saveSet();
+        application.saveExercise();
+        application.addExercise("second exercise");
+        application.addSet("15", "10.0");
         application.saveSet();
         application.saveExercise();
         application.saveWorkout();
 
         application.selectWorkout(0);
-
         application.hasShownWorkoutProgress(0);
+        application.hasShownActiveSets(1);
+        application.hasShownRepsExecuted(0);
+
         application.addRepToExercise();
         application.hasShownRepsExecuted(1);
-        application.hasShownWorkoutProgress(8);
+        application.hasShownWorkoutProgress(2);
 
-        //TODO: nextExercise
+        application.switchToNextSet();
+        application.hasShownActiveSets(2);
+        application.showsWorkoutScreen("first exercise", "55.0 kg");
+
+        //TODO: switch exercise
+        //application.switchToNextExercise();
+        //application.showsWorkoutScreen("second exercise", "10.0 kg");
+        //application.hasShownActiveSets(1);
+        //application.hasShownRepsExecuted(0);
     }
 
     @After
