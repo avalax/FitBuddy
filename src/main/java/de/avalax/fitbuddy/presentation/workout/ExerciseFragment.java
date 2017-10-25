@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.workout.swipe_bar.PagerOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView;
 
@@ -82,11 +83,37 @@ public class ExerciseFragment extends Fragment {
                             }
                         }
                     });
+
+            view.findViewById(R.id.pager_exercise)
+                    .setOnTouchListener(new PagerOnTouchListener(getActivity()) {
+                        @Override
+                        protected void onSwipeRight() {
+                            exerciseIndex--;
+                            changeExercise();
+                        }
+
+                        @Override
+                        protected void onSwipeLeft() {
+                            exerciseIndex++;
+                            changeExercise();
+                        }
+                    });
+
             updateExerciseProgress();
             updateSetProgress();
             updatePage();
         } catch (ResourceException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
+        }
+    }
+
+    private void changeExercise() {
+        updatePage();
+        try {
+            updateSetProgress();
+            updateExerciseProgress();
+        } catch (ResourceException e) {
+            Log.d("Can't change exercise", e.getMessage(), e);
         }
     }
 
@@ -134,8 +161,8 @@ public class ExerciseFragment extends Fragment {
     private void updatePage() {
         try {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
-            exerciseNameTextView.setText(workoutApplicationService.requestExercise(0).getName());
-            exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(0) + " kg");
+            exerciseNameTextView.setText(workoutApplicationService.requestExercise(exerciseIndex).getName());
+            exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(exerciseIndex) + " kg");
             updateWorkoutProgress();
         } catch (ResourceException e) {
             Log.d("can't update page", e.getMessage(), e);

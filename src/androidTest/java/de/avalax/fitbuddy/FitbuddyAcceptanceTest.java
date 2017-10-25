@@ -206,11 +206,10 @@ public class FitbuddyAcceptanceTest {
         application.hasShownActiveSets(2);
         application.showsWorkoutScreen("first exercise", "55.0 kg");
 
-        //TODO: switch exercise
-        //application.switchToNextExercise();
-        //application.showsWorkoutScreen("second exercise", "10.0 kg");
-        //application.hasShownActiveSets(1);
-        //application.hasShownRepsExecuted(0);
+        application.switchToNextExercise();
+        application.showsWorkoutScreen("second exercise", "10.0 kg");
+        application.hasShownActiveSets(1);
+        application.hasShownRepsExecuted(0);
     }
 
     @After
