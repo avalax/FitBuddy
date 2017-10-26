@@ -13,13 +13,10 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepositor
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -96,6 +93,16 @@ public class WorkoutApplicationServiceTest {
             workoutApplicationService.finishCurrentWorkout();
 
             verifyZeroInteractions(finishedWorkoutRepository, workoutRepository);
+        }
+
+        @Test
+        public void hasNextExercise_shouldReturnFalse() throws Exception {
+            assertThat(workoutApplicationService.hasNextExercise(0), equalTo(false));
+        }
+
+        @Test
+        public void hasPreviousExercise_shouldReturnFalse() throws Exception {
+            assertThat(workoutApplicationService.hasPreviousExercise(0), equalTo(false));
         }
     }
 
@@ -208,6 +215,30 @@ public class WorkoutApplicationServiceTest {
             @Test(expected = ResourceException.class)
             public void updateWeightOfCurrentSetWithoutSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.updateWeightOfCurrentSet(1, 0);
+            }
+
+            @Test
+            public void hasNextExercise_shouldReturnFalse() throws Exception {
+                assertThat(workoutApplicationService.hasNextExercise(0), equalTo(false));
+            }
+
+            @Test
+            public void hasNextExercise_shouldReturnTrue() throws Exception {
+                workout.getExercises().createExercise();
+
+                assertThat(workoutApplicationService.hasNextExercise(0), equalTo(true));
+            }
+
+            @Test
+            public void hasPreviousExercise_shouldReturnFalse() throws Exception {
+                assertThat(workoutApplicationService.hasPreviousExercise(0), equalTo(false));
+            }
+
+            @Test
+            public void hasPreviousExercise_shouldReturnTrue() throws Exception {
+                workout.getExercises().createExercise();
+
+                assertThat(workoutApplicationService.hasPreviousExercise(1), equalTo(true));
             }
 
             public class aSetGiven {

@@ -31,6 +31,8 @@ public class ExerciseFragment extends Fragment {
     private ProgressBar workoutProgressBar;
     private TextView exerciseNameTextView;
     private TextView exerciseWeightTextView;
+    private TextView exercisePreviousTextView;
+    private TextView exerciseNextTextView;
     @Inject
     WorkoutApplicationService workoutApplicationService;
     @Inject
@@ -54,6 +56,8 @@ public class ExerciseFragment extends Fragment {
         workoutProgressBar = view.findViewById(R.id.workoutProgressBar);
         exerciseNameTextView = view.findViewById(R.id.exercises_bar_exercise_name);
         exerciseWeightTextView = view.findViewById(R.id.exercises_bar_set_weight);
+        exercisePreviousTextView = view.findViewById(R.id.exercises_bar_previous_exercise_name);
+        exerciseNextTextView = view.findViewById(R.id.exercises_bar_next_exercise_name);
 
         try {
             exerciseIndex = workoutApplicationService.indexOfCurrentExercise();
@@ -88,14 +92,18 @@ public class ExerciseFragment extends Fragment {
                     .setOnTouchListener(new PagerOnTouchListener(getActivity()) {
                         @Override
                         protected void onSwipeRight() {
-                            exerciseIndex--;
-                            changeExercise();
+                            if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
+                                exerciseIndex--;
+                                changeExercise();
+                            }
                         }
 
                         @Override
                         protected void onSwipeLeft() {
-                            exerciseIndex++;
-                            changeExercise();
+                            if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
+                                exerciseIndex++;
+                                changeExercise();
+                            }
                         }
                     });
 
@@ -163,6 +171,18 @@ public class ExerciseFragment extends Fragment {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
             exerciseNameTextView.setText(workoutApplicationService.requestExercise(exerciseIndex).getName());
             exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(exerciseIndex) + " kg");
+            if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
+                exercisePreviousTextView.setVisibility(View.VISIBLE);
+                exercisePreviousTextView.setText(workoutApplicationService.requestExercise(exerciseIndex - 1).getName());
+            } else {
+                exercisePreviousTextView.setVisibility(View.INVISIBLE);
+            }
+            if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
+                exerciseNextTextView.setVisibility(View.VISIBLE);
+                exerciseNextTextView.setText(workoutApplicationService.requestExercise(exerciseIndex + 1).getName());
+            } else {
+                exerciseNextTextView.setVisibility(View.INVISIBLE);
+            }
             updateWorkoutProgress();
         } catch (ResourceException e) {
             Log.d("can't update page", e.getMessage(), e);

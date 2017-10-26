@@ -96,4 +96,20 @@ public class WorkoutApplicationService {
             throw new WorkoutException();
         }
     }
+
+    public boolean hasPreviousExercise(int exerciseIndex) {
+        if (!workoutSession.hasWorkout()) {
+            return false;
+        }
+        int size = workoutSession.getWorkout().getExercises().size();
+        return exerciseIndex > 0 && exerciseIndex < size;
+    }
+
+    public boolean hasNextExercise(int exerciseIndex) {
+        if (!workoutSession.hasWorkout()) {
+            return false;
+        }
+        int size = workoutSession.getWorkout().getExercises().size();
+        return size > exerciseIndex + 1;
+    }
 }

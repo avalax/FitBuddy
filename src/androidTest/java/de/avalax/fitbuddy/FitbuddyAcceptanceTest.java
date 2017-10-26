@@ -165,13 +165,13 @@ public class FitbuddyAcceptanceTest {
         application.saveWorkout();
 
         application.selectWorkout(0);
-        application.showsWorkoutScreen("an exercise", "42.0 kg");
+        application.showsActiveExercise("an exercise", "42.0 kg");
 
         application.navigateToStart();
         application.showsWorkoutIsActive(0);
 
         application.navigateToWorkout();
-        application.showsWorkoutScreen("an exercise", "42.0 kg");
+        application.showsActiveExercise("an exercise", "42.0 kg");
 
         application.backPressed();
         application.showsWorkoutIsActive(0);
@@ -204,12 +204,40 @@ public class FitbuddyAcceptanceTest {
 
         application.switchToNextSet();
         application.hasShownActiveSets(2);
-        application.showsWorkoutScreen("first exercise", "55.0 kg");
+        application.showsNoPreviousExercise();
+        application.showsActiveExercise("first exercise", "55.0 kg");
+        application.showsNextExercise("second exercise");
 
         application.switchToNextExercise();
-        application.showsWorkoutScreen("second exercise", "10.0 kg");
+        application.showsPreviousExercise("first exercise");
+        application.showsActiveExercise("second exercise", "10.0 kg");
+        application.showsNoNextExercise();
         application.hasShownActiveSets(1);
         application.hasShownRepsExecuted(0);
+
+        application.switchToPreviousExercise();
+        application.showsActiveExercise("first exercise", "55.0 kg");
+    }
+
+    @Test
+    public void doWorkout_shouldNotNavigateToNonExistingExercises() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("only one exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+
+        application.selectWorkout(0);
+        application.showsNoPreviousExercise();
+        application.showsActiveExercise("only one exercise", "42.0 kg");
+        application.showsNoNextExercise();
+
+        application.switchToNextExercise();
+        application.showsActiveExercise("only one exercise", "42.0 kg");
+
+        application.switchToPreviousExercise();
     }
 
     @After

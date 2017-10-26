@@ -26,6 +26,7 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
@@ -252,9 +253,25 @@ public class ApplicationRunner {
         onView(withId(R.id.set_weight_text_view)).check(matches(withText(weight)));
     }
 
-    public void showsWorkoutScreen(String exerciseName, String weight) {
+    public void showsActiveExercise(String exerciseName, String weight) {
         onView(withId(R.id.exercises_bar_exercise_name)).check(matches(withText(exerciseName)));
         onView(withId(R.id.exercises_bar_set_weight)).check(matches(withText(weight)));
+    }
+
+    public void showsNoPreviousExercise() {
+        onView(withId(R.id.exercises_bar_previous_exercise_name)).check(matches(not(isDisplayed())));
+    }
+
+    public void showsPreviousExercise(String exerciseName) {
+        onView(withId(R.id.exercises_bar_previous_exercise_name)).check(matches(withText(exerciseName)));
+    }
+
+    public void showsNoNextExercise() {
+        onView(withId(R.id.exercises_bar_next_exercise_name)).check(matches(not(isDisplayed())));
+    }
+
+    public void showsNextExercise(String exerciseName) {
+        onView(withId(R.id.exercises_bar_next_exercise_name)).check(matches(withText(exerciseName)));
     }
 
 
@@ -290,6 +307,10 @@ public class ApplicationRunner {
 
     public void switchToNextExercise() {
         onView(withId(R.id.pager_exercise)).perform(swipeLeft());
+    }
+
+    public void switchToPreviousExercise() {
+        onView(withId(R.id.pager_exercise)).perform(swipeRight());
     }
 
     public void hasShownWorkoutProgress(int progress) {
