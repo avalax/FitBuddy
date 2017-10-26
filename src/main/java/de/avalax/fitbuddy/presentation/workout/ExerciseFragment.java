@@ -173,13 +173,15 @@ public class ExerciseFragment extends Fragment {
             exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(exerciseIndex) + " kg");
             if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
                 exercisePreviousTextView.setVisibility(View.VISIBLE);
-                exercisePreviousTextView.setText(workoutApplicationService.requestExercise(exerciseIndex - 1).getName());
+                Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex - 1);
+                exercisePreviousTextView.setText(exercise.getName());
             } else {
                 exercisePreviousTextView.setVisibility(View.INVISIBLE);
             }
             if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
                 exerciseNextTextView.setVisibility(View.VISIBLE);
-                exerciseNextTextView.setText(workoutApplicationService.requestExercise(exerciseIndex + 1).getName());
+                Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex + 1);
+                exerciseNextTextView.setText(exercise.getName());
             } else {
                 exerciseNextTextView.setVisibility(View.INVISIBLE);
             }
