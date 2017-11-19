@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.application.workout;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -72,12 +73,12 @@ public class WorkoutApplicationService {
         return getWorkout().getExercises().indexOfCurrentExercise();
     }
 
-    public void finishCurrentWorkout() throws ResourceException {
-        if (workoutSession.hasWorkout()) {
-            Workout workout = workoutSession.getWorkout();
-            finishedWorkoutRepository.saveWorkout(workout);
-            workoutSession.switchWorkout(null);
-        }
+    @Deprecated
+    public FinishedWorkoutId finishCurrentWorkout() throws ResourceException {
+        Workout workout = getWorkout();
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
+        workoutSession.switchWorkout(null);
+        return finishedWorkoutId;
     }
 
     @Deprecated

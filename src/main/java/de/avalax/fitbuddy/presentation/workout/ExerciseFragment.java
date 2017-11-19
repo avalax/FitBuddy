@@ -2,6 +2,8 @@ package de.avalax.fitbuddy.presentation.workout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +19,11 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.PagerOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView;
@@ -103,6 +107,8 @@ public class ExerciseFragment extends Fragment {
                             if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
                                 exerciseIndex++;
                                 changeExercise();
+                            } else {
+                                finishWorkout();
                             }
                         }
                     });
@@ -113,6 +119,27 @@ public class ExerciseFragment extends Fragment {
         } catch (ResourceException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
+    }
+
+    private void finishWorkout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(R.string.message_finish_workout)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    try {
+                        FinishedWorkoutId finishedWorkoutId =
+                                workoutApplicationService.finishCurrentWorkout();
+                        FinishedWorkoutDetailFragment fragment
+                                = FinishedWorkoutDetailFragment.newInstance(finishedWorkoutId);
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_content, fragment)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .commit();
+                    } catch (ResourceException e) {
+                        Log.d("Can't finish workout", e.getMessage(), e);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void changeExercise() {

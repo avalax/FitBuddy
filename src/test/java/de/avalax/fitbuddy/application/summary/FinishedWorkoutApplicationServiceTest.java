@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 
-import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +38,7 @@ public class FinishedWorkoutApplicationServiceTest {
     public void noFinishedWorkouts_shouldReturnEmptyList() throws Exception {
         List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.allFinishedWorkouts();
 
-        assertThat(finishedWorkouts, emptyCollectionOf(FinishedWorkout.class));
+        assertThat(finishedWorkouts).isEmpty();
     }
 
     @Test
@@ -46,6 +48,25 @@ public class FinishedWorkoutApplicationServiceTest {
 
         List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.allFinishedWorkouts();
 
-        assertThat(finishedWorkouts, containsInAnyOrder(finishedWorkoutsFromRepository.toArray()));
+        assertThat(finishedWorkouts).containsAll(finishedWorkoutsFromRepository);
+    }
+
+    @Test
+    public void loadWorkout_shouldReturnWorkoutFromRepository() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
+        FinishedWorkout expectedWorkout = mock(FinishedWorkout.class);
+        doReturn(expectedWorkout).when(finishedWorkoutRepository).load(finishedWorkoutId);
+
+        FinishedWorkout workout = finishedWorkoutApplicationService.load(finishedWorkoutId);
+
+        assertThat(workout).isEqualTo(expectedWorkout);
+    }
+
+    @Test(expected = FinishedWorkoutException.class)
+    public void loadUnknownWorkout_shouldThrowFinishedWorkoutException() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
+        doThrow(new FinishedWorkoutException()).when(finishedWorkoutRepository).load(finishedWorkoutId);
+
+        finishedWorkoutApplicationService.load(finishedWorkoutId);
     }
 }

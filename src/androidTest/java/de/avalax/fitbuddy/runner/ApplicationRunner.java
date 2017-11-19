@@ -30,6 +30,7 @@ import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
@@ -315,6 +316,18 @@ public class ApplicationRunner {
 
     public void hasShownWorkoutProgress(int progress) {
         onView(withId(R.id.workoutProgressBar)).check(matches(progress(progress)));
+    }
+
+    public void hasShownFinishExerciseHint() {
+        onView(withText(R.string.message_finish_workout)).inRoot(isDialog()).check(matches(isDisplayed()));
+    }
+
+    public void finishWorkout() {
+        onView(withId(android.R.id.button1)).perform(click());
+    }
+
+    public void showsFinishedWorkout(String name) {
+        onView(withId(R.id.finished_workout_name)).check(matches(withText(name)));
     }
 
     private static ViewAction setNumberPicker(final int value) {

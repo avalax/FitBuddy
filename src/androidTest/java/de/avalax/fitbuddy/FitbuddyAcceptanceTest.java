@@ -220,7 +220,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void doWorkout_shouldNotNavigateToNonExistingExercises() throws Exception {
+    public void doWorkout_shouldNotNavigateToNonExistingExercisesAndInsteadFinishTheWorkout() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("only one exercise");
@@ -234,10 +234,13 @@ public class FitbuddyAcceptanceTest {
         application.showsActiveExercise("only one exercise", "42.0 kg");
         application.showsNoNextExercise();
 
-        application.switchToNextExercise();
+        application.switchToPreviousExercise();
         application.showsActiveExercise("only one exercise", "42.0 kg");
 
-        application.switchToPreviousExercise();
+        application.switchToNextExercise();
+        application.hasShownFinishExerciseHint();
+        application.finishWorkout();
+        application.showsFinishedWorkout("a workout");
     }
 
     @After

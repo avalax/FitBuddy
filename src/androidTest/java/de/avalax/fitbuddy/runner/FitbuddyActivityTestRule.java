@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
@@ -35,6 +36,11 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
         for (Workout workout : workouts) {
             editWorkoutApplicationService.deleteWorkout(workout);
         }
-        workoutApplicationService.finishCurrentWorkout();
+
+        try {
+            workoutApplicationService.finishCurrentWorkout();
+        } catch (ResourceException ignored) {
+
+        }
     }
 }

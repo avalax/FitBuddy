@@ -27,5 +27,6 @@
     <string name="message_save_workout_without_exercices">Please add at least one exercise</string>
     <string name="sets_to_delete_count">-</string>
     <string name="workout_active">ACTIVE</string>
-    <string name="workout_not_active">START</string>>
+    <string name="workout_not_active">START</string>
+    <string name="message_finish_workout">Finish active workout?</string>
 </resources>

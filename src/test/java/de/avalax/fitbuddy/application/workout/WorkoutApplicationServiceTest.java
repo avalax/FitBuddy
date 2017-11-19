@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
@@ -18,6 +19,10 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -88,11 +93,9 @@ public class WorkoutApplicationServiceTest {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
 
-        @Test
-        public void finishWorkout_shouldDoNothing() throws Exception {
+        @Test(expected = ResourceException.class)
+        public void finishWorkout_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.finishCurrentWorkout();
-
-            verifyZeroInteractions(finishedWorkoutRepository, workoutRepository);
         }
 
         @Test
@@ -153,9 +156,11 @@ public class WorkoutApplicationServiceTest {
 
         @Test
         public void finishWorkout_shouldPersistAndRemoveCurrentWorkoutFromSession() throws Exception {
-            workoutApplicationService.finishCurrentWorkout();
+            doReturn(new FinishedWorkoutId("1")).when(finishedWorkoutRepository).saveWorkout(workout);
 
-            verify(finishedWorkoutRepository).saveWorkout(workout);
+            FinishedWorkoutId finishedWorkoutId = workoutApplicationService.finishCurrentWorkout();
+
+            assertThat(finishedWorkoutId, equalTo(new FinishedWorkoutId("1")));
             verify(workoutSession).switchWorkout(null);
         }
 
