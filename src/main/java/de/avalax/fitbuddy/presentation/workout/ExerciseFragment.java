@@ -42,7 +42,7 @@ public class ExerciseFragment extends Fragment {
     @Inject
     ExerciseViewHelper exerciseViewHelper;
 
-    private int exerciseIndex;
+    int exerciseIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +121,7 @@ public class ExerciseFragment extends Fragment {
         }
     }
 
-    private void finishWorkout() {
+    void finishWorkout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.message_finish_workout)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -142,7 +142,7 @@ public class ExerciseFragment extends Fragment {
                 .show();
     }
 
-    private void changeExercise() {
+    void changeExercise() {
         updatePage();
         try {
             updateSetProgress();
