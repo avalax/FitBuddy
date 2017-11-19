@@ -129,7 +129,12 @@ jacoco {
     toolVersion = "0.7.9"
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+task jacocoCombinedTestReport(type: JacocoReport, dependsOn: ['jacocoTestReport', 'createDebugCoverageReport']) {
+    group = "Reporting"
+    description = "Generate Jacoco a combined coverage report"
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
 
