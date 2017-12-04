@@ -17,6 +17,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.MainActivity;
 
 public class FinishedWorkoutListFragment extends Fragment {
 
@@ -31,7 +32,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_finished_workout_list, container, false);
         RecyclerView recycleView = view.findViewById(android.R.id.list);
         List<FinishedWorkout> finishedWorkouts = applicationService.loadAllFinishedWorkouts();
-        FinishedWorkoutAdapter adapter = new FinishedWorkoutAdapter(finishedWorkouts);
+        FinishedWorkoutAdapter adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkouts);
         recycleView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

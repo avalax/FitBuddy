@@ -49,13 +49,13 @@ public class ApplicationRunner {
     public void showsStartBottomNavAsActive() {
         onView(withId(R.id.navigation_start_item)).check(matches(bottomNavItemIsChecked()));
         onView(withId(R.id.navigation_workout_item)).check(matches(bottomNavItemIsNotChecked()));
-        onView(withId(R.id.navigation_statistics_item)).check(matches(bottomNavItemIsNotChecked()));
+        onView(withId(R.id.navigation_summary_item)).check(matches(bottomNavItemIsNotChecked()));
     }
 
     public void showsFinishedWorkoutBottomNavAsActive() {
         onView(withId(R.id.navigation_start_item)).check(matches(bottomNavItemIsNotChecked()));
         onView(withId(R.id.navigation_workout_item)).check(matches(bottomNavItemIsNotChecked()));
-        onView(withId(R.id.navigation_statistics_item)).check(matches(bottomNavItemIsChecked()));
+        onView(withId(R.id.navigation_summary_item)).check(matches(bottomNavItemIsChecked()));
     }
 
     public void showsWorkoutBottomNavAsDisabled() {
@@ -63,11 +63,16 @@ public class ApplicationRunner {
     }
 
     public void showsFinishedWorkoutBottomNavAsDisabled() {
-        onView(withId(R.id.navigation_statistics_item)).check(matches(not(isEnabled())));
+        onView(withId(R.id.navigation_summary_item)).check(matches(not(isEnabled())));
     }
 
-    public void switchToFinishedWorkout() {
-        onView(withId(R.id.navigation_statistics_item)).perform(click());
+    public void switchToSummary() {
+        onView(withId(R.id.navigation_summary_item)).perform(click());
+    }
+
+    public void selectFinishedWorkout(int position) {
+        onView(withId(android.R.id.list)).perform(
+                actionOnItemAtPosition(position, click()));
     }
 
     public void showsFinishedWorkoutOverview(int position, String name) {
@@ -105,7 +110,6 @@ public class ApplicationRunner {
                 actionOnItemAtPosition(position, longClick()));
         onView(withId(R.id.toolbar_edit_workout)).perform(click());
     }
-
 
     public void selectWorkout(int position) {
         onView(withId(android.R.id.list)).perform(

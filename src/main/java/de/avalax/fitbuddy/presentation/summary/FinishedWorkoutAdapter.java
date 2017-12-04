@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.summary;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.presentation.MainActivity;
 
 public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkoutAdapter.ViewHolder> {
+    private MainActivity activity;
     private List<FinishedWorkout> finishedWorkouts;
 
-    FinishedWorkoutAdapter(List<FinishedWorkout> finishedWorkouts) {
+    FinishedWorkoutAdapter(MainActivity activity, List<FinishedWorkout> finishedWorkouts) {
         super();
+        this.activity = activity;
         this.finishedWorkouts = finishedWorkouts;
     }
 
@@ -30,6 +34,14 @@ public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkout
     public void onBindViewHolder(ViewHolder holder, int position) {
         FinishedWorkout workout = finishedWorkouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
+        holder.getView().setOnClickListener(view -> {
+            FinishedWorkoutDetailFragment fragment
+                    = FinishedWorkoutDetailFragment.newInstance(workout.getFinishedWorkoutId());
+            activity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_content, fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+        });
     }
 
     @Override
@@ -52,6 +64,10 @@ public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkout
 
         TextView getTitleTextView() {
             return titleTextView;
+        }
+
+        public View getView() {
+            return itemView;
         }
     }
 }

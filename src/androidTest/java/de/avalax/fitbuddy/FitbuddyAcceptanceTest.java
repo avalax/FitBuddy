@@ -183,7 +183,7 @@ public class FitbuddyAcceptanceTest {
         application.backPressed();
         application.showsWorkoutIsActive(0);
 
-        application.switchToFinishedWorkout();
+        application.switchToSummary();
         application.showsFinishedWorkoutBottomNavAsActive();
         application.showsFinishedWorkoutOverview(0, "a workout");
 
@@ -254,6 +254,25 @@ public class FitbuddyAcceptanceTest {
         application.switchToNextExercise();
         application.hasShownFinishExerciseHint();
         application.finishWorkout();
+        application.showsFinishedWorkout("a workout");
+    }
+
+    @Test
+    public void aFinishedWorkout_shouldSeeDetailOverSummary() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("only one exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+        application.selectWorkout(0);
+        application.switchToNextExercise();
+        application.finishWorkout();
+
+        application.switchToSummary();
+        application.selectFinishedWorkout(0);
+
         application.showsFinishedWorkout("a workout");
     }
 

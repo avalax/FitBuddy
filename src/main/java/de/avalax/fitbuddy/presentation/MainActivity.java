@@ -18,7 +18,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
@@ -157,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
             return true;
         }
-        if (item.getItemId() == R.id.navigation_statistics_item) {
+        if (item.getItemId() == R.id.navigation_summary_item) {
             Fragment finishedWorkoutListFragment = new FinishedWorkoutListFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_content, finishedWorkoutListFragment)
