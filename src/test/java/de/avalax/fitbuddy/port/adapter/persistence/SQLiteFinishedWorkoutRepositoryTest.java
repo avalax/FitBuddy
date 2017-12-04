@@ -116,4 +116,18 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         assertThat(finishedWorkouts.get(0).getFinishedWorkoutId(), Matchers.equalTo(finishedWorkoutId1));
         assertThat(finishedWorkouts.get(1).getFinishedWorkoutId(), Matchers.equalTo(finishedWorkoutId2));
     }
+
+    @Test
+    public void deleteWorkoutWithNull_shouldDoNothing() throws Exception {
+        finishedWorkoutRepository.delete(null);
+    }
+
+    @Test(expected = FinishedWorkoutException.class)
+    public void persistedWorkout_shouldBeRemovedFromPersistence() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(new BasicWorkout());
+
+        finishedWorkoutRepository.delete(finishedWorkoutId);
+
+        finishedWorkoutRepository.load(finishedWorkoutId);
+    }
 }

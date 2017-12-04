@@ -19,12 +19,8 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -107,6 +103,11 @@ public class WorkoutApplicationServiceTest {
         public void hasPreviousExercise_shouldReturnFalse() throws Exception {
             assertThat(workoutApplicationService.hasPreviousExercise(0), equalTo(false));
         }
+
+        @Test
+        public void hasActiveWorkout_shouldReturnFalse() throws Exception {
+            assertThat(workoutApplicationService.hasActiveWorkout(), equalTo(false));
+        }
     }
 
     public class aWorkoutGiven {
@@ -162,6 +163,11 @@ public class WorkoutApplicationServiceTest {
 
             assertThat(finishedWorkoutId, equalTo(new FinishedWorkoutId("1")));
             verify(workoutSession).switchWorkout(null);
+        }
+
+        @Test
+        public void hasActiveWorkout_shouldReturnTrue() throws Exception {
+            assertThat(workoutApplicationService.hasActiveWorkout(), equalTo(true));
         }
 
         public class anExerciseGiven {

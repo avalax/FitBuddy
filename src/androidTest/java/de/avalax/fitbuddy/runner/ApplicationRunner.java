@@ -33,6 +33,7 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -51,6 +52,29 @@ public class ApplicationRunner {
         onView(withId(R.id.navigation_statistics_item)).check(matches(bottomNavItemIsNotChecked()));
     }
 
+    public void showsFinishedWorkoutBottomNavAsActive() {
+        onView(withId(R.id.navigation_start_item)).check(matches(bottomNavItemIsNotChecked()));
+        onView(withId(R.id.navigation_workout_item)).check(matches(bottomNavItemIsNotChecked()));
+        onView(withId(R.id.navigation_statistics_item)).check(matches(bottomNavItemIsChecked()));
+    }
+
+    public void showsWorkoutBottomNavAsDisabled() {
+        onView(withId(R.id.navigation_workout_item)).check(matches(not(isEnabled())));
+    }
+
+    public void showsFinishedWorkoutBottomNavAsDisabled() {
+        onView(withId(R.id.navigation_statistics_item)).check(matches(not(isEnabled())));
+    }
+
+    public void switchToFinishedWorkout() {
+        onView(withId(R.id.navigation_statistics_item)).perform(click());
+    }
+
+    public void showsFinishedWorkoutOverview(int position, String name) {
+        onView(withId(android.R.id.list))
+                .perform(RecyclerViewActions.scrollToPosition(position))
+                .check(matches(itemAtPosition(position, withText(name), R.id.finished_workout_title)));
+    }
 
     public void showsSupportMenuItem() {
         onView(withId(R.id.toolbar_support)).check(matches(isDisplayed()));

@@ -27,6 +27,8 @@ public class FitbuddyAcceptanceTest {
         application.showsStartBottomNavAsActive();
         application.hasShownAddNewWorkoutHint();
         application.showsSupportMenuItem();
+        application.showsWorkoutBottomNavAsDisabled();
+        application.showsFinishedWorkoutBottomNavAsDisabled();
     }
 
     @Test
@@ -82,7 +84,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void existingWorkoutWithTwoSets_shouldInteractWithSetListAndDisplaySaveNotPossibleMessage() throws Exception {
+    public void existingWorkout_shouldNotSaveExerciseWithoutSets() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("old workout");
         application.addExercise("old exercise");
@@ -110,7 +112,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void existingWorkoutWithTwoExercises_shouldInteractWithExerciseListAndDisplaySaveNotPossibleMessage() throws Exception {
+    public void existingWorkout_shouldNotSaveWorkoutWithoutExercises() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("old workout");
         application.addExercise("first exercise");
@@ -155,7 +157,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void switchFragments_shouldDisplayCorrectFramentHighlighted() throws Exception {
+    public void activeWorkoutGiven_shouldNavigateBetweenFragments() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("an exercise");
@@ -163,6 +165,11 @@ public class FitbuddyAcceptanceTest {
         application.saveSet();
         application.saveExercise();
         application.saveWorkout();
+        //TODO: use provider for finished workout
+        application.selectWorkout(0);
+        application.switchToNextExercise();
+        application.finishWorkout();
+        application.navigateToStart();
 
         application.selectWorkout(0);
         application.showsActiveExercise("an exercise", "42.0 kg");
@@ -172,6 +179,13 @@ public class FitbuddyAcceptanceTest {
 
         application.navigateToWorkout();
         application.showsActiveExercise("an exercise", "42.0 kg");
+
+        application.backPressed();
+        application.showsWorkoutIsActive(0);
+
+        application.switchToFinishedWorkout();
+        application.showsFinishedWorkoutBottomNavAsActive();
+        application.showsFinishedWorkoutOverview(0, "a workout");
 
         application.backPressed();
         application.showsWorkoutIsActive(0);
@@ -220,7 +234,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void doWorkout_shouldNotNavigateToNonExistingExercisesAndInsteadFinishTheWorkout() throws Exception {
+    public void doWorkout_shouldFinishAfterLastExercise() throws Exception {
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("only one exercise");
@@ -246,5 +260,6 @@ public class FitbuddyAcceptanceTest {
     @After
     public void tearDown() throws Exception {
         activityRule.deleteWorkouts();
+        activityRule.deleteFinishedWorkouts();
     }
 }

@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.runner;
 
-import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
@@ -17,22 +16,30 @@ public class BottomNavigationMatcher {
         return withBottomNavItemCheckedStatus(false);
     }
 
-    private static Matcher<View> withBottomNavItemCheckedStatus(final boolean isChecked) {
+    public static Matcher<View> bottomNavItemIsCheckable() {
         return new BoundedMatcher<View, BottomNavigationItemView>(BottomNavigationItemView.class) {
-            boolean triedMatching;
-
             @Override
             public void describeTo(Description description) {
-                if (triedMatching) {
-                    description.appendText("with BottomNavigationItem check status: " + String.valueOf(isChecked));
-                    description.appendText("But was: " + String.valueOf(!isChecked));
-                }
+                description.appendText("with BottomNavigationItem check disabled status");
             }
 
-            @SuppressLint("RestrictedApi")
             @Override
             protected boolean matchesSafely(BottomNavigationItemView item) {
-                triedMatching = true;
+                return item.getItemData().isCheckable();
+            }
+        };
+    }
+
+    private static Matcher<View> withBottomNavItemCheckedStatus(final boolean isChecked) {
+        return new BoundedMatcher<View, BottomNavigationItemView>(BottomNavigationItemView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with BottomNavigationItem check status: " + String.valueOf(isChecked));
+                description.appendText("But was: " + String.valueOf(!isChecked));
+            }
+
+            @Override
+            protected boolean matchesSafely(BottomNavigationItemView item) {
                 return item.getItemData().isChecked() == isChecked;
             }
         };

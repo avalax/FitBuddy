@@ -113,4 +113,8 @@ public class WorkoutApplicationService {
         int size = workoutSession.getWorkout().getExercises().size();
         return size > exerciseIndex + 1;
     }
+
+    public boolean hasActiveWorkout() {
+        return workoutSession.hasWorkout();
+    }
 }

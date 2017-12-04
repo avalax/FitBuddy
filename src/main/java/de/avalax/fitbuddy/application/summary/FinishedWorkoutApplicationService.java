@@ -14,11 +14,15 @@ public class FinishedWorkoutApplicationService {
         this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 
-    public List<FinishedWorkout> allFinishedWorkouts() {
+    public List<FinishedWorkout> loadAllFinishedWorkouts() {
         return finishedWorkoutRepository.loadAll();
     }
 
     public FinishedWorkout load(FinishedWorkoutId finishedWorkoutId) throws FinishedWorkoutException {
         return finishedWorkoutRepository.load(finishedWorkoutId);
+    }
+
+    public void delete(FinishedWorkoutId finishedWorkoutId) {
+        finishedWorkoutRepository.delete(finishedWorkoutId);
     }
 }

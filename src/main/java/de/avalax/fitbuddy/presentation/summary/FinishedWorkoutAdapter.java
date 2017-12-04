@@ -1,11 +1,9 @@
 package de.avalax.fitbuddy.presentation.summary;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,58 +11,47 @@ import java.util.List;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 
-public class FinishedWorkoutAdapter extends ArrayAdapter<FinishedWorkout> {
-    private int resource;
+public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkoutAdapter.ViewHolder> {
     private List<FinishedWorkout> finishedWorkouts;
 
-    public FinishedWorkoutAdapter(Context context, int resource,
-                                  List<FinishedWorkout> finishedWorkouts) {
-        super(context, resource, finishedWorkouts);
-        this.resource = resource;
+    FinishedWorkoutAdapter(List<FinishedWorkout> finishedWorkouts) {
+        super();
         this.finishedWorkouts = finishedWorkouts;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        FinishedWorkout finishedWorkout = finishedWorkouts.get(position);
-        if (convertView == null) {
-            View newConvertView = newConvertView(parent);
-            newConvertView.setTag(createViewHolder(newConvertView, finishedWorkout));
-            return newConvertView;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.item_finished_workout, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        FinishedWorkout workout = finishedWorkouts.get(position);
+        holder.getTitleTextView().setText(workout.getName());
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return finishedWorkouts.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView titleTextView;
+
+        ViewHolder(View v) {
+            super(v);
+            titleTextView = v.findViewById(R.id.finished_workout_title);
         }
 
-        FinishedWorkoutViewHolder holder = (FinishedWorkoutViewHolder) convertView.getTag();
-        holder.setFromFinishedWorkout(finishedWorkout);
-        return convertView;
-    }
-
-    @NonNull
-    private FinishedWorkoutViewHolder createViewHolder(
-            View convertView,
-            FinishedWorkout finishedWorkout) {
-        FinishedWorkoutViewHolder holder = new FinishedWorkoutViewHolder();
-        holder.name = (TextView) convertView.findViewById(R.id.finished_workout_title);
-        holder.date = (TextView) convertView.findViewById(R.id.finished_workout_date);
-        holder.setFromFinishedWorkout(finishedWorkout);
-        return holder;
-    }
-
-    private View newConvertView(@NonNull ViewGroup parent) {
-        View convertView;
-        String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
-        LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflaterService);
-        convertView = vi.inflate(resource, parent, false);
-        return convertView;
-    }
-
-    static class FinishedWorkoutViewHolder {
-        TextView name;
-        TextView date;
-
-        void setFromFinishedWorkout(FinishedWorkout finishedWorkout) {
-            name.setText(finishedWorkout.getName());
-            date.setText(finishedWorkout.getCreated());
+        TextView getTitleTextView() {
+            return titleTextView;
         }
     }
 }

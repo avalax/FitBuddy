@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,7 +37,7 @@ public class FinishedWorkoutApplicationServiceTest {
 
     @Test
     public void noFinishedWorkouts_shouldReturnEmptyList() throws Exception {
-        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.allFinishedWorkouts();
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).isEmpty();
     }
@@ -46,7 +47,7 @@ public class FinishedWorkoutApplicationServiceTest {
         finishedWorkoutsFromRepository.add(mock(FinishedWorkout.class));
         finishedWorkoutsFromRepository.add(mock(FinishedWorkout.class));
 
-        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.allFinishedWorkouts();
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).containsAll(finishedWorkoutsFromRepository);
     }
@@ -60,6 +61,15 @@ public class FinishedWorkoutApplicationServiceTest {
         FinishedWorkout workout = finishedWorkoutApplicationService.load(finishedWorkoutId);
 
         assertThat(workout).isEqualTo(expectedWorkout);
+    }
+
+    @Test
+    public void deleteWorkout_shouldDeleteWorkoutFromRepository() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
+
+        finishedWorkoutApplicationService.delete(finishedWorkoutId);
+
+        verify(finishedWorkoutRepository).delete(finishedWorkoutId);
     }
 
     @Test(expected = FinishedWorkoutException.class)

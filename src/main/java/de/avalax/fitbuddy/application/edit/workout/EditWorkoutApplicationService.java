@@ -25,6 +25,8 @@ public class EditWorkoutApplicationService {
         this.workoutRepository = workoutRepository;
     }
 
+    @Deprecated
+    // Move to workout application server
     public void switchWorkout(Workout workout) throws WorkoutException {
         if (workoutSession.hasWorkout()) {
             Workout workoutToSave = workoutSession.getWorkout();

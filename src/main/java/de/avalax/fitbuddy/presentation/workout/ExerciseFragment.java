@@ -22,6 +22,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.PagerOnTouchListener;
@@ -128,6 +129,7 @@ public class ExerciseFragment extends Fragment {
                     try {
                         FinishedWorkoutId finishedWorkoutId =
                                 workoutApplicationService.finishCurrentWorkout();
+                        ((MainActivity)getActivity()).updateBottomNavigation();
                         FinishedWorkoutDetailFragment fragment
                                 = FinishedWorkoutDetailFragment.newInstance(finishedWorkoutId);
                         getActivity().getSupportFragmentManager().beginTransaction()

@@ -10,4 +10,6 @@ public interface FinishedWorkoutRepository {
     FinishedWorkout load(FinishedWorkoutId finishedWorkoutId) throws FinishedWorkoutException;
 
     List<FinishedWorkout> loadAll();
+
+    void delete(FinishedWorkoutId finishedWorkoutId);
 }

@@ -83,6 +83,16 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         return finishedWorkouts;
     }
 
+    @Override
+    public void delete(FinishedWorkoutId finishedWorkoutId) {
+        if (finishedWorkoutId == null) {
+            return;
+        }
+        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
+        database.delete(TABLE_FINISHED_WORKOUT, "id=" + finishedWorkoutId.getId(), null);
+        database.close();
+    }
+
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(cursor.getString(0));
         WorkoutId workoutId = new WorkoutId(cursor.getString(1));

@@ -9,9 +9,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
     private EditWorkoutApplicationService workoutSession;
@@ -27,7 +27,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
     @Override
     public WorkoutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(activity);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.card_workout, parent, false);
         return new WorkoutAdapter.ViewHolder(view);
     }
