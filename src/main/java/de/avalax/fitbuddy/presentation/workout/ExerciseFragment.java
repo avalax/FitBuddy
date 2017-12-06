@@ -129,7 +129,7 @@ public class ExerciseFragment extends Fragment {
                     try {
                         FinishedWorkoutId finishedWorkoutId =
                                 workoutApplicationService.finishCurrentWorkout();
-                        ((MainActivity)getActivity()).updateBottomNavigation();
+                        ((MainActivity) getActivity()).updateBottomNavigation();
                         FinishedWorkoutDetailFragment fragment
                                 = FinishedWorkoutDetailFragment.newInstance(finishedWorkoutId);
                         getActivity().getSupportFragmentManager().beginTransaction()
