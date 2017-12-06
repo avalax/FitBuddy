@@ -50,13 +50,13 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         });
         holder.getView().setOnLongClickListener(view -> {
             int oldSelectedPosition = selectedPosition;
-            selectedPosition = position;
+            selectedPosition = holder.getAdapterPosition();
             if (oldSelectedPosition != RecyclerView.NO_POSITION) {
                 notifyItemChanged(oldSelectedPosition);
             }
-            notifyItemChanged(position);
+            notifyItemChanged(holder.getAdapterPosition());
 
-            activity.updateEditToolbar(position, workout);
+            activity.updateEditToolbar(holder.getAdapterPosition(), workout);
             return true;
         });
     }
