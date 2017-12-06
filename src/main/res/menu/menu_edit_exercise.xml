@@ -3,7 +3,7 @@
     <item
         android:id="@+id/toolbar_save_exercise"
         app:showAsAction="always"
-        android:title="SAVE"
+        android:title="@string/toolbar_item_save"
         android:tint="?android:textColorPrimaryInverse">
     </item>
 </menu>

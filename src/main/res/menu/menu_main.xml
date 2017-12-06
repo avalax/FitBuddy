@@ -4,7 +4,7 @@
         android:id="@+id/toolbar_support"
         android:icon="@drawable/ic_menu_support"
         app:showAsAction="ifRoom"
-        android:title="Support"
+        android:title="@string/toolbar_item_support"
         android:tint="?android:textColorPrimaryInverse">
     </item>
 </menu>
