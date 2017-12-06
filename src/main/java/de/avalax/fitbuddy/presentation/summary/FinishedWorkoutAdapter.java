@@ -13,7 +13,8 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
-public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkoutAdapter.ViewHolder> {
+public class FinishedWorkoutAdapter
+        extends RecyclerView.Adapter<FinishedWorkoutAdapter.ViewHolder> {
     private MainActivity activity;
     private List<FinishedWorkout> finishedWorkouts;
 
@@ -41,6 +42,10 @@ public class FinishedWorkoutAdapter extends RecyclerView.Adapter<FinishedWorkout
                     .replace(R.id.fragment_content, fragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
+        });
+        holder.getView().setOnLongClickListener(view -> {
+            activity.updateEditToolbar(position, workout);
+            return true;
         });
     }
 

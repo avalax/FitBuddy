@@ -22,7 +22,7 @@ public class FinishedWorkoutApplicationService {
         return finishedWorkoutRepository.load(finishedWorkoutId);
     }
 
-    public void delete(FinishedWorkoutId finishedWorkoutId) {
-        finishedWorkoutRepository.delete(finishedWorkoutId);
+    public void delete(FinishedWorkout finishedWorkout) {
+        finishedWorkoutRepository.delete(finishedWorkout.getFinishedWorkoutId());
     }
 }

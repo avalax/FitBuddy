@@ -18,6 +18,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
@@ -86,6 +87,14 @@ public class MainActivity extends AppCompatActivity
             mainToolbar();
             return true;
         }
+        if (item.getItemId() == R.id.toolbar_delete_finished_workout) {
+            FinishedWorkout workout = (FinishedWorkout) item.getIntent()
+                    .getSerializableExtra("finishedWorkout");
+            finishedWorkoutApplicationService.delete(workout);
+            removeFinishedWorkoutFromList(workout);
+            mainToolbar();
+            return true;
+        }
         return false;
     }
 
@@ -111,6 +120,12 @@ public class MainActivity extends AppCompatActivity
         workoutListFragment.removeWorkout(workout);
     }
 
+    private void removeFinishedWorkoutFromList(FinishedWorkout workout) {
+        FinishedWorkoutListFragment workoutListFragment = (FinishedWorkoutListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        workoutListFragment.removeFinishedWorkout(workout);
+    }
+
     public void updateEditToolbar(int position, Workout workout) {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main_edit_workout, menu);
@@ -121,6 +136,16 @@ public class MainActivity extends AppCompatActivity
         item.setIntent(intent);
         MenuItem itemDelete = menu.findItem(R.id.toolbar_delete_workout);
         itemDelete.setIntent(intent);
+    }
+
+    public void updateEditToolbar(int position, FinishedWorkout workout) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_summary_edit, menu);
+        Intent intent = new Intent();
+        intent.putExtra("finishedWorkout", workout);
+        intent.putExtra("position", position);
+        MenuItem item = menu.findItem(R.id.toolbar_delete_finished_workout);
+        item.setIntent(intent);
     }
 
     private void mainToolbar() {

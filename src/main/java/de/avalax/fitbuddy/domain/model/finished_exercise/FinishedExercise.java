@@ -1,8 +1,10 @@
 package de.avalax.fitbuddy.domain.model.finished_exercise;
 
+import java.io.Serializable;
+
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 
-public interface FinishedExercise {
+public interface FinishedExercise extends Serializable {
     FinishedWorkoutId getFinishedWorkoutId();
 
     FinishedExerciseId getFinishedExerciseId();

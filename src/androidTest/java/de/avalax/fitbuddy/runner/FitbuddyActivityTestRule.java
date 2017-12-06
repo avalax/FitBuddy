@@ -51,7 +51,7 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     public void deleteFinishedWorkouts() {
         List<FinishedWorkout> workouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
         for (FinishedWorkout finishedWorkout : workouts) {
-            finishedWorkoutApplicationService.delete(finishedWorkout.getFinishedWorkoutId());
+            finishedWorkoutApplicationService.delete(finishedWorkout);
         }
     }
 }

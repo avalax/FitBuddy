@@ -18,6 +18,7 @@
     <string name="empty_workout_list">Click to add workout</string>
     <string name="empty_exercise_list">Click to add exercise</string>
     <string name="empty_set_list">Click to add set</string>
+    <string name="empty_finished_workout_list">Finish a workout first</string>
     <string name="date_never">never</string>
     <string name="default_set_weight">-</string>
     <string name="default_set_reps">0</string>

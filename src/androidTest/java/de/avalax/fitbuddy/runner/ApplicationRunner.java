@@ -70,6 +70,16 @@ public class ApplicationRunner {
         onView(withId(R.id.navigation_summary_item)).perform(click());
     }
 
+    public void deleteFinishedWorkout(int position) {
+        onView(withId(android.R.id.list)).perform(actionOnItemAtPosition(position, longClick()));
+        onView(withId(R.id.toolbar_delete_finished_workout)).perform(click());
+    }
+
+    public void hasShownAddNoFinishedWorkoutsHint() {
+        onView(withId(android.R.id.empty)).check(matches(withText(R.string.empty_finished_workout_list)));
+        onView(withId(android.R.id.list)).check(matches(not(isDisplayed())));
+    }
+
     public void selectFinishedWorkout(int position) {
         onView(withId(android.R.id.list)).perform(
                 actionOnItemAtPosition(position, click()));

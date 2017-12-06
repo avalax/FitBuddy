@@ -276,6 +276,25 @@ public class FitbuddyAcceptanceTest {
         application.showsFinishedWorkout("a workout");
     }
 
+    @Test
+    public void aFinishedWorkout_shouldBeDeleted() throws Exception {
+        //TODO: use provider for arrange
+        application.addWorkout("a workout");
+        application.addExercise("only one exercise");
+        application.addSet("12", "42.0");
+        application.saveSet();
+        application.saveExercise();
+        application.saveWorkout();
+        application.selectWorkout(0);
+        application.switchToNextExercise();
+        application.finishWorkout();
+
+        application.switchToSummary();
+        application.deleteFinishedWorkout(0);
+
+        application.hasShownAddNoFinishedWorkoutsHint();
+    }
+
     @After
     public void tearDown() throws Exception {
         activityRule.deleteWorkouts();
