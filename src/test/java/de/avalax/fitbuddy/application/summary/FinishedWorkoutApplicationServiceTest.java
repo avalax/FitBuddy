@@ -9,11 +9,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 
+import static de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkoutBuilder.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -66,8 +69,8 @@ public class FinishedWorkoutApplicationServiceTest {
     @Test
     public void deleteWorkout_shouldDeleteWorkoutFromRepository() throws Exception {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
-
-        finishedWorkoutApplicationService.delete(finishedWorkoutId);
+        FinishedWorkout finishedWorkout = aFinishedWorkout().withFinishedWorkoutId(finishedWorkoutId).build();
+        finishedWorkoutApplicationService.delete(finishedWorkout);
 
         verify(finishedWorkoutRepository).delete(finishedWorkoutId);
     }
