@@ -31,5 +31,7 @@
     <string name="workout_not_active">START</string>
     <string name="message_finish_workout">Finish active workout?</string>
     <string name="toolbar_item_save">SAVE</string>
+    <string name="toolbar_item_delete">DELETE</string>
+    <string name="toolbar_item_edit">EDIT</string>
     <string name="toolbar_item_support">Support</string>
 </resources>

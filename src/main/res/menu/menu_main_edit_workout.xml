@@ -4,14 +4,14 @@
         android:id="@+id/toolbar_delete_workout"
         android:icon="@drawable/ic_action_delete"
         app:showAsAction="ifRoom"
-        android:title="DELETE"
+        android:title="@string/toolbar_item_delete"
         android:tint="?android:textColorPrimaryInverse">
     </item>
     <item
         android:id="@+id/toolbar_edit_workout"
         android:icon="@drawable/ic_action_edit"
         app:showAsAction="ifRoom"
-        android:title="EDIT"
+        android:title="@string/toolbar_item_edit"
         android:tint="?android:textColorPrimaryInverse">
     </item>
 </menu>
