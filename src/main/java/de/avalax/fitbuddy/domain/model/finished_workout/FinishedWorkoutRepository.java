@@ -12,4 +12,6 @@ public interface FinishedWorkoutRepository {
     List<FinishedWorkout> loadAll();
 
     void delete(FinishedWorkoutId finishedWorkoutId);
+
+    long size();
 }

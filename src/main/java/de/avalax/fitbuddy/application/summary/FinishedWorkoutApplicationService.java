@@ -25,4 +25,8 @@ public class FinishedWorkoutApplicationService {
     public void delete(FinishedWorkout finishedWorkout) {
         finishedWorkoutRepository.delete(finishedWorkout.getFinishedWorkoutId());
     }
+
+    public boolean hasFinishedWorkouts() {
+        return finishedWorkoutRepository.size() > 0;
+    }
 }

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.port.adapter.persistence;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -13,8 +14,8 @@ import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -91,6 +92,14 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         database.delete(TABLE_FINISHED_WORKOUT, "id=" + finishedWorkoutId.getId(), null);
         database.close();
+    }
+
+    @Override
+    public long size() {
+        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
+        long size = DatabaseUtils.queryNumEntries(db, TABLE_FINISHED_WORKOUT);
+        db.close();
+        return size;
     }
 
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {

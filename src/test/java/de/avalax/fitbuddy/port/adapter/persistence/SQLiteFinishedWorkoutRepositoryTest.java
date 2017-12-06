@@ -67,7 +67,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveWorkout_shouldInsertWorkoutInformationsIntoDatabase() throws Exception {
+    public void saveWorkout_shouldInsertWorkoutInformationIntoDatabase() throws Exception {
         FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
 
         FinishedWorkout finishedWorkout = finishedWorkoutRepository.load(finishedWorkoutId);
@@ -76,6 +76,22 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         assertThat(finishedWorkout.getWorkoutId(), equalTo(workout.getWorkoutId()));
         assertThat(finishedWorkout.getName(), equalTo(workout.getName()));
         assertThat(finishedWorkout.getCreated(), any(String.class));
+    }
+
+    @Test
+    public void emptyTable_shouldReturnSizeFromTable() throws Exception {
+        long size = finishedWorkoutRepository.size();
+
+        assertThat(size, equalTo(0L));
+    }
+
+    @Test
+    public void oneWorkoutSaved_shouldReturnSizeFromTable() throws Exception {
+        finishedWorkoutRepository.saveWorkout(workout);
+
+        long size = finishedWorkoutRepository.size();
+
+        assertThat(size, equalTo(1L));
     }
 
     @Test

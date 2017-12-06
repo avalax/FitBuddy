@@ -62,9 +62,7 @@ public class MainActivity extends AppCompatActivity
         MenuItem itemWorkout = bottomNavigation.getMenu().getItem(1);
         MenuItem itemFinishedWorkout = bottomNavigation.getMenu().getItem(2);
         itemWorkout.setEnabled(workoutApplicationService.hasActiveWorkout());
-        // TODO: performance
-        boolean enabled = !finishedWorkoutApplicationService.loadAllFinishedWorkouts().isEmpty();
-        itemFinishedWorkout.setEnabled(enabled);
+        itemFinishedWorkout.setEnabled(finishedWorkoutApplicationService.hasFinishedWorkouts());
     }
 
     @Override

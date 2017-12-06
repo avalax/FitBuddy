@@ -9,14 +9,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 
-import static de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkoutBuilder.*;
+import static de.avalax.fitbuddy.domain.model.finished_workout.BasicFinishedWorkoutBuilder.aFinishedWorkout;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -43,16 +41,19 @@ public class FinishedWorkoutApplicationServiceTest {
         List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).isEmpty();
+        assertThat(finishedWorkoutApplicationService.hasFinishedWorkouts()).isFalse();
     }
 
     @Test
     public void finishedWorkouts_shouldReturnListFromRepository() throws Exception {
         finishedWorkoutsFromRepository.add(mock(FinishedWorkout.class));
         finishedWorkoutsFromRepository.add(mock(FinishedWorkout.class));
+        when(finishedWorkoutRepository.size()).thenReturn((long) finishedWorkoutsFromRepository.size());
 
         List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).containsAll(finishedWorkoutsFromRepository);
+        assertThat(finishedWorkoutApplicationService.hasFinishedWorkouts()).isTrue();
     }
 
     @Test
