@@ -50,7 +50,7 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
 
             holder.getTitleTextView().setText(title);
             holder.getSubtitleTextView().setText(subtitle);
-            holder.deselect();
+            holder.setSelected(selections.contains(set));
 
             holder.getView().setOnClickListener(view -> {
                 if (selections.isEmpty()) {
@@ -59,15 +59,15 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
                     intent.putExtra("position", holder.getAdapterPosition());
                     activity.startActivityForResult(intent, EDIT_SET);
                 } else {
-                    if (isSelected(holder)) {
-                        deselect(holder);
+                    if (isSelected(set)) {
+                        deselect(holder.getAdapterPosition(), set);
                     } else {
-                        select(holder);
+                        select(holder.getAdapterPosition(), set);
                     }
                 }
             });
             holder.getView().setOnLongClickListener(view -> {
-                select(holder);
+                select(holder.getAdapterPosition(), set);
                 return true;
             });
         } catch (SetException e) {
@@ -75,35 +75,20 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
         }
     }
 
-    private boolean isSelected(SelectableViewHolder holder) {
-        boolean isSelected = false;
-        try {
-            isSelected = selections.contains(sets.get(holder.getAdapterPosition()));
-
-        } catch (SetException e) {
-            Log.e("SetException", e.getMessage(), e);
-        }
-        return isSelected;
+    private boolean isSelected(Set set) {
+        return selections.contains(set);
     }
 
-    private void deselect(SelectableViewHolder holder) {
-        try {
-            selections.remove(sets.get(holder.getAdapterPosition()));
-            holder.deselect();
-            ((EditExerciseActivity) activity).updateToolbar(selections.size());
-        } catch (SetException e) {
-            Log.e("SetException", e.getMessage(), e);
-        }
+    private void deselect(int position, Set set) {
+        selections.remove(set);
+        notifyItemChanged(position);
+        ((EditExerciseActivity) activity).updateToolbar(selections.size());
     }
 
-    private void select(SelectableViewHolder holder) {
-        try {
-            selections.add(sets.get(holder.getAdapterPosition()));
-            holder.select();
-            ((EditExerciseActivity) activity).updateToolbar(selections.size());
-        } catch (SetException e) {
-            Log.e("SetException", e.getMessage(), e);
-        }
+    private void select(int position, Set set) {
+        selections.add(set);
+        notifyItemChanged(position);
+        ((EditExerciseActivity) activity).updateToolbar(selections.size());
     }
 
     @Override
@@ -116,7 +101,7 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
         return sets == null ? 0 : sets.size();
     }
 
-    public void removeSelections() {
+    void removeSelections() {
         sets.removeAll(selections);
         selections.clear();
         notifyDataSetChanged();

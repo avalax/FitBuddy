@@ -52,6 +52,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
 
             holder.getTitleTextView().setText(title);
             holder.getSubtitleTextView().setText(subtitle);
+            holder.setSelected(selections.contains(exercise));
+
             holder.getView().setOnClickListener(view -> {
                 if (selections.isEmpty()) {
                     Intent intent = new Intent(activity, EditExerciseActivity.class);
@@ -59,15 +61,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
                     intent.putExtra("position", holder.getAdapterPosition());
                     activity.startActivityForResult(intent, EDIT_EXERCISE);
                 } else {
-                    if (isSelected(holder)) {
-                        deselect(holder);
+                    if (isSelected(exercise)) {
+                        deselect(holder.getAdapterPosition(), exercise);
                     } else {
-                        select(holder);
+                        select(holder.getAdapterPosition(), exercise);
                     }
                 }
             });
             holder.getView().setOnLongClickListener(view -> {
-                select(holder);
+                select(holder.getAdapterPosition(), exercise);
                 return true;
             });
         } catch (ExerciseException e) {
@@ -75,35 +77,20 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
         }
     }
 
-    private boolean isSelected(SelectableViewHolder holder) {
-        boolean isSelected = false;
-        try {
-            isSelected = selections.contains(exercises.get(holder.getAdapterPosition()));
-
-        } catch (ExerciseException e) {
-            Log.e("ExerciseException", e.getMessage(), e);
-        }
-        return isSelected;
+    private boolean isSelected(Exercise exercise) {
+        return selections.contains(exercise);
     }
 
-    private void deselect(SelectableViewHolder holder) {
-        try {
-            selections.remove(exercises.get(holder.getAdapterPosition()));
-            holder.deselect();
-            ((EditWorkoutActivity) activity).updateToolbar(selections.size());
-        } catch (ExerciseException e) {
-            Log.e("ExerciseException", e.getMessage(), e);
-        }
+    private void deselect(int position, Exercise exercise) {
+        selections.remove(exercise);
+        notifyItemChanged(position);
+        ((EditWorkoutActivity) activity).updateToolbar(selections.size());
     }
 
-    private void select(SelectableViewHolder holder) {
-        try {
-            selections.add(exercises.get(holder.getAdapterPosition()));
-            holder.select();
-            ((EditWorkoutActivity) activity).updateToolbar(selections.size());
-        } catch (ExerciseException e) {
-            Log.e("ExerciseException", e.getMessage(), e);
-        }
+    private void select(int position, Exercise exercise) {
+        selections.add(exercise);
+        notifyItemChanged(position);
+        ((EditWorkoutActivity) activity).updateToolbar(selections.size());
     }
 
     @Override
@@ -116,7 +103,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
         return exercises == null ? 0 : exercises.size();
     }
 
-    public void removeSelections() {
+    void removeSelections() {
         exercises.removeAll(selections);
         selections.clear();
         notifyDataSetChanged();

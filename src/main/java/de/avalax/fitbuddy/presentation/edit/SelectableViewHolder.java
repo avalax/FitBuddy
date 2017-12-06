@@ -30,12 +30,20 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder {
         return itemView;
     }
 
-    public void select() {
-        int color = itemView.getResources().getColor(R.color.primaryDarkColor);
+    public void setSelected(boolean selected) {
+        if (selected) {
+            select();
+        } else {
+            deselect();
+        }
+    }
+
+    private void select() {
+        int color = itemView.getResources().getColor(R.color.primaryLightColor);
         itemView.setBackgroundColor(color);
     }
 
-    public void deselect() {
+    private void deselect() {
         itemView.setBackgroundColor(TRANSPARENT);
     }
 }
