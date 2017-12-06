@@ -8,10 +8,8 @@ import android.view.ViewConfiguration;
 
 public abstract class PagerOnTouchListener implements View.OnTouchListener {
     private final GestureDetectorCompat gdt;
-    private final Activity activity;
 
     public PagerOnTouchListener(Activity activity) {
-        this.activity = activity;
         final PagerOnTouchListener touchListener = this;
         ViewConfiguration viewConfiguration = ViewConfiguration.get(activity);
         int minSwipeDistance = viewConfiguration.getScaledPagingTouchSlop();
@@ -38,9 +36,6 @@ public abstract class PagerOnTouchListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(final View v, final MotionEvent event) {
-        if (gdt.onTouchEvent(event)) {
-            return false;
-        }
-        return true;
+        return !gdt.onTouchEvent(event);
     }
 }
