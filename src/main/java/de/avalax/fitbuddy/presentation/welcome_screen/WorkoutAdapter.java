@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     private EditWorkoutApplicationService workoutSession;
     private List<Workout> workouts;
     private MainActivity activity;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     WorkoutAdapter(MainActivity activity, EditWorkoutApplicationService workoutSession, List<Workout> workouts) {
         super();
@@ -37,6 +39,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText("Executed 0 times");
+        holder.setSelected(selectedPosition == position);
         if (workoutSession.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);
         } else {
@@ -46,6 +49,13 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
             activity.selectWorkout(workout);
         });
         holder.getView().setOnLongClickListener(view -> {
+            int oldSelectedPosition = selectedPosition;
+            selectedPosition = position;
+            if (oldSelectedPosition != RecyclerView.NO_POSITION) {
+                notifyItemChanged(oldSelectedPosition);
+            }
+            notifyItemChanged(position);
+
             activity.updateEditToolbar(position, workout);
             return true;
         });
@@ -66,9 +76,11 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         private final TextView dateTextView;
         private final TextView subtitleTextView;
         private final TextView statusTextView;
+        private final CardView cardView;
 
         ViewHolder(View v) {
             super(v);
+            cardView = v.findViewById(R.id.card);
             titleTextView = v.findViewById(R.id.card_title);
             subtitleTextView = v.findViewById(R.id.card_subtitle);
             dateTextView = v.findViewById(R.id.card_date);
@@ -93,6 +105,15 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
         public TextView getStatusTextView() {
             return statusTextView;
+        }
+
+
+        public void setSelected(boolean selected) {
+            int backgroundColor = itemView.getResources().getColor(R.color.cardsColor);
+            if (selected) {
+                backgroundColor = itemView.getResources().getColor(R.color.primaryLightColor);
+            }
+            cardView.setCardBackgroundColor(backgroundColor);
         }
     }
 }
