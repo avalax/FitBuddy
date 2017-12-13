@@ -20,7 +20,7 @@ public class BasicWorkout implements Workout {
     }
 
     public BasicWorkout() {
-        this.exercises = new BasicExercises(new ArrayList<Exercise>());
+        this.exercises = new BasicExercises(new ArrayList<>());
         this.name = "";
     }
 

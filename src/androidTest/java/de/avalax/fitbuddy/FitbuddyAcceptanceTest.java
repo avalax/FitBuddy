@@ -9,15 +9,23 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
+import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.set.BasicSet;
+import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.runner.ApplicationRunner;
 import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
+import de.avalax.fitbuddy.runner.PersistenceRunner;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class FitbuddyAcceptanceTest {
 
-    private ApplicationRunner application = new ApplicationRunner();
+    private ApplicationRunner application;
+    private PersistenceRunner persistence;
 
     @Rule
     public FitbuddyActivityTestRule activityRule = new FitbuddyActivityTestRule(
@@ -25,11 +33,14 @@ public class FitbuddyAcceptanceTest {
 
     @Before
     public void setUp() throws Exception {
-        activityRule.launchActivity(null);
+        application = new ApplicationRunner();
+        persistence = new PersistenceRunner(activityRule);
     }
 
     @Test
     public void initialStart_shouldShowEmptyStartFragment() throws Exception {
+        activityRule.launchActivity(null);
+
         application.showsStartBottomNavAsActive();
         application.hasShownAddNewWorkoutHint();
         application.showsSupportMenuItem();
@@ -39,6 +50,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void newWorkout_shouldBeDisplayed() throws Exception {
+        activityRule.launchActivity(null);
+
         application.addWorkout("new workout");
         application.hasShownAddNewExerciseHint();
 
@@ -60,13 +73,19 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldDisplayChanges() throws Exception {
-        //TODO: use provider for arrange
-        application.addWorkout("old workout");
-        application.addExercise("old exercise");
-        application.addSet("15", "42.5");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        //TODO: use builder for arrange
+        Set set = new BasicSet();
+        set.setWeight(42.5);
+        set.setMaxReps(15);
+        Exercise exercise = new BasicExercise();
+        exercise.getSets().add(set);
+        exercise.setName("old exercise");
+        Workout workout = new BasicWorkout();
+        workout.setName("old workout");
+        workout.getExercises().add(exercise);
+        persistence.addWorkout(workout);
+
+        activityRule.launchActivity(null);
 
         application.editWorkout(0);
         application.hasShownOldWorkoutNameInEditView("old workout");
@@ -91,6 +110,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldNotSaveExerciseWithoutSets() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("old workout");
         application.addExercise("old exercise");
@@ -119,6 +140,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldNotSaveWorkoutWithoutExercises() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("old workout");
         application.addExercise("first exercise");
@@ -148,6 +171,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldBeDeleted() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("an exercise");
@@ -164,6 +189,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void activeWorkoutGiven_shouldNavigateBetweenFragments() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("an exercise");
@@ -199,6 +226,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void doWorkout_shouldDisplaySwipeEvents() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("first exercise");
@@ -241,6 +270,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void doWorkout_shouldFinishAfterLastExercise() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("only one exercise");
@@ -265,6 +296,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldSeeDetailOverSummary() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("only one exercise");
@@ -284,6 +317,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
+        activityRule.launchActivity(null);
+
         //TODO: use provider for arrange
         application.addWorkout("a workout");
         application.addExercise("only one exercise");
@@ -303,7 +338,7 @@ public class FitbuddyAcceptanceTest {
 
     @After
     public void tearDown() throws Exception {
-        activityRule.deleteWorkouts();
-        activityRule.deleteFinishedWorkouts();
+        persistence.deleteWorkouts();
+        persistence.deleteFinishedWorkouts();
     }
 }
