@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.runner;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
 import java.util.List;
@@ -25,14 +26,14 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     FinishedWorkoutApplicationService finishedWorkoutApplicationService;
 
     public FitbuddyActivityTestRule(Class<MainActivity> activityClass) {
-        super(activityClass);
+        super(activityClass, false, false);
+        TestFitbuddyApplication application = (TestFitbuddyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext();
+        ((TestComponent) application.getComponent()).inject(this);
     }
 
     @Override
     protected void afterActivityLaunched() {
         super.afterActivityLaunched();
-        TestFitbuddyApplication application = (TestFitbuddyApplication) getActivity().getApplication();
-        ((TestComponent) application.getComponent()).inject(this);
     }
 
     public void deleteWorkouts() throws Exception {
