@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 public class PersistenceRunner {
@@ -13,8 +14,8 @@ public class PersistenceRunner {
         this.activityRule = activityRule;
     }
 
-    public void addWorkout(Workout workout) {
-        activityRule.editWorkoutApplicationService.saveWorkout(workout);
+    public void addWorkout(BasicWorkoutBuilder builder) {
+        activityRule.editWorkoutApplicationService.saveWorkout(builder.build());
     }
 
     public void deleteWorkouts() {

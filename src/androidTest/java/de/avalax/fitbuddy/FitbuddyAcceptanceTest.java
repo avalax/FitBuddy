@@ -9,16 +9,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.set.BasicSet;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
-import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder;
+import de.avalax.fitbuddy.domain.model.set.BasicSetBuilder;
+import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.runner.ApplicationRunner;
 import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
 import de.avalax.fitbuddy.runner.PersistenceRunner;
+
+import static de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder.anExercise;
+import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
+import static de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder.aWorkout;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -73,16 +74,9 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldDisplayChanges() throws Exception {
-        //TODO: use builder for arrange
-        Set set = new BasicSet();
-        set.setWeight(42.5);
-        set.setMaxReps(15);
-        Exercise exercise = new BasicExercise();
-        exercise.getSets().add(set);
-        exercise.setName("old exercise");
-        Workout workout = new BasicWorkout();
-        workout.setName("old workout");
-        workout.getExercises().add(exercise);
+        BasicSetBuilder set = aSet().withWeight(42.5).withMaxReps(15);
+        BasicExerciseBuilder exercise = anExercise().withName("old exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("old workout").withExercise(exercise);
         persistence.addWorkout(workout);
 
         activityRule.launchActivity(null);
@@ -110,17 +104,11 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldNotSaveExerciseWithoutSets() throws Exception {
-        activityRule.launchActivity(null);
+        BasicExerciseBuilder exercise = anExercise().withSet(aSet()).withSet(aSet());
+        BasicWorkoutBuilder workout = aWorkout().withExercise(exercise);
+        persistence.addWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("old workout");
-        application.addExercise("old exercise");
-        application.addSet("1", "42.5");
-        application.saveSet();
-        application.addSet("2", "42.5");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        activityRule.launchActivity(null);
 
         application.editWorkout(0);
         application.editExercise(0);
