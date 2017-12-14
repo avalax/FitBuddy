@@ -29,8 +29,7 @@ public class FitbuddyAcceptanceTest {
     private PersistenceRunner persistence;
 
     @Rule
-    public FitbuddyActivityTestRule activityRule = new FitbuddyActivityTestRule(
-            MainActivity.class);
+    public FitbuddyActivityTestRule activityRule = new FitbuddyActivityTestRule(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
@@ -128,19 +127,10 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldNotSaveWorkoutWithoutExercises() throws Exception {
-        activityRule.launchActivity(null);
+        BasicWorkoutBuilder workout = aWorkout().withExercise(anExercise()).withExercise(anExercise());
+        persistence.addWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("old workout");
-        application.addExercise("first exercise");
-        application.addSet("1", "42.5");
-        application.saveSet();
-        application.saveExercise();
-        application.addExercise("second exercise");
-        application.addSet("1", "42.5");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        activityRule.launchActivity(null);
 
         application.editWorkout(0);
 
@@ -159,15 +149,9 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldBeDeleted() throws Exception {
-        activityRule.launchActivity(null);
+        persistence.addWorkout(aWorkout());
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("an exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        activityRule.launchActivity(null);
 
         application.deleteWorkout(0);
 
@@ -177,20 +161,13 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void activeWorkoutGiven_shouldNavigateBetweenFragments() throws Exception {
-        activityRule.launchActivity(null);
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        persistence.addWorkout(workout);
+        persistence.finishWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("an exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
-        //TODO: use provider for finished workout
-        application.selectWorkout(0);
-        application.switchToNextExercise();
-        application.finishWorkout();
-        application.navigateToStart();
+        activityRule.launchActivity(null);
 
         application.selectWorkout(0);
         application.showsActiveExercise("an exercise", "42.0 kg");

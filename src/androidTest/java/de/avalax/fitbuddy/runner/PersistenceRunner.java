@@ -18,16 +18,19 @@ public class PersistenceRunner {
         activityRule.editWorkoutApplicationService.saveWorkout(builder.build());
     }
 
-    public void deleteWorkouts() {
+    public void finishWorkout(BasicWorkoutBuilder workout) throws ResourceException {
+        activityRule.workoutApplicationService.switchWorkout(workout.build());
+        activityRule.workoutApplicationService.finishCurrentWorkout();
+    }
+
+    public void deleteWorkouts() throws ResourceException {
         List<Workout> workouts = activityRule.editWorkoutApplicationService.loadAllWorkouts();
         for (Workout workout : workouts) {
             activityRule.editWorkoutApplicationService.deleteWorkout(workout);
         }
 
-        try {
+        if (activityRule.workoutApplicationService.hasActiveWorkout()) {
             activityRule.workoutApplicationService.finishCurrentWorkout();
-        } catch (ResourceException ignored) {
-
         }
     }
 

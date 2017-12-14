@@ -10,20 +10,20 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
+import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
-    private EditWorkoutApplicationService workoutSession;
+    private WorkoutApplicationService workoutApplicationService;
     private List<Workout> workouts;
     private MainActivity activity;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
-    WorkoutAdapter(MainActivity activity, EditWorkoutApplicationService workoutSession, List<Workout> workouts) {
+    WorkoutAdapter(MainActivity activity, WorkoutApplicationService workoutApplicationService, List<Workout> workouts) {
         super();
         this.activity = activity;
-        this.workoutSession = workoutSession;
+        this.workoutApplicationService = workoutApplicationService;
         this.workouts = workouts;
     }
 
@@ -40,7 +40,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText("Executed 0 times");
         holder.setSelected(selectedPosition == position);
-        if (workoutSession.isActiveWorkout(workout)) {
+        if (workoutApplicationService.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);
         } else {
             holder.getStatusTextView().setText(R.string.workout_not_active);

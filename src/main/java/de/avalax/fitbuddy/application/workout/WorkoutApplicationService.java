@@ -74,6 +74,15 @@ public class WorkoutApplicationService {
     }
 
     @Deprecated
+    public void switchWorkout(Workout workout) throws WorkoutException {
+        if (workoutSession.hasWorkout()) {
+            Workout workoutToSave = workoutSession.getWorkout();
+            finishedWorkoutRepository.saveWorkout(workoutToSave);
+        }
+        workoutSession.switchWorkout(workout);
+    }
+
+    @Deprecated
     public FinishedWorkoutId finishCurrentWorkout() throws ResourceException {
         Workout workout = getWorkout();
         FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
@@ -116,5 +125,10 @@ public class WorkoutApplicationService {
 
     public boolean hasActiveWorkout() {
         return workoutSession.hasWorkout();
+    }
+
+    public boolean isActiveWorkout(Workout workout) {
+        return workoutSession.hasWorkout()
+                && workoutSession.getWorkout().equals(workout);
     }
 }

@@ -7,9 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -27,12 +25,6 @@ public class EditWorkoutApplicationServiceTest {
     @Mock
     private WorkoutRepository workoutRepository;
 
-    @Mock
-    private WorkoutSession workoutSession;
-
-    @Mock
-    private FinishedWorkoutRepository finishedWorkoutRepository;
-
     @InjectMocks
     private EditWorkoutApplicationService editWorkoutApplicationService;
 
@@ -43,11 +35,6 @@ public class EditWorkoutApplicationServiceTest {
         workout = new BasicWorkout();
         MockitoAnnotations.initMocks(this);
         workout.setWorkoutId(new WorkoutId("123456"));
-    }
-
-    @Test
-    public void isActiveWorkout_shouldReturnFalse() throws Exception {
-        assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isFalse();
     }
 
     public class givenAWorkoutWithOneExercise {
@@ -77,37 +64,10 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         @Test
-        public void isActiveWorkout_shouldReturnTrue() throws Exception {
-            when(workoutSession.hasWorkout()).thenReturn(true);
-            when(workoutSession.getWorkout()).thenReturn(workout);
-
-            assertThat(editWorkoutApplicationService.isActiveWorkout(workout)).isTrue();
-        }
-
-        @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
             editWorkoutApplicationService.deleteWorkout(workout);
 
             verify(workoutRepository).delete(workoutId);
-        }
-
-        @Test
-        public void switchWorkout_shouldSetWorkout() throws Exception {
-            editWorkoutApplicationService.switchWorkout(workout);
-
-            verify(workoutSession).switchWorkout(workout);
-        }
-
-        @Test
-        public void switchWorkout_shouldPersistCurrentWorkout() throws Exception {
-            BasicWorkout currentWorkoutToPersist = new BasicWorkout();
-            currentWorkoutToPersist.setName("currentWorkoutToPersist");
-            when(workoutSession.hasWorkout()).thenReturn(true);
-            when(workoutSession.getWorkout()).thenReturn(currentWorkoutToPersist);
-
-            editWorkoutApplicationService.switchWorkout(workout);
-
-            verify(finishedWorkoutRepository).saveWorkout(currentWorkoutToPersist);
         }
     }
 }

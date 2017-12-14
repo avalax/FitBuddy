@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
 
     public void selectWorkout(Workout workout) {
         try {
-            editWorkoutApplicationService.switchWorkout(workout);
+            workoutApplicationService.switchWorkout(workout);
             updateBottomNavigation();
         } catch (WorkoutException e) {
             Log.e("WorkoutException", e.getMessage(), e);

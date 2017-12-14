@@ -75,8 +75,6 @@ public class FitbuddyModule {
     @Singleton
     EditWorkoutApplicationService provideManageWorkout() {
         return new EditWorkoutApplicationService(
-                workoutSession,
-                finishedWorkoutRepository,
                 workoutRepository);
     }
 

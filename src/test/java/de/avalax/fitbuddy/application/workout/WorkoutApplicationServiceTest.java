@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.application.workout;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepositor
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
@@ -118,6 +120,33 @@ public class WorkoutApplicationServiceTest {
             workout = new BasicWorkout();
             when(workoutSession.getWorkout()).thenReturn(workout);
             when(workoutSession.hasWorkout()).thenReturn(true);
+        }
+
+        @Test
+        public void noActiveWorkout_shouldReturnFalse() throws Exception {
+            when(workoutSession.hasWorkout()).thenReturn(false);
+            when(workoutSession.getWorkout()).thenReturn(null);
+
+            Assertions.assertThat(workoutApplicationService.isActiveWorkout(workout)).isFalse();
+        }
+
+        @Test
+        public void currentWorkoutIsActive_shouldReturnTrue() throws Exception {
+            Assertions.assertThat(workoutApplicationService.isActiveWorkout(workout)).isTrue();
+        }
+
+        @Test
+        public void switchWorkout_shouldSetWorkout() throws Exception {
+            workoutApplicationService.switchWorkout(workout);
+
+            verify(workoutSession).switchWorkout(workout);
+        }
+
+        @Test
+        public void switchWorkout_shouldPersistCurrentWorkout() throws Exception {
+            workoutApplicationService.switchWorkout(workout);
+
+            verify(finishedWorkoutRepository).saveWorkout(workout);
         }
 
         @Test(expected = ResourceException.class)
