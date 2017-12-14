@@ -191,21 +191,15 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void doWorkout_shouldDisplaySwipeEvents() throws Exception {
-        activityRule.launchActivity(null);
+        BasicSetBuilder set1 = aSet().withWeight(42).withMaxReps(12);
+        BasicSetBuilder set2 = aSet().withWeight(55).withMaxReps(12);
+        BasicExerciseBuilder exercise1 = anExercise().withName("first exercise").withSet(set1).withSet(set2);
+        BasicSetBuilder set3 = aSet().withWeight(10).withMaxReps(12);
+        BasicExerciseBuilder exercise2 = anExercise().withName("second exercise").withSet(set3);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise1).withExercise(exercise2);
+        persistence.addWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("first exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.addSet("12", "55.0");
-        application.saveSet();
-        application.saveExercise();
-        application.addExercise("second exercise");
-        application.addSet("15", "10.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        activityRule.launchActivity(null);
 
         application.selectWorkout(0);
         application.hasShownWorkoutProgress(0);
@@ -235,15 +229,12 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void doWorkout_shouldFinishAfterLastExercise() throws Exception {
-        activityRule.launchActivity(null);
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("only one exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        persistence.addWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("only one exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
+        activityRule.launchActivity(null);
 
         application.selectWorkout(0);
         application.showsNoPreviousExercise();
@@ -261,18 +252,12 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldSeeDetailOverSummary() throws Exception {
-        activityRule.launchActivity(null);
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("only one exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        persistence.finishWorkout(workout);
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("only one exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
-        application.selectWorkout(0);
-        application.switchToNextExercise();
-        application.finishWorkout();
+        activityRule.launchActivity(null);
 
         application.switchToSummary();
         application.selectFinishedWorkout(0);
@@ -282,18 +267,9 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
-        activityRule.launchActivity(null);
+        persistence.finishWorkout(aWorkout());
 
-        //TODO: use provider for arrange
-        application.addWorkout("a workout");
-        application.addExercise("only one exercise");
-        application.addSet("12", "42.0");
-        application.saveSet();
-        application.saveExercise();
-        application.saveWorkout();
-        application.selectWorkout(0);
-        application.switchToNextExercise();
-        application.finishWorkout();
+        activityRule.launchActivity(null);
 
         application.switchToSummary();
         application.deleteFinishedWorkout(0);
