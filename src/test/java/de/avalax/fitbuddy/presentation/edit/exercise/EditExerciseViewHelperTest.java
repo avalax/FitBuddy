@@ -32,7 +32,7 @@ public class EditExerciseViewHelperTest {
 
     @Test
     public void shouldReturnWeightAsSubtitle() throws Exception {
-        assertThat(service.subtitle(aSet().build())).isEqualTo("-");
+        assertThat(service.subtitle(aSet().build())).isEqualTo("0");
         assertThat(service.subtitle(aSet().withWeight(42.5).build())).isEqualTo("42.5");
         assertThat(service.subtitle(aSet().withWeight(42).build())).isEqualTo("42");
     }
