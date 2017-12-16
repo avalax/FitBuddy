@@ -46,6 +46,7 @@ public class FitbuddyAcceptanceTest {
         application.showsSupportMenuItem();
         application.showsWorkoutBottomNavAsDisabled();
         application.showsFinishedWorkoutBottomNavAsDisabled();
+        application.showsAdMob();
     }
 
     @Test

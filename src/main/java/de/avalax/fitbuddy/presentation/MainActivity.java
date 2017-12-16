@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.MobileAds;
+
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this, "ca-app-pub-3067141613739864~9851773284");
 
         ((FitbuddyApplication) getApplication()).getComponent().inject(this);
 

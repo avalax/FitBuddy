@@ -66,6 +66,10 @@ public class ApplicationRunner {
         onView(withId(R.id.navigation_summary_item)).check(matches(not(isEnabled())));
     }
 
+    public void showsAdMob() {
+        onView(withId(R.id.adView)).check(matches(isDisplayed()));
+    }
+
     public void switchToSummary() {
         onView(withId(R.id.navigation_summary_item)).perform(click());
     }

@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +57,12 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         floatingActionButton.setOnClickListener(this);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        MobileAds.initialize(getActivity(), "ca-app-pub-3067141613739864~9851773284");
+        AdView adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("8F6B70E5DC92FE9E826BAA77A492D912").build();
+        adView.loadAd(adRequest);
         return view;
     }
 
