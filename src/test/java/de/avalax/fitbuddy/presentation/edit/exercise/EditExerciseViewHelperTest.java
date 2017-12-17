@@ -36,7 +36,7 @@ public class EditExerciseViewHelperTest {
     @Test
     public void noWeight_shouldReturnDashAsSubtitle() throws Exception {
         Set set = aSet().build();
-        assertThat(service.subtitle(set)).isEqualTo("-");
+        assertThat(service.subtitle(set)).isEqualTo("no weight");
         assertThat(service.subtitleValue(set)).isEqualTo("0");
     }
 
