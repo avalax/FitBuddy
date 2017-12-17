@@ -12,9 +12,30 @@
             android:id="@+id/toolbar_exercise_edit"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primaryColor"
-            app:layout_collapseMode="pin"
-            app:titleTextColor="?android:textColorPrimaryInverse" />
+            android:theme="@style/AppTheme.ActionBar"
+            app:layout_collapseMode="pin">
+
+            <ImageButton
+                android:id="@+id/toolbar_cancel_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginEnd="30dp"
+                android:background="@color/primaryColor"
+                android:clickable="true"
+                android:contentDescription="@string/edit_exercise_toolbar_cancel"
+                android:focusable="true"
+                android:onClick="onCancelButtonClick"
+                android:src="@drawable/ic_action_close"
+                android:theme="@style/AppTheme.ActionBarButton" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_exercise_toolbar_title"
+                android:textColor="@color/primaryTextColor" />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

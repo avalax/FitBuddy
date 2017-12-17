@@ -330,6 +330,10 @@ public class ApplicationRunner {
         onView(isRoot()).perform(ViewActions.pressBack());
     }
 
+    public void cancelAction() {
+        onView(withId(R.id.toolbar_cancel_action)).perform(click());
+    }
+
     public void addRepToExercise() {
         onView(withId(R.id.leftProgressBar)).perform(click());
     }

@@ -127,6 +127,22 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
+    public void existingWorkout_shouldNotSaveExerciseOnBack() throws Exception {
+        BasicSetBuilder set = aSet().withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("old exercise name").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withExercise(exercise);
+        persistence.addWorkout(workout);
+        activityRule.launchActivity(null);
+        application.editWorkout(0);
+
+        application.editExercise(0);
+        application.changeExercise("new exercise name");
+        application.cancelAction();
+
+        application.hasShownExerciseDetails("old exercise name", "1 x 12");
+    }
+
+    @Test
     public void existingWorkout_shouldNotSaveWorkoutWithoutExercises() throws Exception {
         BasicWorkoutBuilder workout = aWorkout().withExercise(anExercise()).withExercise(anExercise());
         persistence.addWorkout(workout);

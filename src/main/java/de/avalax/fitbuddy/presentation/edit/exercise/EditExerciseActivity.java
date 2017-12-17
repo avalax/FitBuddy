@@ -35,6 +35,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_exercise);
         Toolbar toolbar = findViewById(R.id.toolbar_exercise_edit);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         nameEditText = findViewById(R.id.edit_text_exercise_name);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
         nameEditText.setText(exercise.getName());
@@ -113,5 +114,10 @@ public class EditExerciseActivity extends AppCompatActivity {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_edit_exercise, menu);
         }
+    }
+
+    public void onCancelButtonClick(View view) {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }
