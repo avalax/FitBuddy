@@ -16,7 +16,7 @@ public class EditExerciseViewHelper {
     private final DecimalFormat decimalFormat;
     private String repsSuffix;
     private String weightSuffix;
-    
+
     public EditExerciseViewHelper(Context context) {
         defaultWeight = context.getResources().getString(R.string.default_set_weight);
         String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
