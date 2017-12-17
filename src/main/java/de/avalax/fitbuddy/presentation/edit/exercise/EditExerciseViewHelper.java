@@ -45,7 +45,7 @@ public class EditExerciseViewHelper {
 
     public String subtitle(Set set) {
         String weight = subtitleValue(set);
-        if (weight.equals("0")) {
+        if ("0".equals(weight)) {
             return defaultWeight;
         }
         return weight + weightSuffix;
