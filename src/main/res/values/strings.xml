@@ -20,13 +20,12 @@
     <string name="empty_set_list">Please add a set</string>
     <string name="empty_finished_workout_list">Finish a workout first</string>
     <string name="date_never">never</string>
-    <string name="default_set_weight">0</string>
+    <string name="default_set_weight">no weight</string>
     <string name="default_set_reps">0</string>
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
     <string name="message_save_exercise_without_sets">Please add at least one set</string>
     <string name="message_save_workout_without_exercices">Please add at least one exercise</string>
-    <string name="sets_to_delete_count">-</string>
     <string name="workout_active">ACTIVE</string>
     <string name="workout_not_active">START</string>
     <string name="message_finish_workout">Finish active workout?</string>
@@ -35,6 +34,8 @@
     <string name="toolbar_item_edit">EDIT</string>
     <string name="toolbar_item_support">Support</string>
     <string name="edit_exercise_toolbar_title">Edit exercise</string>
-    <string name="edit_exercise_toolbar_cancel">cancel</string>
+    <string name="edit_exercise_toolbar_cancel">@android:string/cancel</string>
     <string name="edit_exercise_edt_text_hint">Exercise</string>
+    <string name="reps_suffix">reps</string>
+    <string name="weight_suffix">kg</string>
 </resources>

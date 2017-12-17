@@ -3,6 +3,7 @@ package de.avalax.fitbuddy.presentation.summary;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
+
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public class FinishedWorkoutListFragment extends Fragment {
 
@@ -35,6 +38,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_finished_workout_list, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         finishedWorkouts = applicationService.loadAllFinishedWorkouts();
         adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkouts);
         recyclerView.setAdapter(adapter);

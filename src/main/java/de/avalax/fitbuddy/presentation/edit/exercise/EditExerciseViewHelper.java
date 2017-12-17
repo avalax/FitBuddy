@@ -14,13 +14,18 @@ public class EditExerciseViewHelper {
 
     private final String defaultWeight;
     private final DecimalFormat decimalFormat;
+    private String repsSuffix;
+    private String weightSuffix;
 
+    //TODO: add metric system (configuration in main activity)
     public EditExerciseViewHelper(Context context) {
         defaultWeight = context.getResources().getString(R.string.default_set_weight);
         String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
         String groupingSeparator = context.getResources().getString(R.string.grouping_separator);
         DecimalFormatSymbols otherSymbols = formatSymbols(decimalSeparator, groupingSeparator);
         decimalFormat = new DecimalFormat("0.#", otherSymbols);
+        repsSuffix = " " + context.getResources().getString(R.string.reps_suffix);
+        weightSuffix = " " + context.getResources().getString(R.string.weight_suffix);
     }
 
     private DecimalFormatSymbols formatSymbols(String decimalSeparator, String groupingSeparator) {
@@ -31,13 +36,22 @@ public class EditExerciseViewHelper {
     }
 
     public String title(Set set) {
+        return titleValue(set) + repsSuffix;
+    }
+
+    public String titleValue(Set set) {
         return valueOf(set.getMaxReps());
     }
 
     public String subtitle(Set set) {
-        if (set.getWeight() == 0) {
+        String weight = subtitleValue(set);
+        if (weight.equals("0")) {
             return defaultWeight;
         }
+        return weight + weightSuffix;
+    }
+
+    public String subtitleValue(Set set) {
         return decimalFormat.format(set.getWeight());
     }
 }

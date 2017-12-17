@@ -10,6 +10,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
+import de.avalax.fitbuddy.domain.model.set.Set;
 
 import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,13 +28,29 @@ public class EditExerciseViewHelperTest {
 
     @Test
     public void shouldReturnMaxRepsAsTitle() throws Exception {
-        assertThat(service.title(aSet().withMaxReps(12).build())).isEqualTo("12");
+        Set set = aSet().withMaxReps(12).build();
+        assertThat(service.title(set)).isEqualTo("12 reps");
+        assertThat(service.titleValue(set)).isEqualTo("12");
     }
 
     @Test
-    public void shouldReturnWeightAsSubtitle() throws Exception {
-        assertThat(service.subtitle(aSet().build())).isEqualTo("0");
-        assertThat(service.subtitle(aSet().withWeight(42.5).build())).isEqualTo("42.5");
-        assertThat(service.subtitle(aSet().withWeight(42).build())).isEqualTo("42");
+    public void noWeight_shouldReturnDashAsSubtitle() throws Exception {
+        Set set = aSet().build();
+        assertThat(service.subtitle(set)).isEqualTo("-");
+        assertThat(service.subtitleValue(set)).isEqualTo("0");
+    }
+
+    @Test
+    public void doubleAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
+        Set set = aSet().withWeight(42.5).build();
+        assertThat(service.subtitle(set)).isEqualTo("42.5 kg");
+        assertThat(service.subtitleValue(set)).isEqualTo("42.5");
+    }
+
+    @Test
+    public void integerAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
+        Set set = aSet().withWeight(42).build();
+        assertThat(service.subtitle(set)).isEqualTo("42 kg");
+        assertThat(service.subtitleValue(set)).isEqualTo("42");
     }
 }

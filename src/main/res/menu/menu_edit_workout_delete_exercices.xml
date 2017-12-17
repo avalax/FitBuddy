@@ -3,6 +3,6 @@
     <item
         android:id="@+id/toolbar_delete_exercices"
         android:icon="@drawable/ic_action_delete"
-        android:title="@string/sets_to_delete_count"
+        android:title="@string/toolbar_item_delete"
         app:showAsAction="always|withText" />
 </menu>

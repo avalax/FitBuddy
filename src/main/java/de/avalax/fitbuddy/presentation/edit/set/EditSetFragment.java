@@ -34,9 +34,9 @@ public class EditSetFragment extends Fragment {
         view.findViewById(R.id.set_reps).setOnClickListener(v -> changeMaxReps());
         set = (Set) getActivity().getIntent().getSerializableExtra("set");
         TextView repsTextView = view.findViewById(R.id.set_reps_text_view);
-        repsTextView.setText(editExerciseViewHelper.title(set));
+        repsTextView.setText(editExerciseViewHelper.titleValue(set));
         TextView weightTextView = view.findViewById(R.id.set_weight_text_view);
-        weightTextView.setText(editExerciseViewHelper.subtitle(set));
+        weightTextView.setText(editExerciseViewHelper.subtitleValue(set));
         return view;
     }
 

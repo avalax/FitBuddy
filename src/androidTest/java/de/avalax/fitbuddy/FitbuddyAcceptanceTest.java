@@ -63,7 +63,7 @@ public class FitbuddyAcceptanceTest {
         application.hasShownSetDetails("15", "42.5");
 
         application.saveSet();
-        application.hasShownSetAddedToExercise("15", "42.5");
+        application.hasShownSetAddedToExercise("15 reps", "42.5 kg");
 
         application.saveExercise();
         application.hasShownExerciseDetails("new exercise", "1 x 15");
@@ -94,7 +94,7 @@ public class FitbuddyAcceptanceTest {
         application.changeSet("12", "47.5");
 
         application.saveSet();
-        application.hasShownSetAddedToExercise("12", "47.5");
+        application.hasShownSetAddedToExercise("12 reps", "47.5 kg");
 
         application.saveExercise();
         application.hasShownExerciseDetails("new exercise", "1 x 12");
