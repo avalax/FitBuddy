@@ -66,7 +66,7 @@ public class FitbuddyAcceptanceTest {
         application.hasShownSetAddedToExercise("15 reps", "42.5 kg");
 
         application.saveExercise();
-        application.hasShownExerciseDetails("new exercise", "1 x 15");
+        application.hasShownExerciseDetails("new exercise", "1 x 15", "42.5 kg");
 
         application.saveWorkout();
         application.hasShownWorkoutDetails(0, "new workout");
@@ -97,7 +97,7 @@ public class FitbuddyAcceptanceTest {
         application.hasShownSetAddedToExercise("12 reps", "47.5 kg");
 
         application.saveExercise();
-        application.hasShownExerciseDetails("new exercise", "1 x 12");
+        application.hasShownExerciseDetails("new exercise", "1 x 12", "47.5 kg");
         application.saveWorkout();
         application.hasShownWorkoutDetails(0, "new workout");
     }
@@ -127,8 +127,23 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void existingWorkout_shouldNotSaveExerciseOnBack() throws Exception {
+    public void existingWorkout_shouldNotSaveWorkoutOnBack() throws Exception {
         BasicSetBuilder set = aSet().withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("old workout name").withExercise(exercise);
+        persistence.addWorkout(workout);
+        activityRule.launchActivity(null);
+        application.editWorkout(0);
+
+        application.changeWorkout("new workout name");
+        application.cancelAction();
+
+        application.hasShownWorkoutDetails(0, "old workout name");
+    }
+
+    @Test
+    public void existingWorkout_shouldNotSaveExerciseOnBack() throws Exception {
+        BasicSetBuilder set = aSet().withMaxReps(12).withWeight(0);
         BasicExerciseBuilder exercise = anExercise().withName("old exercise name").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withExercise(exercise);
         persistence.addWorkout(workout);
@@ -139,7 +154,7 @@ public class FitbuddyAcceptanceTest {
         application.changeExercise("new exercise name");
         application.cancelAction();
 
-        application.hasShownExerciseDetails("old exercise name", "1 x 12");
+        application.hasShownExerciseDetails("old exercise name", "1 x 12", "no weight");
     }
 
     @Test

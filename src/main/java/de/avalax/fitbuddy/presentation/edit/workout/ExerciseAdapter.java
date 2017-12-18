@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity.EDIT_EXERCISE;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
+public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
     private Exercises exercises;
     private EditWorkoutViewHelper editWorkoutViewHelper;
     private Activity activity;
@@ -37,21 +38,23 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
     }
 
     @Override
-    public SelectableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExerciseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_exercise, parent, false);
-        return new SelectableViewHolder(view);
+        return new ExerciseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SelectableViewHolder holder, int position) {
+    public void onBindViewHolder(ExerciseViewHolder holder, int position) {
         try {
             Exercise exercise = exercises.get(position);
             String title = editWorkoutViewHelper.title(exercise);
             String subtitle = editWorkoutViewHelper.subtitle(exercise);
+            String weight = editWorkoutViewHelper.weight(exercise);
 
             holder.getTitleTextView().setText(title);
             holder.getSubtitleTextView().setText(subtitle);
+            holder.getWeightTextView().setText(weight);
             holder.setSelected(selections.contains(exercise));
 
             holder.getView().setOnClickListener(view -> {
@@ -107,5 +110,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<SelectableViewHolder> 
         exercises.removeAll(selections);
         selections.clear();
         notifyDataSetChanged();
+    }
+
+    static class ExerciseViewHolder extends SelectableViewHolder {
+        private final TextView weightTextView;
+
+        public ExerciseViewHolder(View v) {
+            super(v);
+            weightTextView = v.findViewById(R.id.item_weight);
+        }
+
+        public TextView getWeightTextView() {
+            return weightTextView;
+        }
     }
 }

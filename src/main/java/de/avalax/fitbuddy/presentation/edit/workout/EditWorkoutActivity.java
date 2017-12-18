@@ -39,9 +39,9 @@ public class EditWorkoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_workout);
         ((FitbuddyApplication) getApplication()).getComponent().inject(this);
-
         Toolbar toolbar = findViewById(R.id.toolbar_workout_edit);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         nameEditText = findViewById(R.id.edit_text_workout_name);
         workout = (Workout) getIntent().getSerializableExtra("workout");
         nameEditText.setText(workout.getName());
@@ -120,5 +120,10 @@ public class EditWorkoutActivity extends AppCompatActivity {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_edit_workout, menu);
         }
+    }
+
+    public void onCancelButtonClick(View view) {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

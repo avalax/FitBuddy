@@ -80,8 +80,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    EditWorkoutViewHelper provideEditWorkoutViewHelper() {
-        return new EditWorkoutViewHelper();
+    EditWorkoutViewHelper provideEditWorkoutViewHelper(EditExerciseViewHelper editExerciseViewHelper) {
+        return new EditWorkoutViewHelper(context, editExerciseViewHelper);
     }
 
     @Provides

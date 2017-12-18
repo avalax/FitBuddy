@@ -271,10 +271,11 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_exercise)).perform(click());
     }
 
-    public void hasShownExerciseDetails(String name, String details) {
+    public void hasShownExerciseDetails(String name, String details, String weight) {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(R.id.item_title)).check(matches(withText(name)));
         onView(withId(R.id.item_subtitle)).check(matches(withText(details)));
+        onView(withId(R.id.item_weight)).check(matches(withText(weight)));
     }
 
     public void saveWorkout() {
