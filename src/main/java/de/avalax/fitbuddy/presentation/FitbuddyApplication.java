@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment;
+import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
@@ -54,5 +55,7 @@ public class FitbuddyApplication extends Application {
         void inject(EditSetFragment editSetFragment);
 
         void inject(FinishedWorkoutDetailFragment finishedWorkoutDetailFragment);
+
+        void inject(EditSetActivity editSetActivity);
     }
 }

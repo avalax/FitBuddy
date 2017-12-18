@@ -60,7 +60,7 @@ public class FitbuddyAcceptanceTest {
         application.hasShownAddNewSetHint();
 
         application.addSet("15", "42.5");
-        application.hasShownSetDetails("15", "42.5");
+        application.hasShownSetDetails("15 reps", "42.5 kg");
 
         application.saveSet();
         application.hasShownSetAddedToExercise("15 reps", "42.5 kg");
@@ -90,7 +90,7 @@ public class FitbuddyAcceptanceTest {
         application.changeExercise("new exercise");
 
         application.editSet(0);
-        application.hasShownOldSetDetails("15", "42.5");
+        application.hasShownOldSetDetails("15 reps", "42.5 kg");
         application.changeSet("12", "47.5");
 
         application.saveSet();
@@ -142,7 +142,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void existingWorkout_shouldNotSaveExerciseOnBack() throws Exception {
+    public void existingExercise_shouldNotSaveExerciseOnBack() throws Exception {
         BasicSetBuilder set = aSet().withMaxReps(12).withWeight(0);
         BasicExerciseBuilder exercise = anExercise().withName("old exercise name").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withExercise(exercise);
@@ -155,6 +155,23 @@ public class FitbuddyAcceptanceTest {
         application.cancelAction();
 
         application.hasShownExerciseDetails("old exercise name", "1 x 12", "no weight");
+    }
+
+    @Test
+    public void existingSet_shouldNotSaveExerciseOnBack() throws Exception {
+        BasicSetBuilder set = aSet().withMaxReps(12).withWeight(0);
+        BasicExerciseBuilder exercise = anExercise().withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withExercise(exercise);
+        persistence.addWorkout(workout);
+        activityRule.launchActivity(null);
+        application.editWorkout(0);
+        application.editExercise(0);
+
+        application.editSet(0);
+        application.changeSet("15", "100.0");
+        application.cancelAction();
+
+        application.hasShownSetAddedToExercise("12 reps", "no weight");
     }
 
     @Test

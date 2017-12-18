@@ -6,16 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+
+import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
-
-import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 public class EditSetActivity extends AppCompatActivity implements
         EditWeightDialogFragment.DialogListener,
@@ -25,13 +26,18 @@ public class EditSetActivity extends AppCompatActivity implements
     private TextView repsTextView;
     private Set set;
 
+    @Inject
+    protected EditExerciseViewHelper editExerciseViewHelper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_set);
+        ((FitbuddyApplication) getApplication()).getComponent().inject(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar_set_edit);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         set = (Set) getIntent().getSerializableExtra("set");
         repsTextView = findViewById(R.id.set_reps_text_view);
         weightTextView = findViewById(R.id.set_weight_text_view);
@@ -48,8 +54,6 @@ public class EditSetActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_save_set) {
             Intent intent = new Intent();
-            set.setMaxReps(parseInt(repsTextView.getText().toString()));
-            set.setWeight(parseDouble(weightTextView.getText().toString()));
             int position = getIntent().getIntExtra("position", -1);
             intent.putExtra("position", position);
             intent.putExtra("set", set);
@@ -63,12 +67,19 @@ public class EditSetActivity extends AppCompatActivity implements
     @Override
     public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
         int reps = editRepsDialogFragment.getReps();
-        repsTextView.setText(valueOf(reps));
+        set.setMaxReps(reps);
+        repsTextView.setText(editExerciseViewHelper.title(set));
     }
 
     @Override
     public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
         double weight = editWeightDialogFragment.getWeight();
-        weightTextView.setText(valueOf(weight));
+        set.setWeight(weight);
+        weightTextView.setText(editExerciseViewHelper.subtitle(set));
+    }
+
+    public void onCancelButtonClick(View view) {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

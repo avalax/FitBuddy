@@ -40,4 +40,5 @@
     <string name="edit_text_workout_name_hint">Name</string>
     <string name="reps_suffix">reps</string>
     <string name="weight_suffix">kg</string>
+    <string name="edit_set_toolbar_title">Edit set</string>
 </resources>
