@@ -115,12 +115,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     static class ExerciseViewHolder extends SelectableViewHolder {
         private final TextView weightTextView;
 
-        public ExerciseViewHolder(View v) {
+        ExerciseViewHolder(View v) {
             super(v);
             weightTextView = v.findViewById(R.id.item_weight);
         }
 
-        public TextView getWeightTextView() {
+        TextView getWeightTextView() {
             return weightTextView;
         }
     }
