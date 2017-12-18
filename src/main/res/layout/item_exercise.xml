@@ -11,7 +11,7 @@
         android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder_title"
+        android:hint="@string/placeholder_title"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp" />
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_title"
-        android:text="@string/placeholder_subtitle"
+        android:hint="@string/placeholder_subtitle"
         android:textColor="?android:textColorSecondary"
         android:textSize="14sp" />
 

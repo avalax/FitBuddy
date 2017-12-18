@@ -10,8 +10,8 @@
     <string name="label_exercise_weight">Weight</string>
     <string name="label_exercise_repetitions">Repetitions</string>
 
-    <string name="placeholder_title">Title</string>
-    <string name="placeholder_subtitle">Subtitle</string>
+    <string name="placeholder_title">@android:string/unknownName</string>
+    <string name="placeholder_subtitle">@android:string/untitled</string>
     <string name="menu_home">Start</string>
     <string name="menu_workout">Workout</string>
     <string name="menu_summary">Summary</string>
