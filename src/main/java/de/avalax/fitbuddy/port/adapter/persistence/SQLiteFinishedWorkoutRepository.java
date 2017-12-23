@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -19,17 +20,21 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
     private static final String TABLE_FINISHED_WORKOUT = "finished_workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private FinishedExerciseRepository finishedExerciseRepository;
+    private WorkoutRepository workoutRepository;
 
     public SQLiteFinishedWorkoutRepository(
             SQLiteOpenHelper sqLiteOpenHelper,
-            FinishedExerciseRepository finishedExerciseRepository) {
+            FinishedExerciseRepository finishedExerciseRepository,
+            WorkoutRepository workoutRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
         this.finishedExerciseRepository = finishedExerciseRepository;
+        this.workoutRepository = workoutRepository;
     }
 
     @Override
@@ -41,6 +46,9 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
             finishedExerciseRepository.save(finishedWorkoutId, exercise);
         }
         database.close();
+        workout.setLastExecution(getDate());
+        workout.setFinishedCount(workout.getFinishedCount()+1);
+        workoutRepository.save(workout);
         return finishedWorkoutId;
     }
 
@@ -124,5 +132,9 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
             values.put("workout_id", workoutId);
         }
         return values;
+    }
+
+    protected long getDate() {
+        return new Date().getTime();
     }
 }

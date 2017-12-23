@@ -282,13 +282,13 @@ public class ApplicationRunner {
         onView(withId(R.id.toolbar_save_workout)).perform(click());
     }
 
-    public void hasShownWorkoutDetails(int position, String name) {
+    public void hasShownWorkoutDetails(int position, String name, String lastExecuted, String executed) {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))
                 .check(matches(itemAtPosition(position, withText(name), R.id.card_title)))
-                .check(matches(itemAtPosition(position, withText("Executed 0 times"), R.id.card_subtitle)))
-                .check(matches(itemAtPosition(position, withText("never"), R.id.card_date)))
+                .check(matches(itemAtPosition(position, withText(executed), R.id.card_subtitle)))
+                .check(matches(itemAtPosition(position, withText(lastExecuted), R.id.card_date)))
                 .check(matches(itemAtPosition(position, withText(R.string.workout_not_active), R.id.card_status)));
     }
 

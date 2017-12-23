@@ -15,14 +15,16 @@ import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
+import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,10 +39,14 @@ public class SQLiteFinishedExerciseRepositoryTest {
     private Exercise exercise;
 
     private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
-        FinishedWorkoutRepository workoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
+        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
+        ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
+        WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
+        FinishedWorkoutRepository finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(
+                sqLiteOpenHelper, finishedExerciseRepository, workoutRepository);
         Workout workout = new BasicWorkout();
-        workout.setWorkoutId(new WorkoutId("42"));
-        finishedWorkoutId = workoutRepository.saveWorkout(workout);
+        workoutRepository.save(workout);
+        finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
     }
 
     @Before

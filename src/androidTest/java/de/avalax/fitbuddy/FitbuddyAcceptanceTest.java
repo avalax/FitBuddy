@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder;
 import de.avalax.fitbuddy.domain.model.set.BasicSetBuilder;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
+import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.runner.ApplicationRunner;
 import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
@@ -69,7 +70,7 @@ public class FitbuddyAcceptanceTest {
         application.hasShownExerciseDetails("new exercise", "1 x 15", "42.5 kg");
 
         application.saveWorkout();
-        application.hasShownWorkoutDetails(0, "new workout");
+        application.hasShownWorkoutDetails(0, "new workout", "Never", "Executed 0 times");
     }
 
     @Test
@@ -77,7 +78,8 @@ public class FitbuddyAcceptanceTest {
         BasicSetBuilder set = aSet().withWeight(42.5).withMaxReps(15);
         BasicExerciseBuilder exercise = anExercise().withName("old exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("old workout").withExercise(exercise);
-        persistence.addWorkout(workout);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);
 
@@ -99,7 +101,7 @@ public class FitbuddyAcceptanceTest {
         application.saveExercise();
         application.hasShownExerciseDetails("new exercise", "1 x 12", "47.5 kg");
         application.saveWorkout();
-        application.hasShownWorkoutDetails(0, "new workout");
+        application.hasShownWorkoutDetails(0, "new workout", "Today", "Executed 1 time");
     }
 
     @Test
@@ -138,7 +140,7 @@ public class FitbuddyAcceptanceTest {
         application.changeWorkout("new workout name");
         application.cancelAction();
 
-        application.hasShownWorkoutDetails(0, "old workout name");
+        application.hasShownWorkoutDetails(0, "old workout name", "Never", "Executed 0 times");
     }
 
     @Test
@@ -213,8 +215,8 @@ public class FitbuddyAcceptanceTest {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
         BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
-        persistence.addWorkout(workout);
-        persistence.finishWorkout(workout);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);
 
@@ -304,7 +306,8 @@ public class FitbuddyAcceptanceTest {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
         BasicExerciseBuilder exercise = anExercise().withName("only one exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
-        persistence.finishWorkout(workout);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);
 
@@ -316,7 +319,8 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
-        persistence.finishWorkout(aWorkout());
+        Workout persistedWorkout = persistence.addWorkout(aWorkout());
+        persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);
 

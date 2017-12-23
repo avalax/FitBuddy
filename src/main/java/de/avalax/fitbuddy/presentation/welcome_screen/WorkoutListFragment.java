@@ -38,6 +38,9 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
     @Inject
     WorkoutApplicationService workoutApplicationService;
 
+    @Inject
+    WorkoutViewHelper workoutViewHelper;
+
     private WorkoutAdapter workoutAdapter;
     private List<Workout> workouts;
     private WorkoutRecyclerView recyclerView;
@@ -51,7 +54,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         workouts = editWorkoutApplicationService.loadAllWorkouts();
-        workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(), workoutApplicationService, workouts);
+        workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(), workoutApplicationService, workoutViewHelper, workouts);
         recyclerView.setAdapter(workoutAdapter);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_add_workout);
         floatingActionButton.setOnClickListener(this);

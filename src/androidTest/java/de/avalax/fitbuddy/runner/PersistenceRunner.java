@@ -14,12 +14,14 @@ public class PersistenceRunner {
         this.activityRule = activityRule;
     }
 
-    public void addWorkout(BasicWorkoutBuilder builder) {
-        activityRule.editWorkoutApplicationService.saveWorkout(builder.build());
+    public Workout addWorkout(BasicWorkoutBuilder builder) {
+        Workout workout = builder.build();
+        activityRule.editWorkoutApplicationService.saveWorkout(workout);
+        return workout;
     }
 
-    public void finishWorkout(BasicWorkoutBuilder workout) throws ResourceException {
-        activityRule.workoutApplicationService.switchWorkout(workout.build());
+    public void finishWorkout(Workout workout) throws ResourceException {
+        activityRule.workoutApplicationService.switchWorkout(workout);
         activityRule.workoutApplicationService.finishCurrentWorkout();
     }
 

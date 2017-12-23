@@ -18,12 +18,14 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     private WorkoutApplicationService workoutApplicationService;
     private List<Workout> workouts;
     private MainActivity activity;
+    private WorkoutViewHelper workoutViewHelper;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
-    WorkoutAdapter(MainActivity activity, WorkoutApplicationService workoutApplicationService, List<Workout> workouts) {
+    WorkoutAdapter(MainActivity activity, WorkoutApplicationService workoutApplicationService, WorkoutViewHelper workoutViewHelper, List<Workout> workouts) {
         super();
         this.activity = activity;
         this.workoutApplicationService = workoutApplicationService;
+        this.workoutViewHelper = workoutViewHelper;
         this.workouts = workouts;
     }
 
@@ -38,7 +40,8 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     public void onBindViewHolder(WorkoutAdapter.ViewHolder holder, int position) {
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
-        holder.getSubtitleTextView().setText("Executed 0 times");
+        holder.getSubtitleTextView().setText(workoutViewHelper.executions(workout));
+        holder.getDateTextView().setText(workoutViewHelper.lastExecutionDate(workout));
         holder.setSelected(selectedPosition == position);
         if (workoutApplicationService.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);

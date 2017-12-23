@@ -74,20 +74,19 @@ public class WorkoutApplicationService {
     }
 
     @Deprecated
-    public void switchWorkout(Workout workout) throws WorkoutException {
+    public FinishedWorkoutId switchWorkout(Workout workout) throws WorkoutException {
+        FinishedWorkoutId finishedWorkoutId = null;
         if (workoutSession.hasWorkout()) {
             Workout workoutToSave = workoutSession.getWorkout();
-            finishedWorkoutRepository.saveWorkout(workoutToSave);
+            finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workoutToSave);
         }
         workoutSession.switchWorkout(workout);
+        return finishedWorkoutId;
     }
 
     @Deprecated
     public FinishedWorkoutId finishCurrentWorkout() throws ResourceException {
-        Workout workout = getWorkout();
-        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
-        workoutSession.switchWorkout(null);
-        return finishedWorkoutId;
+        return switchWorkout(null);
     }
 
     @Deprecated

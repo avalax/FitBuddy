@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -91,9 +92,9 @@ public class WorkoutApplicationServiceTest {
             workoutApplicationService.updateWeightOfCurrentSet(0, 0);
         }
 
-        @Test(expected = ResourceException.class)
+        @Test
         public void finishWorkout_shouldThrowResourceNotFoundException() throws Exception {
-            workoutApplicationService.finishCurrentWorkout();
+            assertThat(workoutApplicationService.finishCurrentWorkout(), nullValue());
         }
 
         @Test

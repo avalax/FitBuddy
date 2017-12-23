@@ -28,6 +28,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutViewHelper;
 
 @Module
 public class FitbuddyModule {
@@ -47,7 +48,8 @@ public class FitbuddyModule {
         workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         FinishedExerciseRepository finishedExerciseRepository
                 = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
-        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
+        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(
+                sqLiteOpenHelper, finishedExerciseRepository, workoutRepository);
     }
 
     @Provides
@@ -82,6 +84,12 @@ public class FitbuddyModule {
     @Singleton
     EditWorkoutViewHelper provideEditWorkoutViewHelper(EditExerciseViewHelper editExerciseViewHelper) {
         return new EditWorkoutViewHelper(context, editExerciseViewHelper);
+    }
+
+    @Provides
+    @Singleton
+    WorkoutViewHelper provideWorkoutViewHelper() {
+        return new WorkoutViewHelper(context);
     }
 
     @Provides

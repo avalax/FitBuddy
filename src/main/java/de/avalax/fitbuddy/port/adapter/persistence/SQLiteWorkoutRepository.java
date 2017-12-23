@@ -49,6 +49,8 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
         values.put("name", workout.getName());
+        values.put("finished_count", workout.getFinishedCount());
+        values.put("last_execution", workout.getLastExecution());
         return values;
     }
 
@@ -58,7 +60,8 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             throw new WorkoutException();
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},
+        Cursor cursor = database.query(TABLE_WORKOUT, new String[]
+                        {"id", "name", "finished_count", "last_execution"},
                 "id=?", new String[]{workoutId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             Workout workout = createWorkout(cursor);
@@ -75,14 +78,20 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     private Workout createWorkout(Cursor cursor) {
         WorkoutId workoutId = new WorkoutId(cursor.getString(0));
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        return new BasicWorkout(workoutId, cursor.getString(1), exercises);
+        Workout workout = new BasicWorkout(workoutId, cursor.getString(1), exercises);
+        workout.setFinishedCount(cursor.getInt(2));
+        if (!cursor.isNull(3)) {
+            workout.setLastExecution(cursor.getLong(3));
+        }
+        return workout;
     }
 
     @Override
     public List<Workout> loadAll() {
         List<Workout> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_WORKOUT, new String[]{"id", "name"},
+        Cursor cursor = database.query(TABLE_WORKOUT, new String[]
+                        {"id", "name", "finished_count", "last_execution"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {

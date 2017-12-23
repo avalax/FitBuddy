@@ -57,7 +57,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
-            android:text="@string/date_never"
+            android:text="@string/workout_never_executed"
             android:textColor="?android:textColorHint"
             android:textSize="14sp"
             tools:ignore="RelativeOverlap" />

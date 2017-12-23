@@ -52,7 +52,7 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveUnpersistedWorkout_shouldAssignNewWorkoutId() throws Exception {
+    public void saveNewWorkout_shouldAssignNewWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
 
         assertThat(workout.getWorkoutId(), nullValue());
@@ -89,14 +89,20 @@ public class SQLiteWorkoutRepositoryTest {
 
         Workout workout = workoutRepository.load(workoutId2);
         workout.setName("newname2");
+        workout.setLastExecution(42L);
+        workout.setFinishedCount(1);
         workoutRepository.save(workout);
 
         Workout workout1 = workoutRepository.load(workoutId1);
         Workout workout2 = workoutRepository.load(workoutId2);
         assertThat(workout1.getWorkoutId(), equalTo(workoutId1));
         assertThat(workout1.getName(), equalTo("name1"));
+        assertThat(workout1.getLastExecution(), nullValue());
+        assertThat(workout1.getFinishedCount(), equalTo(0));
         assertThat(workout2.getWorkoutId(), equalTo(workoutId2));
         assertThat(workout2.getName(), equalTo("newname2"));
+        assertThat(workout2.getLastExecution(), equalTo(42L));
+        assertThat(workout2.getFinishedCount(), equalTo(1));
     }
 
     @Test(expected = WorkoutException.class)
