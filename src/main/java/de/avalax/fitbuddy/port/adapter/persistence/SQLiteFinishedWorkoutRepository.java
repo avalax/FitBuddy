@@ -47,7 +47,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         }
         database.close();
         workout.setLastExecution(getDate());
-        workout.setFinishedCount(workout.getFinishedCount()+1);
+        workout.setFinishedCount(workout.getFinishedCount() + 1);
         workoutRepository.save(workout);
         return finishedWorkoutId;
     }

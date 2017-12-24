@@ -21,7 +21,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     private WorkoutViewHelper workoutViewHelper;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
-    WorkoutAdapter(MainActivity activity, WorkoutApplicationService workoutApplicationService, WorkoutViewHelper workoutViewHelper, List<Workout> workouts) {
+    WorkoutAdapter(MainActivity activity,
+                   WorkoutApplicationService workoutApplicationService,
+                   WorkoutViewHelper workoutViewHelper,
+                   List<Workout> workouts) {
         super();
         this.activity = activity;
         this.workoutApplicationService = workoutApplicationService;
