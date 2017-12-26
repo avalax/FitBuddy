@@ -41,7 +41,7 @@ android {
     buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "de.avalax.fitbuddy"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 0
         versionName "1.0." + System.getenv("BUILD_NUMBER") as String ?: "0"
