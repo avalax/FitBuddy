@@ -10,11 +10,5 @@
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:background">@color/primaryColor</item>
         <item name="actionMenuTextColor">@color/primaryTextColor</item>
-        <item name="android:imageButtonStyle">@style/AppTheme.ActionBarButton</item>
     </style>
-
-    <style name="AppTheme.ActionBarButton">
-        <item name="android:tint">@color/primaryTextColor</item>
-        <item name="android:background">@color/primaryColor</item>
-    </style>`
 </resources>

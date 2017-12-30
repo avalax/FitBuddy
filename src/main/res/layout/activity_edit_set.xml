@@ -21,13 +21,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginEnd="30dp"
-                android:background="@color/primaryColor"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/edit_exercise_toolbar_cancel"
                 android:focusable="true"
                 android:onClick="onCancelButtonClick"
-                android:src="@drawable/ic_action_close"
-                android:theme="@style/AppTheme.ActionBarButton" />
+                android:src="@drawable/ic_action_close" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"

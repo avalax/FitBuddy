@@ -64,7 +64,7 @@ public class FinishedWorkoutAdapter
 
         ViewHolder(View v) {
             super(v);
-            titleTextView = v.findViewById(R.id.finished_workout_title);
+            titleTextView = v.findViewById(R.id.item_title);
         }
 
         TextView getTitleTextView() {

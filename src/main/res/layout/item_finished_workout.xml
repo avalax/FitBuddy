@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight">
+    android:layout_height="72dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="20dp">
 
     <TextView
-        android:id="@+id/finished_workout_title"
+        android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:hint="@string/placeholder_title"
         android:textColor="?android:textColorPrimary"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        tools:ignore="RelativeOverlap" />
 
     <TextView
-        android:id="@+id/finished_workout_date"
+        android:id="@+id/item_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/finished_workout_title"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_below="@+id/item_title"
         android:hint="@string/placeholder_subtitle"
         android:textColor="?android:textColorSecondary"
         android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/item_tendency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_icon_neutral"
+        android:contentDescription="@string/summary_tendency" />
 </RelativeLayout>
