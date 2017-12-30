@@ -19,6 +19,7 @@ import org.hamcrest.Matcher;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
+import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -286,10 +287,11 @@ public class ApplicationRunner {
         onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))
-                .check(matches(itemAtPosition(position, withText(name), R.id.card_title)))
-                .check(matches(itemAtPosition(position, withText(executed), R.id.card_subtitle)))
+                .check(matches(itemAtPosition(position, withText(name), R.id.item_title)))
+                .check(matches(itemAtPosition(position, withText(executed), R.id.item_subtitle)))
                 .check(matches(itemAtPosition(position, withText(lastExecuted), R.id.card_date)))
-                .check(matches(itemAtPosition(position, withText(R.string.workout_not_active), R.id.card_status)));
+                .check(matches(itemAtPosition(position, withText(R.string.workout_not_active), R.id.card_status)))
+                .check(matches(not(itemIsSelected(position))));
     }
 
     public void hasShownSetDetails(String reps, String weight) {
@@ -458,6 +460,23 @@ public class ApplicationRunner {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
                 View targetView = viewHolder.itemView.findViewById(id);
                 return itemMatcher.matches(targetView);
+            }
+        };
+    }
+
+    public static Matcher<View> itemIsSelected(int position) {
+
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("selected at position " + position);
+            }
+
+            @Override
+            public boolean matchesSafely(final RecyclerView recyclerView) {
+                SelectableViewHolder viewHolder = (SelectableViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+
+                return viewHolder.isSelected();
             }
         };
     }

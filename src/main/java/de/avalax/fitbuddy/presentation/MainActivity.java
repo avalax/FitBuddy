@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_edit_workout) {
+            WorkoutListFragment workoutListFragment = (WorkoutListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+            workoutListFragment.removeSelection();
+            mainToolbar();
             startActivityForResult(item.getIntent(), EDIT_WORKOUT);
             return true;
         }
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         item.setIntent(intent);
     }
 
-    private void mainToolbar() {
+    public void mainToolbar() {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
     }

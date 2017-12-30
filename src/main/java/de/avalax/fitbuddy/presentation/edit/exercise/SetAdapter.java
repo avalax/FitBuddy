@@ -16,6 +16,7 @@ import de.avalax.fitbuddy.domain.model.set.Sets;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
+import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity.EDIT_SET;
 
 public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
@@ -38,7 +39,8 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
     public SelectableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_set, parent, false);
-        return new SelectableViewHolder(view);
+        int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
+        return new SelectableViewHolder(view, TRANSPARENT, highlightColor);
     }
 
     @Override

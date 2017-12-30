@@ -10,24 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3067141613739864/9363197432">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="ca-app-pub-3067141613739864/9363197432" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/primaryColor"
+            android:theme="@style/AppTheme.ActionBar"
             app:layout_collapseMode="pin"
-            app:titleTextColor="?android:textColorPrimaryInverse" />
+            app:titleTextColor="@color/primaryTextColor" />
 
     </android.support.design.widget.AppBarLayout>
 

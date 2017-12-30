@@ -6,16 +6,19 @@ import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
 
-import static android.graphics.Color.TRANSPARENT;
-
 public class SelectableViewHolder extends RecyclerView.ViewHolder {
     private final TextView titleTextView;
     private final TextView subtitleTextView;
+    private final int backgroundColor;
+    private final int highlightColor;
+    private boolean selected;
 
-    public SelectableViewHolder(View v) {
+    public SelectableViewHolder(View v, int backgroundColor, int highlightColor) {
         super(v);
         titleTextView = v.findViewById(R.id.item_title);
         subtitleTextView = v.findViewById(R.id.item_subtitle);
+        this.backgroundColor = backgroundColor;
+        this.highlightColor = highlightColor;
     }
 
     public TextView getTitleTextView() {
@@ -39,11 +42,16 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void select() {
-        int color = itemView.getResources().getColor(R.color.primaryLightColor);
-        itemView.setBackgroundColor(color);
+        getView().setBackgroundColor(highlightColor);
+        selected = true;
     }
 
     private void deselect() {
-        itemView.setBackgroundColor(TRANSPARENT);
+        getView().setBackgroundColor(backgroundColor);
+        selected = false;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 }

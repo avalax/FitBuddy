@@ -19,6 +19,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
+import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity.EDIT_EXERCISE;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
@@ -41,7 +42,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public ExerciseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_exercise, parent, false);
-        return new ExerciseViewHolder(view);
+        int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
+        return new ExerciseViewHolder(view, TRANSPARENT, highlightColor);
     }
 
     @Override
@@ -115,8 +117,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     static class ExerciseViewHolder extends SelectableViewHolder {
         private final TextView weightTextView;
 
-        ExerciseViewHolder(View v) {
-            super(v);
+        ExerciseViewHolder(View v, int backgroundColor, int highlightColor) {
+            super(v, backgroundColor, highlightColor);
             weightTextView = v.findViewById(R.id.item_weight);
         }
 

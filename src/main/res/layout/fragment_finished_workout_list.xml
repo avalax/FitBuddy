@@ -14,9 +14,9 @@
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/primaryColor"
+            android:theme="@style/AppTheme.ActionBar"
             app:layout_collapseMode="pin"
-            app:titleTextColor="?android:textColorPrimaryInverse" />
+            app:titleTextColor="@color/primaryTextColor" />
 
     </android.support.design.widget.AppBarLayout>
 

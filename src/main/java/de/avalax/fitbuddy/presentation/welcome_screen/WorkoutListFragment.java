@@ -74,9 +74,15 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         workouts.set(position, workout);
         workoutAdapter.notifyItemChanged(position);
         recyclerView.updateEmptyView();
+        ((MainActivity)getActivity()).mainToolbar();
+    }
+
+    public void removeSelection() {
+        workoutAdapter.removeSelection();
     }
 
     public void removeWorkout(Workout workout) {
+        removeSelection();
         workouts.remove(workout);
         recyclerView.updateEmptyView();
     }
