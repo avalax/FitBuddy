@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.presentation.workout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +19,10 @@ import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
-import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.PagerOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.SwipeBarOnTouchListener;
 import de.avalax.fitbuddy.presentation.workout.swipe_bar.VerticalProgressbarView;
@@ -129,7 +126,6 @@ public class ExerciseFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.message_finish_workout)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    //TODO: switch to summary
                     try {
                         workoutApplicationService.finishCurrentWorkout();
                         ((MainActivity) getActivity()).updateBottomNavigation();
