@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
@@ -42,6 +43,8 @@ public class ExerciseFragment extends Fragment {
     WorkoutApplicationService workoutApplicationService;
     @Inject
     ExerciseViewHelper exerciseViewHelper;
+    @Inject
+    FinishedWorkoutApplicationService finishedWorkoutApplicationService;
 
     int exerciseIndex;
 
@@ -126,16 +129,11 @@ public class ExerciseFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.message_finish_workout)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    //TODO: switch to summary
                     try {
-                        FinishedWorkoutId finishedWorkoutId =
-                                workoutApplicationService.finishCurrentWorkout();
+                        workoutApplicationService.finishCurrentWorkout();
                         ((MainActivity) getActivity()).updateBottomNavigation();
-                        FinishedWorkoutDetailFragment fragment
-                                = FinishedWorkoutDetailFragment.newInstance(finishedWorkoutId);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_content, fragment)
-                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                .commit();
+                        ((MainActivity) getActivity()).showSummary();
                     } catch (ResourceException e) {
                         Log.d("Can't finish workout", e.getMessage(), e);
                     }

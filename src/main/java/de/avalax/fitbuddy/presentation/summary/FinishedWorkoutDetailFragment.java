@@ -2,7 +2,6 @@ package de.avalax.fitbuddy.presentation.summary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,10 @@ import javax.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class FinishedWorkoutDetailFragment extends Fragment {
-    private static final String ARGS_WORKOUT_ID = "finished_workout_id";
+    public static final String ARGS_FINISHED_WORKOUT = "workout";
 
     @Inject
     FinishedWorkoutApplicationService finishedWorkoutApplicationService;
@@ -26,17 +23,9 @@ public class FinishedWorkoutDetailFragment extends Fragment {
     @Inject
     FinishedWorkoutViewHelper finishedWorkoutViewHelper;
 
-    private TextView nameTextView;
     private TextView createdTextView;
     private TextView executedTextView;
-
-    public static FinishedWorkoutDetailFragment newInstance(FinishedWorkoutId finishedWorkoutId) {
-        FinishedWorkoutDetailFragment fragment = new FinishedWorkoutDetailFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARGS_WORKOUT_ID, finishedWorkoutId);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FinishedWorkout finishedWorkout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,24 +33,15 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         View view = inflater.inflate(R.layout.fragment_finished_workout, container, false);
-        nameTextView = view.findViewById(R.id.finished_workout_name);
         createdTextView = view.findViewById(R.id.finished_workout_created);
         executedTextView = view.findViewById(R.id.finished_workout_executed);
+        finishedWorkout = (FinishedWorkout) getActivity().getIntent().getSerializableExtra(ARGS_FINISHED_WORKOUT);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        FinishedWorkoutId finishedWorkoutId
-                = (FinishedWorkoutId) getArguments().getSerializable(ARGS_WORKOUT_ID);
-
-        try {
-            FinishedWorkout finishedWorkout = finishedWorkoutApplicationService.load(finishedWorkoutId);
-            nameTextView.setText(finishedWorkout.getName());
-            createdTextView.setText(finishedWorkoutViewHelper.creationDate(finishedWorkout));
-            executedTextView.setText(finishedWorkoutViewHelper.executions(finishedWorkout));
-        } catch (FinishedWorkoutException e) {
-            Log.d("Can't load workout", e.getMessage(), e);
-        }
+        createdTextView.setText(finishedWorkoutViewHelper.creationDate(finishedWorkout));
+        executedTextView.setText(finishedWorkoutViewHelper.executions(finishedWorkout));
     }
 }

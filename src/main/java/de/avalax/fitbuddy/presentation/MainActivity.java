@@ -168,6 +168,10 @@ public class MainActivity extends AppCompatActivity
         bottomNavigation.setSelectedItemId(R.id.navigation_workout_item);
     }
 
+    public void showSummary() {
+        bottomNavigation.setSelectedItemId(R.id.navigation_summary_item);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.navigation_workout_item) {

@@ -379,7 +379,7 @@ public class ApplicationRunner {
         onView(withId(android.R.id.button1)).perform(click());
     }
 
-    public void showsFinishedWorkout(String name, String created, String  executed) {
+    public void showsFinishedWorkoutDetail(String name, String created, String  executed) {
         onView(withId(R.id.finished_workout_name)).check(matches(withText(name)));
         onView(withId(R.id.finished_workout_created)).check(matches(withText(created)));
         onView(withId(R.id.finished_workout_executed)).check(matches(withText(executed)));

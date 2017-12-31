@@ -298,7 +298,7 @@ public class FitbuddyAcceptanceTest {
         application.switchToNextExercise();
         application.hasShownFinishExerciseHint();
         application.finishWorkout();
-        application.showsFinishedWorkout("a workout", "Today", "Executed 1 time");
+        application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
     }
 
     @Test
@@ -314,7 +314,7 @@ public class FitbuddyAcceptanceTest {
         application.switchToSummary();
         application.selectFinishedWorkout(0);
 
-        application.showsFinishedWorkout("a workout", "Today", "Executed 1 time");
+        application.showsFinishedWorkoutDetail("a workout", "Today", "Executed 1 time");
     }
 
     @Test

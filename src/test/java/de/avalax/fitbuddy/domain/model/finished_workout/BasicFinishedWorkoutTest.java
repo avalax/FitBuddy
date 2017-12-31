@@ -46,7 +46,7 @@ public class BasicFinishedWorkoutTest {
 
     @Test
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
-    public void differntObject_shouldHaveDifferentIdentity() throws Exception {
+    public void differentObject_shouldHaveDifferentIdentity() throws Exception {
         assertThat(finishedWorkout.equals("42"), is(false));
     }
 

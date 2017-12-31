@@ -29,6 +29,7 @@
         <activity android:name=".presentation.edit.workout.EditWorkoutActivity" />
         <activity android:name=".presentation.edit.exercise.EditExerciseActivity" />
         <activity android:name=".presentation.edit.set.EditSetActivity" />
+        <activity android:name=".presentation.summary.FinishedWorkoutDetailActivity" />
     </application>
 
 </manifest>
