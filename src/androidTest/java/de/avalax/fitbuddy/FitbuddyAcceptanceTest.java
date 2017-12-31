@@ -234,7 +234,7 @@ public class FitbuddyAcceptanceTest {
 
         application.switchToSummary();
         application.showsFinishedWorkoutBottomNavAsActive();
-        application.showsFinishedWorkoutOverview(0, "a workout");
+        application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
 
         application.backPressed();
         application.showsWorkoutIsActive(0);

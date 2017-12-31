@@ -33,5 +33,5 @@
         android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_icon_neutral"
-        android:contentDescription="@string/summary_tendency" />
+        android:contentDescription="@string/summary_tendency_normal" />
 </RelativeLayout>

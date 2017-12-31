@@ -40,13 +40,14 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     @Override
     public FinishedWorkoutId saveWorkout(Workout workout) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        long id = database.insertOrThrow(TABLE_FINISHED_WORKOUT, null, getContentValues(workout));
+        long date = getDate();
+        long id = database.insertOrThrow(TABLE_FINISHED_WORKOUT, null, getContentValues(workout, date));
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId(String.valueOf(id));
         for (Exercise exercise : workout.getExercises()) {
             finishedExerciseRepository.save(finishedWorkoutId, exercise);
         }
         database.close();
-        workout.setLastExecution(getDate());
+        workout.setLastExecution(date);
         workout.setFinishedCount(workout.getFinishedCount() + 1);
         workoutRepository.save(workout);
         return finishedWorkoutId;
@@ -115,7 +116,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         WorkoutId workoutId = new WorkoutId(cursor.getString(1));
         List<FinishedExercise> exercises = addFinishedExercises(finishedWorkoutId);
         String name = cursor.getString(2);
-        String created = cursor.getString(3);
+        Long created = cursor.getLong(3);
 
         return new BasicFinishedWorkout(finishedWorkoutId, workoutId, name, created, exercises);
     }
@@ -124,9 +125,10 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         return finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
     }
 
-    private ContentValues getContentValues(Workout workout) {
+    private ContentValues getContentValues(Workout workout, long created) {
         ContentValues values = new ContentValues();
         values.put("name", workout.getName());
+        values.put("created", created);
         if (workout.getWorkoutId() != null) {
             String workoutId = workout.getWorkoutId().getId();
             values.put("workout_id", workoutId);

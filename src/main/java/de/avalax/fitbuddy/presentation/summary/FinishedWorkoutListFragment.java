@@ -26,6 +26,8 @@ public class FinishedWorkoutListFragment extends Fragment {
 
     @Inject
     protected FinishedWorkoutApplicationService applicationService;
+    @Inject
+    protected FinishedWorkoutViewHelper finishedWorkoutViewHelper;
     private List<FinishedWorkout> finishedWorkouts;
     private WorkoutRecyclerView recyclerView;
     private FinishedWorkoutAdapter adapter;
@@ -40,7 +42,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         finishedWorkouts = applicationService.loadAllFinishedWorkouts();
-        adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkouts);
+        adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkoutViewHelper, finishedWorkouts);
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

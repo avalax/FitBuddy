@@ -9,14 +9,14 @@ public class BasicFinishedWorkout implements FinishedWorkout {
     private FinishedWorkoutId finishedWorkoutId;
     private WorkoutId workoutId;
     private String workoutName;
-    private String created;
+    private Long created;
     private List<FinishedExercise> finishedExercises;
 
     public BasicFinishedWorkout(
             FinishedWorkoutId finishedWorkoutId,
             WorkoutId workoutId,
             String workoutName,
-            String created,
+            Long created,
             List<FinishedExercise> finishedExercises) {
         this.finishedWorkoutId = finishedWorkoutId;
         this.workoutId = workoutId;
@@ -31,7 +31,7 @@ public class BasicFinishedWorkout implements FinishedWorkout {
     }
 
     @Override
-    public String getCreated() {
+    public Long getCreated() {
         return created;
     }
 

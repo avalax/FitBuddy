@@ -43,5 +43,5 @@
     <string name="reps_suffix">reps</string>
     <string name="weight_suffix">kg</string>
     <string name="edit_set_toolbar_title">Edit set</string>
-    <string name="summary_tendency">tendency</string>
+    <string name="summary_tendency_normal">normal</string>
 </resources>

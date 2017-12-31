@@ -16,14 +16,14 @@ public class BasicFinishedWorkoutTest {
     private FinishedWorkout finishedWorkout;
     private WorkoutId workoutId;
     private String workoutName;
-    private String created;
+    private Long created;
     private List<FinishedExercise> finishedExercises;
 
     @Before
     public void setUp() throws Exception {
         workoutId = new WorkoutId("12");
         workoutName = "NameOfFinishedWorkout";
-        created = "2014-10-12 19:30:00";
+        created = 42L;
         finishedExercises = new ArrayList<>();
         finishedWorkout = new BasicFinishedWorkout(new FinishedWorkoutId("42"), workoutId, workoutName, created, finishedExercises);
     }
@@ -78,7 +78,7 @@ public class BasicFinishedWorkoutTest {
     }
 
     @Test
-    public void toString_shouldReturnWorkoutInformations() throws Exception {
+    public void toString_shouldReturnWorkoutInformation() throws Exception {
         assertThat(finishedWorkout.toString(), equalTo("BasicFinishedWorkout [name=" + finishedWorkout.getName() + ", finishedWorkoutId=" + finishedWorkout.getFinishedWorkoutId().toString() + ", workoutId=" + finishedWorkout.getWorkoutId().toString() + ", created=" + finishedWorkout.getCreated() + "]"));
     }
 }

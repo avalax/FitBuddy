@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.domain.model.finished_workout;
 
 public class BasicFinishedWorkoutBuilder {
     private FinishedWorkoutId finishedWorkoutId;
+    private Long creation;
 
     public static BasicFinishedWorkoutBuilder aFinishedWorkout() {
         return new BasicFinishedWorkoutBuilder();
@@ -12,7 +13,12 @@ public class BasicFinishedWorkoutBuilder {
         return this;
     }
 
+    public BasicFinishedWorkoutBuilder withCreationDate(long creation) {
+        this.creation = creation;
+        return this;
+    }
+
     public FinishedWorkout build() {
-        return new BasicFinishedWorkout(finishedWorkoutId, null, null, null, null);
+        return new BasicFinishedWorkout(finishedWorkoutId, null, null, creation, null);
     }
 }

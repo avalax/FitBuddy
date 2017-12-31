@@ -13,7 +13,7 @@ public interface FinishedWorkout extends Serializable {
 
     String getName();
 
-    String getCreated();
+    Long getCreated();
 
     List<FinishedExercise> getFinishedExercises();
 }

@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.dialog.WeightDecimalPlaces;
@@ -90,10 +92,12 @@ public class ApplicationRunner {
                 actionOnItemAtPosition(position, click()));
     }
 
-    public void showsFinishedWorkoutOverview(int position, String name) {
+    public void showsFinishedWorkoutOverview(int position, String name, String date, String tendency) {
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))
-                .check(matches(itemAtPosition(position, withText(name), R.id.item_title)));
+                .check(matches(itemAtPosition(position, withText(name), R.id.item_title)))
+                .check(matches(itemAtPosition(position, withText(date), R.id.item_subtitle)))
+                .check(matches(itemAtPosition(position, withDrawable(tendency), R.id.item_tendency)));
     }
 
     public void showsSupportMenuItem() {
@@ -477,6 +481,21 @@ public class ApplicationRunner {
                 SelectableViewHolder viewHolder = (SelectableViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
 
                 return viewHolder.isSelected();
+            }
+        };
+    }
+
+    private static Matcher<View> withDrawable(String description) {
+        return new BoundedMatcher<View, ImageView>(ImageView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("description does not match " + description);
+            }
+
+            @Override
+            public boolean matchesSafely(final ImageView imageView) {
+                Matcher<String> stringMatcher = Matchers.equalTo(description);
+                return stringMatcher.matches(imageView.getContentDescription());
             }
         };
     }
