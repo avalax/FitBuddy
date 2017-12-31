@@ -41,7 +41,7 @@ public class FinishedWorkoutAdapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         FinishedWorkout workout = finishedWorkouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
-        holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.executionDate(workout));
+        holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.creationDate(workout));
         holder.getView().setOnClickListener(view -> {
             FinishedWorkoutDetailFragment fragment
                     = FinishedWorkoutDetailFragment.newInstance(workout.getFinishedWorkoutId());

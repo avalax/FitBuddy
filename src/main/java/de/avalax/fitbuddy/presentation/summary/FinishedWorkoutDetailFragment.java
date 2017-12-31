@@ -19,10 +19,16 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 public class FinishedWorkoutDetailFragment extends Fragment {
     private static final String ARGS_WORKOUT_ID = "finished_workout_id";
-    private TextView nameTextView;
 
     @Inject
     FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+
+    @Inject
+    FinishedWorkoutViewHelper finishedWorkoutViewHelper;
+
+    private TextView nameTextView;
+    private TextView createdTextView;
+    private TextView executedTextView;
 
     public static FinishedWorkoutDetailFragment newInstance(FinishedWorkoutId finishedWorkoutId) {
         FinishedWorkoutDetailFragment fragment = new FinishedWorkoutDetailFragment();
@@ -39,6 +45,8 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         View view = inflater.inflate(R.layout.fragment_finished_workout, container, false);
         nameTextView = view.findViewById(R.id.finished_workout_name);
+        createdTextView = view.findViewById(R.id.finished_workout_created);
+        executedTextView = view.findViewById(R.id.finished_workout_executed);
         return view;
     }
 
@@ -50,6 +58,8 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         try {
             FinishedWorkout finishedWorkout = finishedWorkoutApplicationService.load(finishedWorkoutId);
             nameTextView.setText(finishedWorkout.getName());
+            createdTextView.setText(finishedWorkoutViewHelper.creationDate(finishedWorkout));
+            executedTextView.setText(finishedWorkoutViewHelper.executions(finishedWorkout));
         } catch (FinishedWorkoutException e) {
             Log.d("Can't load workout", e.getMessage(), e);
         }

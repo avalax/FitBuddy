@@ -95,8 +95,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    FinishedWorkoutViewHelper provideFinishedWorkoutViewHelper() {
-        return new FinishedWorkoutViewHelper(context);
+    FinishedWorkoutViewHelper provideFinishedWorkoutViewHelper(WorkoutViewHelper workoutViewHelper) {
+        return new FinishedWorkoutViewHelper(context, workoutViewHelper, workoutRepository);
     }
 
     @Provides
