@@ -21,7 +21,9 @@ public class FinishedWorkoutViewHelper {
     private final WorkoutViewHelper workoutViewHelper;
     private final WorkoutRepository workoutRepository;
 
-    public FinishedWorkoutViewHelper(Context context, WorkoutViewHelper workoutViewHelper, WorkoutRepository workoutRepository) {
+    public FinishedWorkoutViewHelper(Context context,
+                                     WorkoutViewHelper workoutViewHelper,
+                                     WorkoutRepository workoutRepository) {
         creationDatePlaceholder = context.getResources().getString(R.string.placeholder_title);
         executionsPlural = context.getResources().getString(R.string.workout_executions);
         this.workoutViewHelper = workoutViewHelper;
