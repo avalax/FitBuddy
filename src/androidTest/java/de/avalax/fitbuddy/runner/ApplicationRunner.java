@@ -93,7 +93,7 @@ public class ApplicationRunner {
     public void showsFinishedWorkoutOverview(int position, String name) {
         onView(withId(android.R.id.list))
                 .perform(RecyclerViewActions.scrollToPosition(position))
-                .check(matches(itemAtPosition(position, withText(name), R.id.finished_workout_title)));
+                .check(matches(itemAtPosition(position, withText(name), R.id.item_title)));
     }
 
     public void showsSupportMenuItem() {
