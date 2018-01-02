@@ -30,7 +30,6 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -61,22 +60,14 @@ public class SQLiteFinishedExerciseRepositoryTest {
     }
 
     @Test
-    public void saveExercise_shouldInsertExerciseWithSetInformation() throws Exception {
-        Set set = exercise.getSets().createSet();
-        set.setWeight(12.34);
-        set.setMaxReps(15);
-        set.setReps(12);
+    public void saveExercise_shouldInsertExerciseInformation() throws Exception {
+        exercise.setName("new exercise name");
         finishedExerciseRepository.save(finishedWorkoutId, exercise);
 
         List<FinishedExercise> finishedExercises = finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
 
         assertThat(finishedExercises, hasSize(1));
-        FinishedExercise finishedExercise = finishedExercises.get(0);
-        assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercise.getSets().get(0).getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
-        assertThat(finishedExercise.getSets().get(0).getReps(), equalTo(exercise.getSets().get(0).getReps()));
-        assertThat(finishedExercise.getSets().get(0).getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
+        assertThat(finishedExercises.get(0).getName(), equalTo("new exercise name"));
     }
 
     @Test
@@ -95,5 +86,11 @@ public class SQLiteFinishedExerciseRepositoryTest {
 
         assertThat(finishedExercises, hasSize(1));
         assertThat(finishedExercises.get(0).getSets(), hasSize(2));
+        assertThat(finishedExercises.get(0).getSets().get(0).getWeight(), equalTo(set1.getWeight()));
+        assertThat(finishedExercises.get(0).getSets().get(0).getReps(), equalTo(set1.getReps()));
+        assertThat(finishedExercises.get(0).getSets().get(0).getMaxReps(), equalTo(set1.getMaxReps()));
+        assertThat(finishedExercises.get(0).getSets().get(1).getWeight(), equalTo(set2.getWeight()));
+        assertThat(finishedExercises.get(0).getSets().get(1).getReps(), equalTo(set2.getReps()));
+        assertThat(finishedExercises.get(0).getSets().get(1).getMaxReps(), equalTo(set2.getMaxReps()));
     }
 }

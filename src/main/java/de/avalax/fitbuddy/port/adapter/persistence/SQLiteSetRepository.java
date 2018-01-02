@@ -4,14 +4,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetId;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SQLiteSetRepository implements SetRepository {
     private static final String TABLE_SET = "sets";
@@ -50,17 +51,15 @@ public class SQLiteSetRepository implements SetRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_SET, new String[]{"id", "weight", "reps"},
                 "exercise_id=?", new String[]{exerciseId.getId()}, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                SetId setId = new SetId(cursor.getString(0));
-                double weight = cursor.getDouble(1);
-                int maxReps = cursor.getInt(2);
-                Set set = new BasicSet(setId, weight, maxReps);
-                sets.add(set);
-            } while (cursor.moveToNext());
+        while (cursor.moveToNext()) {
+            SetId setId = new SetId(cursor.getString(0));
+            double weight = cursor.getDouble(1);
+            int maxReps = cursor.getInt(2);
+            Set set = new BasicSet(setId, weight, maxReps);
+            sets.add(set);
         }
         cursor.close();
-
+        database.close();
         return sets;
     }
 

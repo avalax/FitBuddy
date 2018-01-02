@@ -114,22 +114,18 @@ public class SQLiteFinishedWorkoutRepositoryTest {
 
     @Test
     public void saveWorkout_shouldAlsoInsertExerciseInformationIntoDatabase() throws Exception {
-        Exercise exercise = workout.getExercises().createExercise();
-        exercise.setName("finished exercise");
-        Set set = exercise.getSets().createSet();
-        set.setWeight(42.21);
-        set.setMaxReps(15);
-        set.setReps(12);
+        Exercise exercise1 = workout.getExercises().createExercise();
+        exercise1.setName("first exercise");
+        Exercise exercise2 = workout.getExercises().createExercise();
+        exercise2.setName("second exercise");
 
         FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
 
         FinishedWorkout finishedWorkout = finishedWorkoutRepository.load(finishedWorkoutId);
         List<FinishedExercise> finishedExercises = finishedWorkout.getFinishedExercises();
-        assertThat(finishedExercises, hasSize(1));
-        assertThat(finishedExercises.get(0).getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercises.get(0).getSets().get(0).getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
-        assertThat(finishedExercises.get(0).getSets().get(0).getReps(), equalTo(exercise.getSets().get(0).getReps()));
-        assertThat(finishedExercises.get(0).getSets().get(0).getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
+        assertThat(finishedExercises, hasSize(2));
+        assertThat(finishedExercises.get(0).getName(), equalTo("first exercise"));
+        assertThat(finishedExercises.get(1).getName(), equalTo("second exercise"));
     }
 
     @Test

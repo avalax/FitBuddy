@@ -38,17 +38,15 @@ public class SQLiteFinishedSetRepository implements FinishedSetRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_FINISHED_SET, new String[]{"weight", "reps", "max_reps"},
                 "finished_exercise_id=?", new String[]{finishedExerciseId.getId()}, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                double weight = cursor.getDouble(0);
-                int reps = cursor.getInt(1);
-                int maxReps = cursor.getInt(2);
-                FinishedSet set = new BasicFinishedSet(weight, reps, maxReps);
-                sets.add(set);
-            } while (cursor.moveToNext());
+        while (cursor.moveToNext()) {
+            double weight = cursor.getDouble(0);
+            int reps = cursor.getInt(1);
+            int maxReps = cursor.getInt(2);
+            FinishedSet set = new BasicFinishedSet(weight, reps, maxReps);
+            sets.add(set);
         }
         cursor.close();
-
+        database.close();
         return sets;
     }
 
