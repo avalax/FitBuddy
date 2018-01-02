@@ -199,18 +199,6 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void existingWorkout_shouldBeDeleted() throws Exception {
-        persistence.addWorkout(aWorkout());
-
-        activityRule.launchActivity(null);
-
-        application.deleteWorkout(0);
-
-        application.hasShownAddNewWorkoutHint();
-        application.showsSupportMenuItem();
-    }
-
-    @Test
     public void activeWorkoutGiven_shouldNavigateBetweenFragments() throws Exception {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
         BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
@@ -234,6 +222,12 @@ public class FitbuddyAcceptanceTest {
 
         application.switchToSummary();
         application.showsFinishedWorkoutBottomNavAsActive();
+        application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
+
+        application.selectFinishedWorkout(0);
+        application.showsFinishedWorkoutDetail("a workout", "Today", "Executed 1 time");
+
+        application.backPressed();
         application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
 
         application.backPressed();
@@ -302,20 +296,15 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void aFinishedWorkout_shouldSeeDetailOverSummary() throws Exception {
-        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
-        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
-        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
-        Workout persistedWorkout = persistence.addWorkout(workout);
-        persistence.finishWorkout(persistedWorkout);
+    public void aWorkout_shouldBeDeleted() throws Exception {
+        persistence.addWorkout(aWorkout());
 
         activityRule.launchActivity(null);
 
-        application.switchToSummary();
-        application.selectFinishedWorkout(0);
+        application.deleteWorkout(0);
 
-        application.showsFinishedWorkoutDetail("a workout", "Today", "Executed 1 time");
-        application.showsFinishedExerciseDetail(0, "an exercise");
+        application.hasShownAddNewWorkoutHint();
+        application.showsSupportMenuItem();
     }
 
     @Test
