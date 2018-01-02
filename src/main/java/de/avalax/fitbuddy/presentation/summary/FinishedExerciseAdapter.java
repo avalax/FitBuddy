@@ -11,9 +11,6 @@ import java.util.List;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
-import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
-
-import static android.graphics.Color.TRANSPARENT;
 
 public class FinishedExerciseAdapter
         extends RecyclerView.Adapter<FinishedExerciseAdapter.ExerciseViewHolder> {

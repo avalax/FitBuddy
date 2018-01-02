@@ -29,10 +29,10 @@ public class BasicFinishedSet implements FinishedSet {
 
     @Override
     public String toString() {
-        return "BasicFinishedSet [" +
-                "reps=" + reps +
-                ", maxReps=" + maxReps +
-                ", weight=" + weight +
-                ']';
+        return "BasicFinishedSet ["
+                + "reps=" + reps
+                + ", maxReps=" + maxReps
+                + ", weight=" + weight
+                + "]";
     }
 }

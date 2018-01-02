@@ -37,11 +37,13 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_finished_workout, container, false);
         createdTextView = view.findViewById(R.id.finished_workout_created);
         executedTextView = view.findViewById(R.id.finished_workout_executed);
-        finishedWorkout = (FinishedWorkout) getActivity().getIntent().getSerializableExtra(ARGS_FINISHED_WORKOUT);
+        finishedWorkout = (FinishedWorkout)
+                getActivity().getIntent().getSerializableExtra(ARGS_FINISHED_WORKOUT);
         WorkoutRecyclerView recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
 
-        RecyclerView.Adapter adapter = new FinishedExerciseAdapter(getActivity(), finishedWorkout.getFinishedExercises());
+        RecyclerView.Adapter adapter =
+                new FinishedExerciseAdapter(getActivity(), finishedWorkout.getFinishedExercises());
         recyclerView.setAdapter(adapter);
         return view;
     }
