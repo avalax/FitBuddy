@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSetRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
@@ -48,7 +49,8 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         date = DateUtil.parse("2017-12-31");
         Context context = RuntimeEnvironment.application.getApplicationContext();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
-        FinishedExerciseRepository finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
+        FinishedSetRepository finishedSetRepository = new SQLiteFinishedSetRepository(sqLiteOpenHelper);
+        FinishedExerciseRepository finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
         SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
@@ -111,7 +113,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
     }
 
     @Test
-    public void saveWorkout_shouldAlsoInsertExerciseInformationsIntoDatabase() throws Exception {
+    public void saveWorkout_shouldAlsoInsertExerciseInformationIntoDatabase() throws Exception {
         Exercise exercise = workout.getExercises().createExercise();
         exercise.setName("finished exercise");
         Set set = exercise.getSets().createSet();
@@ -125,9 +127,9 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         List<FinishedExercise> finishedExercises = finishedWorkout.getFinishedExercises();
         assertThat(finishedExercises, hasSize(1));
         assertThat(finishedExercises.get(0).getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercises.get(0).getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
-        assertThat(finishedExercises.get(0).getReps(), equalTo(exercise.getSets().get(0).getReps()));
-        assertThat(finishedExercises.get(0).getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
+        assertThat(finishedExercises.get(0).getSets().get(0).getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
+        assertThat(finishedExercises.get(0).getSets().get(0).getReps(), equalTo(exercise.getSets().get(0).getReps()));
+        assertThat(finishedExercises.get(0).getSets().get(0).getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
     }
 
     @Test

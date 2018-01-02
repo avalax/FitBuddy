@@ -304,7 +304,7 @@ public class FitbuddyAcceptanceTest {
     @Test
     public void aFinishedWorkout_shouldSeeDetailOverSummary() throws Exception {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
-        BasicExerciseBuilder exercise = anExercise().withName("only one exercise").withSet(set);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
         Workout persistedWorkout = persistence.addWorkout(workout);
         persistence.finishWorkout(persistedWorkout);
@@ -315,6 +315,7 @@ public class FitbuddyAcceptanceTest {
         application.selectFinishedWorkout(0);
 
         application.showsFinishedWorkoutDetail("a workout", "Today", "Executed 1 time");
+        application.showsFinishedExerciseDetail(0, "an exercise");
     }
 
     @Test

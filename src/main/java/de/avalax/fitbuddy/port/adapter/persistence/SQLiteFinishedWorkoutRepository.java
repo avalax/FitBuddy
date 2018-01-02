@@ -122,7 +122,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
     }
 
     private List<FinishedExercise> addFinishedExercises(FinishedWorkoutId finishedWorkoutId) {
-        return finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
+        return finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
     }
 
     private ContentValues getContentValues(Workout workout, long created) {

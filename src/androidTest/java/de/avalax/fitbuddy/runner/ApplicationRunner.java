@@ -379,10 +379,17 @@ public class ApplicationRunner {
         onView(withId(android.R.id.button1)).perform(click());
     }
 
-    public void showsFinishedWorkoutDetail(String name, String created, String  executed) {
+    public void showsFinishedWorkoutDetail(String name, String created, String executed) {
         onView(withId(R.id.finished_workout_name)).check(matches(withText(name)));
         onView(withId(R.id.finished_workout_created)).check(matches(withText(created)));
         onView(withId(R.id.finished_workout_executed)).check(matches(withText(executed)));
+    }
+
+    public void showsFinishedExerciseDetail(int position, String name) {
+        onView(withId(android.R.id.empty)).check(matches(not(isDisplayed())));
+        onView(withId(android.R.id.list))
+                .perform(RecyclerViewActions.scrollToPosition(position))
+                .check(matches(itemAtPosition(position, withText(name), R.id.item_title)));
     }
 
     private static ViewAction setNumberPicker(final int value) {

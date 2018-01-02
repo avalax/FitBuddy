@@ -8,5 +8,5 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 public interface FinishedExerciseRepository {
     void save(FinishedWorkoutId finishedWorkoutId, Exercise exercise);
 
-    List<FinishedExercise> allSetsBelongsTo(FinishedWorkoutId finishedWorkoutId);
+    List<FinishedExercise> allExercisesBelongsTo(FinishedWorkoutId finishedWorkoutId);
 }

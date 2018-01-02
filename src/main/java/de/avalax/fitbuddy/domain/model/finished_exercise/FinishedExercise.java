@@ -1,7 +1,9 @@
 package de.avalax.fitbuddy.domain.model.finished_exercise;
 
 import java.io.Serializable;
+import java.util.List;
 
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSet;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 
 public interface FinishedExercise extends Serializable {
@@ -11,9 +13,5 @@ public interface FinishedExercise extends Serializable {
 
     String getName();
 
-    double getWeight();
-
-    int getReps();
-
-    int getMaxReps();
+    List<FinishedSet> getSets();
 }

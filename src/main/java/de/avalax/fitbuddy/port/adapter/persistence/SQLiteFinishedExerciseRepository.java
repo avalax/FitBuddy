@@ -13,46 +13,49 @@ import de.avalax.fitbuddy.domain.model.finished_exercise.BasicFinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseId;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSet;
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSetRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 
 public class SQLiteFinishedExerciseRepository implements FinishedExerciseRepository {
     private static final String TABLE_FINISHED_EXERCISE = "finished_exercise";
     private SQLiteOpenHelper sqLiteOpenHelper;
+    private FinishedSetRepository finishedSetRepository;
 
-    public SQLiteFinishedExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    public SQLiteFinishedExerciseRepository(SQLiteOpenHelper sqLiteOpenHelper,
+                                            FinishedSetRepository finishedSetRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
+        this.finishedSetRepository = finishedSetRepository;
     }
 
 
     @Override
     public void save(FinishedWorkoutId finishedWorkoutId, Exercise exercise) {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
+        ContentValues contentValues = getContentValues(finishedWorkoutId, exercise);
+        long id = database.insertOrThrow(TABLE_FINISHED_EXERCISE, null, contentValues);
+        FinishedExerciseId finishedExerciseId = new FinishedExerciseId(String.valueOf(id));
         for (Set set : exercise.getSets()) {
-            ContentValues contentValues = getContentValues(finishedWorkoutId, exercise, set);
-            database.insertOrThrow(TABLE_FINISHED_EXERCISE, null, contentValues);
+            finishedSetRepository.save(finishedExerciseId, set);
         }
         database.close();
     }
 
     private ContentValues getContentValues(
             FinishedWorkoutId finishedWorkoutId,
-            Exercise exercise,
-            Set set) {
+            Exercise exercise) {
         ContentValues values = new ContentValues();
         values.put("finished_workout_id", finishedWorkoutId.getId());
         values.put("name", exercise.getName());
-        values.put("weight", set.getWeight());
-        values.put("reps", set.getReps());
-        values.put("maxReps", set.getMaxReps());
         return values;
     }
 
     @Override
-    public List<FinishedExercise> allSetsBelongsTo(FinishedWorkoutId finishedWorkoutId) {
+    public List<FinishedExercise> allExercisesBelongsTo(FinishedWorkoutId finishedWorkoutId) {
         List<FinishedExercise> finishedExercises = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        String[] columns = {"id", "name", "weight", "reps", "maxReps"};
+        String[] columns = {"id", "name"};
         String[] args = {finishedWorkoutId.getId()};
         Cursor cursor = database.query("finished_exercise", columns,
                 "finished_workout_id=?", args, null, null, null);
@@ -60,16 +63,12 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
             do {
                 FinishedExerciseId finishedExerciseId = new FinishedExerciseId(cursor.getString(0));
                 String name = cursor.getString(1);
-                double weight = cursor.getDouble(2);
-                int reps = cursor.getInt(3);
-                int maxReps = cursor.getInt(4);
+                List<FinishedSet> sets = finishedSetRepository.allSetsBelongsTo(finishedExerciseId);
                 FinishedExercise finishedExercise = new BasicFinishedExercise(
                         finishedExerciseId,
                         finishedWorkoutId,
                         name,
-                        weight,
-                        reps,
-                        maxReps);
+                        sets);
                 finishedExercises.add(finishedExercise);
             } while (cursor.moveToNext());
         }

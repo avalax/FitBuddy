@@ -1,28 +1,25 @@
 package de.avalax.fitbuddy.domain.model.finished_exercise;
 
+import java.util.List;
+
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSet;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 
 public class BasicFinishedExercise implements FinishedExercise {
     private FinishedWorkoutId finishedWorkoutId;
     private String name;
-    private int maxReps;
-    private double weight;
-    private int reps;
+    private List<FinishedSet> sets;
     private FinishedExerciseId finishedExerciseId;
 
     public BasicFinishedExercise(
             FinishedExerciseId finishedExerciseId,
             FinishedWorkoutId finishedWorkoutId,
             String name,
-            double weight,
-            int reps,
-            int maxReps) {
+            List<FinishedSet> sets) {
         this.finishedWorkoutId = finishedWorkoutId;
         this.finishedExerciseId = finishedExerciseId;
         this.name = name;
-        this.maxReps = maxReps;
-        this.weight = weight;
-        this.reps = reps;
+        this.sets = sets;
     }
 
     @Override
@@ -41,26 +38,14 @@ public class BasicFinishedExercise implements FinishedExercise {
     }
 
     @Override
-    public double getWeight() {
-        return weight;
-    }
-
-    @Override
-    public int getReps() {
-        return reps;
-    }
-
-    @Override
-    public int getMaxReps() {
-        return maxReps;
+    public List<FinishedSet> getSets() {
+        return sets;
     }
 
     @Override
     public String toString() {
         return "BasicFinishedExercise [name=" + name
-                + ", finishedExerciseId=" + finishedExerciseId.toString()
-                + ", weight=" + weight
-                + ", reps=" + reps + "]";
+                + ", finishedExerciseId=" + finishedExerciseId.toString() + "]";
     }
 
     @Override

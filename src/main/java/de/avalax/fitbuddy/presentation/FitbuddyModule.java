@@ -16,12 +16,14 @@ import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSetRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.FitbuddySQLiteOpenHelper;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteExerciseRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedExerciseRepository;
+import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
@@ -47,8 +49,9 @@ public class FitbuddyModule {
         ExerciseRepository exerciseRepository =
                 new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
         workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
+        FinishedSetRepository finishedSetRepository = new SQLiteFinishedSetRepository(sqLiteOpenHelper);
         FinishedExerciseRepository finishedExerciseRepository
-                = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
+                = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
         finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(
                 sqLiteOpenHelper, finishedExerciseRepository, workoutRepository);
     }

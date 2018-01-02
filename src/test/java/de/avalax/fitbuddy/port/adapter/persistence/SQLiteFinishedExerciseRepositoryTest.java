@@ -18,6 +18,7 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
+import de.avalax.fitbuddy.domain.model.finished_set.FinishedSetRepository;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -53,18 +54,10 @@ public class SQLiteFinishedExerciseRepositoryTest {
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
-        finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper);
+        FinishedSetRepository finishedSetRepository = new SQLiteFinishedSetRepository(sqLiteOpenHelper);
+        finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
         createWorkout(sqLiteOpenHelper);
         exercise = new BasicExercise();
-    }
-
-    @Test
-    public void saveExerciseWithoutSets_shouldInsertNothing() throws Exception {
-        finishedExerciseRepository.save(finishedWorkoutId, exercise);
-
-        List<FinishedExercise> finishedExercises = finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
-
-        assertThat(finishedExercises, emptyCollectionOf(FinishedExercise.class));
     }
 
     @Test
@@ -75,26 +68,32 @@ public class SQLiteFinishedExerciseRepositoryTest {
         set.setReps(12);
         finishedExerciseRepository.save(finishedWorkoutId, exercise);
 
-        List<FinishedExercise> finishedExercises = finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
+        List<FinishedExercise> finishedExercises = finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
 
         assertThat(finishedExercises, hasSize(1));
         FinishedExercise finishedExercise = finishedExercises.get(0);
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
         assertThat(finishedExercise.getName(), equalTo(exercise.getName()));
-        assertThat(finishedExercise.getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
-        assertThat(finishedExercise.getReps(), equalTo(exercise.getSets().get(0).getReps()));
-        assertThat(finishedExercise.getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
+        assertThat(finishedExercise.getSets().get(0).getWeight(), equalTo(exercise.getSets().get(0).getWeight()));
+        assertThat(finishedExercise.getSets().get(0).getReps(), equalTo(exercise.getSets().get(0).getReps()));
+        assertThat(finishedExercise.getSets().get(0).getMaxReps(), equalTo(exercise.getSets().get(0).getMaxReps()));
     }
 
     @Test
     public void saveExercise_shouldInsertExerciseWithAllSets() throws Exception {
-        exercise.getSets().createSet();
-        exercise.getSets().createSet();
-        exercise.getSets().createSet();
+        Set set1 = exercise.getSets().createSet();
+        set1.setMaxReps(15);
+        set1.setReps(12);
+        set1.setWeight(42L);
+        Set set2 = exercise.getSets().createSet();
+        set2.setMaxReps(20);
+        set2.setReps(10);
+        set2.setWeight(21L);
         finishedExerciseRepository.save(finishedWorkoutId, exercise);
 
-        List<FinishedExercise> finishedExercises = finishedExerciseRepository.allSetsBelongsTo(finishedWorkoutId);
+        List<FinishedExercise> finishedExercises = finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
 
-        assertThat(finishedExercises, hasSize(3));
+        assertThat(finishedExercises, hasSize(1));
+        assertThat(finishedExercises.get(0).getSets(), hasSize(2));
     }
 }

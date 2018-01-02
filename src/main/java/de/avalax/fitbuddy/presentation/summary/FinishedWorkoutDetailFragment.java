@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.presentation.summary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
+import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 public class FinishedWorkoutDetailFragment extends Fragment {
     public static final String ARGS_FINISHED_WORKOUT = "workout";
@@ -36,6 +38,11 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         createdTextView = view.findViewById(R.id.finished_workout_created);
         executedTextView = view.findViewById(R.id.finished_workout_executed);
         finishedWorkout = (FinishedWorkout) getActivity().getIntent().getSerializableExtra(ARGS_FINISHED_WORKOUT);
+        WorkoutRecyclerView recyclerView = view.findViewById(android.R.id.list);
+        recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
+
+        RecyclerView.Adapter adapter = new FinishedExerciseAdapter(getActivity(), finishedWorkout.getFinishedExercises());
+        recyclerView.setAdapter(adapter);
         return view;
     }
 
