@@ -46,7 +46,10 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
 
         RecyclerView.Adapter adapter =
-                new FinishedExerciseAdapter(getActivity(), finishedExerciseViewHelper, finishedWorkout.getFinishedExercises());
+                new FinishedExerciseAdapter(
+                        getActivity(),
+                        finishedExerciseViewHelper,
+                        finishedWorkout.getFinishedExercises());
         recyclerView.setAdapter(adapter);
         return view;
     }

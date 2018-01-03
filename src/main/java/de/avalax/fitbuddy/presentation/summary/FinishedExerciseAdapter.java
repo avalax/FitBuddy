@@ -43,7 +43,6 @@ public class FinishedExerciseAdapter
         FinishedExercise finishedExercise = finishedExercises.get(position);
         String title = finishedExercise.getName();
         holder.getTitleTextView().setText(title);
-        //TODO: FinishedExerciseViewHelper
         holder.getSubtitleTextView().setText(finishedExerciseViewHelper.subtitle(finishedExercise));
         BarData barData = getBarData(finishedExercise);
         holder.getBarChart().setData(barData);
@@ -155,7 +154,7 @@ public class FinishedExerciseAdapter
         }
     }
 
-    private class ZeroValueFormatter implements IValueFormatter {
+    private static class ZeroValueFormatter implements IValueFormatter {
         private DecimalFormat mFormat;
 
         ZeroValueFormatter() {
