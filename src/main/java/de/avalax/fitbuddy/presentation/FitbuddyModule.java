@@ -30,6 +30,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
+import de.avalax.fitbuddy.presentation.summary.FinishedExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutViewHelper;
 
@@ -100,6 +101,12 @@ public class FitbuddyModule {
     @Singleton
     FinishedWorkoutViewHelper provideFinishedWorkoutViewHelper(WorkoutViewHelper workoutViewHelper) {
         return new FinishedWorkoutViewHelper(context, workoutViewHelper, workoutRepository);
+    }
+
+    @Provides
+    @Singleton
+    FinishedExerciseViewHelper provideFinishedExerciseViewHelper() {
+        return new FinishedExerciseViewHelper();
     }
 
     @Provides

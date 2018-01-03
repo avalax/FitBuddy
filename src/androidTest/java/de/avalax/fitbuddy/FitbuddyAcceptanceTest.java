@@ -320,6 +320,22 @@ public class FitbuddyAcceptanceTest {
         application.hasShownAddNoFinishedWorkoutsHint();
     }
 
+    @Test
+    public void aFinishedWorkout_shouldShowExerciseDetails() throws Exception {
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        persistence.finishWorkout(persistedWorkout);
+
+        activityRule.launchActivity(null);
+
+        application.switchToSummary();
+        application.selectFinishedWorkout(0);
+
+        application.showsFinishedExerciseDetail(0, "an exercise", "1 x 12");
+    }
+
     @After
     public void tearDown() throws Exception {
         persistence.deleteWorkouts();

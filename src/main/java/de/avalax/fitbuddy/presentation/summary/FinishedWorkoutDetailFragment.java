@@ -25,6 +25,9 @@ public class FinishedWorkoutDetailFragment extends Fragment {
     @Inject
     FinishedWorkoutViewHelper finishedWorkoutViewHelper;
 
+    @Inject
+    FinishedExerciseViewHelper finishedExerciseViewHelper;
+
     private TextView createdTextView;
     private TextView executedTextView;
     private FinishedWorkout finishedWorkout;
@@ -43,7 +46,7 @@ public class FinishedWorkoutDetailFragment extends Fragment {
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
 
         RecyclerView.Adapter adapter =
-                new FinishedExerciseAdapter(getActivity(), finishedWorkout.getFinishedExercises());
+                new FinishedExerciseAdapter(getActivity(), finishedExerciseViewHelper, finishedWorkout.getFinishedExercises());
         recyclerView.setAdapter(adapter);
         return view;
     }
