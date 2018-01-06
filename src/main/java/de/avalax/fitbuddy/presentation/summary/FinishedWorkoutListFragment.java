@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdView;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +20,7 @@ import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
+import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
@@ -28,6 +31,9 @@ public class FinishedWorkoutListFragment extends Fragment {
     protected FinishedWorkoutApplicationService applicationService;
     @Inject
     protected FinishedWorkoutViewHelper finishedWorkoutViewHelper;
+    @Inject
+    protected AdMobProvider adMobProvider;
+
     private List<FinishedWorkout> finishedWorkouts;
     private WorkoutRecyclerView recyclerView;
     private FinishedWorkoutAdapter adapter;
@@ -46,6 +52,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        adMobProvider.initAdView(getActivity(), view);
         return view;
     }
 

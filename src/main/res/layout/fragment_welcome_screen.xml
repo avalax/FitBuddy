@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
+            ads:adSize="SMART_BANNER"
             ads:adUnitId="ca-app-pub-3067141613739864/9363197432" />
 
         <android.support.v7.widget.Toolbar

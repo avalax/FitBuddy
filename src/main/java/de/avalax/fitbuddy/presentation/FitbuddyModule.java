@@ -27,6 +27,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
+import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
@@ -113,5 +114,11 @@ public class FitbuddyModule {
     @Singleton
     EditExerciseViewHelper provideEditExerciseApplicationService() {
         return new EditExerciseViewHelper(context);
+    }
+
+    @Provides
+    @Singleton
+    AdMobProvider provideAdMobProvider() {
+        return new AdMobProvider();
     }
 }

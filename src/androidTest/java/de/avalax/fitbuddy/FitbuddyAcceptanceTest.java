@@ -331,8 +331,10 @@ public class FitbuddyAcceptanceTest {
         activityRule.launchActivity(null);
 
         application.switchToSummary();
-        application.selectFinishedWorkout(0);
+        application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
+        application.showsAdMob();
 
+        application.selectFinishedWorkout(0);
         application.showsFinishedExerciseDetail(0, "an exercise", "1 x 12");
     }
 

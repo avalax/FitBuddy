@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 
@@ -26,6 +24,7 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
+import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 
 public class WorkoutListFragment extends Fragment implements View.OnClickListener {
@@ -40,6 +39,9 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
 
     @Inject
     WorkoutViewHelper workoutViewHelper;
+
+    @Inject
+    AdMobProvider adMobProvider;
 
     private WorkoutAdapter workoutAdapter;
     private List<Workout> workouts;
@@ -61,12 +63,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         floatingActionButton.setOnClickListener(this);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        MobileAds.initialize(getActivity(), "ca-app-pub-3067141613739864~9851773284");
-        AdView adView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("8F6B70E5DC92FE9E826BAA77A492D912").build();
-        adView.loadAd(adRequest);
+        adMobProvider.initAdView(getActivity(), view);
         return view;
     }
 
