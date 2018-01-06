@@ -1,5 +1,8 @@
 package de.avalax.fitbuddy.runner;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
@@ -41,5 +44,14 @@ public class PersistenceRunner {
         for (FinishedWorkout finishedWorkout : workouts) {
             activityRule.finishedWorkoutApplicationService.delete(finishedWorkout);
         }
+    }
+
+    public void setPaid() {
+        activityRule.adMobProvider.setPaid();
+    }
+
+    public void deleteSharedPreferences() {
+        SharedPreferences preferences = activityRule.getActivity().getSharedPreferences("fitbuddy", Context.MODE_PRIVATE);
+        preferences.edit().clear().apply();
     }
 }

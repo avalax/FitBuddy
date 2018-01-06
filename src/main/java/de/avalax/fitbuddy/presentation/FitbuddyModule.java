@@ -119,6 +119,6 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     AdMobProvider provideAdMobProvider() {
-        return new AdMobProvider();
+        return new AdMobProvider(context);
     }
 }

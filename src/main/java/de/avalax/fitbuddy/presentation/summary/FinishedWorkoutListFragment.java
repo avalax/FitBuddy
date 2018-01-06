@@ -52,7 +52,8 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        adMobProvider.initAdView(getActivity(), view);
+        AdView adView = view.findViewById(R.id.adView);
+        adMobProvider.initAdView(adView);
         return view;
     }
 
