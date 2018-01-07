@@ -193,7 +193,6 @@ public class ExerciseFragment extends Fragment {
         try {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            String name = exercise.getName() + ":";
             exerciseNameTextView.setText(exerciseViewHelper.exerciseName(exercise));
             exerciseWeightTextView.setText(exerciseViewHelper.weightOfExercise(exercise));
             if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
