@@ -76,7 +76,7 @@ public class FitbuddyModule {
     @Singleton
     ExerciseViewHelper provideExerciseViewHelper() {
         Locale locale = context.getResources().getConfiguration().locale;
-        return new ExerciseViewHelper(locale);
+        return new ExerciseViewHelper(context, locale);
     }
 
     @Provides

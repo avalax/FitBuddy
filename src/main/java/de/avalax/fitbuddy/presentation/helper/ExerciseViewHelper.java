@@ -1,41 +1,41 @@
 package de.avalax.fitbuddy.presentation.helper;
 
+import android.content.Context;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 
 public class ExerciseViewHelper {
+    private final String defaultText;
+    private final String defaultWeight;
     private DecimalFormat decimalFormat;
 
-    public ExerciseViewHelper(Locale locale) {
+    public ExerciseViewHelper(Context context, Locale locale) {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         this.decimalFormat = new DecimalFormat("###.###", symbols);
+        this.defaultText = context.getResources().getString(R.string.placeholder_title);
+        this.defaultWeight = context.getResources().getString(R.string.default_set_weight);
     }
 
     public String weightOfExercise(Exercise exercise) {
         if (exercise == null) {
-            return "-";
+            return defaultWeight;
         }
         try {
             int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
             double weight = exercise.getSets().get(indexOfCurrentSet).getWeight();
             if (weight == 0) {
-                return "-";
+                return defaultWeight;
             }
-            return decimalFormat.format(weight);
+            return decimalFormat.format(weight) + " kg";
         } catch (SetException e) {
-            return "-";
+            return defaultWeight;
         }
-    }
-
-    public String nameOfExercise(Exercise exercise) {
-        if (exercise == null || exercise.getName().isEmpty()) {
-            return "unnamed exercise";
-        }
-        return exercise.getName();
     }
 
     public int maxRepsOfExercise(Exercise exercise) {
@@ -55,5 +55,27 @@ public class ExerciseViewHelper {
             return 0;
         }
         return exercise.getSets().size();
+    }
+
+    public String cutPreviousExerciseName(Exercise exercise) {
+        String name = exercise.getName();
+        if (name.isEmpty()) {
+            name = defaultText;
+        }
+        if (name.length() < 5) {
+            return name;
+        }
+        return name.substring(name.length() - 5);
+    }
+
+    public String cutNextExerciseName(Exercise exercise) {
+        String name = exercise.getName();
+        if (name.isEmpty()) {
+            name = defaultText;
+        }
+        if (name.length() < 5) {
+            return name;
+        }
+        return name.substring(0, 5);
     }
 }

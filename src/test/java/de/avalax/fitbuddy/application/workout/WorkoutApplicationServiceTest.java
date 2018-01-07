@@ -15,7 +15,6 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepositor
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
@@ -75,11 +74,6 @@ public class WorkoutApplicationServiceTest {
         @Test(expected = ResourceException.class)
         public void switchToSet_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.switchToSet(0, 0);
-        }
-
-        @Test(expected = ResourceException.class)
-        public void weightOfCurrentSet_shouldThrowResourceNotFoundException() throws Exception {
-            workoutApplicationService.weightOfCurrentSet(0);
         }
 
         @Test(expected = ResourceException.class)
@@ -171,11 +165,6 @@ public class WorkoutApplicationServiceTest {
         }
 
         @Test(expected = ResourceException.class)
-        public void weightOfCurrentSetWithNoExercise_shouldThrowResourceNotFoundException() throws Exception {
-            workoutApplicationService.weightOfCurrentSet(0);
-        }
-
-        @Test(expected = ResourceException.class)
         public void addRepsToSetWithNoExercise_shouldThrowResourceNotFoundException() throws Exception {
             workoutApplicationService.addRepsToSet(0, 0);
         }
@@ -244,11 +233,6 @@ public class WorkoutApplicationServiceTest {
             }
 
             @Test(expected = ResourceException.class)
-            public void weightOfCurrentSetWithNoSet_shouldThrowResourceNotFoundException() throws Exception {
-                workoutApplicationService.weightOfCurrentSet(1);
-            }
-
-            @Test(expected = ResourceException.class)
             public void addRepsToSetWithNoSet_shouldThrowResourceNotFoundException() throws Exception {
                 workoutApplicationService.addRepsToSet(1, 0);
             }
@@ -313,16 +297,6 @@ public class WorkoutApplicationServiceTest {
                     workoutApplicationService.switchToSet(0, 1);
 
                     assertThat(exercise.getSets().indexOfCurrentSet(), equalTo(1));
-                }
-
-                @Test
-                public void weightOfCurrentSet_shouldReturnWeight() throws Exception {
-                    set.setWeight(42.5);
-                    exercise.getSets().setCurrentSet(0);
-
-                    double weightOfCurrentSet = workoutApplicationService.weightOfCurrentSet(0);
-
-                    assertThat(weightOfCurrentSet, equalTo(42.5));
                 }
 
                 @Test

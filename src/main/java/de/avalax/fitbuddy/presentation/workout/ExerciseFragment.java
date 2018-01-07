@@ -192,19 +192,22 @@ public class ExerciseFragment extends Fragment {
     private void updatePage() {
         try {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
-            exerciseNameTextView.setText(workoutApplicationService.requestExercise(exerciseIndex).getName());
-            exerciseWeightTextView.setText(workoutApplicationService.weightOfCurrentSet(exerciseIndex) + " kg");
+            Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+            exerciseNameTextView.setText(exercise.getName());
+            exerciseWeightTextView.setText(exerciseViewHelper.weightOfExercise(exercise));
             if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
                 exercisePreviousTextView.setVisibility(View.VISIBLE);
-                Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex - 1);
-                exercisePreviousTextView.setText(exercise.getName());
+                Exercise prevExercise = workoutApplicationService.requestExercise(exerciseIndex - 1);
+                String exerciseName = exerciseViewHelper.cutPreviousExerciseName(prevExercise);
+                exercisePreviousTextView.setText(exerciseName);
             } else {
                 exercisePreviousTextView.setVisibility(View.INVISIBLE);
             }
             if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
                 exerciseNextTextView.setVisibility(View.VISIBLE);
-                Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex + 1);
-                exerciseNextTextView.setText(exercise.getName());
+                Exercise nextExercise = workoutApplicationService.requestExercise(exerciseIndex + 1);
+                String exerciseName = exerciseViewHelper.cutNextExerciseName(nextExercise);
+                exerciseNextTextView.setText(exerciseName);
             } else {
                 exerciseNextTextView.setVisibility(View.INVISIBLE);
             }

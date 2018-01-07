@@ -61,14 +61,6 @@ public class WorkoutApplicationService {
     }
 
     @Deprecated
-    public double weightOfCurrentSet(int index) throws ResourceException {
-        Exercise exercise = requestExercise(index);
-        int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-        Set set = exercise.getSets().get(indexOfCurrentSet);
-        return set.getWeight();
-    }
-
-    @Deprecated
     public int indexOfCurrentExercise() throws ResourceException {
         return getWorkout().getExercises().indexOfCurrentExercise();
     }
