@@ -84,7 +84,7 @@ public class FinishedExerciseAdapter
         set.setColors(getColors());
         BarData barData = new BarData(set);
         barData.setValueFormatter(new IValueFormatter() {
-            private DecimalFormat mFormat = new DecimalFormat("###.###");
+            private DecimalFormat df = new DecimalFormat("###.###");
 
             @Override
             public String getFormattedValue(
@@ -93,7 +93,7 @@ public class FinishedExerciseAdapter
                     int dataSetIndex,
                     ViewPortHandler viewPortHandler) {
                 if (value > 0) {
-                    return mFormat.format(value);
+                    return df.format(value);
                 } else {
                     return "";
                 }
