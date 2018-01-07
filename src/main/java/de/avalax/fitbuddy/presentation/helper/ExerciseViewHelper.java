@@ -78,4 +78,12 @@ public class ExerciseViewHelper {
         }
         return name.substring(0, 5);
     }
+
+    public String exerciseName(Exercise exercise) {
+        String name = exercise.getName();
+        if (name.isEmpty()) {
+            name = defaultText;
+        }
+        return name;
+    }
 }

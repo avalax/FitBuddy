@@ -308,7 +308,7 @@ public class ApplicationRunner {
     }
 
     public void showsActiveExercise(String exerciseName, String weight) {
-        onView(withId(R.id.exercises_bar_exercise_name)).check(matches(withText(exerciseName)));
+        onView(withId(R.id.exercises_bar_exercise_name)).check(matches(withText(exerciseName + ":")));
         onView(withId(R.id.exercises_bar_set_weight)).check(matches(withText(weight)));
     }
 

@@ -4,8 +4,8 @@
         <shape>
             <gradient
                 android:angle="0"
-                android:endColor="@color/secondaryDarkColor"
-                android:startColor="@color/primaryDarkColor" />
+                android:endColor="@color/secondaryLightColor"
+                android:startColor="@color/primaryLightColor" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
@@ -13,8 +13,8 @@
             <shape>
                 <gradient
                     android:angle="0"
-                    android:endColor="@color/secondaryLightColor"
-                    android:startColor="@color/primaryLightColor" />
+                    android:endColor="@color/secondaryDarkColor"
+                    android:startColor="@color/primaryDarkColor" />
             </shape>
         </clip>
     </item>

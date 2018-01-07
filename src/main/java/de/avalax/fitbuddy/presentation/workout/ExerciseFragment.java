@@ -193,21 +193,22 @@ public class ExerciseFragment extends Fragment {
         try {
             workoutApplicationService.setCurrentExercise(exerciseIndex);
             Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
-            exerciseNameTextView.setText(exercise.getName());
+            String name = exercise.getName() + ":";
+            exerciseNameTextView.setText(exerciseViewHelper.exerciseName(exercise));
             exerciseWeightTextView.setText(exerciseViewHelper.weightOfExercise(exercise));
             if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
                 exercisePreviousTextView.setVisibility(View.VISIBLE);
                 Exercise prevExercise = workoutApplicationService.requestExercise(exerciseIndex - 1);
-                String exerciseName = exerciseViewHelper.cutPreviousExerciseName(prevExercise);
-                exercisePreviousTextView.setText(exerciseName);
+                String previousName = exerciseViewHelper.cutPreviousExerciseName(prevExercise);
+                exercisePreviousTextView.setText(previousName);
             } else {
                 exercisePreviousTextView.setVisibility(View.INVISIBLE);
             }
             if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
                 exerciseNextTextView.setVisibility(View.VISIBLE);
                 Exercise nextExercise = workoutApplicationService.requestExercise(exerciseIndex + 1);
-                String exerciseName = exerciseViewHelper.cutNextExerciseName(nextExercise);
-                exerciseNextTextView.setText(exerciseName);
+                String nextName = exerciseViewHelper.cutNextExerciseName(nextExercise);
+                exerciseNextTextView.setText(nextName);
             } else {
                 exerciseNextTextView.setVisibility(View.INVISIBLE);
             }
