@@ -209,13 +209,13 @@ public class FitbuddyAcceptanceTest {
         activityRule.launchActivity(null);
 
         application.selectWorkout(0);
-        application.showsActiveExercise("an exercise", "42 kg");
+        application.showsActiveExercise("an exercise:", "42 kg");
 
         application.navigateToStart();
         application.showsWorkoutIsActive(0);
 
         application.navigateToWorkout();
-        application.showsActiveExercise("an exercise", "42 kg");
+        application.showsActiveExercise("an exercise:", "42 kg");
 
         application.backPressed();
         application.showsWorkoutIsActive(0);
@@ -258,18 +258,18 @@ public class FitbuddyAcceptanceTest {
         application.switchToNextSet();
         application.hasShownActiveSets(2);
         application.showsNoPreviousExercise();
-        application.showsActiveExercise("first exercise", "55 kg");
+        application.showsActiveExercise("first exercise:", "55 kg");
         application.showsNextExercise("secon");
 
         application.switchToNextExercise();
         application.showsPreviousExercise("rcise");
-        application.showsActiveExercise("second exercise", "10 kg");
+        application.showsActiveExercise("second exercise:", "10 kg");
         application.showsNoNextExercise();
         application.hasShownActiveSets(1);
         application.hasShownRepsExecuted(0);
 
         application.switchToPreviousExercise();
-        application.showsActiveExercise("first exercise", "55 kg");
+        application.showsActiveExercise("first exercise:", "55 kg");
     }
 
     @Test
@@ -283,11 +283,11 @@ public class FitbuddyAcceptanceTest {
 
         application.selectWorkout(0);
         application.showsNoPreviousExercise();
-        application.showsActiveExercise("only one exercise", "42 kg");
+        application.showsActiveExercise("only one exercise:", "42 kg");
         application.showsNoNextExercise();
 
         application.switchToPreviousExercise();
-        application.showsActiveExercise("only one exercise", "42 kg");
+        application.showsActiveExercise("only one exercise:", "42 kg");
 
         application.switchToNextExercise();
         application.hasShownFinishExerciseHint();

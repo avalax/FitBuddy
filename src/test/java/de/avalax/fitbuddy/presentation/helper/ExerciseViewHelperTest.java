@@ -81,8 +81,8 @@ public class ExerciseViewHelperTest {
 
     @Test
     public void testExerciseName() throws Exception {
-        assertThat(exerciseViewHelper.exerciseName(new BasicExercise()), equalTo("Unknown"));
-        assertThat(exerciseViewHelper.exerciseName(createExerciseWithName("my new exercise")), equalTo("my new exercise"));
+        assertThat(exerciseViewHelper.exerciseName(new BasicExercise()), equalTo("Unknown:"));
+        assertThat(exerciseViewHelper.exerciseName(createExerciseWithName("my new exercise")), equalTo("my new exercise:"));
     }
 
     @Test

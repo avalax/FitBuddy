@@ -84,6 +84,6 @@ public class ExerciseViewHelper {
         if (name.isEmpty()) {
             name = defaultText;
         }
-        return name;
+        return name + ":";
     }
 }
