@@ -83,7 +83,22 @@ public class FinishedExerciseAdapter
         set.setValueTextSize(12);
         set.setColors(getColors());
         BarData barData = new BarData(set);
-        barData.setValueFormatter(new ZeroValueFormatter());
+        barData.setValueFormatter(new IValueFormatter() {
+            private DecimalFormat mFormat = new DecimalFormat("###.###");
+
+            @Override
+            public String getFormattedValue(
+                    float value,
+                    Entry entry,
+                    int dataSetIndex,
+                    ViewPortHandler viewPortHandler) {
+                if (value > 0) {
+                    return mFormat.format(value);
+                } else {
+                    return "";
+                }
+            }
+        });
         return barData;
     }
 
@@ -149,29 +164,9 @@ public class FinishedExerciseAdapter
             return barChart;
         }
 
-        public TextView getSubtitleTextView() {
+        TextView getSubtitleTextView() {
             return subtitleTextView;
         }
     }
 
-    private static class ZeroValueFormatter implements IValueFormatter {
-        private DecimalFormat mFormat;
-
-        ZeroValueFormatter() {
-            mFormat = new DecimalFormat("###.###");
-        }
-
-        @Override
-        public String getFormattedValue(
-                float value,
-                Entry entry,
-                int dataSetIndex,
-                ViewPortHandler viewPortHandler) {
-            if (value > 0) {
-                return mFormat.format(value);
-            } else {
-                return "";
-            }
-        }
-    }
 }
