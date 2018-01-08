@@ -19,7 +19,7 @@ public class EditWorkoutApplicationService {
         workoutRepository.delete(workout.getWorkoutId());
     }
 
-    public void saveWorkout(Workout workout) throws WorkoutException{
+    public void saveWorkout(Workout workout) throws WorkoutException {
         workoutRepository.save(workout);
     }
 

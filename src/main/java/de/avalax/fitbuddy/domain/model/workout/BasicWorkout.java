@@ -12,8 +12,6 @@ public class BasicWorkout implements Workout {
     private Exercises exercises;
     private String name;
     private WorkoutId workoutId;
-    private Long lastExecution;
-    private int finishedCount;
 
     public BasicWorkout(WorkoutId workoutId, String name, List<Exercise> exercises) {
         this.workoutId = workoutId;
@@ -24,7 +22,6 @@ public class BasicWorkout implements Workout {
     public BasicWorkout() {
         this.exercises = new BasicExercises(new ArrayList<>());
         this.name = "";
-        this.finishedCount = 0;
     }
 
     @Override
