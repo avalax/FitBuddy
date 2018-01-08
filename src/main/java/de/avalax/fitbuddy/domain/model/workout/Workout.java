@@ -14,15 +14,7 @@ public interface Workout extends Serializable {
 
     String getName();
 
-    void setLastExecution(Long lastExecution);
-
-    Long getLastExecution();
-
     double getProgress(int index) throws ResourceException;
 
     Exercises getExercises();
-
-    void setFinishedCount(int finishedCount);
-
-    int getFinishedCount();
 }

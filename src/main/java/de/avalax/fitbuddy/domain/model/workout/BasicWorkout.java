@@ -63,26 +63,6 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public void setFinishedCount(int finishedCount) {
-        this.finishedCount = finishedCount;
-    }
-
-    @Override
-    public int getFinishedCount() {
-        return finishedCount;
-    }
-
-    @Override
-    public Long getLastExecution() {
-        return lastExecution;
-    }
-
-    @Override
-    public void setLastExecution(Long lastExecution) {
-        this.lastExecution = lastExecution;
-    }
-
-    @Override
     public String toString() {
         if (workoutId == null) {
             return "BasicWorkout [name=" + name + "]";

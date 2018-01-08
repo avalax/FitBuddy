@@ -297,7 +297,7 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aWorkout_shouldBeDeleted() throws Exception {
-        persistence.addWorkout(aWorkout());
+        persistence.addWorkout(aWorkout().withExercise(anExercise()));
 
         activityRule.launchActivity(null);
 
@@ -309,7 +309,7 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
-        Workout persistedWorkout = persistence.addWorkout(aWorkout());
+        Workout persistedWorkout = persistence.addWorkout(aWorkout().withExercise(anExercise()));
         persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);

@@ -13,7 +13,6 @@ import java.util.List;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
@@ -35,18 +34,13 @@ import static org.hamcrest.Matchers.hasSize;
 @Config(constants = BuildConfig.class)
 public class SQLiteFinishedExerciseRepositoryTest {
     private FinishedExerciseRepository finishedExerciseRepository;
-    private FinishedWorkoutId finishedWorkoutId;
-    private Exercise exercise;
+    private FinishedWorkoutRepository finishedWorkoutRepository;
+    private Workout workout;
 
-    private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
-        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
-        ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
-        WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        FinishedWorkoutRepository finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(
-                sqLiteOpenHelper, finishedExerciseRepository, workoutRepository);
+    private Workout createWorkout() throws Exception {
         Workout workout = new BasicWorkout();
-        workoutRepository.save(workout);
-        finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
+        workout.getExercises().createExercise();
+        return workout;
     }
 
     @Before
@@ -55,14 +49,14 @@ public class SQLiteFinishedExerciseRepositoryTest {
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
         FinishedSetRepository finishedSetRepository = new SQLiteFinishedSetRepository(sqLiteOpenHelper);
         finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
-        createWorkout(sqLiteOpenHelper);
-        exercise = new BasicExercise();
+        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository);
+        workout = createWorkout();
     }
 
     @Test
     public void saveExercise_shouldInsertExerciseInformation() throws Exception {
-        exercise.setName("new exercise name");
-        finishedExerciseRepository.save(finishedWorkoutId, exercise);
+        workout.getExercises().get(0).setName("new exercise name");
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
 
         List<FinishedExercise> finishedExercises = finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
 
@@ -72,15 +66,15 @@ public class SQLiteFinishedExerciseRepositoryTest {
 
     @Test
     public void saveExercise_shouldInsertExerciseWithAllSets() throws Exception {
-        Set set1 = exercise.getSets().createSet();
+        Set set1 =  workout.getExercises().get(0).getSets().createSet();
         set1.setMaxReps(15);
         set1.setReps(12);
         set1.setWeight(42L);
-        Set set2 = exercise.getSets().createSet();
+        Set set2 =  workout.getExercises().get(0).getSets().createSet();
         set2.setMaxReps(20);
         set2.setReps(10);
         set2.setWeight(21L);
-        finishedExerciseRepository.save(finishedWorkoutId, exercise);
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
 
         List<FinishedExercise> finishedExercises = finishedExerciseRepository.allExercisesBelongsTo(finishedWorkoutId);
 

@@ -26,6 +26,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
+import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
 public class WorkoutListFragment extends Fragment implements View.OnClickListener {
 
@@ -38,7 +39,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
     WorkoutApplicationService workoutApplicationService;
 
     @Inject
-    WorkoutViewHelper workoutViewHelper;
+    FinishedWorkoutViewHelper finishedWorkoutViewHelper;
 
     @Inject
     AdMobProvider adMobProvider;
@@ -57,7 +58,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         workouts = editWorkoutApplicationService.loadAllWorkouts();
         workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(),
-                workoutApplicationService, workoutViewHelper, workouts);
+                workoutApplicationService, finishedWorkoutViewHelper, workouts);
         recyclerView.setAdapter(workoutAdapter);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_add_workout);
         floatingActionButton.setOnClickListener(this);

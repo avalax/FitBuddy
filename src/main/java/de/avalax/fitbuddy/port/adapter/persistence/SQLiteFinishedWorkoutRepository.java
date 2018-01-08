@@ -19,26 +19,23 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
     private static final String TABLE_FINISHED_WORKOUT = "finished_workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private FinishedExerciseRepository finishedExerciseRepository;
-    private WorkoutRepository workoutRepository;
 
     public SQLiteFinishedWorkoutRepository(
             SQLiteOpenHelper sqLiteOpenHelper,
-            FinishedExerciseRepository finishedExerciseRepository,
-            WorkoutRepository workoutRepository) {
+            FinishedExerciseRepository finishedExerciseRepository) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
         this.finishedExerciseRepository = finishedExerciseRepository;
-        this.workoutRepository = workoutRepository;
     }
 
     @Override
-    public FinishedWorkoutId saveWorkout(Workout workout) {
+    public FinishedWorkoutId saveWorkout(Workout workout) throws WorkoutException {
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         long date = getDate();
         long id = database.insertOrThrow(TABLE_FINISHED_WORKOUT, null, getContentValues(workout, date));
@@ -47,9 +44,6 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
             finishedExerciseRepository.save(finishedWorkoutId, exercise);
         }
         database.close();
-        workout.setLastExecution(date);
-        workout.setFinishedCount(workout.getFinishedCount() + 1);
-        workoutRepository.save(workout);
         return finishedWorkoutId;
     }
 
@@ -83,13 +77,11 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         String[] columns = {"id", "workout_id", "name", "created"};
         Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
                 null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                finishedWorkouts.add(createFinishedWorkout(cursor));
-            } while (cursor.moveToNext());
-            cursor.close();
-            database.close();
+        while (cursor.moveToNext()) {
+            finishedWorkouts.add(createFinishedWorkout(cursor));
         }
+        cursor.close();
+        database.close();
         return finishedWorkouts;
     }
 
@@ -109,6 +101,28 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         long size = DatabaseUtils.queryNumEntries(db, TABLE_FINISHED_WORKOUT);
         db.close();
         return size;
+    }
+
+    @Override
+    public long count(WorkoutId workoutId) {
+        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
+        return DatabaseUtils.queryNumEntries(db, TABLE_FINISHED_WORKOUT,
+                "workout_id=?", new String[]{workoutId.getId()});
+    }
+
+    @Override
+    public Long lastCreation(WorkoutId workoutId) {
+        Long creation = null;
+        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
+        String[] columns = {"created"};
+        Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
+                "workout_id=?", new String[]{workoutId.getId()}, null, null, "created DESC");
+        if (cursor.moveToFirst()) {
+            creation = cursor.getLong(0);
+        }
+        cursor.close();
+        database.close();
+        return creation;
     }
 
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {

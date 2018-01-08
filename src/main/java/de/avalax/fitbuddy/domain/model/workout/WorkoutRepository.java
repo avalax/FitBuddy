@@ -3,7 +3,7 @@ package de.avalax.fitbuddy.domain.model.workout;
 import java.util.List;
 
 public interface WorkoutRepository {
-    void save(Workout workout);
+    void save(Workout workout) throws WorkoutException;
 
     Workout load(WorkoutId id) throws WorkoutException;
 

@@ -29,7 +29,10 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public void save(Workout workout) {
+    public void save(Workout workout) throws WorkoutException {
+        if (workout.getExercises().size() == 0) {
+            throw new WorkoutException("exercises must not be empty");
+        }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         if (workout.getWorkoutId() == null) {
             long id = database.insertOrThrow(TABLE_WORKOUT, null, getContentValues(workout));
@@ -39,18 +42,14 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
             database.update(TABLE_WORKOUT, getContentValues(workout), "id=?", args);
         }
         database.close();
-        int position = 1;
         for (Exercise exercise : workout.getExercises()) {
-            exerciseRepository.save(workout.getWorkoutId(), position, exercise);
-            position++;
+            exerciseRepository.save(workout.getWorkoutId(), exercise);
         }
     }
 
     private ContentValues getContentValues(Workout workout) {
         ContentValues values = new ContentValues();
         values.put("name", workout.getName());
-        values.put("finished_count", workout.getFinishedCount());
-        values.put("last_execution", workout.getLastExecution());
         return values;
     }
 
@@ -61,7 +60,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         }
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_WORKOUT, new String[]
-                        {"id", "name", "finished_count", "last_execution"},
+                        {"id", "name"},
                 "id=?", new String[]{workoutId.getId()}, null, null, null);
         if (cursor.moveToFirst()) {
             Workout workout = createWorkout(cursor);
@@ -78,12 +77,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     private Workout createWorkout(Cursor cursor) {
         WorkoutId workoutId = new WorkoutId(cursor.getString(0));
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        Workout workout = new BasicWorkout(workoutId, cursor.getString(1), exercises);
-        workout.setFinishedCount(cursor.getInt(2));
-        if (!cursor.isNull(3)) {
-            workout.setLastExecution(cursor.getLong(3));
-        }
-        return workout;
+        return new BasicWorkout(workoutId, cursor.getString(1), exercises);
     }
 
     @Override
@@ -91,7 +85,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         List<Workout> workoutList = new ArrayList<>();
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_WORKOUT, new String[]
-                        {"id", "name", "finished_count", "last_execution"},
+                        {"id", "name"},
                 null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {

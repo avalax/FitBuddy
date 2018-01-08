@@ -9,6 +9,7 @@ import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 
 public class PersistenceRunner {
     private FitbuddyActivityTestRule activityRule;
@@ -17,7 +18,7 @@ public class PersistenceRunner {
         this.activityRule = activityRule;
     }
 
-    public Workout addWorkout(BasicWorkoutBuilder builder) {
+    public Workout addWorkout(BasicWorkoutBuilder builder) throws WorkoutException {
         Workout workout = builder.build();
         activityRule.editWorkoutApplicationService.saveWorkout(workout);
         return workout;

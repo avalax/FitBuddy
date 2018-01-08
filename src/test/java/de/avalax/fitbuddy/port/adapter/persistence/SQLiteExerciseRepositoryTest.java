@@ -13,7 +13,6 @@ import java.util.List;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
@@ -21,8 +20,8 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -33,24 +32,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Config(constants = BuildConfig.class)
 public class SQLiteExerciseRepositoryTest {
 
+    private SQLiteWorkoutRepository workoutRepository;
     private ExerciseRepository exerciseRepository;
-
     private SetRepository setRepository;
+    private Workout workout;
 
-    private WorkoutId workoutId;
-
-    private ExerciseId createExercise(int position, String name) {
-        Exercise exercise = new BasicExercise();
+    private Exercise createExercise(String name) throws WorkoutException {
+        Exercise exercise = workout.getExercises().createExercise();
         exercise.setName(name);
-        exerciseRepository.save(workoutId, position, exercise);
-        return exercise.getExerciseId();
-    }
-
-    private void createWorkout(FitbuddySQLiteOpenHelper sqLiteOpenHelper) {
-        WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        Workout workout = new BasicWorkout();
         workoutRepository.save(workout);
-        workoutId = workout.getWorkoutId();
+        return exercise;
     }
 
     @Before
@@ -59,51 +50,54 @@ public class SQLiteExerciseRepositoryTest {
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteExerciseRepositoryTest", 1, context, R.raw.fitbuddy_db);
         setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
         exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
-
-        createWorkout(sqLiteOpenHelper);
+        workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
+        workout = new BasicWorkout();
     }
 
     @Test
-    public void saveUnpersistedExercise_shouldAssignNewExerciseId() throws Exception {
-        Exercise exercise = new BasicExercise();
+    public void saveNewExercise_shouldAssignNewExerciseId() throws Exception {
+        Exercise exercise = workout.getExercises().createExercise();
 
         assertThat(exercise.getExerciseId(), nullValue());
-        exerciseRepository.save(workoutId, 1, exercise);
+        workoutRepository.save(workout);
+
         assertThat(exercise.getExerciseId(), any(ExerciseId.class));
     }
 
     @Test
-    public void savePersistedExercise_shouldKeepExerciseId() {
-        Exercise exercise = new BasicExercise();
-        exerciseRepository.save(workoutId, 1, exercise);
+    public void savePersistedExercise_shouldKeepExerciseId() throws Exception {
+        Exercise exercise = workout.getExercises().createExercise();
+        workoutRepository.save(workout);
         ExerciseId exerciseId = exercise.getExerciseId();
 
-        exerciseRepository.save(workoutId, 2, exercise);
+        workoutRepository.save(workout);
         assertThat(exercise.getExerciseId(), equalTo(exerciseId));
     }
 
     @Test
-    public void updateExercises_shouldSaveTheCorrectEntity() {
-        ExerciseId exerciseId1 = createExercise(0, "name1");
-        ExerciseId exerciseId2 = createExercise(1, "name2");
+    public void updateExercises_shouldSaveTheCorrectEntity() throws Exception {
+        Exercise exercise1 = createExercise("name1");
+        Exercise exercise2 = createExercise("name2");
+        WorkoutId workoutId = workout.getWorkoutId();
 
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         exercises.get(1).setName("newname2");
-        exerciseRepository.save(workoutId, 1, exercises.get(1));
+        exerciseRepository.save(workout.getWorkoutId(), exercises.get(1));
 
         List<Exercise> reloadedExercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-        assertThat(reloadedExercises.get(0).getExerciseId(), equalTo(exerciseId1));
+        assertThat(reloadedExercises.get(0), equalTo(exercise1));
         assertThat(reloadedExercises.get(0).getName(), equalTo("name1"));
-        assertThat(reloadedExercises.get(1).getExerciseId(), equalTo(exerciseId2));
+        assertThat(reloadedExercises.get(1), equalTo(exercise2));
         assertThat(reloadedExercises.get(1).getName(), equalTo("newname2"));
     }
 
     @Test
-    public void saveExercise_shouldAlsoSaveSets() {
-        Exercise exercise = new BasicExercise();
+    public void saveExercise_shouldAlsoSaveSets() throws Exception {
+        Exercise exercise = createExercise("exercise with a set");
         Set set = exercise.getSets().createSet();
+        WorkoutId workoutId = workout.getWorkoutId();
 
-        exerciseRepository.save(workoutId, 1, exercise);
+        exerciseRepository.save(workoutId, exercise);
 
         List<Set> loadedSets = setRepository.allSetsBelongsTo(exercise.getExerciseId());
         assertThat(loadedSets.size(), equalTo(1));
@@ -111,51 +105,18 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
-    public void loadByUnknownWorkoutId_shouldReturnNullValue() {
-        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(new WorkoutId("21"));
-        assertThat(exercises.size(), equalTo(0));
-    }
-
-    @Test
-    public void loadAllExercisesBelongsTo_shouldReturnExercisesOfWorkout() throws Exception {
-        ExerciseId exerciseId1 = createExercise(1, "name");
-        ExerciseId exerciseId2 = createExercise(2, "name");
-
-        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-
-        assertThat(exercises.size(), equalTo(2));
-        assertThat(exercises.get(0).getExerciseId(), equalTo(exerciseId1));
-        assertThat(exercises.get(1).getExerciseId(), equalTo(exerciseId2));
-    }
-
-    @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
-        Exercise exercise = new BasicExercise();
+        Exercise exercise = createExercise("an exercise with two sets");
         Set set1 = exercise.getSets().createSet();
         Set set2 = exercise.getSets().createSet();
+        WorkoutId workoutId = workout.getWorkoutId();
 
-        exerciseRepository.save(workoutId, 1, exercise);
+        exerciseRepository.save(workoutId, exercise);
 
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
         assertThat(exercises.get(0).getSets().size(), equalTo(2));
         assertThat(exercises.get(0).getSets().get(0), equalTo(set1));
         assertThat(exercises.get(0).getSets().get(1), equalTo(set2));
-    }
-
-    @Test
-    public void loadAllExercisesBelongsTo_shouldLoadThemInCorrectOrder() throws Exception {
-        ExerciseId exerciseId2 = createExercise(2, "name");
-        ExerciseId exerciseId1 = createExercise(1, "name");
-        ExerciseId exerciseId3 = createExercise(3, "name");
-        ExerciseId exerciseId0 = createExercise(0, "name");
-
-        List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
-
-        assertThat(exercises.size(), equalTo(4));
-        assertThat(exercises.get(0).getExerciseId(), equalTo(exerciseId0));
-        assertThat(exercises.get(1).getExerciseId(), equalTo(exerciseId1));
-        assertThat(exercises.get(2).getExerciseId(), equalTo(exerciseId2));
-        assertThat(exercises.get(3).getExerciseId(), equalTo(exerciseId3));
     }
 
     @Test
@@ -165,9 +126,10 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void deleteExerciseByExerciseId_shouldRemoveItFromPersistence() throws Exception {
-        ExerciseId exerciseId = createExercise(1, "name");
+        Exercise exercise = createExercise("name");
+        WorkoutId workoutId = workout.getWorkoutId();
 
-        exerciseRepository.delete(exerciseId);
+        exerciseRepository.delete(exercise.getExerciseId());
 
         assertThat(exerciseRepository.allExercisesBelongsTo(workoutId).size(), equalTo(0));
     }

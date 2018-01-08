@@ -17,7 +17,6 @@ import java.util.List;
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExercise;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_set.FinishedSetRepository;
@@ -25,14 +24,13 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
-import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;
@@ -51,10 +49,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         FitbuddySQLiteOpenHelper sqLiteOpenHelper = new FitbuddySQLiteOpenHelper("SQLiteSetRepositoryTest", 1, context, R.raw.fitbuddy_db);
         FinishedSetRepository finishedSetRepository = new SQLiteFinishedSetRepository(sqLiteOpenHelper);
         FinishedExerciseRepository finishedExerciseRepository = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
-        SetRepository setRepository = new SQLiteSetRepository(sqLiteOpenHelper);
-        ExerciseRepository exerciseRepository = new SQLiteExerciseRepository(sqLiteOpenHelper, setRepository);
-        WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
-        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository, workoutRepository) {
+        finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(sqLiteOpenHelper, finishedExerciseRepository) {
             @Override
             protected long getDate() {
                 return date.getTime();
@@ -62,7 +57,7 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         };
         workout = new BasicWorkout();
         workout.setName("basicWorkout");
-        workoutRepository.save(workout);
+        workout.setWorkoutId(new WorkoutId("42"));
     }
 
     @Test(expected = FinishedWorkoutException.class)
@@ -92,8 +87,6 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         assertThat(finishedWorkout.getWorkoutId(), equalTo(workout.getWorkoutId()));
         assertThat(finishedWorkout.getName(), equalTo(workout.getName()));
         assertThat(finishedWorkout.getCreated(), equalTo(date.getTime()));
-        assertThat(workout.getLastExecution(), equalTo(date.getTime()));
-        assertThat(workout.getFinishedCount(), equalTo(1));
     }
 
     @Test
@@ -159,5 +152,31 @@ public class SQLiteFinishedWorkoutRepositoryTest {
         finishedWorkoutRepository.delete(finishedWorkoutId);
 
         finishedWorkoutRepository.load(finishedWorkoutId);
+    }
+
+    @Test
+    public void noFinishedWorkoutForWorkoutId_shouldReturnDefaults() throws Exception {
+        assertThat(finishedWorkoutRepository.lastCreation(new WorkoutId("42")), nullValue());
+        assertThat(finishedWorkoutRepository.count(new WorkoutId("42")), equalTo(0L));
+    }
+
+    @Test
+    public void twoFinishedWorkouts_shouldReturnTwoCount() throws Exception {
+        finishedWorkoutRepository.saveWorkout(workout);
+        finishedWorkoutRepository.saveWorkout(workout);
+
+        assertThat(finishedWorkoutRepository.count(workout.getWorkoutId()), equalTo(2L));
+    }
+
+    @Test
+    public void threeFinishedWorkouts_shouldReturnMostRecentCreationDate() throws Exception {
+        date = DateUtil.parse("2017-12-30");
+        finishedWorkoutRepository.saveWorkout(workout);
+        date = DateUtil.parse("2017-12-31");
+        finishedWorkoutRepository.saveWorkout(workout);
+        date = DateUtil.parse("2017-12-29");
+        finishedWorkoutRepository.saveWorkout(workout);
+
+        assertThat(finishedWorkoutRepository.lastCreation(workout.getWorkoutId()), equalTo(DateUtil.parse("2017-12-31").getTime()));
     }
 }

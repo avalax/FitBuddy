@@ -10,4 +10,8 @@ public class WorkoutException extends ResourceException {
     public WorkoutException(Throwable e) {
         super(e);
     }
+
+    public WorkoutException(String message) {
+        super(message);
+    }
 }

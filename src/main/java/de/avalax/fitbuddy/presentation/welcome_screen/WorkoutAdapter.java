@@ -14,22 +14,23 @@ import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
+import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
     private WorkoutApplicationService workoutApplicationService;
     private List<Workout> workouts;
     private MainActivity activity;
-    private WorkoutViewHelper workoutViewHelper;
+    private FinishedWorkoutViewHelper finishedWorkoutViewHelper;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
     WorkoutAdapter(MainActivity activity,
                    WorkoutApplicationService workoutApplicationService,
-                   WorkoutViewHelper workoutViewHelper,
+                   FinishedWorkoutViewHelper finishedWorkoutViewHelper,
                    List<Workout> workouts) {
         super();
         this.activity = activity;
         this.workoutApplicationService = workoutApplicationService;
-        this.workoutViewHelper = workoutViewHelper;
+        this.finishedWorkoutViewHelper = finishedWorkoutViewHelper;
         this.workouts = workouts;
     }
 
@@ -46,8 +47,8 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     public void onBindViewHolder(WorkoutAdapter.ViewHolder holder, int position) {
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
-        holder.getSubtitleTextView().setText(workoutViewHelper.executions(workout));
-        holder.getDateTextView().setText(workoutViewHelper.lastExecutionDate(workout));
+        holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.executions(workout.getWorkoutId()));
+        holder.getDateTextView().setText(finishedWorkoutViewHelper.lastExecutionDate(workout.getWorkoutId()));
         holder.setSelected(selectedPosition == position);
         if (workoutApplicationService.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);

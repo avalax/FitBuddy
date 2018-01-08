@@ -8,4 +8,8 @@ public abstract class ResourceException extends Exception {
     public ResourceException(Throwable cause) {
         super(cause);
     }
+
+    public ResourceException(String message) {
+        super(message);
+    }
 }

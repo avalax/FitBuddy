@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
@@ -91,7 +93,11 @@ public class EditWorkoutActivity extends AppCompatActivity {
                         .show();
             } else {
                 workout.setName(nameEditText.getText().toString());
-                editWorkoutApplicationService.saveWorkout(workout);
+                try {
+                    editWorkoutApplicationService.saveWorkout(workout);
+                } catch (WorkoutException e) {
+                    Log.e("WorkoutException", e.getMessage(), e);
+                }
                 Intent intent = new Intent();
                 intent.putExtra("workout", workout);
                 int position = getIntent().getIntExtra("position", -1);

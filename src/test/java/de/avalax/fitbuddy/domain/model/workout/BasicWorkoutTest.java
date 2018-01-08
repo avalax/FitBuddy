@@ -75,20 +75,6 @@ public class BasicWorkoutTest {
     }
 
     @Test
-    public void getLastExecution_shouldReturnDate() throws Exception {
-        workout.setLastExecution(42L);
-
-        assertThat(workout.getLastExecution(), equalTo(42L));
-    }
-
-    @Test
-    public void getFinishedCount_shouldReturnCount() throws Exception {
-        workout.setFinishedCount(42);
-
-        assertThat(workout.getFinishedCount(), equalTo(42));
-    }
-
-    @Test
     public void nullValue_shouldSetNameToEmptyString() throws Exception {
         workout.setName(null);
         assertThat(workout.getName(), equalTo(""));

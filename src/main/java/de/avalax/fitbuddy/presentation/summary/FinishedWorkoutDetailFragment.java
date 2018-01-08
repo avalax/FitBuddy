@@ -57,6 +57,6 @@ public class FinishedWorkoutDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         createdTextView.setText(finishedWorkoutViewHelper.creationDate(finishedWorkout));
-        executedTextView.setText(finishedWorkoutViewHelper.executions(finishedWorkout));
+        executedTextView.setText(finishedWorkoutViewHelper.executions(finishedWorkout.getWorkoutId()));
     }
 }

@@ -57,7 +57,7 @@ public class EditWorkoutApplicationServiceTest {
         }
 
         @Test
-        public void saveWorkout_shouldSaveWorkoutInRepository() {
+        public void saveWorkout_shouldSaveWorkoutInRepository() throws Exception {
             editWorkoutApplicationService.saveWorkout(workout);
 
             verify(workoutRepository).save(workout);
