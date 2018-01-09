@@ -1,46 +1,44 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Java Application Rules"
-    xmlns="http://pmd.sf.net/ruleset/1.0.0"
-    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Custom ruleset"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
-	<rule ref="rulesets/java/basic.xml" />
-	<rule ref="rulesets/java/braces.xml"/>
+    <description>
+        Avalax default ruleset
+    </description>
+
+    <rule ref="rulesets/java/basic.xml" />
+    <rule ref="rulesets/java/braces.xml" />
     <rule ref="rulesets/java/clone.xml" />
-	<rule ref="rulesets/java/codesize.xml" />
-	<rule ref="rulesets/java/coupling.xml" >
-		<exclude name="LawOfDemeter"/>
-		<exclude name="LoosePackageCoupling"/>
-	</rule>
-	<rule ref="rulesets/java/design.xml" >
-		<exclude name="ImmutableField"/>
-		<exclude name="UseUtilityClass"/>
-		<exclude name="AbstractClassWithoutAnyMethod"/>
-	</rule>
-	<rule ref="rulesets/java/empty.xml" />
+    <rule ref="rulesets/java/codesize.xml" />
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LawOfDemeter" />
+        <exclude name="LoosePackageCoupling" />
+    </rule>
+    <rule ref="rulesets/java/design.xml">
+        <exclude name="ImmutableField" />
+        <exclude name="UseUtilityClass" />
+        <exclude name="AbstractClassWithoutAnyMethod" />
+    </rule>
+    <rule ref="rulesets/java/empty.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
     <rule ref="rulesets/java/imports.xml">
         <exclude name="TooManyStaticImports" />
     </rule>
-    <rule ref="rulesets/java/logging-java.xml">
-        <exclude name="GuardLogStatementJavaUtil" />
-    </rule>
+    <rule ref="rulesets/java/logging-java.xml" />
 
     <rule ref="rulesets/java/strings.xml" />
     <rule ref="rulesets/java/naming.xml">
         <exclude name="AbstractNaming" />
         <exclude name="LongVariable" />
-		<exclude name="ShortVariable"/>
-		<exclude name="ShortClassName"/>
-		<exclude name="ShortMethodName"/>
-	    <exclude name="VariableNamingConventions" />
+        <exclude name="ShortVariable" />
+        <exclude name="ShortClassName" />
+        <exclude name="ShortMethodName" />
+        <exclude name="VariableNamingConventions" />
     </rule>
-	<rule ref="rulesets/java/strictexception.xml" />
-	<rule ref="rulesets/java/sunsecure.xml" />
-	<rule ref="rulesets/java/typeresolution.xml" />
-	<rule ref="rulesets/java/unnecessary.xml" />
-	<rule ref="rulesets/java/unusedcode.xml" />
-	<description>
-		Avalax default ruleset
-	</description>
+    <rule ref="rulesets/java/strictexception.xml" />
+    <rule ref="rulesets/java/sunsecure.xml" />
+    <rule ref="rulesets/java/typeresolution.xml" />
+    <rule ref="rulesets/java/unnecessary.xml" />
+    <rule ref="rulesets/java/unusedcode.xml" />
 </ruleset>
