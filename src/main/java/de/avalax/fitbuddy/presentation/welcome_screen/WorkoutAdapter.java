@@ -98,11 +98,11 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         private final TextView statusTextView;
         private final CardView cardView;
 
-        ViewHolder(View v, int backgroundColor, int highlightColor) {
-            super(v, backgroundColor, highlightColor);
-            cardView = v.findViewById(R.id.card);
-            dateTextView = v.findViewById(R.id.card_date);
-            statusTextView = v.findViewById(R.id.card_status);
+        ViewHolder(View view, int backgroundColor, int highlightColor) {
+            super(view, backgroundColor, highlightColor);
+            cardView = view.findViewById(R.id.card);
+            dateTextView = view.findViewById(R.id.card_date);
+            statusTextView = view.findViewById(R.id.card_status);
         }
 
         TextView getDateTextView() {

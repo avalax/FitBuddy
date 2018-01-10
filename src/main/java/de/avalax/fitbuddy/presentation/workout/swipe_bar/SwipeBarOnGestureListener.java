@@ -11,6 +11,7 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
     private int velocity;
 
     public SwipeBarOnGestureListener(int maxIncrement, View view, int minDistance, int velocity) {
+        super();
         this.maxIncrement = maxIncrement;
         this.view = view;
         this.minDistance = minDistance;
@@ -18,14 +19,15 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
     }
 
     @Override
-    public boolean onSingleTapUp(MotionEvent e) {
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
         onFlingEvent(1);
         return true;
     }
 
     @Override
-    public boolean onFling(MotionEvent startEvent, MotionEvent endEvent, float x, float y) {
-        float absY = Math.abs(y);
+    public boolean onFling(MotionEvent startEvent, MotionEvent endEvent,
+                           float velocityX, float velocityY) {
+        float absY = Math.abs(velocityY);
         float distance = startEvent.getY() - endEvent.getY();
         int scaledBarHeight = view.getHeight() / 2;
 

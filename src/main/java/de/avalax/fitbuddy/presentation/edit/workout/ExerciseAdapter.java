@@ -117,9 +117,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     static class ExerciseViewHolder extends SelectableViewHolder {
         private final TextView weightTextView;
 
-        ExerciseViewHolder(View v, int backgroundColor, int highlightColor) {
-            super(v, backgroundColor, highlightColor);
-            weightTextView = v.findViewById(R.id.item_weight);
+        ExerciseViewHolder(View view, int backgroundColor, int highlightColor) {
+            super(view, backgroundColor, highlightColor);
+            weightTextView = view.findViewById(R.id.item_weight);
         }
 
         TextView getWeightTextView() {

@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 public abstract class PagerOnTouchListener implements View.OnTouchListener {
-    private final GestureDetectorCompat gdt;
+    private GestureDetectorCompat gdt;
 
     public PagerOnTouchListener(Activity activity) {
-        final PagerOnTouchListener touchListener = this;
+        PagerOnTouchListener touchListener = this;
         ViewConfiguration viewConfiguration = ViewConfiguration.get(activity);
         int minSwipeDistance = viewConfiguration.getScaledPagingTouchSlop();
         int velocity = viewConfiguration.getScaledMinimumFlingVelocity();
@@ -35,7 +35,7 @@ public abstract class PagerOnTouchListener implements View.OnTouchListener {
     protected abstract void onSwipeLeft();
 
     @Override
-    public boolean onTouch(final View v, final MotionEvent event) {
+    public boolean onTouch(final View view, final MotionEvent event) {
         return !gdt.onTouchEvent(event);
     }
 }

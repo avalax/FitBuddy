@@ -14,8 +14,8 @@ public class SetId implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof SetId && id.equals(((SetId) o).id);
+    public boolean equals(Object obj) {
+        return obj instanceof SetId && id.equals(((SetId) obj).id);
     }
 
     @Override

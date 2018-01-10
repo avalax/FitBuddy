@@ -68,8 +68,8 @@ public class FinishedWorkoutAdapter
     }
 
     static class ViewHolder extends SelectableViewHolder {
-        ViewHolder(View v, int backgroundColor, int highlightColor) {
-            super(v, backgroundColor, highlightColor);
+        ViewHolder(View view, int backgroundColor, int highlightColor) {
+            super(view, backgroundColor, highlightColor);
         }
     }
 }

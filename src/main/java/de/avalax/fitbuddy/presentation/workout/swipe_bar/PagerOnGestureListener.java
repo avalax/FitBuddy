@@ -8,13 +8,15 @@ public abstract class PagerOnGestureListener extends GestureDetector.SimpleOnGes
     private int velocity;
 
     public PagerOnGestureListener(int minDistance, int velocity) {
+        super();
         this.minDistance = minDistance;
         this.velocity = velocity;
     }
 
     @Override
-    public boolean onFling(MotionEvent startEvent, MotionEvent endEvent, float x, float y) {
-        float absX = Math.abs(x);
+    public boolean onFling(MotionEvent startEvent, MotionEvent endEvent,
+                           float velocityX, float velocityY) {
+        float absX = Math.abs(velocityX);
         float distance = startEvent.getX() - endEvent.getX();
 
         if (distance > minDistance && absX > velocity) {

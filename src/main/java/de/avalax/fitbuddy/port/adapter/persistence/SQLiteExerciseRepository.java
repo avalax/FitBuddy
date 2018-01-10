@@ -44,10 +44,13 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_EXERCISE, new String[]{"id", "name"},
                 "workout_id=?", new String[]{workoutId.getId()}, null, null, null);
+        ExerciseId exerciseId;
+        List<Set> sets;
+        Exercise exercise;
         while (cursor.moveToNext()) {
-            ExerciseId exerciseId = new ExerciseId(cursor.getString(0));
-            List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
-            Exercise exercise = new BasicExercise(exerciseId, cursor.getString(1), sets);
+            exerciseId = new ExerciseId(cursor.getString(0));
+            sets = setRepository.allSetsBelongsTo(exerciseId);
+            exercise = new BasicExercise(exerciseId, cursor.getString(1), sets);
             exercises.add(exercise);
         }
         cursor.close();

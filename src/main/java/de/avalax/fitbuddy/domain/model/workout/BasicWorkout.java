@@ -68,11 +68,11 @@ public class BasicWorkout implements Workout {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object obj) {
         if (workoutId == null) {
-            return super.equals(o);
+            return super.equals(obj);
         }
-        return o instanceof Workout && workoutId.equals(((Workout) o).getWorkoutId());
+        return obj instanceof Workout && workoutId.equals(((Workout) obj).getWorkoutId());
     }
 
     @Override

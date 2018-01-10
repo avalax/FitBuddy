@@ -13,10 +13,10 @@ public class SelectableViewHolder extends RecyclerView.ViewHolder {
     private final int highlightColor;
     private boolean selected;
 
-    public SelectableViewHolder(View v, int backgroundColor, int highlightColor) {
-        super(v);
-        titleTextView = v.findViewById(R.id.item_title);
-        subtitleTextView = v.findViewById(R.id.item_subtitle);
+    public SelectableViewHolder(View view, int backgroundColor, int highlightColor) {
+        super(view);
+        titleTextView = view.findViewById(R.id.item_title);
+        subtitleTextView = view.findViewById(R.id.item_subtitle);
         this.backgroundColor = backgroundColor;
         this.highlightColor = highlightColor;
     }

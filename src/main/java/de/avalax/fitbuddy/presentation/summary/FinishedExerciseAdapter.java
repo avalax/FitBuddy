@@ -124,12 +124,12 @@ public class FinishedExerciseAdapter
         private final BarChart barChart;
         private final TextView subtitleTextView;
 
-        ExerciseViewHolder(View v) {
-            super(v);
-            titleTextView = v.findViewById(R.id.item_title);
-            subtitleTextView = v.findViewById(R.id.item_subtitle);
-            barChart = v.findViewById(R.id.item_chart);
-            int backgroundColor = v.getResources().getColor(R.color.appBarColor);
+        ExerciseViewHolder(View view) {
+            super(view);
+            titleTextView = view.findViewById(R.id.item_title);
+            subtitleTextView = view.findViewById(R.id.item_subtitle);
+            barChart = view.findViewById(R.id.item_chart);
+            int backgroundColor = view.getResources().getColor(R.color.appBarColor);
             initBarChart(backgroundColor);
         }
 

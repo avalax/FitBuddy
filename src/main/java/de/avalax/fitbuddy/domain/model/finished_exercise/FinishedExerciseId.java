@@ -14,8 +14,8 @@ public class FinishedExerciseId implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof FinishedExerciseId && id.equals(((FinishedExerciseId) o).id);
+    public boolean equals(Object obj) {
+        return obj instanceof FinishedExerciseId && id.equals(((FinishedExerciseId) obj).id);
     }
 
     @Override

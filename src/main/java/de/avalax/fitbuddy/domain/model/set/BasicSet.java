@@ -71,11 +71,11 @@ public class BasicSet implements Set {
 
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object obj) {
         if (setId == null) {
-            return super.equals(o);
+            return super.equals(obj);
         }
-        return o instanceof Set && setId.equals(((Set) o).getSetId());
+        return obj instanceof Set && setId.equals(((Set) obj).getSetId());
     }
 
     @Override

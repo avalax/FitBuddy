@@ -61,11 +61,11 @@ public class BasicExercise implements Exercise {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object obj) {
         if (exerciseId == null) {
-            return super.equals(o);
+            return super.equals(obj);
         }
-        return o instanceof Exercise && exerciseId.equals(((Exercise) o).getExerciseId());
+        return obj instanceof Exercise && exerciseId.equals(((Exercise) obj).getExerciseId());
     }
 
     @Override

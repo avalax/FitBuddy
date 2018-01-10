@@ -49,9 +49,9 @@ public class BasicFinishedExercise implements FinishedExercise {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof FinishedExercise
-                && finishedExerciseId.equals(((FinishedExercise) o).getFinishedExerciseId());
+    public boolean equals(Object obj) {
+        return obj instanceof FinishedExercise
+                && finishedExerciseId.equals(((FinishedExercise) obj).getFinishedExerciseId());
     }
 
     @Override

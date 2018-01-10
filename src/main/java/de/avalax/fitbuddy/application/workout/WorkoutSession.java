@@ -43,7 +43,7 @@ public class WorkoutSession {
     }
 
     private Workout readCurrentWorkoutFromFile() {
-        Workout workout;
+        Workout workout = null;
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
         try {
             FileInputStream fis = new FileInputStream(file);
@@ -51,8 +51,7 @@ public class WorkoutSession {
             workout = (Workout) ois.readObject();
             ois.close();
             fis.close();
-        } catch (IOException | ClassNotFoundException e) {
-            workout = null;
+        } catch (IOException | ClassNotFoundException ignored) {
         }
         return workout;
     }

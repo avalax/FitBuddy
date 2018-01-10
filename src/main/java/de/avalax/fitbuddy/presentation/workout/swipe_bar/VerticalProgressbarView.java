@@ -40,11 +40,14 @@ public class VerticalProgressbarView extends FrameLayout {
     }
 
     private void attributes(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VerticalProgressbarView);
+        TypedArray typedArray = getContext()
+                .obtainStyledAttributes(attrs, R.styleable.VerticalProgressbarView);
         int color = ContextCompat.getColor(getContext(), R.color.primaryColor);
-        imageView.setImageDrawable(a.getDrawable(R.styleable.VerticalProgressbarView_progressbarDrawable));
-        imageView.setBackgroundColor(a.getColor(R.styleable.VerticalProgressbarView_backgroundColor, color));
-        a.recycle();
+        imageView.setImageDrawable(typedArray
+                .getDrawable(R.styleable.VerticalProgressbarView_progressbarDrawable));
+        imageView.setBackgroundColor(typedArray
+                .getColor(R.styleable.VerticalProgressbarView_backgroundColor, color));
+        typedArray.recycle();
     }
 
     public void updateProgressbar(double progress, String currentValue, String maxValue) {

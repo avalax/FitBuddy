@@ -30,8 +30,8 @@ public class EditSetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_set, container, false);
         ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
 
-        view.findViewById(R.id.set_weight).setOnClickListener(v -> changeWeight());
-        view.findViewById(R.id.set_reps).setOnClickListener(v -> changeMaxReps());
+        view.findViewById(R.id.set_weight).setOnClickListener(onClickListener -> changeWeight());
+        view.findViewById(R.id.set_reps).setOnClickListener(onClickListener -> changeMaxReps());
         set = (Set) getActivity().getIntent().getSerializableExtra("set");
         TextView repsTextView = view.findViewById(R.id.set_reps_text_view);
         repsTextView.setText(editExerciseViewHelper.title(set));

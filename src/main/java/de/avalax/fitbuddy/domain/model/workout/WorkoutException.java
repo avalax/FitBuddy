@@ -7,8 +7,8 @@ public class WorkoutException extends ResourceException {
         super();
     }
 
-    public WorkoutException(Throwable e) {
-        super(e);
+    public WorkoutException(Throwable throwable) {
+        super(throwable);
     }
 
     public WorkoutException(String message) {

@@ -59,11 +59,15 @@ public class SQLiteFinishedExerciseRepository implements FinishedExerciseReposit
         String[] args = {finishedWorkoutId.getId()};
         Cursor cursor = database.query("finished_exercise", columns,
                 "finished_workout_id=?", args, null, null, null);
+        FinishedExerciseId finishedExerciseId;
+        String name;
+        List<FinishedSet> sets;
+        FinishedExercise finishedExercise;
         while (cursor.moveToNext()) {
-            FinishedExerciseId finishedExerciseId = new FinishedExerciseId(cursor.getString(0));
-            String name = cursor.getString(1);
-            List<FinishedSet> sets = finishedSetRepository.allSetsBelongsTo(finishedExerciseId);
-            FinishedExercise finishedExercise = new BasicFinishedExercise(
+            finishedExerciseId = new FinishedExerciseId(cursor.getString(0));
+            name = cursor.getString(1);
+            sets = finishedSetRepository.allSetsBelongsTo(finishedExerciseId);
+            finishedExercise = new BasicFinishedExercise(
                     finishedExerciseId,
                     finishedWorkoutId,
                     name,

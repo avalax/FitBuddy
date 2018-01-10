@@ -51,7 +51,7 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
         repsNumberPicker.setMaxValue(999);
         repsNumberPicker.setValue(reps);
 
-        button.setOnClickListener(v -> {
+        button.setOnClickListener(onClickListener -> {
             listener.onDialogPositiveClick(this);
             getDialog().dismiss();
         });

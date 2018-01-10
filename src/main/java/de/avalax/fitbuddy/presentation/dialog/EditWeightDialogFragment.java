@@ -63,7 +63,7 @@ public class EditWeightDialogFragment extends AppCompatDialogFragment {
         decimalPlacesNumberPicker.setValue(decimalPlaces);
         decimalPlacesNumberPicker.setDisplayedValues(labels);
 
-        button.setOnClickListener(v -> {
+        button.setOnClickListener(onClickListener -> {
             listener.onDialogPositiveClick(this);
             getDialog().dismiss();
         });

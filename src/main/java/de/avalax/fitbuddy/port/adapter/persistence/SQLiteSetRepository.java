@@ -51,11 +51,15 @@ public class SQLiteSetRepository implements SetRepository {
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         Cursor cursor = database.query(TABLE_SET, new String[]{"id", "weight", "reps"},
                 "exercise_id=?", new String[]{exerciseId.getId()}, null, null, null);
+        SetId setId;
+        double weight;
+        int maxReps;
+        Set set;
         while (cursor.moveToNext()) {
-            SetId setId = new SetId(cursor.getString(0));
-            double weight = cursor.getDouble(1);
-            int maxReps = cursor.getInt(2);
-            Set set = new BasicSet(setId, weight, maxReps);
+            setId = new SetId(cursor.getString(0));
+            weight = cursor.getDouble(1);
+            maxReps = cursor.getInt(2);
+            set = new BasicSet(setId, weight, maxReps);
             sets.add(set);
         }
         cursor.close();
