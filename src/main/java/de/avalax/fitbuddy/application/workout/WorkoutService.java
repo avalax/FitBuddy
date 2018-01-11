@@ -8,20 +8,15 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 
-public class WorkoutApplicationService {
+public class WorkoutService {
     private WorkoutSession workoutSession;
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
-    public WorkoutApplicationService(
+    public WorkoutService(
             WorkoutSession workoutSession,
             FinishedWorkoutRepository finishedWorkoutRepository) {
         this.workoutSession = workoutSession;
         this.finishedWorkoutRepository = finishedWorkoutRepository;
-    }
-
-    @Deprecated
-    public int countOfExercises() throws ResourceException {
-        return getWorkout().getExercises().size();
     }
 
     @Deprecated
@@ -48,14 +43,6 @@ public class WorkoutApplicationService {
 
     public void setCurrentExercise(int index) throws ResourceException {
         getWorkout().getExercises().setCurrentExercise(index);
-        //TODO only saveWorkout by android lifecycle
-        workoutSession.saveCurrentWorkout();
-    }
-
-    public void updateWeightOfCurrentSet(int index, double weight) throws ResourceException {
-        Exercise exercise = requestExercise(index);
-        int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
-        exercise.getSets().get(indexOfCurrentSet).setWeight(weight);
         //TODO only saveWorkout by android lifecycle
         workoutSession.saveCurrentWorkout();
     }

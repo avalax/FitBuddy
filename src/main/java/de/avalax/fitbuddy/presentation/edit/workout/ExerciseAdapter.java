@@ -116,14 +116,26 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
     static class ExerciseViewHolder extends SelectableViewHolder {
         private final TextView weightTextView;
+        private final TextView titleTextView;
+        private final TextView subtitleTextView;
 
         ExerciseViewHolder(View view, int backgroundColor, int highlightColor) {
             super(view, backgroundColor, highlightColor);
             weightTextView = view.findViewById(R.id.item_weight);
+            titleTextView = view.findViewById(R.id.item_title);
+            subtitleTextView = view.findViewById(R.id.item_subtitle);
         }
 
         TextView getWeightTextView() {
             return weightTextView;
+        }
+
+        TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        TextView getSubtitleTextView() {
+            return subtitleTextView;
         }
     }
 }

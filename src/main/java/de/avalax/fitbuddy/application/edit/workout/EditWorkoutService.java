@@ -6,11 +6,11 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
-public class EditWorkoutApplicationService {
+public class EditWorkoutService {
 
     private WorkoutRepository workoutRepository;
 
-    public EditWorkoutApplicationService(
+    public EditWorkoutService(
             WorkoutRepository workoutRepository) {
         this.workoutRepository = workoutRepository;
     }

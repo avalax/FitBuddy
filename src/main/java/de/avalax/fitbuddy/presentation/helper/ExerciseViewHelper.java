@@ -11,15 +11,17 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 
 public class ExerciseViewHelper {
+    private final int titleLength;
     private final String defaultText;
     private final String defaultWeight;
-    private DecimalFormat decimalFormat;
+    private final DecimalFormat decimalFormat;
 
     public ExerciseViewHelper(Context context, Locale locale) {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         this.decimalFormat = new DecimalFormat("###.###", symbols);
         this.defaultText = context.getResources().getString(R.string.placeholder_title);
         this.defaultWeight = context.getResources().getString(R.string.default_set_weight);
+        this.titleLength = 5;
     }
 
     public String weightOfExercise(Exercise exercise) {
@@ -62,10 +64,10 @@ public class ExerciseViewHelper {
         if (name.isEmpty()) {
             name = defaultText;
         }
-        if (name.length() < 5) {
+        if (name.length() < titleLength) {
             return name;
         }
-        return name.substring(name.length() - 5);
+        return name.substring(name.length() - titleLength);
     }
 
     public String cutNextExerciseName(Exercise exercise) {
@@ -73,10 +75,10 @@ public class ExerciseViewHelper {
         if (name.isEmpty()) {
             name = defaultText;
         }
-        if (name.length() < 5) {
+        if (name.length() < titleLength) {
             return name;
         }
-        return name.substring(0, 5);
+        return name.substring(0, titleLength);
     }
 
     public String exerciseName(Exercise exercise) {

@@ -10,9 +10,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutSession;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.finished_exercise.FinishedExerciseRepository;
@@ -59,16 +59,16 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    WorkoutApplicationService provideWorkoutApplicationService() {
-        return new WorkoutApplicationService(
+    WorkoutService provideWorkoutService() {
+        return new WorkoutService(
                 workoutSession,
                 finishedWorkoutRepository);
     }
 
     @Provides
     @Singleton
-    FinishedWorkoutApplicationService provideFinishedWorkoutApplicationService() {
-        return new FinishedWorkoutApplicationService(finishedWorkoutRepository);
+    FinishedWorkoutService provideFinishedWorkoutService() {
+        return new FinishedWorkoutService(finishedWorkoutRepository);
     }
 
     @Provides
@@ -80,8 +80,8 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    EditWorkoutApplicationService provideManageWorkout() {
-        return new EditWorkoutApplicationService(
+    EditWorkoutService provideManageWorkout() {
+        return new EditWorkoutService(
                 workoutRepository);
     }
 
@@ -105,7 +105,7 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    EditExerciseViewHelper provideEditExerciseApplicationService() {
+    EditExerciseViewHelper provideEditExerciseViewHelper() {
         return new EditExerciseViewHelper(context);
     }
 

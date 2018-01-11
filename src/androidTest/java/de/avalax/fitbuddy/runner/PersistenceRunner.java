@@ -20,30 +20,30 @@ public class PersistenceRunner {
 
     public Workout addWorkout(BasicWorkoutBuilder builder) throws WorkoutException {
         Workout workout = builder.build();
-        activityRule.editWorkoutApplicationService.saveWorkout(workout);
+        activityRule.editWorkoutService.saveWorkout(workout);
         return workout;
     }
 
     public void finishWorkout(Workout workout) throws ResourceException {
-        activityRule.workoutApplicationService.switchWorkout(workout);
-        activityRule.workoutApplicationService.finishCurrentWorkout();
+        activityRule.workoutService.switchWorkout(workout);
+        activityRule.workoutService.finishCurrentWorkout();
     }
 
     public void deleteWorkouts() throws ResourceException {
-        List<Workout> workouts = activityRule.editWorkoutApplicationService.loadAllWorkouts();
+        List<Workout> workouts = activityRule.editWorkoutService.loadAllWorkouts();
         for (Workout workout : workouts) {
-            activityRule.editWorkoutApplicationService.deleteWorkout(workout);
+            activityRule.editWorkoutService.deleteWorkout(workout);
         }
 
-        if (activityRule.workoutApplicationService.hasActiveWorkout()) {
-            activityRule.workoutApplicationService.finishCurrentWorkout();
+        if (activityRule.workoutService.hasActiveWorkout()) {
+            activityRule.workoutService.finishCurrentWorkout();
         }
     }
 
     public void deleteFinishedWorkouts() {
-        List<FinishedWorkout> workouts = activityRule.finishedWorkoutApplicationService.loadAllFinishedWorkouts();
+        List<FinishedWorkout> workouts = activityRule.finishedWorkoutService.loadAllFinishedWorkouts();
         for (FinishedWorkout finishedWorkout : workouts) {
-            activityRule.finishedWorkoutApplicationService.delete(finishedWorkout);
+            activityRule.finishedWorkoutService.delete(finishedWorkout);
         }
     }
 

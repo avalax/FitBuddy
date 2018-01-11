@@ -15,8 +15,8 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -37,11 +37,11 @@ public class ExerciseFragment extends Fragment {
     private TextView exercisePreviousTextView;
     private TextView exerciseNextTextView;
     @Inject
-    WorkoutApplicationService workoutApplicationService;
+    WorkoutService workoutService;
     @Inject
     ExerciseViewHelper exerciseViewHelper;
     @Inject
-    FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+    FinishedWorkoutService finishedWorkoutService;
 
     int exerciseIndex;
 
@@ -65,61 +65,72 @@ public class ExerciseFragment extends Fragment {
         exerciseNextTextView = view.findViewById(R.id.exercises_bar_next_exercise_name);
 
         try {
-            exerciseIndex = workoutApplicationService.indexOfCurrentExercise();
-            Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+            exerciseIndex = workoutService.indexOfCurrentExercise();
+            Exercise exercise = workoutService.requestExercise(exerciseIndex);
             int reps = exerciseViewHelper.maxRepsOfExercise(exercise);
             int sets = exerciseViewHelper.setCountOfExercise(exercise);
-            setProgressBar.setOnTouchListener(
-                    new SwipeBarOnTouchListener(getActivity(), setProgressBar, reps) {
-                        @Override
-                        public void onFlingEvent(int moved) {
-                            try {
-                                changeReps(moved);
-                            } catch (ResourceException | IOException e) {
-                                Log.d("Can't change reps", e.getMessage(), e);
-                            }
-                        }
-                    });
 
-            exerciseProgressBar.setOnTouchListener(
-                    new SwipeBarOnTouchListener(getActivity(), exerciseProgressBar, sets) {
-                        @Override
-                        public void onFlingEvent(int moved) {
-                            try {
-                                moveToSet(moved);
-                            } catch (ResourceException | IOException e) {
-                                Log.d("Can't change set", e.getMessage(), e);
-                            }
-                        }
-                    });
-
-            view.findViewById(R.id.pager_exercise)
-                    .setOnTouchListener(new PagerOnTouchListener(getActivity()) {
-                        @Override
-                        protected void onSwipeRight() {
-                            if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
-                                exerciseIndex--;
-                                changeExercise();
-                            }
-                        }
-
-                        @Override
-                        protected void onSwipeLeft() {
-                            if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
-                                exerciseIndex++;
-                                changeExercise();
-                            } else {
-                                finishWorkout();
-                            }
-                        }
-                    });
-
-            updateExerciseProgress();
-            updateSetProgress();
-            updatePage();
+            initExerciseProgressBar(sets);
+            initSetProgressBar(reps);
+            initPager(view);
         } catch (ResourceException e) {
             Log.d("Can't create fragment", e.getMessage(), e);
         }
+    }
+
+    private void initSetProgressBar(int reps) {
+        setProgressBar.setOnTouchListener(
+                new SwipeBarOnTouchListener(getActivity(), setProgressBar, reps) {
+                    @Override
+                    public void onFlingEvent(int moved) {
+                        try {
+                            changeReps(moved);
+                        } catch (ResourceException | IOException e) {
+                            Log.d("Can't change reps", e.getMessage(), e);
+                        }
+                    }
+                });
+    }
+
+    private void initExerciseProgressBar(int sets) {
+        exerciseProgressBar.setOnTouchListener(
+                new SwipeBarOnTouchListener(getActivity(), exerciseProgressBar, sets) {
+                    @Override
+                    public void onFlingEvent(int moved) {
+                        try {
+                            moveToSet(moved);
+                        } catch (ResourceException | IOException e) {
+                            Log.d("Can't change set", e.getMessage(), e);
+                        }
+                    }
+                });
+    }
+
+    private void initPager(View view) throws ResourceException {
+        view.findViewById(R.id.pager_exercise).setOnTouchListener(
+                new PagerOnTouchListener(getActivity()) {
+                    @Override
+                    protected void onSwipeRight() {
+                        if (workoutService.hasPreviousExercise(exerciseIndex)) {
+                            exerciseIndex--;
+                            changeExercise();
+                        }
+                    }
+
+                    @Override
+                    protected void onSwipeLeft() {
+                        if (workoutService.hasNextExercise(exerciseIndex)) {
+                            exerciseIndex++;
+                            changeExercise();
+                        } else {
+                            finishWorkout();
+                        }
+                    }
+                });
+
+        updateExerciseProgress();
+        updateSetProgress();
+        updatePage();
     }
 
     void finishWorkout() {
@@ -127,7 +138,7 @@ public class ExerciseFragment extends Fragment {
         builder.setMessage(R.string.message_finish_workout)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     try {
-                        workoutApplicationService.finishCurrentWorkout();
+                        workoutService.finishCurrentWorkout();
                         ((MainActivity) getActivity()).updateBottomNavigation();
                         ((MainActivity) getActivity()).showSummary();
                     } catch (ResourceException e) {
@@ -148,15 +159,15 @@ public class ExerciseFragment extends Fragment {
         }
     }
 
-    private void changeReps(int moved) throws ResourceException, IOException {
-        workoutApplicationService.addRepsToSet(exerciseIndex, moved);
+    void changeReps(int moved) throws ResourceException, IOException {
+        workoutService.addRepsToSet(exerciseIndex, moved);
         updateWorkoutProgress();
         updateExerciseProgress();
         updateSetProgress();
     }
 
-    private void moveToSet(int moved) throws ResourceException, IOException {
-        workoutApplicationService.switchToSet(exerciseIndex, moved);
+    void moveToSet(int moved) throws ResourceException, IOException {
+        workoutService.switchToSet(exerciseIndex, moved);
         updateWorkoutProgress();
         updateExerciseProgress();
         updateSetProgress();
@@ -164,7 +175,7 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void updateSetProgress() throws ResourceException {
-        Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+        Exercise exercise = workoutService.requestExercise(exerciseIndex);
         int indexOfCurrentSet = exercise.getSets().indexOfCurrentSet();
         Set set = exercise.getSets().get(indexOfCurrentSet);
         double progress = set.getProgress();
@@ -174,7 +185,7 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void updateExerciseProgress() throws ResourceException {
-        Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+        Exercise exercise = workoutService.requestExercise(exerciseIndex);
         String currentValue = String.valueOf(exercise.getSets().indexOfCurrentSet() + 1);
         String maxValue = String.valueOf(exercise.getSets().size());
         exerciseProgressBar.updateProgressbar(exercise.getProgress(), currentValue, maxValue);
@@ -182,7 +193,7 @@ public class ExerciseFragment extends Fragment {
 
     private void updateWorkoutProgress() {
         try {
-            int workoutProgress = workoutApplicationService.workoutProgress(exerciseIndex);
+            int workoutProgress = workoutService.workoutProgress(exerciseIndex);
             workoutProgressBar.setProgress(workoutProgress);
         } catch (ResourceException e) {
             Log.d("Can't change progress", e.getMessage(), e);
@@ -191,21 +202,21 @@ public class ExerciseFragment extends Fragment {
 
     private void updatePage() {
         try {
-            workoutApplicationService.setCurrentExercise(exerciseIndex);
-            Exercise exercise = workoutApplicationService.requestExercise(exerciseIndex);
+            workoutService.setCurrentExercise(exerciseIndex);
+            Exercise exercise = workoutService.requestExercise(exerciseIndex);
             exerciseNameTextView.setText(exerciseViewHelper.exerciseName(exercise));
             exerciseWeightTextView.setText(exerciseViewHelper.weightOfExercise(exercise));
-            if (workoutApplicationService.hasPreviousExercise(exerciseIndex)) {
+            if (workoutService.hasPreviousExercise(exerciseIndex)) {
                 exercisePreviousTextView.setVisibility(View.VISIBLE);
-                Exercise prevExercise = workoutApplicationService.requestExercise(exerciseIndex - 1);
+                Exercise prevExercise = workoutService.requestExercise(exerciseIndex - 1);
                 String previousName = exerciseViewHelper.cutPreviousExerciseName(prevExercise);
                 exercisePreviousTextView.setText(previousName);
             } else {
                 exercisePreviousTextView.setVisibility(View.INVISIBLE);
             }
-            if (workoutApplicationService.hasNextExercise(exerciseIndex)) {
+            if (workoutService.hasNextExercise(exerciseIndex)) {
                 exerciseNextTextView.setVisibility(View.VISIBLE);
-                Exercise nextExercise = workoutApplicationService.requestExercise(exerciseIndex + 1);
+                Exercise nextExercise = workoutService.requestExercise(exerciseIndex + 1);
                 String nextName = exerciseViewHelper.cutNextExerciseName(nextExercise);
                 exerciseNextTextView.setText(nextName);
             } else {

@@ -29,16 +29,19 @@ public abstract class SwipeBarOnGestureListener extends GestureDetector.SimpleOn
                            float velocityX, float velocityY) {
         float absY = Math.abs(velocityY);
         float distance = startEvent.getY() - endEvent.getY();
-        int scaledBarHeight = view.getHeight() / 2;
 
         if (distance > minDistance && absY > velocity) {
-            onFlingEvent(calculateMoved(distance, scaledBarHeight));
+            onFlingEvent(calculateMoved(distance, scaledBarHeight()));
             return true;
         } else if (-distance > minDistance && absY > minDistance) {
-            onFlingEvent(-calculateMoved(distance, scaledBarHeight));
+            onFlingEvent(-calculateMoved(distance, scaledBarHeight()));
             return true;
         }
         return false;
+    }
+
+    private int scaledBarHeight() {
+        return view.getHeight() / 2;
     }
 
 

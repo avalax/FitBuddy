@@ -17,9 +17,9 @@ import com.google.android.gms.ads.MobileAds;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
@@ -35,12 +35,12 @@ public class MainActivity extends AppCompatActivity
     private Menu menu;
     private BottomNavigationView bottomNavigation;
     @Inject
-    EditWorkoutApplicationService editWorkoutApplicationService;
+    EditWorkoutService editWorkoutService;
     @Inject
-    FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+    FinishedWorkoutService finishedWorkoutService;
 
     @Inject
-    WorkoutApplicationService workoutApplicationService;
+    WorkoutService workoutService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity
     public void updateBottomNavigation() {
         MenuItem itemWorkout = bottomNavigation.getMenu().getItem(1);
         MenuItem itemFinishedWorkout = bottomNavigation.getMenu().getItem(2);
-        itemWorkout.setEnabled(workoutApplicationService.hasActiveWorkout());
-        itemFinishedWorkout.setEnabled(finishedWorkoutApplicationService.hasFinishedWorkouts());
+        itemWorkout.setEnabled(workoutService.hasActiveWorkout());
+        itemFinishedWorkout.setEnabled(finishedWorkoutService.hasFinishedWorkouts());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (item.getItemId() == R.id.toolbar_delete_workout) {
             Workout workout = (Workout) item.getIntent().getSerializableExtra("workout");
-            editWorkoutApplicationService.deleteWorkout(workout);
+            editWorkoutService.deleteWorkout(workout);
             removeWorkoutFromList(workout);
             mainToolbar();
             return true;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         if (item.getItemId() == R.id.toolbar_delete_finished_workout) {
             FinishedWorkout workout = (FinishedWorkout) item.getIntent()
                     .getSerializableExtra("finishedWorkout");
-            finishedWorkoutApplicationService.delete(workout);
+            finishedWorkoutService.delete(workout);
             removeFinishedWorkoutFromList(workout);
             mainToolbar();
             return true;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
 
     public void selectWorkout(Workout workout) {
         try {
-            workoutApplicationService.switchWorkout(workout);
+            workoutService.switchWorkout(workout);
             updateBottomNavigation();
         } catch (WorkoutException e) {
             Log.e("WorkoutException", e.getMessage(), e);

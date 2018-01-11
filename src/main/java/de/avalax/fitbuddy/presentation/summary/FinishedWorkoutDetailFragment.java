@@ -11,7 +11,7 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
@@ -20,7 +20,7 @@ public class FinishedWorkoutDetailFragment extends Fragment {
     public static final String ARGS_FINISHED_WORKOUT = "workout";
 
     @Inject
-    FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+    FinishedWorkoutService finishedWorkoutService;
 
     @Inject
     FinishedWorkoutViewHelper finishedWorkoutViewHelper;

@@ -16,7 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.MainActivity;
@@ -28,7 +28,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 public class FinishedWorkoutListFragment extends Fragment {
 
     @Inject
-    protected FinishedWorkoutApplicationService applicationService;
+    protected FinishedWorkoutService finishedWorkoutService;
     @Inject
     protected FinishedWorkoutViewHelper finishedWorkoutViewHelper;
     @Inject
@@ -47,7 +47,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
-        finishedWorkouts = applicationService.loadAllFinishedWorkouts();
+        finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
         adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkoutViewHelper, finishedWorkouts);
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);

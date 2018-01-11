@@ -23,25 +23,25 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FinishedWorkoutApplicationServiceTest {
-    private FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+public class FinishedWorkoutServiceTest {
+    private FinishedWorkoutService finishedWorkoutService;
     private List<FinishedWorkout> finishedWorkoutsFromRepository;
     @Mock
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
     @Before
     public void setUp() throws Exception {
-        finishedWorkoutApplicationService = new FinishedWorkoutApplicationService(finishedWorkoutRepository);
+        finishedWorkoutService = new FinishedWorkoutService(finishedWorkoutRepository);
         finishedWorkoutsFromRepository = new ArrayList<>();
         when(finishedWorkoutRepository.loadAll()).thenReturn(finishedWorkoutsFromRepository);
     }
 
     @Test
     public void noFinishedWorkouts_shouldReturnEmptyList() throws Exception {
-        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).isEmpty();
-        assertThat(finishedWorkoutApplicationService.hasFinishedWorkouts()).isFalse();
+        assertThat(finishedWorkoutService.hasFinishedWorkouts()).isFalse();
     }
 
     @Test
@@ -50,10 +50,10 @@ public class FinishedWorkoutApplicationServiceTest {
         finishedWorkoutsFromRepository.add(mock(FinishedWorkout.class));
         when(finishedWorkoutRepository.size()).thenReturn((long) finishedWorkoutsFromRepository.size());
 
-        List<FinishedWorkout> finishedWorkouts = finishedWorkoutApplicationService.loadAllFinishedWorkouts();
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
 
         assertThat(finishedWorkouts).containsAll(finishedWorkoutsFromRepository);
-        assertThat(finishedWorkoutApplicationService.hasFinishedWorkouts()).isTrue();
+        assertThat(finishedWorkoutService.hasFinishedWorkouts()).isTrue();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class FinishedWorkoutApplicationServiceTest {
         FinishedWorkout expectedWorkout = mock(FinishedWorkout.class);
         doReturn(expectedWorkout).when(finishedWorkoutRepository).load(finishedWorkoutId);
 
-        FinishedWorkout workout = finishedWorkoutApplicationService.load(finishedWorkoutId);
+        FinishedWorkout workout = finishedWorkoutService.load(finishedWorkoutId);
 
         assertThat(workout).isEqualTo(expectedWorkout);
     }
@@ -71,7 +71,7 @@ public class FinishedWorkoutApplicationServiceTest {
     public void deleteWorkout_shouldDeleteWorkoutFromRepository() throws Exception {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
         FinishedWorkout finishedWorkout = aFinishedWorkout().withFinishedWorkoutId(finishedWorkoutId).build();
-        finishedWorkoutApplicationService.delete(finishedWorkout);
+        finishedWorkoutService.delete(finishedWorkout);
 
         verify(finishedWorkoutRepository).delete(finishedWorkoutId);
     }
@@ -81,6 +81,6 @@ public class FinishedWorkoutApplicationServiceTest {
         FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
         doThrow(new FinishedWorkoutException()).when(finishedWorkoutRepository).load(finishedWorkoutId);
 
-        finishedWorkoutApplicationService.load(finishedWorkoutId);
+        finishedWorkoutService.load(finishedWorkoutId);
     }
 }

@@ -10,26 +10,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
-    private WorkoutApplicationService workoutApplicationService;
+    private WorkoutService workoutService;
     private List<Workout> workouts;
     private MainActivity activity;
     private FinishedWorkoutViewHelper finishedWorkoutViewHelper;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
     WorkoutAdapter(MainActivity activity,
-                   WorkoutApplicationService workoutApplicationService,
+                   WorkoutService workoutService,
                    FinishedWorkoutViewHelper finishedWorkoutViewHelper,
                    List<Workout> workouts) {
         super();
         this.activity = activity;
-        this.workoutApplicationService = workoutApplicationService;
+        this.workoutService = workoutService;
         this.finishedWorkoutViewHelper = finishedWorkoutViewHelper;
         this.workouts = workouts;
     }
@@ -50,7 +50,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.executions(workout.getWorkoutId()));
         holder.getDateTextView().setText(finishedWorkoutViewHelper.lastExecutionDate(workout.getWorkoutId()));
         holder.setSelected(selectedPosition == position);
-        if (workoutApplicationService.isActiveWorkout(workout)) {
+        if (workoutService.isActiveWorkout(workout)) {
             holder.getStatusTextView().setText(R.string.workout_active);
         } else {
             holder.getStatusTextView().setText(R.string.workout_not_active);
@@ -97,10 +97,14 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         private final TextView dateTextView;
         private final TextView statusTextView;
         private final CardView cardView;
+        private final TextView titleTextView;
+        private final TextView subtitleTextView;
 
         ViewHolder(View view, int backgroundColor, int highlightColor) {
             super(view, backgroundColor, highlightColor);
             cardView = view.findViewById(R.id.card);
+            titleTextView = view.findViewById(R.id.item_title);
+            subtitleTextView = view.findViewById(R.id.item_subtitle);
             dateTextView = view.findViewById(R.id.card_date);
             statusTextView = view.findViewById(R.id.card_status);
         }
@@ -111,6 +115,14 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
         TextView getStatusTextView() {
             return statusTextView;
+        }
+
+        TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        TextView getSubtitleTextView() {
+            return subtitleTextView;
         }
 
         public View getView() {

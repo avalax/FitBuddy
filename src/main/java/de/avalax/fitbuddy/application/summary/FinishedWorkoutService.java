@@ -7,10 +7,10 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutException
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutRepository;
 
-public class FinishedWorkoutApplicationService {
+public class FinishedWorkoutService {
     private FinishedWorkoutRepository finishedWorkoutRepository;
 
-    public FinishedWorkoutApplicationService(FinishedWorkoutRepository finishedWorkoutRepository) {
+    public FinishedWorkoutService(FinishedWorkoutRepository finishedWorkoutRepository) {
         this.finishedWorkoutRepository = finishedWorkoutRepository;
     }
 

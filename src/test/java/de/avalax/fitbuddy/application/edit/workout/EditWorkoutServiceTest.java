@@ -20,13 +20,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(HierarchicalContextRunner.class)
-public class EditWorkoutApplicationServiceTest {
+public class EditWorkoutServiceTest {
 
     @Mock
     private WorkoutRepository workoutRepository;
 
     @InjectMocks
-    private EditWorkoutApplicationService editWorkoutApplicationService;
+    private EditWorkoutService editWorkoutService;
 
     private Workout workout;
 
@@ -53,19 +53,19 @@ public class EditWorkoutApplicationServiceTest {
 
         @Test
         public void loadAllWorkouts_shouldLoadWorkoutsFromRepository() throws Exception {
-            assertThat(editWorkoutApplicationService.loadAllWorkouts()).containsExactly(workout);
+            assertThat(editWorkoutService.loadAllWorkouts()).containsExactly(workout);
         }
 
         @Test
         public void saveWorkout_shouldSaveWorkoutInRepository() throws Exception {
-            editWorkoutApplicationService.saveWorkout(workout);
+            editWorkoutService.saveWorkout(workout);
 
             verify(workoutRepository).save(workout);
         }
 
         @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
-            editWorkoutApplicationService.deleteWorkout(workout);
+            editWorkoutService.deleteWorkout(workout);
 
             verify(workoutRepository).delete(workoutId);
         }

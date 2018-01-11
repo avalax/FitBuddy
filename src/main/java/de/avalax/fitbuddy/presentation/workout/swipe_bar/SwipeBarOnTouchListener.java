@@ -26,10 +26,7 @@ public abstract class SwipeBarOnTouchListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (gdt.onTouchEvent(event)) {
-            return false;
-        }
-        return true;
+        return !gdt.onTouchEvent(event);
     }
 
     protected abstract void onFlingEvent(int moved);

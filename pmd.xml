@@ -25,10 +25,21 @@
     <rule ref="category/java/errorprone.xml">
         <exclude name="BeanMembersShouldSerialize" />
         <exclude name="MissingSerialVersionUID" />
+        <exclude name="DataflowAnomalyAnalysis" />
     </rule>
     <rule ref="category/java/multithreading.xml"></rule>
     <rule ref="category/java/performance.xml">
         <exclude name="AvoidInstantiatingObjectsInLoops" />
+        <exclude name="AvoidFileStream" />
+    </rule>
+
+
+    <rule ref="category/java/codestyle.xml/ShortClassName">
+        <properties>
+            <property name="minimum">
+                <value>2</value>
+            </property>
+        </properties>
     </rule>
 
     <rule ref="category/java/codestyle.xml/ShortVariable">
@@ -59,6 +70,14 @@
         <properties>
             <property name="ignoreMagicNumbers">
                 <value>-1,0,1</value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+        <properties>
+            <property name="maxDuplicateLiterals">
+                <value>6</value>
             </property>
         </properties>
     </rule>

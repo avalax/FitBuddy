@@ -24,7 +24,7 @@ public class ExerciseListFragment extends Fragment {
     private WorkoutRecyclerView recyclerView;
 
     @Inject
-    protected EditWorkoutViewHelper editWorkoutApplicationService;
+    protected EditWorkoutViewHelper editWorkoutViewHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +36,7 @@ public class ExerciseListFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         Workout workout = (Workout) getActivity().getIntent().getSerializableExtra("workout");
         exercises = workout.getExercises();
-        adapter = new ExerciseAdapter(getActivity(), exercises, editWorkoutApplicationService);
+        adapter = new ExerciseAdapter(getActivity(), exercises, editWorkoutViewHelper);
         recyclerView.setAdapter(adapter);
         return view;
     }

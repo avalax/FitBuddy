@@ -18,7 +18,10 @@ public class WorkoutSession {
 
     public WorkoutSession(Context context) {
         this.context = context;
-        this.workout = readCurrentWorkoutFromFile();
+        try {
+            this.workout = readCurrentWorkoutFromFile();
+        } catch (IOException | ClassNotFoundException ignored) {
+        }
     }
 
     public void switchWorkout(Workout workout) throws WorkoutException {
@@ -42,26 +45,22 @@ public class WorkoutSession {
         return workout;
     }
 
-    private Workout readCurrentWorkoutFromFile() {
-        Workout workout = null;
+    private Workout readCurrentWorkoutFromFile() throws IOException, ClassNotFoundException {
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            workout = (Workout) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException | ClassNotFoundException ignored) {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+                return (Workout) ois.readObject();
+            }
         }
-        return workout;
     }
 
     protected void writeCurrentWorkoutToFile() throws IOException {
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-        outputStream.writeObject(workout);
-        outputStream.flush();
-        outputStream.close();
+        try (FileOutputStream fis = new FileOutputStream(file)) {
+            try (ObjectOutputStream outputStream = new ObjectOutputStream(fis)) {
+                outputStream.writeObject(workout);
+            }
+        }
     }
 
     public boolean hasWorkout() {

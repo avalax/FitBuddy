@@ -15,6 +15,7 @@ import android.widget.EditText;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -31,7 +32,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
     public static final int ADD_EXERCISE = 3;
     public static final int EDIT_EXERCISE = 4;
     @Inject
-    de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService editWorkoutApplicationService;
+    EditWorkoutService editWorkoutService;
     private EditText nameEditText;
     private Workout workout;
     private Menu menu;
@@ -94,7 +95,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             } else {
                 workout.setName(nameEditText.getText().toString());
                 try {
-                    editWorkoutApplicationService.saveWorkout(workout);
+                    editWorkoutService.saveWorkout(workout);
                 } catch (WorkoutException e) {
                     Log.e("WorkoutException", e.getMessage(), e);
                 }

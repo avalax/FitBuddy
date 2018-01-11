@@ -36,21 +36,18 @@ public class WorkoutSessionTest {
 
     private void writeWorkout(Workout workout) throws IOException {
         file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-        outputStream.writeObject(workout);
-        outputStream.flush();
-        outputStream.close();
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            outputStream.writeObject(workout);
+        }
     }
 
     private Workout readWorkout() throws IOException, ClassNotFoundException {
-        Workout workout;
         File file = new File(context.getDir("data", Context.MODE_PRIVATE), "currentWorkout");
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        workout = (Workout) ois.readObject();
-        ois.close();
-        fis.close();
-        return workout;
+        try (FileInputStream fis = new FileInputStream(file)) {
+            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+                return (Workout) ois.readObject();
+            }
+        }
     }
 
     @After

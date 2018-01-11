@@ -18,8 +18,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
@@ -33,10 +33,10 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
     private static final int ADD_WORKOUT = 1;
 
     @Inject
-    EditWorkoutApplicationService editWorkoutApplicationService;
+    EditWorkoutService editWorkoutService;
 
     @Inject
-    WorkoutApplicationService workoutApplicationService;
+    WorkoutService workoutService;
 
     @Inject
     FinishedWorkoutViewHelper finishedWorkoutViewHelper;
@@ -56,9 +56,9 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
-        workouts = editWorkoutApplicationService.loadAllWorkouts();
+        workouts = editWorkoutService.loadAllWorkouts();
         workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(),
-                workoutApplicationService, finishedWorkoutViewHelper, workouts);
+                workoutService, finishedWorkoutViewHelper, workouts);
         recyclerView.setAdapter(workoutAdapter);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_add_workout);
         floatingActionButton.setOnClickListener(this);

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -19,7 +20,7 @@ import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity.EDIT_SET;
 
-public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
+public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     private Sets sets;
     private EditExerciseViewHelper editExerciseViewHelper;
     private Activity activity;
@@ -36,15 +37,15 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
     }
 
     @Override
-    public SelectableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_set, parent, false);
         int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
-        return new SelectableViewHolder(view, TRANSPARENT, highlightColor);
+        return new SetViewHolder(view, TRANSPARENT, highlightColor);
     }
 
     @Override
-    public void onBindViewHolder(SelectableViewHolder holder, int position) {
+    public void onBindViewHolder(SetViewHolder holder, int position) {
         try {
             Set set = sets.get(position);
             String title = editExerciseViewHelper.title(set);
@@ -107,5 +108,24 @@ public class SetAdapter extends RecyclerView.Adapter<SelectableViewHolder> {
         sets.removeAll(selections);
         selections.clear();
         notifyDataSetChanged();
+    }
+
+    public static class SetViewHolder extends SelectableViewHolder {
+        private final TextView titleTextView;
+        private final TextView subtitleTextView;
+
+        public SetViewHolder(View view, int backgroundColor, int highlightColor) {
+            super(view, backgroundColor, highlightColor);
+            titleTextView = view.findViewById(R.id.item_title);
+            subtitleTextView = view.findViewById(R.id.item_subtitle);
+        }
+
+        TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        TextView getSubtitleTextView() {
+            return subtitleTextView;
+        }
     }
 }

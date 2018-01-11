@@ -4,9 +4,9 @@ import android.support.test.rule.ActivityTestRule;
 
 import javax.inject.Inject;
 
-import de.avalax.fitbuddy.application.edit.workout.EditWorkoutApplicationService;
-import de.avalax.fitbuddy.application.summary.FinishedWorkoutApplicationService;
-import de.avalax.fitbuddy.application.workout.WorkoutApplicationService;
+import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
+import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 
@@ -15,11 +15,11 @@ import static de.avalax.fitbuddy.runner.TestFitbuddyApplication.TestComponent;
 
 public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     @Inject
-    EditWorkoutApplicationService editWorkoutApplicationService;
+    EditWorkoutService editWorkoutService;
     @Inject
-    WorkoutApplicationService workoutApplicationService;
+    WorkoutService workoutService;
     @Inject
-    FinishedWorkoutApplicationService finishedWorkoutApplicationService;
+    FinishedWorkoutService finishedWorkoutService;
     @Inject
     AdMobProvider adMobProvider;
 

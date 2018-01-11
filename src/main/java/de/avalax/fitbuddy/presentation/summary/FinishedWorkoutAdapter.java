@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -68,8 +69,21 @@ public class FinishedWorkoutAdapter
     }
 
     static class ViewHolder extends SelectableViewHolder {
+        private final TextView titleTextView;
+        private final TextView subtitleTextView;
+
         ViewHolder(View view, int backgroundColor, int highlightColor) {
             super(view, backgroundColor, highlightColor);
+            titleTextView = view.findViewById(R.id.item_title);
+            subtitleTextView = view.findViewById(R.id.item_subtitle);
+        }
+
+        TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        TextView getSubtitleTextView() {
+            return subtitleTextView;
         }
     }
 }
