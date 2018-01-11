@@ -7,7 +7,7 @@
         Avalax default ruleset
     </description>
 
-    <rule ref="category/java/bestpractices.xml"></rule>
+    <rule ref="category/java/bestpractices.xml" />
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor" />
         <exclude name="MethodArgumentCouldBeFinal" />
@@ -27,7 +27,7 @@
         <exclude name="MissingSerialVersionUID" />
         <exclude name="DataflowAnomalyAnalysis" />
     </rule>
-    <rule ref="category/java/multithreading.xml"></rule>
+    <rule ref="category/java/multithreading.xml" />
     <rule ref="category/java/performance.xml">
         <exclude name="AvoidInstantiatingObjectsInLoops" />
         <exclude name="AvoidFileStream" />
