@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -96,8 +97,8 @@ public class EditWorkoutActivity extends AppCompatActivity {
                 workout.setName(nameEditText.getText().toString());
                 try {
                     editWorkoutService.saveWorkout(workout);
-                } catch (WorkoutException e) {
-                    Log.e("WorkoutException", e.getMessage(), e);
+                } catch (ResourceException e) {
+                    Log.e("ResourceException", e.getMessage(), e);
                 }
                 Intent intent = new Intent();
                 intent.putExtra("workout", workout);

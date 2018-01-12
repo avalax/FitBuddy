@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ExerciseRepository {
 
-    void save(WorkoutId id, Exercise exercise);
+    void save(WorkoutId id, Exercise exercise) throws ExerciseException;
 
     void delete(ExerciseId id);
 

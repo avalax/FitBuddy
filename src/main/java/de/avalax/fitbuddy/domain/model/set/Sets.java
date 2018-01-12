@@ -22,5 +22,5 @@ public interface Sets extends Serializable, Iterable<Set> {
 
     void set(int position, Set set);
 
-    void removeAll(Collection<Set> sets);
+    void remove(Set set);
 }

@@ -178,7 +178,9 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void existingWorkout_shouldNotSaveWorkoutWithoutExercises() throws Exception {
-        BasicWorkoutBuilder workout = aWorkout().withExercise(anExercise()).withExercise(anExercise());
+        BasicWorkoutBuilder workout = aWorkout()
+                .withExercise(anExercise().withSet(aSet()))
+                .withExercise(anExercise().withSet(aSet()));
         persistence.addWorkout(workout);
 
         activityRule.launchActivity(null);
@@ -297,9 +299,9 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aWorkout_shouldBeDeleted() throws Exception {
-        persistence.addWorkout(aWorkout().withName("first").withExercise(anExercise()));
-        persistence.addWorkout(aWorkout().withName("second").withExercise(anExercise()));
-        persistence.addWorkout(aWorkout().withName("third").withExercise(anExercise()));
+        persistence.addWorkout(aWorkout().withName("first").withExercise(anExercise().withSet(aSet())));
+        persistence.addWorkout(aWorkout().withName("second").withExercise(anExercise().withSet(aSet())));
+        persistence.addWorkout(aWorkout().withName("third").withExercise(anExercise().withSet(aSet())));
 
         activityRule.launchActivity(null);
 
@@ -316,7 +318,7 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
-        Workout persistedWorkout = persistence.addWorkout(aWorkout().withExercise(anExercise()));
+        Workout persistedWorkout = persistence.addWorkout(aWorkout().withExercise(anExercise().withSet(aSet())));
         persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);

@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.application.edit.workout;
 
 import java.util.List;
 
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
@@ -20,7 +21,7 @@ public class EditWorkoutService {
         workoutRepository.delete(workoutId);
     }
 
-    public void saveWorkout(Workout workout) throws WorkoutException {
+    public void saveWorkout(Workout workout) throws ResourceException {
         workoutRepository.save(workout);
     }
 

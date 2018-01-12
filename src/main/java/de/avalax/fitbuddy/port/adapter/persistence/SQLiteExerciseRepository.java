@@ -10,6 +10,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
@@ -59,7 +60,10 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
     }
 
     @Override
-    public void save(WorkoutId workoutId, Exercise exercise) {
+    public void save(WorkoutId workoutId, Exercise exercise) throws ExerciseException {
+        if (exercise.getSets().size() == 0) {
+            throw new ExerciseException("sets must not be empty");
+        }
         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
         ContentValues contentValues = getContentValues(workoutId, exercise);
         if (exercise.getExerciseId() == null) {

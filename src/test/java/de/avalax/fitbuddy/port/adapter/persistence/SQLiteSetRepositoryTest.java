@@ -36,6 +36,7 @@ public class SQLiteSetRepositoryTest {
     private SetRepository setRepository;
 
     private ExerciseId exerciseId;
+    private Set set;
 
     private Set createSet(double weight, int maxReps) {
         Set set = new BasicSet();
@@ -44,6 +45,14 @@ public class SQLiteSetRepositoryTest {
         setRepository.save(exerciseId, set);
         return set;
     }
+
+    private Set updateSet(double weight, int maxReps) {
+        set.setWeight(weight);
+        set.setMaxReps(maxReps);
+        setRepository.save(exerciseId, set);
+        return set;
+    }
+
 
     @Before
     public void setUp() throws Exception {
@@ -54,13 +63,13 @@ public class SQLiteSetRepositoryTest {
         WorkoutRepository workoutRepository = new SQLiteWorkoutRepository(sqLiteOpenHelper, exerciseRepository);
         Workout workout = new BasicWorkout();
         Exercise exercise = workout.getExercises().createExercise();
-
+        set = exercise.getSets().createSet();
         workoutRepository.save(workout);
         exerciseId = exercise.getExerciseId();
     }
 
     @Test
-    public void saveUnpersistedSet_shouldAssignNewSetId() throws Exception {
+    public void saveNewSet_shouldAssignNewSetId() throws Exception {
         Set set = new BasicSet();
 
         assertThat(set.getSetId(), nullValue());
@@ -80,7 +89,7 @@ public class SQLiteSetRepositoryTest {
 
     @Test
     public void loadAllSetsBelongsTo_shouldReturnSetsOfExercise() throws Exception {
-        Set set1 = createSet(42, 12);
+        Set set1 = updateSet(42, 12);
         Set set2 = createSet(40, 10);
 
         List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
@@ -92,7 +101,7 @@ public class SQLiteSetRepositoryTest {
 
     @Test
     public void updateSets_shouldSaveTheCorrectEntity() {
-        Set set1 = createSet(42, 12);
+        Set set1 = updateSet(42, 12);
         createSet(40, 10);
 
         List<Set> sets = setRepository.allSetsBelongsTo(exerciseId);
@@ -115,7 +124,7 @@ public class SQLiteSetRepositoryTest {
     public void deleteSetBySetId_shouldRemoveItFromPersistence() throws Exception {
         double weight = 42;
         int maxReps = 12;
-        Set set = createSet(weight, maxReps);
+        Set set = updateSet(weight, maxReps);
         SetId setId = set.getSetId();
 
         setRepository.delete(setId);

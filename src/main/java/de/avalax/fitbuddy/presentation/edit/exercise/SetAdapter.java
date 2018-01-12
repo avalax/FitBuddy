@@ -105,7 +105,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     }
 
     void removeSelections() {
-        sets.removeAll(selections);
+        for (Set set : selections) {
+            sets.remove(set);
+        }
         selections.clear();
         notifyDataSetChanged();
     }

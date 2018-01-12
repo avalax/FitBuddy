@@ -18,7 +18,7 @@ public class PersistenceRunner {
         this.activityRule = activityRule;
     }
 
-    public Workout addWorkout(BasicWorkoutBuilder builder) throws WorkoutException {
+    public Workout addWorkout(BasicWorkoutBuilder builder) throws ResourceException {
         Workout workout = builder.build();
         activityRule.editWorkoutService.saveWorkout(workout);
         return workout;

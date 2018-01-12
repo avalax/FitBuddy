@@ -13,6 +13,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
@@ -35,10 +36,11 @@ public class SQLiteWorkoutRepositoryTest {
 
     private ExerciseRepository exerciseRepository;
 
-    private WorkoutId createWorkout(String name) throws WorkoutException {
+    private WorkoutId createWorkout(String name) throws ResourceException {
         Workout workout = new BasicWorkout();
         workout.setName(name);
-        workout.getExercises().createExercise();
+        Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
         workoutRepository.save(workout);
         return workout.getWorkoutId();
     }
@@ -55,7 +57,8 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void saveNewWorkout_shouldAssignNewWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
-        workout.getExercises().createExercise();
+        Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
         assertThat(workout.getWorkoutId(), nullValue());
 
         workoutRepository.save(workout);
@@ -66,7 +69,8 @@ public class SQLiteWorkoutRepositoryTest {
     @Test
     public void savePersistedWorkout_shouldKeepWorkoutId() throws Exception {
         Workout workout = new BasicWorkout();
-        workout.getExercises().createExercise();
+        Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -79,6 +83,7 @@ public class SQLiteWorkoutRepositoryTest {
     public void saveWorkout_shouldAlsoSaveExercises() throws Exception {
         Workout workout = new BasicWorkout();
         Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
 
         workoutRepository.save(workout);
 
@@ -126,7 +131,9 @@ public class SQLiteWorkoutRepositoryTest {
     public void loadByWorkoutId_shouldReturnWorkoutWithExercises() throws Exception {
         Workout workout = new BasicWorkout();
         Exercise exercise1 = workout.getExercises().createExercise();
+        exercise1.getSets().createSet();
         Exercise exercise2 = workout.getExercises().createExercise();
+        exercise2.getSets().createSet();
         workoutRepository.save(workout);
         WorkoutId workoutId = workout.getWorkoutId();
 

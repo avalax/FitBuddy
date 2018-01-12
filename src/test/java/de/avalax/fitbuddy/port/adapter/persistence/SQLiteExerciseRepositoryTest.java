@@ -13,14 +13,15 @@ import java.util.List;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 import static org.hamcrest.CoreMatchers.any;
@@ -37,7 +38,15 @@ public class SQLiteExerciseRepositoryTest {
     private SetRepository setRepository;
     private Workout workout;
 
-    private Exercise createExercise(String name) throws WorkoutException {
+    private Exercise createExerciseWithOneSet(String name) throws ResourceException {
+        Exercise exercise = workout.getExercises().createExercise();
+        exercise.setName(name);
+        exercise.getSets().createSet();
+        workoutRepository.save(workout);
+        return exercise;
+    }
+
+    private Exercise createExercise(String name) throws ResourceException {
         Exercise exercise = workout.getExercises().createExercise();
         exercise.setName(name);
         workoutRepository.save(workout);
@@ -57,6 +66,7 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void saveNewExercise_shouldAssignNewExerciseId() throws Exception {
         Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
 
         assertThat(exercise.getExerciseId(), nullValue());
         workoutRepository.save(workout);
@@ -67,6 +77,7 @@ public class SQLiteExerciseRepositoryTest {
     @Test
     public void savePersistedExercise_shouldKeepExerciseId() throws Exception {
         Exercise exercise = workout.getExercises().createExercise();
+        exercise.getSets().createSet();
         workoutRepository.save(workout);
         ExerciseId exerciseId = exercise.getExerciseId();
 
@@ -76,8 +87,8 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void updateExercises_shouldSaveTheCorrectEntity() throws Exception {
-        Exercise exercise1 = createExercise("name1");
-        Exercise exercise2 = createExercise("name2");
+        Exercise exercise1 = createExerciseWithOneSet("name1");
+        Exercise exercise2 = createExerciseWithOneSet("name2");
         WorkoutId workoutId = workout.getWorkoutId();
 
         List<Exercise> exercises = exerciseRepository.allExercisesBelongsTo(workoutId);
@@ -93,8 +104,8 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void saveExercise_shouldAlsoSaveSets() throws Exception {
-        Exercise exercise = createExercise("exercise with a set");
-        Set set = exercise.getSets().createSet();
+        Exercise exercise = createExerciseWithOneSet("exercise with a set");
+        Set set = exercise.getSets().get(0);
         WorkoutId workoutId = workout.getWorkoutId();
 
         exerciseRepository.save(workoutId, exercise);
@@ -106,8 +117,8 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void loadAllExercisesBelongsTo_shouldAddSetsToExercise() throws Exception {
-        Exercise exercise = createExercise("an exercise with two sets");
-        Set set1 = exercise.getSets().createSet();
+        Exercise exercise = createExerciseWithOneSet("an exercise with two sets");
+        Set set1 = exercise.getSets().get(0);
         Set set2 = exercise.getSets().createSet();
         WorkoutId workoutId = workout.getWorkoutId();
 
@@ -126,11 +137,19 @@ public class SQLiteExerciseRepositoryTest {
 
     @Test
     public void deleteExerciseByExerciseId_shouldRemoveItFromPersistence() throws Exception {
-        Exercise exercise = createExercise("name");
+        Exercise exercise = createExerciseWithOneSet("name");
         WorkoutId workoutId = workout.getWorkoutId();
 
         exerciseRepository.delete(exercise.getExerciseId());
 
         assertThat(exerciseRepository.allExercisesBelongsTo(workoutId).size(), equalTo(0));
+    }
+
+    @Test(expected = ExerciseException.class)
+    public void exerciseWithoutSet_shouldThrowExceptionOnSave() throws Exception {
+        Exercise exercise = createExercise("name");
+        WorkoutId workoutId = workout.getWorkoutId();
+
+        exerciseRepository.save(workoutId, exercise);
     }
 }

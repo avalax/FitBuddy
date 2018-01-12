@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
@@ -29,7 +30,7 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     }
 
     @Override
-    public void save(Workout workout) throws WorkoutException {
+    public void save(Workout workout) throws ResourceException {
         if (workout.getExercises().size() == 0) {
             throw new WorkoutException("exercises must not be empty");
         }
