@@ -12,22 +12,6 @@
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/AppTheme.ActionBar">
 
-        <TextView
-            android:id="@+id/exercises_bar_previous_exercise_name"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:textColor="@color/primaryTextColor" />
-
-        <View
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:background="@drawable/gradient_start" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,6 +35,22 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/exercises_bar_previous_exercise_name"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:textColor="@color/primaryTextColor" />
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/gradient_start" />
 
         <TextView
             android:id="@+id/exercises_bar_next_exercise_name"
