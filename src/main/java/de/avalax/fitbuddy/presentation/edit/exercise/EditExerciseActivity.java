@@ -19,12 +19,11 @@ import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_SET;
+import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_SET;
 import static java.lang.String.valueOf;
 
 public class EditExerciseActivity extends AppCompatActivity {
-
-    public static final int EDIT_SET = 5;
-    public static final int ADD_SET = 6;
     private EditText nameEditText;
     private Exercise exercise;
     private Menu menu;

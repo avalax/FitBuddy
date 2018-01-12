@@ -31,11 +31,12 @@ import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_WORKOUT;
+import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_WORKOUT;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public static final int EDIT_WORKOUT = 2;
     private Menu menu;
     private BottomNavigationView bottomNavigation;
     @Inject
@@ -102,11 +103,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_WORKOUT && resultCode == Activity.RESULT_OK) {
+            Workout workout = (Workout) data.getSerializableExtra("workout");
+            addWorkoutToList(workout);
+        }
         if (requestCode == EDIT_WORKOUT && resultCode == Activity.RESULT_OK) {
             Workout workout = (Workout) data.getSerializableExtra("workout");
             Integer position = data.getIntExtra("position", -1);
             updateWorkoutInList(position, workout);
         }
+    }
+
+    private void addWorkoutToList(Workout workout) {
+        WorkoutListFragment workoutListFragment = (WorkoutListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        workoutListFragment.addWorkout(workout);
     }
 
     private void updateWorkoutInList(Integer position, Workout workout) {

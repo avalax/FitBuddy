@@ -15,9 +15,6 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import static de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment.ARGS_FINISHED_WORKOUT;
 
 public class FinishedWorkoutDetailActivity extends AppCompatActivity {
-
-    public static final int FINISHED_WORKOUT_DETAILS = 5;
-
     @Inject
     protected EditExerciseViewHelper editExerciseViewHelper;
 

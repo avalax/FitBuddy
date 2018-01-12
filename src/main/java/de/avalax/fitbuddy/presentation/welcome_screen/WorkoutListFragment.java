@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,10 +27,9 @@ import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
+import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_WORKOUT;
+
 public class WorkoutListFragment extends Fragment implements View.OnClickListener {
-
-    private static final int ADD_WORKOUT = 1;
-
     @Inject
     EditWorkoutService editWorkoutService;
 
@@ -69,11 +67,16 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
+    public void addWorkout(Workout workout) {
+        workouts.add(workout);
+        workoutAdapter.notifyItemInserted(workouts.size() - 1);
+        recyclerView.updateEmptyView();
+    }
+
     public void updateWorkout(Integer position, Workout workout) {
         workouts.set(position, workout);
         workoutAdapter.notifyItemChanged(position);
         recyclerView.updateEmptyView();
-        ((MainActivity) getActivity()).mainToolbar();
     }
 
     public void removeSelection() {
@@ -92,18 +95,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         Intent intent = new Intent(getActivity(), EditWorkoutActivity.class);
         intent.putExtra("workout", new BasicWorkout());
-        startActivityForResult(intent, ADD_WORKOUT);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_WORKOUT && resultCode == Activity.RESULT_OK) {
-            Workout workout = (Workout) data.getSerializableExtra("workout");
-            workouts.add(workout);
-            workoutAdapter.notifyItemInserted(workouts.size() - 1);
-            recyclerView.updateEmptyView();
-        }
+        getActivity().startActivityForResult(intent, ADD_WORKOUT);
     }
 }
 

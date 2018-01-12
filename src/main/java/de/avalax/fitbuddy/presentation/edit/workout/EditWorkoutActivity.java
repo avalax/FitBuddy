@@ -25,12 +25,11 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_EXERCISE;
+import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_EXERCISE;
 import static java.lang.String.valueOf;
 
 public class EditWorkoutActivity extends AppCompatActivity {
-
-    public static final int ADD_EXERCISE = 3;
-    public static final int EDIT_EXERCISE = 4;
     @Inject
     EditWorkoutService editWorkoutService;
     private EditText nameEditText;
