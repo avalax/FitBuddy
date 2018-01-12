@@ -297,14 +297,21 @@ public class FitbuddyAcceptanceTest {
 
     @Test
     public void aWorkout_shouldBeDeleted() throws Exception {
-        persistence.addWorkout(aWorkout().withExercise(anExercise()));
+        persistence.addWorkout(aWorkout().withName("first").withExercise(anExercise()));
+        persistence.addWorkout(aWorkout().withName("second").withExercise(anExercise()));
+        persistence.addWorkout(aWorkout().withName("third").withExercise(anExercise()));
 
         activityRule.launchActivity(null);
 
-        application.deleteWorkout(0);
+        application.deleteWorkout(1);
+        application.hasShownWorkoutDetails(0, "first", "Never", "Executed 0 times");
+        application.hasShownWorkoutDetails(1, "third", "Never", "Executed 0 times");
 
+        application.deleteWorkout(0);
+        application.hasShownWorkoutDetails(0, "third", "Never", "Executed 0 times");
+
+        application.deleteWorkout(0);
         application.hasShownAddNewWorkoutHint();
-        application.showsSupportMenuItem();
     }
 
     @Test

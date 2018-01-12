@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (item.getItemId() == R.id.toolbar_delete_workout) {
             Workout workout = (Workout) item.getIntent().getSerializableExtra("workout");
-            editWorkoutService.deleteWorkout(workout);
+            editWorkoutService.deleteWorkout(workout.getWorkoutId());
             removeWorkoutFromList(workout);
             mainToolbar();
             return true;

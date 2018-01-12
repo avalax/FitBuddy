@@ -65,7 +65,7 @@ public class EditWorkoutServiceTest {
 
         @Test
         public void deleteWorkout_shouldRemoveTheWorkoutFromThePersistence() throws Exception {
-            editWorkoutService.deleteWorkout(workout);
+            editWorkoutService.deleteWorkout(workoutId);
 
             verify(workoutRepository).delete(workoutId);
         }

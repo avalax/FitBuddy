@@ -82,7 +82,9 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
 
     public void removeWorkout(Workout workout) {
         removeSelection();
-        workouts.remove(workout);
+        int index = workouts.indexOf(workout);
+        workouts.remove(index);
+        workoutAdapter.notifyItemRemoved(index);
         recyclerView.updateEmptyView();
     }
 

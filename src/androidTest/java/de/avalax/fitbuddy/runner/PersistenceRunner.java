@@ -32,7 +32,7 @@ public class PersistenceRunner {
     public void deleteWorkouts() throws ResourceException {
         List<Workout> workouts = activityRule.editWorkoutService.loadAllWorkouts();
         for (Workout workout : workouts) {
-            activityRule.editWorkoutService.deleteWorkout(workout);
+            activityRule.editWorkoutService.deleteWorkout(workout.getWorkoutId());
         }
 
         if (activityRule.workoutService.hasActiveWorkout()) {

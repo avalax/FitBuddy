@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
 public class EditWorkoutService {
@@ -15,8 +16,8 @@ public class EditWorkoutService {
         this.workoutRepository = workoutRepository;
     }
 
-    public void deleteWorkout(Workout workout) {
-        workoutRepository.delete(workout.getWorkoutId());
+    public void deleteWorkout(WorkoutId workoutId) {
+        workoutRepository.delete(workoutId);
     }
 
     public void saveWorkout(Workout workout) throws WorkoutException {
