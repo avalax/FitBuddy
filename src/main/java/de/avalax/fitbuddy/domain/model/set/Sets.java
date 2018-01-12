@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.domain.model.set;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 public interface Sets extends Serializable, Iterable<Set> {
     Set createSet();
@@ -15,7 +14,7 @@ public interface Sets extends Serializable, Iterable<Set> {
     void setCurrentSet(int index) throws SetException;
 
     @Deprecated
-    // Remove exception
+        // Remove exception
     int indexOfCurrentSet() throws SetException;
 
     void add(Set set);
