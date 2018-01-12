@@ -89,8 +89,7 @@ public class WorkoutService {
         if (!workoutSession.hasWorkout()) {
             return false;
         }
-        int size = workoutSession.getWorkout().getExercises().size();
-        return exerciseIndex > 0 && exerciseIndex < size;
+        return exerciseIndex > 0;
     }
 
     public boolean hasNextExercise(int exerciseIndex) {
@@ -98,7 +97,7 @@ public class WorkoutService {
             return false;
         }
         int size = workoutSession.getWorkout().getExercises().size();
-        return size > exerciseIndex + 1;
+        return exerciseIndex + 1 < size;
     }
 
     public boolean hasActiveWorkout() {

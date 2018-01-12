@@ -108,7 +108,7 @@ public class WorkoutServiceTest {
         }
 
         @Test
-        public void noActiveWorkout_shouldReturnFalse() throws Exception {
+        public void noActiveWorkout_shouldReturnIsNotActive() throws Exception {
             when(workoutSession.hasWorkout()).thenReturn(false);
             when(workoutSession.getWorkout()).thenReturn(null);
 
@@ -116,8 +116,13 @@ public class WorkoutServiceTest {
         }
 
         @Test
-        public void currentWorkoutIsActive_shouldReturnTrue() throws Exception {
+        public void currentWorkout_shouldReturnIsActive() throws Exception {
             Assertions.assertThat(workoutService.isActiveWorkout(workout)).isTrue();
+        }
+
+        @Test
+        public void anotherWorkout_shouldReturnIsNotActive() throws Exception {
+            Assertions.assertThat(workoutService.isActiveWorkout(new BasicWorkout())).isFalse();
         }
 
         @Test
