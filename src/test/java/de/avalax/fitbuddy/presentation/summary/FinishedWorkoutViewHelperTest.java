@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.presentation.summary;
 
 import android.content.Context;
 
+import org.assertj.core.data.Percentage;
 import org.assertj.core.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.Date;
 import java.util.Locale;
 
 import de.avalax.fitbuddy.BuildConfig;
@@ -27,12 +29,13 @@ public class FinishedWorkoutViewHelperTest {
     private FinishedWorkoutViewHelper viewHelper;
     private long today;
     private FinishedWorkoutRepository finishedWorkoutRepository;
+    private Context context;
 
     @Before
     public void setUp() throws Exception {
         today = DateUtil.parse("2017-12-31").getTime();
         Locale.setDefault(ENGLISH);
-        Context context = RuntimeEnvironment.application.getApplicationContext();
+        context = RuntimeEnvironment.application.getApplicationContext();
         finishedWorkoutRepository = mock(FinishedWorkoutRepository.class);
         viewHelper = new FinishedWorkoutViewHelper(context, finishedWorkoutRepository) {
             @Override
@@ -62,5 +65,11 @@ public class FinishedWorkoutViewHelperTest {
         assertThat(viewHelper.lastExecutionDate(aWorkoutId(finishedWorkoutRepository).withId("42").withLastExecution(today).build())).isEqualTo("Today");
         assertThat(viewHelper.lastExecutionDate(aWorkoutId(finishedWorkoutRepository).withId("42").withLastExecution(DateUtil.parse("2017-12-30").getTime()).build())).isEqualTo("Yesterday");
         assertThat(viewHelper.lastExecutionDate(aWorkoutId(finishedWorkoutRepository).withId("42").withLastExecution(DateUtil.parse("2017-12-20").getTime()).build())).isEqualTo("Dec 20, 2017");
+    }
+
+    @Test
+    public void shouldReturnDate_shouldBeCloseToNow() throws Exception {
+        FinishedWorkoutViewHelper finishedWorkoutViewHelper = new FinishedWorkoutViewHelper(context, finishedWorkoutRepository);
+        assertThat(finishedWorkoutViewHelper.getDate()).isCloseTo(new Date().getTime(), Percentage.withPercentage(95));
     }
 }
