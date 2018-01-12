@@ -44,4 +44,5 @@
     <string name="weight_suffix">kg</string>
     <string name="edit_set_toolbar_title">Edit set</string>
     <string name="summary_tendency_normal">normal</string>
+    <string name="message_select_workout_first">Select a workout first</string>
 </resources>

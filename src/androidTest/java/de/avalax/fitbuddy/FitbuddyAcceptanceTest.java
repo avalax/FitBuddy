@@ -45,9 +45,16 @@ public class FitbuddyAcceptanceTest {
         application.showsStartBottomNavAsActive();
         application.hasShownAddNewWorkoutHint();
         application.showsSupportMenuItem();
-        application.showsWorkoutBottomNavAsDisabled();
-        application.showsFinishedWorkoutBottomNavAsDisabled();
         application.showsAdMob();
+    }
+
+    @Test
+    public void initialStart_shouldShowMe() throws Exception {
+        activityRule.launchActivity(null);
+
+        application.navigateToWorkout();
+
+        application.hasShownSelectWorkoutFirst();
     }
 
     @Test
@@ -217,13 +224,14 @@ public class FitbuddyAcceptanceTest {
         application.showsWorkoutIsActive(0);
 
         application.navigateToWorkout();
+        application.showsWorkoutBottomNavAsActive();
         application.showsActiveExercise("an exercise:", "42 kg");
 
         application.backPressed();
         application.showsWorkoutIsActive(0);
 
-        application.switchToSummary();
-        application.showsFinishedWorkoutBottomNavAsActive();
+        application.navigateToSummary();
+        application.showsSummaryBottomNavAsActive();
         application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
 
         application.selectFinishedWorkout(0);
@@ -323,7 +331,7 @@ public class FitbuddyAcceptanceTest {
 
         activityRule.launchActivity(null);
 
-        application.switchToSummary();
+        application.navigateToSummary();
         application.deleteFinishedWorkout(0);
 
         application.hasShownAddNoFinishedWorkoutsHint();
@@ -339,7 +347,7 @@ public class FitbuddyAcceptanceTest {
 
         activityRule.launchActivity(null);
 
-        application.switchToSummary();
+        application.navigateToSummary();
         application.showsFinishedWorkoutOverview(0, "a workout", "Today", "normal");
         application.showsAdMob();
 
@@ -359,7 +367,7 @@ public class FitbuddyAcceptanceTest {
         activityRule.launchActivity(null);
         application.notDisplayAdMob();
 
-        application.switchToSummary();
+        application.navigateToSummary();
         application.notDisplayAdMob();
     }
 

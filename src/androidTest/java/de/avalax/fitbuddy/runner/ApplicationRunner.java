@@ -55,14 +55,16 @@ public class ApplicationRunner {
         onView(withId(R.id.navigation_summary_item)).check(matches(bottomNavItemIsNotChecked()));
     }
 
-    public void showsFinishedWorkoutBottomNavAsActive() {
+    public void showsWorkoutBottomNavAsActive() {
+        onView(withId(R.id.navigation_start_item)).check(matches(bottomNavItemIsNotChecked()));
+        onView(withId(R.id.navigation_workout_item)).check(matches(bottomNavItemIsChecked()));
+        onView(withId(R.id.navigation_summary_item)).check(matches(bottomNavItemIsNotChecked()));
+    }
+
+    public void showsSummaryBottomNavAsActive() {
         onView(withId(R.id.navigation_start_item)).check(matches(bottomNavItemIsNotChecked()));
         onView(withId(R.id.navigation_workout_item)).check(matches(bottomNavItemIsNotChecked()));
         onView(withId(R.id.navigation_summary_item)).check(matches(bottomNavItemIsChecked()));
-    }
-
-    public void showsWorkoutBottomNavAsDisabled() {
-        onView(withId(R.id.navigation_workout_item)).check(matches(not(isEnabled())));
     }
 
     public void showsFinishedWorkoutBottomNavAsDisabled() {
@@ -77,7 +79,7 @@ public class ApplicationRunner {
         onView(withId(R.id.adView)).check(matches(not(isDisplayed())));
     }
 
-    public void switchToSummary() {
+    public void navigateToSummary() {
         onView(withId(R.id.navigation_summary_item)).perform(click());
     }
 
@@ -274,6 +276,10 @@ public class ApplicationRunner {
 
     public void hasShownCantSaveWorkoutWithoutExercices() {
         onView(withText(R.string.message_save_workout_without_exercices)).inRoot(isToast()).check(matches(isDisplayed()));
+    }
+
+    public void hasShownSelectWorkoutFirst() {
+        onView(withText(R.string.message_select_workout_first)).inRoot(isToast()).check(matches(isDisplayed()));
     }
 
     public void saveExercise() {

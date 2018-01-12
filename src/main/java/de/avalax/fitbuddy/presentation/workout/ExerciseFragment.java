@@ -139,7 +139,6 @@ public class ExerciseFragment extends Fragment {
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     try {
                         workoutService.finishCurrentWorkout();
-                        ((MainActivity) getActivity()).updateBottomNavigation();
                         ((MainActivity) getActivity()).showSummary();
                     } catch (ResourceException e) {
                         Log.d("Can't finish workout", e.getMessage(), e);

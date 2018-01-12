@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,9 @@ import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
 import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
+
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -58,14 +62,6 @@ public class MainActivity extends AppCompatActivity
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
-        updateBottomNavigation();
-    }
-
-    public void updateBottomNavigation() {
-        MenuItem itemWorkout = bottomNavigation.getMenu().getItem(1);
-        MenuItem itemFinishedWorkout = bottomNavigation.getMenu().getItem(2);
-        itemWorkout.setEnabled(workoutService.hasActiveWorkout());
-        itemFinishedWorkout.setEnabled(finishedWorkoutService.hasFinishedWorkouts());
     }
 
     @Override
@@ -161,7 +157,6 @@ public class MainActivity extends AppCompatActivity
     public void selectWorkout(Workout workout) {
         try {
             workoutService.switchWorkout(workout);
-            updateBottomNavigation();
         } catch (WorkoutException e) {
             Log.e("WorkoutException", e.getMessage(), e);
         }
@@ -175,12 +170,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.navigation_workout_item) {
-            Fragment exerciseFragment = new ExerciseFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_content, exerciseFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
-            return true;
+            boolean hasActiveWorkout = workoutService.hasActiveWorkout();
+            if (hasActiveWorkout) {
+                Fragment exerciseFragment = new ExerciseFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_content, exerciseFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else {
+                Context context = getApplicationContext();
+                makeText(context, R.string.message_select_workout_first, LENGTH_SHORT)
+                        .show();
+            }
+            return hasActiveWorkout;
         }
         if (item.getItemId() == R.id.navigation_start_item) {
             Fragment workoutListFragment = new WorkoutListFragment();
