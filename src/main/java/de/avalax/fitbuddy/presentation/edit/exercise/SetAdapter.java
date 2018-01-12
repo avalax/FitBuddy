@@ -18,7 +18,7 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.graphics.Color.TRANSPARENT;
-import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_SET;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
 
 public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     private Sets sets;

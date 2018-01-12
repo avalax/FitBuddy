@@ -19,8 +19,8 @@ import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_SET;
-import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_SET;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_SET;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
 import static java.lang.String.valueOf;
 
 public class EditExerciseActivity extends AppCompatActivity {

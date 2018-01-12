@@ -25,8 +25,8 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_EXERCISE;
-import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_EXERCISE;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static java.lang.String.valueOf;
 
 public class EditWorkoutActivity extends AppCompatActivity {

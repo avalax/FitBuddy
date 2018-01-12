@@ -27,7 +27,7 @@ import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
-import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_WORKOUT;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_WORKOUT;
 
 public class WorkoutListFragment extends Fragment implements View.OnClickListener {
     @Inject

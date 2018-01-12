@@ -31,8 +31,8 @@ import de.avalax.fitbuddy.presentation.workout.ExerciseFragment;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static de.avalax.fitbuddy.presentation.RequestCodes.ADD_WORKOUT;
-import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_WORKOUT;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_WORKOUT;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_WORKOUT;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {

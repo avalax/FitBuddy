@@ -20,7 +20,7 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static android.graphics.Color.TRANSPARENT;
-import static de.avalax.fitbuddy.presentation.RequestCodes.EDIT_EXERCISE;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
     private Exercises exercises;

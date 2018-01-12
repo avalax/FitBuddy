@@ -14,7 +14,7 @@ import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 
-import static de.avalax.fitbuddy.presentation.RequestCodes.FINISHED_WORKOUT_DETAILS;
+import static de.avalax.fitbuddy.presentation.FitbuddyApplication.FINISHED_WORKOUT_DETAILS;
 import static de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment.ARGS_FINISHED_WORKOUT;
 
 public class FinishedWorkoutAdapter
