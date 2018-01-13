@@ -8,8 +8,6 @@ android:
     - build-tools-27.0.3
     - android-27
     - sys-img-armeabi-v7a-android-19
-before_script:
-  - ./gradlew dependencies
 script:
   - ./gradlew build
 after_success:
