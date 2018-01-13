@@ -12,7 +12,6 @@ import de.avalax.fitbuddy.domain.model.exercise.ExerciseId;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
-import static java.util.Collections.singleton;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -141,69 +140,6 @@ public class BasicWorkoutTest {
         assertThat(workout.toString(), equalTo("BasicWorkout [name=" + name + ", workoutId=" + workoutId.toString() + "]"));
     }
 
-    public class givenAnExerciseToMoveInWorkout {
-        private Exercise exercise;
-
-        @Before
-        public void setUp() throws Exception {
-            exercise = workout.getExercises().createExercise();
-            exercise.setName("ExerciseOne");
-        }
-
-        @Test(expected = ExerciseException.class)
-        public void moveUnknownExerciseUp_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.getExercises().moveExerciseAtPositionUp(1);
-        }
-
-        @Test
-        public void moveFirstExerciseAtPositionUp_shouldDoNothing() throws Exception {
-            boolean moved = workout.getExercises().moveExerciseAtPositionUp(0);
-
-            assertThat(moved, is(false));
-            assertThat(workout.getExercises().get(0), equalTo(exercise));
-        }
-
-        @Test
-        public void moveExerciseAtPositionUp_shouldPlaceTheExerciseAtTheRightPosition() throws Exception {
-            Exercise exerciseToMove = workout.getExercises().createExercise();
-            exerciseToMove.setName("ExerciseTwo");
-
-            boolean moved = workout.getExercises().moveExerciseAtPositionUp(1);
-
-            assertThat(moved, is(true));
-            assertThat(workout.getExercises().get(0), equalTo(exerciseToMove));
-        }
-
-
-        @Test(expected = ExerciseException.class)
-        public void moveUnknownExerciseDown_shouldThrowExerciseNotFoundException() throws Exception {
-            workout.getExercises().moveExerciseAtPositionDown(-1);
-        }
-
-        @Test
-        public void moveLastExerciseAtPositionDown_shouldDoNothing() throws Exception {
-            Exercise lastExercise = workout.getExercises().createExercise();
-
-            boolean moved = workout.getExercises().moveExerciseAtPositionDown(1);
-
-            assertThat(moved, is(false));
-            assertThat(workout.getExercises().get(1), equalTo(lastExercise));
-        }
-
-        @Test
-        public void moveExerciseAtPositionDown_shouldPlaceTheExerciseAtTheSecondPosition() throws Exception {
-            Exercise exerciseToMove = workout.getExercises().createExercise();
-            exerciseToMove.setName("ExerciseToMove");
-            Exercise lastExercise = workout.getExercises().createExercise();
-            lastExercise.setName("ExerciseLast");
-
-            boolean moved = workout.getExercises().moveExerciseAtPositionDown(1);
-
-            assertThat(moved, is(true));
-            assertThat(workout.getExercises().get(2), equalTo(exerciseToMove));
-        }
-    }
-
     public class givenAWorkoutForExerciseManipulation {
         @Test
         public void countOfExercises_shouldReturnEmptyListOfExercisesOnConstruction() throws Exception {
@@ -232,7 +168,7 @@ public class BasicWorkoutTest {
         public void removeExercise_shouldRemoveExerciseFromWorkout() throws Exception {
             Exercise exercise = workout.getExercises().createExercise();
 
-            workout.getExercises().removeAll(singleton(exercise));
+            workout.getExercises().remove(exercise);
 
             assertThat(workout.getExercises().size(), equalTo(0));
         }
@@ -242,7 +178,7 @@ public class BasicWorkoutTest {
             Exercise exercise = workout.getExercises().createExercise();
             Exercise exerciseToDelete = workout.getExercises().createExercise();
 
-            workout.getExercises().removeAll(singleton(exerciseToDelete));
+            workout.getExercises().remove(exerciseToDelete);
 
             assertThat(workout.getExercises().size(), equalTo(1));
             assertThat(workout.getExercises().get(0), equalTo(exercise));
@@ -257,7 +193,7 @@ public class BasicWorkoutTest {
             Exercise clonedExercise = new BasicExercise();
             clonedExercise.setExerciseId(exerciseId);
 
-            workout.getExercises().removeAll(singleton(clonedExercise));
+            workout.getExercises().remove(clonedExercise);
 
             assertThat(workout.getExercises().size(), equalTo(0));
         }
@@ -267,7 +203,7 @@ public class BasicWorkoutTest {
             Exercise exerciseToDelete = workout.getExercises().createExercise();
             Exercise exercise = workout.getExercises().createExercise();
 
-            workout.getExercises().removeAll(singleton(exerciseToDelete));
+            workout.getExercises().remove(exerciseToDelete);
 
             assertThat(workout.getExercises().size(), equalTo(1));
             assertThat(workout.getExercises().get(0), equalTo(exercise));
@@ -275,7 +211,7 @@ public class BasicWorkoutTest {
 
         @Test
         public void deleteExercise_shouldDoNothingWhenIndexIsOutOfBounce() throws Exception {
-            workout.getExercises().removeAll(singleton(mock(Exercise.class)));
+            workout.getExercises().remove(mock(Exercise.class));
         }
 
         public class givenAnExerciseProgress {

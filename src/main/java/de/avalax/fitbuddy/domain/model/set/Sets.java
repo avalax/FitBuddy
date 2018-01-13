@@ -22,4 +22,6 @@ public interface Sets extends Serializable, Iterable<Set> {
     void set(int position, Set set);
 
     void remove(Set set);
+
+    boolean contains(Set set);
 }

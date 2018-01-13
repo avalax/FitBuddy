@@ -145,6 +145,25 @@ public class SQLiteWorkoutRepositoryTest {
     }
 
     @Test
+    public void deleteExerciseFromWorkout_shouldDeletedFromDatabaseToo() throws Exception {
+        Workout workout = new BasicWorkout();
+        Exercise exercise1 = workout.getExercises().createExercise();
+        exercise1.getSets().createSet();
+        Exercise exercise2 = workout.getExercises().createExercise();
+        exercise2.getSets().createSet();
+        workoutRepository.save(workout);
+        WorkoutId workoutId = workout.getWorkoutId();
+        Workout persistedWorkout = workoutRepository.load(workoutId);
+
+        persistedWorkout.getExercises().remove(exercise2);
+        workoutRepository.save(persistedWorkout);
+
+        Workout loadedWorkout = workoutRepository.load(workoutId);
+        assertThat(loadedWorkout.getExercises().size(), equalTo(1));
+        assertThat(persistedWorkout.getExercises().get(0), equalTo(exercise1));
+    }
+
+    @Test
     public void saveWorkout_shouldUpdateName() throws Exception {
         WorkoutId workoutId = createWorkout("a workout");
 

@@ -109,7 +109,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     void removeSelections() {
-        exercises.removeAll(selections);
+        for (Exercise exercise : selections) {
+            exercises.remove(exercise);
+        }
         selections.clear();
         notifyDataSetChanged();
     }

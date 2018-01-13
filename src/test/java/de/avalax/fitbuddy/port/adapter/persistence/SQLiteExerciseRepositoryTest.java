@@ -131,6 +131,24 @@ public class SQLiteExerciseRepositoryTest {
     }
 
     @Test
+    public void deleteSetFromExercise_shouldDeletedFromDatabaseToo() throws Exception {
+        Exercise exercise = createExerciseWithOneSet("an exercise with two sets");
+        Set set1 = exercise.getSets().get(0);
+        Set set2 = exercise.getSets().createSet();
+        WorkoutId workoutId = workout.getWorkoutId();
+
+        exerciseRepository.save(workoutId, exercise);
+        Workout persistedWorkout = workoutRepository.load(workoutId);
+
+        persistedWorkout.getExercises().get(0).getSets().remove(set2);
+        workoutRepository.save(persistedWorkout);
+
+        Workout loadedWorkout = workoutRepository.load(workoutId);
+        assertThat(loadedWorkout.getExercises().get(0).getSets().size(), equalTo(1));
+        assertThat(persistedWorkout.getExercises().get(0).getSets().get(0), equalTo(set1));
+    }
+
+    @Test
     public void deleteExerciseWithNull_shouldDoNothing() throws Exception {
         exerciseRepository.delete(null);
     }

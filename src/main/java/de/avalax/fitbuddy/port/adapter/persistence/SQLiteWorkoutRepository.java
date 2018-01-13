@@ -10,6 +10,7 @@ import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseRepository;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -34,15 +35,30 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
         if (workout.getExercises().size() == 0) {
             throw new WorkoutException("exercises must not be empty");
         }
-        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        if (workout.getWorkoutId() == null) {
-            long id = database.insertOrThrow(TABLE_WORKOUT, null, getContentValues(workout));
-            workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
-        } else {
-            String[] args = {workout.getWorkoutId().getId()};
-            database.update(TABLE_WORKOUT, getContentValues(workout), "id=?", args);
+        try (SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase()) {
+            if (workout.getWorkoutId() == null) {
+                long id = database.insertOrThrow(TABLE_WORKOUT, null, getContentValues(workout));
+                workout.setWorkoutId(new WorkoutId(String.valueOf(id)));
+            } else {
+                String[] args = {workout.getWorkoutId().getId()};
+                database.update(TABLE_WORKOUT, getContentValues(workout), "id=?", args);
+            }
         }
-        database.close();
+        removeDeletedExercisesFromRepository(workout);
+        saveExercisesFromWorkout(workout);
+    }
+
+    private void removeDeletedExercisesFromRepository(Workout workout) {
+        List<Exercise> exercises =
+                exerciseRepository.allExercisesBelongsTo(workout.getWorkoutId());
+        for (Exercise exercise : exercises) {
+            if (!workout.getExercises().contains(exercise)) {
+                exerciseRepository.delete(exercise.getExerciseId());
+            }
+        }
+    }
+
+    private void saveExercisesFromWorkout(Workout workout) throws ExerciseException {
         for (Exercise exercise : workout.getExercises()) {
             exerciseRepository.save(workout.getWorkoutId(), exercise);
         }

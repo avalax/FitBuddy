@@ -64,17 +64,31 @@ public class SQLiteExerciseRepository implements ExerciseRepository {
         if (exercise.getSets().size() == 0) {
             throw new ExerciseException("sets must not be empty");
         }
-        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        ContentValues contentValues = getContentValues(workoutId, exercise);
-        if (exercise.getExerciseId() == null) {
-            long id = database.insertOrThrow(TABLE_EXERCISE, null, contentValues);
-            ExerciseId exerciseId = new ExerciseId(String.valueOf(id));
-            exercise.setExerciseId(exerciseId);
-        } else {
-            String[] args = {exercise.getExerciseId().getId()};
-            database.update(TABLE_EXERCISE, contentValues, "id=?", args);
+        try (SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase()) {
+            ContentValues contentValues = getContentValues(workoutId, exercise);
+            if (exercise.getExerciseId() == null) {
+                long id = database.insertOrThrow(TABLE_EXERCISE, null, contentValues);
+                ExerciseId exerciseId = new ExerciseId(String.valueOf(id));
+                exercise.setExerciseId(exerciseId);
+            } else {
+                String[] args = {exercise.getExerciseId().getId()};
+                database.update(TABLE_EXERCISE, contentValues, "id=?", args);
+            }
         }
-        database.close();
+        removeDeletedSetsFromRepository(exercise);
+        saveSetsFromExercise(exercise);
+    }
+
+    private void removeDeletedSetsFromRepository(Exercise exercise) {
+        List<Set> sets = setRepository.allSetsBelongsTo(exercise.getExerciseId());
+        for (Set set : sets) {
+            if (!exercise.getSets().contains(set)) {
+                setRepository.delete(set.getSetId());
+            }
+        }
+    }
+
+    private void saveSetsFromExercise(Exercise exercise) {
         for (Set set : exercise.getSets()) {
             setRepository.save(exercise.getExerciseId(), set);
         }

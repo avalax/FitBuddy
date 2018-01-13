@@ -1,16 +1,12 @@
 package de.avalax.fitbuddy.domain.model.set;
 
+import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercises;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercises;
-
-import static de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder.anExercise;
-import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.*;
+import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BasicSetsTest {
@@ -50,5 +46,16 @@ public class BasicSetsTest {
         sets.set(0, newSet);
 
         assertThat(sets).containsOnly(newSet);
+    }
+
+    @Test
+    public void containsSet_shouldReturnBoolean() throws Exception {
+        Set set = aSet().build();
+        Sets sets = new BasicSets(new ArrayList<>());
+        sets.add(set);
+
+        Java6Assertions.assertThat(sets.contains(null)).isFalse();
+        Java6Assertions.assertThat(sets.contains(aSet().build())).isFalse();
+        Java6Assertions.assertThat(sets.contains(set)).isTrue();
     }
 }

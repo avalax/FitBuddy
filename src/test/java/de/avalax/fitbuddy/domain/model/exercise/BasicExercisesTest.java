@@ -42,4 +42,15 @@ public class BasicExercisesTest {
 
         assertThat(exercises).containsOnly(newExercise);
     }
+
+    @Test
+    public void containsExercise_shouldReturnBoolean() throws Exception {
+        Exercise exercise = anExercise().withName("old exercise").build();
+        Exercises exercises = new BasicExercises(new ArrayList<>());
+        exercises.add(exercise);
+
+        assertThat(exercises.contains(null)).isFalse();
+        assertThat(exercises.contains(anExercise().build())).isFalse();
+        assertThat(exercises.contains(exercise)).isTrue();
+    }
 }

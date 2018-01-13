@@ -64,6 +64,11 @@ public class BasicSets implements Sets {
     }
 
     @Override
+    public boolean contains(Set set) {
+        return sets.contains(set);
+    }
+
+    @Override
     public Iterator<Set> iterator() {
         return sets.iterator();
     }
