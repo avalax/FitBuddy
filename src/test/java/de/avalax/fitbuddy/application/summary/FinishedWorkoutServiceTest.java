@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.application.summary;
 
+import org.assertj.core.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
@@ -82,5 +84,15 @@ public class FinishedWorkoutServiceTest {
         doThrow(new FinishedWorkoutException()).when(finishedWorkoutRepository).load(finishedWorkoutId);
 
         finishedWorkoutService.load(finishedWorkoutId);
+    }
+
+    @Test
+    public void updateCreationDate_shouldUpdateFinishedWorkoutInRepository() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = new FinishedWorkoutId("1");
+        Date date = DateUtil.parse("2017-12-31");
+
+        finishedWorkoutService.updatedCreation(finishedWorkoutId, date);
+
+        verify(finishedWorkoutRepository).updateCreation(finishedWorkoutId, date.getTime());
     }
 }

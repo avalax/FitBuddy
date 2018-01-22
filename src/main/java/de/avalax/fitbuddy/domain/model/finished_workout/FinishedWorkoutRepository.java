@@ -20,4 +20,6 @@ public interface FinishedWorkoutRepository {
     long count(WorkoutId workoutId);
 
     Long lastCreation(WorkoutId workoutId);
+
+    void updateCreation(FinishedWorkoutId finishedWorkoutId, long time);
 }

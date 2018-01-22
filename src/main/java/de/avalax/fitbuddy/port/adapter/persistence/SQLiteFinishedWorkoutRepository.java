@@ -76,7 +76,7 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
         String[] columns = {"id", "workout_id", "name", "created"};
         Cursor cursor = database.query(TABLE_FINISHED_WORKOUT, columns,
-                null, null, null, null, null);
+                null, null, null, null, "created DESC");
         while (cursor.moveToNext()) {
             finishedWorkouts.add(createFinishedWorkout(cursor));
         }
@@ -123,6 +123,16 @@ public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepositor
         cursor.close();
         database.close();
         return creation;
+    }
+
+    @Override
+    public void updateCreation(FinishedWorkoutId finishedWorkoutId, long time) {
+        try (SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase()) {
+                String[] args = {finishedWorkoutId.getId()};
+                ContentValues values = new ContentValues();
+                values.put("created", time);
+                database.update(TABLE_FINISHED_WORKOUT, values, "id=?", args);
+        }
     }
 
     private FinishedWorkout createFinishedWorkout(Cursor cursor) {

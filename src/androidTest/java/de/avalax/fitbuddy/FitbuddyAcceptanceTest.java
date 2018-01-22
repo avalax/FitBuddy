@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.set.BasicSetBuilder;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
@@ -335,6 +336,28 @@ public class FitbuddyAcceptanceTest {
         application.deleteFinishedWorkout(0);
 
         application.hasShownAddNoFinishedWorkoutsHint();
+    }
+
+    @Test
+    public void threeFinishedWorkouts_shouldBeDisplayedByCreationDESC() throws Exception {
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        FinishedWorkoutId firstFinishedWorkoutId = persistence.finishWorkout(persistedWorkout);
+        FinishedWorkoutId secondFinishedWorkoutId = persistence.finishWorkout(persistedWorkout);
+        FinishedWorkoutId thirdFinishedWorkoutId = persistence.finishWorkout(persistedWorkout);
+        persistence.updateFinishedWorkoutCreation(firstFinishedWorkoutId, "2017-12-29");
+        persistence.updateFinishedWorkoutCreation(secondFinishedWorkoutId, "2017-12-30");
+        persistence.updateFinishedWorkoutCreation(thirdFinishedWorkoutId, "2017-12-31");
+
+        activityRule.launchActivity(null);
+
+        application.navigateToSummary();
+
+        application.showsFinishedWorkoutOverview(0, "a workout", "Dec 31, 2017", "normal");
+        application.showsFinishedWorkoutOverview(1, "a workout", "Dec 30, 2017", "normal");
+        application.showsFinishedWorkoutOverview(2, "a workout", "Dec 29, 2017", "normal");
     }
 
     @Test

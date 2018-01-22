@@ -3,13 +3,17 @@ package de.avalax.fitbuddy.runner;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
+import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 
 public class PersistenceRunner {
     private FitbuddyActivityTestRule activityRule;
@@ -24,9 +28,9 @@ public class PersistenceRunner {
         return workout;
     }
 
-    public void finishWorkout(Workout workout) throws ResourceException {
+    public FinishedWorkoutId finishWorkout(Workout workout) throws ResourceException {
         activityRule.workoutService.switchWorkout(workout);
-        activityRule.workoutService.finishCurrentWorkout();
+        return activityRule.workoutService.finishCurrentWorkout();
     }
 
     public void deleteWorkouts() throws ResourceException {
@@ -38,6 +42,13 @@ public class PersistenceRunner {
         if (activityRule.workoutService.hasActiveWorkout()) {
             activityRule.workoutService.finishCurrentWorkout();
         }
+    }
+
+    public void updateFinishedWorkoutCreation(FinishedWorkoutId firstFinishedWorkoutId, String date) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        Date dateDate = dateFormat.parse(date);
+        activityRule.finishedWorkoutService.updatedCreation(firstFinishedWorkoutId, dateDate);
     }
 
     public void deleteFinishedWorkouts() {

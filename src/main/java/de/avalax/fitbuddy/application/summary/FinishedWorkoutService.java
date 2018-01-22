@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.application.summary;
 
+import java.util.Date;
 import java.util.List;
 
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
@@ -28,5 +29,9 @@ public class FinishedWorkoutService {
 
     public boolean hasFinishedWorkouts() {
         return finishedWorkoutRepository.size() > 0;
+    }
+
+    public void updatedCreation(FinishedWorkoutId firstFinishedWorkoutId, Date date) {
+        finishedWorkoutRepository.updateCreation(firstFinishedWorkoutId, date.getTime());
     }
 }

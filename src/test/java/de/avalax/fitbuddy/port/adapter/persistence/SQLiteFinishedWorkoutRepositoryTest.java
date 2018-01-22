@@ -179,4 +179,15 @@ public class SQLiteFinishedWorkoutRepositoryTest {
 
         assertThat(finishedWorkoutRepository.lastCreation(workout.getWorkoutId()), equalTo(DateUtil.parse("2017-12-31").getTime()));
     }
+
+    @Test
+    public void updateCreation_shouldReturnPersistNewCreationDate() throws Exception {
+        FinishedWorkoutId finishedWorkoutId = finishedWorkoutRepository.saveWorkout(workout);
+        date = DateUtil.parse("2017-12-30");
+
+        finishedWorkoutRepository.updateCreation(finishedWorkoutId, date.getTime());
+
+        FinishedWorkout finishedWorkout = finishedWorkoutRepository.load(finishedWorkoutId);
+        assertThat(finishedWorkout.getCreated(), equalTo(date.getTime()));
+    }
 }
