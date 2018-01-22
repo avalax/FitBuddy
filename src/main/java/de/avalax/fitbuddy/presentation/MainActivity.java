@@ -21,7 +21,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
-import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
@@ -33,6 +32,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_WORKOUT;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_WORKOUT;
+import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -90,10 +90,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (item.getItemId() == R.id.toolbar_delete_finished_workout) {
-            FinishedWorkout workout = (FinishedWorkout) item.getIntent()
-                    .getSerializableExtra("finishedWorkout");
-            finishedWorkoutService.delete(workout);
-            removeFinishedWorkoutFromList(workout);
+            removeSelectedFinishedWorkouts();
             mainToolbar();
             return true;
         }
@@ -132,10 +129,10 @@ public class MainActivity extends AppCompatActivity
         workoutListFragment.removeWorkout(workout);
     }
 
-    private void removeFinishedWorkoutFromList(FinishedWorkout workout) {
+    private void removeSelectedFinishedWorkouts() {
         FinishedWorkoutListFragment workoutListFragment = (FinishedWorkoutListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-        workoutListFragment.removeFinishedWorkout(workout);
+        workoutListFragment.removeFinishedWorkout();
     }
 
     public void updateEditToolbar(int position, Workout workout) {
@@ -150,14 +147,16 @@ public class MainActivity extends AppCompatActivity
         itemDelete.setIntent(intent);
     }
 
-    public void updateEditToolbar(int position, FinishedWorkout workout) {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.menu_summary_edit, menu);
-        Intent intent = new Intent();
-        intent.putExtra("finishedWorkout", workout);
-        intent.putExtra("position", position);
-        MenuItem item = menu.findItem(R.id.toolbar_delete_finished_workout);
-        item.setIntent(intent);
+    public void updateEditToolbar(int selectionCount) {
+        if (selectionCount > 0) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_summary_edit, menu);
+            MenuItem item = menu.findItem(R.id.toolbar_delete_finished_workout);
+            item.setTitle(valueOf(selectionCount));
+        } else {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
     }
 
     public void mainToolbar() {

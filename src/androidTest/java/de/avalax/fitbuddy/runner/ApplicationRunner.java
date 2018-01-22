@@ -85,6 +85,9 @@ public class ApplicationRunner {
 
     public void deleteFinishedWorkout(int position) {
         onView(withId(android.R.id.list)).perform(actionOnItemAtPosition(position, longClick()));
+    }
+
+    public void deleteSelectedFinishedWorkouts() {
         onView(withId(R.id.toolbar_delete_finished_workout)).perform(click());
     }
 

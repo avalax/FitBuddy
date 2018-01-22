@@ -48,7 +48,8 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
-        adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(), finishedWorkoutViewHelper, finishedWorkouts);
+        adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(),
+                finishedWorkoutViewHelper, finishedWorkouts, finishedWorkoutService);
         recyclerView.setAdapter(adapter);
         Toolbar toolbar = view.findViewById(R.id.toolbar_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -57,9 +58,8 @@ public class FinishedWorkoutListFragment extends Fragment {
         return view;
     }
 
-    public void removeFinishedWorkout(FinishedWorkout workout) {
-        finishedWorkouts.remove(workout);
-        adapter.notifyDataSetChanged();
+    public void removeFinishedWorkout() {
+        adapter.removeSelections();
         recyclerView.updateEmptyView();
     }
 }

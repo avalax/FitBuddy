@@ -329,11 +329,13 @@ public class FitbuddyAcceptanceTest {
     public void aFinishedWorkout_shouldBeDeleted() throws Exception {
         Workout persistedWorkout = persistence.addWorkout(aWorkout().withExercise(anExercise().withSet(aSet())));
         persistence.finishWorkout(persistedWorkout);
-
+        persistence.finishWorkout(persistedWorkout);
         activityRule.launchActivity(null);
-
         application.navigateToSummary();
+
         application.deleteFinishedWorkout(0);
+        application.selectFinishedWorkout(1);
+        application.deleteSelectedFinishedWorkouts();
 
         application.hasShownAddNoFinishedWorkoutsHint();
     }

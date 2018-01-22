@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.summary;
 
 import android.content.Intent;
+import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Set;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
@@ -21,15 +24,20 @@ public class FinishedWorkoutAdapter
         extends RecyclerView.Adapter<FinishedWorkoutAdapter.ViewHolder> {
     private MainActivity activity;
     private List<FinishedWorkout> finishedWorkouts;
+    private FinishedWorkoutService finishedWorkoutService;
     private FinishedWorkoutViewHelper finishedWorkoutViewHelper;
+    private Set<FinishedWorkout> selectedWorkouts;
 
     FinishedWorkoutAdapter(MainActivity activity,
                            FinishedWorkoutViewHelper finishedWorkoutViewHelper,
-                           List<FinishedWorkout> finishedWorkouts) {
+                           List<FinishedWorkout> finishedWorkouts,
+                           FinishedWorkoutService finishedWorkoutService) {
         super();
         this.activity = activity;
         this.finishedWorkoutViewHelper = finishedWorkoutViewHelper;
         this.finishedWorkouts = finishedWorkouts;
+        this.finishedWorkoutService = finishedWorkoutService;
+        this.selectedWorkouts = new ArraySet<>();
     }
 
     @Override
@@ -46,16 +54,37 @@ public class FinishedWorkoutAdapter
         FinishedWorkout workout = finishedWorkouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.creationDate(workout));
+        holder.setSelected(selectedWorkouts.contains(workout));
         holder.getView().setOnClickListener(view -> {
-            Intent intent = new Intent(activity, FinishedWorkoutDetailActivity.class);
-            intent.putExtra(ARGS_FINISHED_WORKOUT, workout);
-            intent.putExtra("position", holder.getAdapterPosition());
-            activity.startActivityForResult(intent, FINISHED_WORKOUT_DETAILS);
+            if (selectedWorkouts.isEmpty()) {
+                Intent intent = new Intent(activity, FinishedWorkoutDetailActivity.class);
+                intent.putExtra(ARGS_FINISHED_WORKOUT, workout);
+                intent.putExtra("position", holder.getAdapterPosition());
+                activity.startActivityForResult(intent, FINISHED_WORKOUT_DETAILS);
+            } else {
+                if (holder.isSelected()) {
+                    deselect(holder.getAdapterPosition(), workout);
+                } else {
+                    select(holder.getAdapterPosition(), workout);
+                }
+            }
         });
         holder.getView().setOnLongClickListener(view -> {
-            activity.updateEditToolbar(position, workout);
+            select(holder.getAdapterPosition(), workout);
             return true;
         });
+    }
+
+    private void deselect(int position, FinishedWorkout workout) {
+        selectedWorkouts.remove(workout);
+        notifyItemChanged(position);
+        activity.updateEditToolbar(selectedWorkouts.size());
+    }
+
+    private void select(int position, FinishedWorkout workout) {
+        selectedWorkouts.add(workout);
+        notifyItemChanged(position);
+        activity.updateEditToolbar(selectedWorkouts.size());
     }
 
     @Override
@@ -66,6 +95,14 @@ public class FinishedWorkoutAdapter
     @Override
     public int getItemCount() {
         return finishedWorkouts.size();
+    }
+
+    void removeSelections() {
+        for (FinishedWorkout finishedWorkout : selectedWorkouts) {
+            finishedWorkouts.remove(finishedWorkout);
+            finishedWorkoutService.delete(finishedWorkout);
+        }
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends SelectableViewHolder {

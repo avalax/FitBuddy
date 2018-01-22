@@ -3,8 +3,7 @@
     <item
         android:id="@+id/toolbar_delete_finished_workout"
         android:icon="@drawable/ic_action_delete"
-        app:showAsAction="ifRoom"
+        android:tint="?android:textColorPrimaryInverse"
         android:title="@string/toolbar_item_delete"
-        android:tint="?android:textColorPrimaryInverse">
-    </item>
+        app:showAsAction="always|withText" />
 </menu>
