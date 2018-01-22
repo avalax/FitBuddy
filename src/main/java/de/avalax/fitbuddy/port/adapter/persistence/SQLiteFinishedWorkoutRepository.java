@@ -23,7 +23,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 
 public class SQLiteFinishedWorkoutRepository implements FinishedWorkoutRepository {
-    private static final String TABLE_FINISHED_WORKOUT = "finished_workout";
+    static final String TABLE_FINISHED_WORKOUT = "finished_workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
     private FinishedExerciseRepository finishedExerciseRepository;
 

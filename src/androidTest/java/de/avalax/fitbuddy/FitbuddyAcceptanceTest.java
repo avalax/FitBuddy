@@ -339,7 +339,29 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void threeFinishedWorkouts_shouldBeDisplayedByCreationDESC() throws Exception {
+    public void threeWorkouts_shouldBeOrderedByLastExecutionDateDESC() throws Exception {
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("first workout").withExercise(exercise);
+        Workout firstWorkout = persistence.addWorkout(workout);
+        Workout secondWorkout = persistence.addWorkout(workout.withName("second workout"));
+        Workout thirdWorkout = persistence.addWorkout(workout.withName("third workout"));
+        FinishedWorkoutId firstFinishedWorkoutId = persistence.finishWorkout(firstWorkout);
+        FinishedWorkoutId secondFinishedWorkoutId = persistence.finishWorkout(secondWorkout);
+        FinishedWorkoutId thirdFinishedWorkoutId = persistence.finishWorkout(thirdWorkout);
+        persistence.updateFinishedWorkoutCreation(firstFinishedWorkoutId, "2017-12-29");
+        persistence.updateFinishedWorkoutCreation(secondFinishedWorkoutId, "2017-12-30");
+        persistence.updateFinishedWorkoutCreation(thirdFinishedWorkoutId, "2017-12-31");
+
+        activityRule.launchActivity(null);
+
+        application.hasShownWorkoutDetails(0, "third workout", "Dec 31, 2017", "Executed 1 time");
+        application.hasShownWorkoutDetails(1, "second workout", "Dec 30, 2017", "Executed 1 time");
+        application.hasShownWorkoutDetails(2, "first workout", "Dec 29, 2017", "Executed 1 time");
+    }
+
+    @Test
+    public void threeFinishedWorkouts_shouldBeOrderedByCreationDESC() throws Exception {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
         BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);

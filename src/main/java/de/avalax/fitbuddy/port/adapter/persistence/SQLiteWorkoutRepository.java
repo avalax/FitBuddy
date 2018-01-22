@@ -18,6 +18,8 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutRepository;
 
+import static de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository.TABLE_FINISHED_WORKOUT;
+
 public class SQLiteWorkoutRepository implements WorkoutRepository {
     private static final String TABLE_WORKOUT = "workout";
     private SQLiteOpenHelper sqLiteOpenHelper;
@@ -100,18 +102,17 @@ public class SQLiteWorkoutRepository implements WorkoutRepository {
     @Override
     public List<Workout> loadAll() {
         List<Workout> workoutList = new ArrayList<>();
-        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_WORKOUT, new String[]
-                        {"id", "name"},
-                null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Workout workout = createWorkout(cursor);
-                workoutList.add(workout);
-            } while (cursor.moveToNext());
+        String sql = "SELECT id, name, (SELECT created FROM " + TABLE_FINISHED_WORKOUT
+                + " WHERE workout_id=" + TABLE_WORKOUT + ".id ORDER BY created DESC LIMIT 1) created FROM "
+                + TABLE_WORKOUT + " ORDER BY created DESC";
+        try (SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase()) {
+            try (Cursor cursor = database.rawQuery(sql, null)) {
+                while (cursor.moveToNext()) {
+                    Workout workout = createWorkout(cursor);
+                    workoutList.add(workout);
+                }
+            }
         }
-        cursor.close();
-        database.close();
         return workoutList;
     }
 
