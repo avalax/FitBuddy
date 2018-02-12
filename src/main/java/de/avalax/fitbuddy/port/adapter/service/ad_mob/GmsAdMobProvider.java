@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.presentation.ad_mob;
+package de.avalax.fitbuddy.port.adapter.service.ad_mob;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +8,9 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-public class AdMobProvider {
+import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
+
+public class GmsAdMobProvider implements AdMobProvider {
     private static final String APP_ID = "ca-app-pub-3067141613739864~9851773284";
     private static final String[] TEST_DEVICES = {
             AdRequest.DEVICE_ID_EMULATOR,
@@ -17,20 +19,20 @@ public class AdMobProvider {
     };
     private final SharedPreferences preferences;
 
-    public AdMobProvider(Context context) {
+    public GmsAdMobProvider(Context context) {
         preferences = context.getSharedPreferences("fitbuddy", Context.MODE_PRIVATE);
     }
 
-    public void initAdView(AdView adView) {
+    public void initAdView(View view) {
         if (isPaid()) {
-            adView.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
         } else {
-            MobileAds.initialize(adView.getContext(), APP_ID);
+            MobileAds.initialize(view.getContext(), APP_ID);
             AdRequest.Builder adRequest = new AdRequest.Builder();
             for (String testDevice : TEST_DEVICES) {
                 adRequest.addTestDevice(testDevice);
             }
-            adView.loadAd(adRequest.build());
+            ((AdView) view).loadAd(adRequest.build());
         }
     }
 

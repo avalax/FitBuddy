@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -27,7 +28,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
-import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
+import de.avalax.fitbuddy.port.adapter.service.ad_mob.GmsAdMobProvider;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
@@ -112,6 +113,6 @@ public class FitbuddyModule {
     @Provides
     @Singleton
     AdMobProvider provideAdMobProvider() {
-        return new AdMobProvider(context);
+        return new GmsAdMobProvider(context);
     }
 }

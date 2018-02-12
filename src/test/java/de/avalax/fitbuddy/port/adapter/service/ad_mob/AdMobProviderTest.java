@@ -1,4 +1,4 @@
-package de.avalax.fitbuddy.presentation.ad_mob;
+package de.avalax.fitbuddy.port.adapter.service.ad_mob;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +15,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
+import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +31,7 @@ public class AdMobProviderTest {
     public void setUp() throws Exception {
         sharedPreferences = RuntimeEnvironment.application.getSharedPreferences("fitbuddy", Context.MODE_PRIVATE);
         Context context = RuntimeEnvironment.application.getApplicationContext();
-        adMobProvider = new AdMobProvider(context);
+        adMobProvider = new GmsAdMobProvider(context);
         adView = new AdView(context);
         adView.setAdSize(AdSize.SMART_BANNER);
         adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");

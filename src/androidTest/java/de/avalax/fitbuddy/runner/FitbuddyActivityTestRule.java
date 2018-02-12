@@ -4,11 +4,11 @@ import android.support.test.rule.ActivityTestRule;
 
 import javax.inject.Inject;
 
+import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.presentation.MainActivity;
-import de.avalax.fitbuddy.presentation.ad_mob.AdMobProvider;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static de.avalax.fitbuddy.runner.TestFitbuddyApplication.TestComponent;
