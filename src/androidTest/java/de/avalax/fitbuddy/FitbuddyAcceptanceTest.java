@@ -430,6 +430,7 @@ public class FitbuddyAcceptanceTest {
         application.doPayment();
 
         application.showsSuccessfulPaymentMessage();
+        application.notDisplayAdMob();
         application.navigateToSummary();
         application.notDisplayAdMob();
         application.navigateToStart();

@@ -12,12 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.ads.MobileAds;
 
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity
 
     @Inject
     BillingProvider billingProvider;
+
+    @Inject
+    AdMobProvider adMobProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +188,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             getMenuInflater().inflate(R.menu.menu_main_support, menu);
         }
+        View adView = findViewById(R.id.adView);
+        adMobProvider.initAdView(adView);
     }
 
     public void selectWorkout(Workout workout) {

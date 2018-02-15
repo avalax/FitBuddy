@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.port.adapter.service.ad_mob;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 
 import com.google.android.gms.ads.AdSize;
@@ -42,14 +41,14 @@ public class GmsAdMobProviderTest {
     }
 
     @Test
-    public void initialStart_shouldNotBePaid() throws Exception {
+    public void initialStart_shouldBeVisible() throws Exception {
         adMobProvider.initAdView(adView);
 
         assertThat(adView.getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
-    public void alreadyPaid_shouldBePaid() throws Exception {
+    public void alreadyPaid_shouldBeHidden() throws Exception {
         doReturn(true).when(billingProvider).isPaid();
 
         adMobProvider.initAdView(adView);
