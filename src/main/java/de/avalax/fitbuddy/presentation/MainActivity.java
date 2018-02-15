@@ -18,6 +18,7 @@ import com.google.android.gms.ads.MobileAds;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity
     @Inject
     WorkoutService workoutService;
 
+    @Inject
+    BillingProvider billingProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        mainToolbar();
         return true;
     }
 
@@ -94,7 +98,20 @@ public class MainActivity extends AppCompatActivity
             mainToolbar();
             return true;
         }
+        if (item.getItemId() == R.id.toolbar_support) {
+            purchase();
+            if (billingProvider.isPaid()) {
+                makeText(getApplicationContext(), R.string.message_app_purchased, LENGTH_SHORT)
+                        .show();
+            }
+            mainToolbar();
+            return true;
+        }
         return false;
+    }
+
+    private void purchase() {
+        billingProvider.purchase();
     }
 
     @Override
@@ -161,7 +178,11 @@ public class MainActivity extends AppCompatActivity
 
     public void mainToolbar() {
         menu.clear();
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (billingProvider.isPaid()) {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_main_support, menu);
+        }
     }
 
     public void selectWorkout(Workout workout) {

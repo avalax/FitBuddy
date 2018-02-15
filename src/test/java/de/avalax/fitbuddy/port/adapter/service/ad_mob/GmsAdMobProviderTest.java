@@ -16,22 +16,26 @@ import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
+import de.avalax.fitbuddy.application.billing.BillingProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class AdMobProviderTest {
+public class GmsAdMobProviderTest {
 
     private AdMobProvider adMobProvider;
-    private SharedPreferences sharedPreferences;
+    private BillingProvider billingProvider;
     private AdView adView;
 
     @Before
     public void setUp() throws Exception {
-        sharedPreferences = RuntimeEnvironment.application.getSharedPreferences("fitbuddy", Context.MODE_PRIVATE);
+        billingProvider = mock(BillingProvider.class);
+        adMobProvider = new GmsAdMobProvider(billingProvider);
         Context context = RuntimeEnvironment.application.getApplicationContext();
-        adMobProvider = new GmsAdMobProvider(context);
+        adMobProvider = new GmsAdMobProvider(billingProvider);
         adView = new AdView(context);
         adView.setAdSize(AdSize.SMART_BANNER);
         adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
@@ -46,19 +50,10 @@ public class AdMobProviderTest {
 
     @Test
     public void alreadyPaid_shouldBePaid() throws Exception {
-        sharedPreferences.edit().putBoolean("paid", true).commit();
+        doReturn(true).when(billingProvider).isPaid();
 
         adMobProvider.initAdView(adView);
 
         assertThat(adView.getVisibility()).isEqualTo(View.GONE);
-    }
-
-    @Test
-    public void onPayment_shouldBePaid() throws Exception {
-        adMobProvider.setPaid();
-        adMobProvider.initAdView(adView);
-
-        assertThat(adView.getVisibility()).isEqualTo(View.GONE);
-        assertThat(sharedPreferences.getBoolean("paid", false)).isTrue();
     }
 }

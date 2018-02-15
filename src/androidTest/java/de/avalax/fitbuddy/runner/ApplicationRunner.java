@@ -406,6 +406,14 @@ public class ApplicationRunner {
                 .check(matches(itemAtPosition(position, withText(sets), R.id.item_subtitle)));
     }
 
+    public void doPayment() {
+        onView(withId(R.id.toolbar_support)).perform(click());
+    }
+
+    public void showsSuccessfulPaymentMessage() {
+        onView(withText(R.string.message_app_purchased)).inRoot(isToast()).check(matches(isDisplayed()));
+    }
+
     private static ViewAction setNumberPicker(final int value) {
         return new ViewAction() {
             @Override

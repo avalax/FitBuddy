@@ -4,6 +4,4 @@ import android.view.View;
 
 public interface AdMobProvider {
     void initAdView(View view);
-
-    void setPaid();
 }

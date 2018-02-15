@@ -59,7 +59,7 @@ public class PersistenceRunner {
     }
 
     public void setPaid() {
-        activityRule.adMobProvider.setPaid();
+        activityRule.billingProvider.purchase();
     }
 
     public void deleteSharedPreferences() {

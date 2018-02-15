@@ -418,6 +418,24 @@ public class FitbuddyAcceptanceTest {
         application.notDisplayAdMob();
     }
 
+    @Test
+    public void reclaimPaidStatus_shouldNotShowAds() throws Exception {
+        BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
+        BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
+        BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
+        Workout persistedWorkout = persistence.addWorkout(workout);
+        persistence.finishWorkout(persistedWorkout);
+
+        activityRule.launchActivity(null);
+        application.doPayment();
+
+        application.showsSuccessfulPaymentMessage();
+        application.navigateToSummary();
+        application.notDisplayAdMob();
+        application.navigateToStart();
+        application.notDisplayAdMob();
+    }
+
     @After
     public void tearDown() throws Exception {
         persistence.deleteWorkouts();

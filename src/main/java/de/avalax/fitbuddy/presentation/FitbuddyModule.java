@@ -11,6 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
+import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -29,6 +30,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteFinishedWorkoutReposito
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.ad_mob.GmsAdMobProvider;
+import de.avalax.fitbuddy.port.adapter.service.billing.GooglePlayBillingProvider;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
@@ -112,7 +114,15 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    AdMobProvider provideAdMobProvider() {
-        return new GmsAdMobProvider(context);
+    BillingProvider provideBillingProvider() {
+        return new GooglePlayBillingProvider(context);
     }
+
+    @Provides
+    @Singleton
+    AdMobProvider provideAdMobProvider(BillingProvider billingProvider) {
+        return new GmsAdMobProvider(billingProvider);
+    }
+
+
 }

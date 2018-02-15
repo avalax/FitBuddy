@@ -45,4 +45,5 @@
     <string name="edit_set_toolbar_title">Edit set</string>
     <string name="summary_tendency_normal">normal</string>
     <string name="message_select_workout_first">Select a workout first</string>
+    <string name="message_app_purchased">Thank you for supporting</string>
 </resources>

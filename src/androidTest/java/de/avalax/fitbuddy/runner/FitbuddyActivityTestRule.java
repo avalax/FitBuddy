@@ -5,6 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
+import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -21,7 +22,7 @@ public class FitbuddyActivityTestRule extends ActivityTestRule<MainActivity> {
     @Inject
     FinishedWorkoutService finishedWorkoutService;
     @Inject
-    AdMobProvider adMobProvider;
+    BillingProvider billingProvider;
 
     public FitbuddyActivityTestRule(Class<MainActivity> activityClass) {
         super(activityClass, false, false);
