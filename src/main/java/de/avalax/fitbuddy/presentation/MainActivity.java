@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,6 +28,7 @@ import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.domain.model.workout.WorkoutException;
+import de.avalax.fitbuddy.presentation.dialog.SupportDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutListFragment;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutListFragment;
@@ -38,7 +41,7 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_WORKOUT;
 import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener, SupportDialogFragment.DialogListener {
 
     private Menu menu;
     private BottomNavigationView bottomNavigation;
@@ -104,19 +107,15 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (item.getItemId() == R.id.toolbar_support) {
-            purchase();
-            if (billingProvider.isPaid()) {
-                makeText(getApplicationContext(), R.string.message_app_purchased, LENGTH_SHORT)
-                        .show();
-            }
-            mainToolbar();
+            showSupportDialog();
             return true;
         }
         return false;
     }
 
-    private void purchase() {
-        billingProvider.purchase();
+    private void showSupportDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SupportDialogFragment.newInstance().show(fm, "fragment_support");
     }
 
     @Override
@@ -247,6 +246,19 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         } else {
             bottomNavigation.setSelectedItemId(R.id.navigation_start_item);
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(SupportDialogFragment editRepsDialogFragment) {
+        //TODO: use AsyncTask instead
+        StrictMode.ThreadPolicy policy =
+                new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        billingProvider.sendNotification();
+        if (billingProvider.hasNotificationSend()) {
+            makeText(getApplicationContext(), R.string.message_payment_available_soon, LENGTH_SHORT)
+                    .show();
         }
     }
 }

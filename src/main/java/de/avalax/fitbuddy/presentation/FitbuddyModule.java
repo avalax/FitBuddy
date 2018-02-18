@@ -12,6 +12,7 @@ import dagger.Provides;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
+import de.avalax.fitbuddy.application.billing.NotificationProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -31,6 +32,7 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteSetRepository;
 import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.ad_mob.GmsAdMobProvider;
 import de.avalax.fitbuddy.port.adapter.service.billing.GooglePlayBillingProvider;
+import de.avalax.fitbuddy.port.adapter.service.billing.HttpNotificationProvider;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
@@ -43,6 +45,7 @@ public class FitbuddyModule {
     private final Context context;
     private final WorkoutRepository workoutRepository;
     private final FinishedWorkoutRepository finishedWorkoutRepository;
+    private final NotificationProvider notificationProvider;
 
     public FitbuddyModule(Context context) {
         this.context = context;
@@ -58,11 +61,12 @@ public class FitbuddyModule {
                 = new SQLiteFinishedExerciseRepository(sqLiteOpenHelper, finishedSetRepository);
         finishedWorkoutRepository = new SQLiteFinishedWorkoutRepository(
                 sqLiteOpenHelper, finishedExerciseRepository);
+        notificationProvider = new HttpNotificationProvider("fitbuddy");
     }
 
     @Provides
     @Singleton
-    WorkoutService provideWorkoutService() {
+    public WorkoutService provideWorkoutService() {
         return new WorkoutService(
                 workoutSession,
                 finishedWorkoutRepository);
@@ -70,57 +74,57 @@ public class FitbuddyModule {
 
     @Provides
     @Singleton
-    FinishedWorkoutService provideFinishedWorkoutService() {
+    public FinishedWorkoutService provideFinishedWorkoutService() {
         return new FinishedWorkoutService(finishedWorkoutRepository);
     }
 
     @Provides
     @Singleton
-    ExerciseViewHelper provideExerciseViewHelper() {
+    public ExerciseViewHelper provideExerciseViewHelper() {
         Locale locale = context.getResources().getConfiguration().locale;
         return new ExerciseViewHelper(context, locale);
     }
 
     @Provides
     @Singleton
-    EditWorkoutService provideManageWorkout() {
+    public EditWorkoutService provideManageWorkout() {
         return new EditWorkoutService(
                 workoutRepository);
     }
 
     @Provides
     @Singleton
-    EditWorkoutViewHelper provideEditWorkoutViewHelper(EditExerciseViewHelper editExerciseViewHelper) {
+    public EditWorkoutViewHelper provideEditWorkoutViewHelper(EditExerciseViewHelper editExerciseViewHelper) {
         return new EditWorkoutViewHelper(context, editExerciseViewHelper);
     }
 
     @Provides
     @Singleton
-    FinishedWorkoutViewHelper provideFinishedWorkoutViewHelper() {
+    public FinishedWorkoutViewHelper provideFinishedWorkoutViewHelper() {
         return new FinishedWorkoutViewHelper(context, finishedWorkoutRepository);
     }
 
     @Provides
     @Singleton
-    FinishedExerciseViewHelper provideFinishedExerciseViewHelper() {
+    public FinishedExerciseViewHelper provideFinishedExerciseViewHelper() {
         return new FinishedExerciseViewHelper();
     }
 
     @Provides
     @Singleton
-    EditExerciseViewHelper provideEditExerciseViewHelper() {
+    public EditExerciseViewHelper provideEditExerciseViewHelper() {
         return new EditExerciseViewHelper(context);
     }
 
     @Provides
     @Singleton
-    BillingProvider provideBillingProvider() {
-        return new GooglePlayBillingProvider(context);
+    public BillingProvider provideBillingProvider() {
+        return new GooglePlayBillingProvider(context, notificationProvider);
     }
 
     @Provides
     @Singleton
-    AdMobProvider provideAdMobProvider(BillingProvider billingProvider) {
+    public AdMobProvider provideAdMobProvider(BillingProvider billingProvider) {
         return new GmsAdMobProvider(billingProvider);
     }
 

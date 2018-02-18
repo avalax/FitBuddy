@@ -406,12 +406,20 @@ public class ApplicationRunner {
                 .check(matches(itemAtPosition(position, withText(sets), R.id.item_subtitle)));
     }
 
-    public void doPayment() {
+    public void showSupportDiablog() {
         onView(withId(R.id.toolbar_support)).perform(click());
     }
 
-    public void showsSuccessfulPaymentMessage() {
-        onView(withText(R.string.message_app_purchased)).inRoot(isToast()).check(matches(isDisplayed()));
+    public void showsPaymentMessage() {
+        onView(withText(R.string.message_payment_available_soon)).inRoot(isToast()).check(matches(isDisplayed()));
+    }
+
+    public void hasShownSupportDialog() {
+        onView(withText(R.string.dialog_support)).check(matches(isDisplayed()));
+    }
+
+    public void support() {
+        onView(withId(R.id.button_support)).perform(click());
     }
 
     private static ViewAction setNumberPicker(final int value) {

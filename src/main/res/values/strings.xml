@@ -45,5 +45,7 @@
     <string name="edit_set_toolbar_title">Edit set</string>
     <string name="summary_tendency_normal">normal</string>
     <string name="message_select_workout_first">Select a workout first</string>
-    <string name="message_app_purchased">Thank you for supporting</string>
+    <string name="message_payment_available_soon">Thank you for the support. This option will be available soon!</string>
+    <string name="dialog_support_title">Support Fitbuddy?</string>
+    <string name="dialog_support">If you like this app and to remove the ads you can do this by support fitbuddy.</string>
 </resources>

@@ -12,8 +12,11 @@ import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
+import de.avalax.fitbuddy.application.billing.NotificationProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -21,12 +24,14 @@ public class GooglePlayBillingProviderTest {
 
     private BillingProvider billingProvider;
     private SharedPreferences sharedPreferences;
+    private NotificationProvider notificationProvider;
 
     @Before
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
         sharedPreferences = context.getSharedPreferences("fitbuddy", Context.MODE_PRIVATE);
-        billingProvider = new GooglePlayBillingProvider(context);
+        notificationProvider = mock(NotificationProvider.class);
+        billingProvider = new GooglePlayBillingProvider(context, notificationProvider);
     }
 
     @Test
@@ -35,7 +40,7 @@ public class GooglePlayBillingProviderTest {
     }
 
     @Test
-    public void alreadyPaid_shouldBePaid() throws Exception {
+    public void alreadyPaid_shouldReturnTrue() throws Exception {
         sharedPreferences.edit().putBoolean("paid", true).commit();
 
         assertThat(billingProvider.isPaid()).isTrue();
@@ -46,5 +51,27 @@ public class GooglePlayBillingProviderTest {
         billingProvider.purchase();
 
         assertThat(billingProvider.isPaid()).isTrue();
+    }
+
+    @Test
+    public void initialStart_shouldNotBeNotified() throws Exception {
+        assertThat(billingProvider.hasNotificationSend()).isFalse();
+    }
+
+    @Test
+    public void alreadyNotified_shouldReturnTrue() throws Exception {
+        sharedPreferences.edit().putBoolean("notification_send", true).commit();
+
+        assertThat(billingProvider.hasNotificationSend()).isTrue();
+    }
+
+    @Test
+    public void sendNotification_shouldReturnCreatedStatusCode() throws Exception {
+        doReturn(201).when(notificationProvider).sendNotification();
+
+        int statusCode = billingProvider.sendNotification();
+
+        assertThat(statusCode).isEqualTo(201);
+        assertThat(billingProvider.hasNotificationSend()).isTrue();
     }
 }

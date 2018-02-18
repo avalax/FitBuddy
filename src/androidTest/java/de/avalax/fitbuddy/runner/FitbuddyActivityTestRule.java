@@ -4,7 +4,6 @@ import android.support.test.rule.ActivityTestRule;
 
 import javax.inject.Inject;
 
-import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;

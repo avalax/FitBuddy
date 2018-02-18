@@ -16,6 +16,7 @@ import de.avalax.fitbuddy.domain.model.workout.BasicWorkoutBuilder;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.MainActivity;
 import de.avalax.fitbuddy.runner.ApplicationRunner;
+import de.avalax.fitbuddy.runner.BillingRunner;
 import de.avalax.fitbuddy.runner.FitbuddyActivityTestRule;
 import de.avalax.fitbuddy.runner.PersistenceRunner;
 
@@ -29,6 +30,7 @@ public class FitbuddyAcceptanceTest {
 
     private ApplicationRunner application;
     private PersistenceRunner persistence;
+    private BillingRunner billing;
 
     @Rule
     public FitbuddyActivityTestRule activityRule = new FitbuddyActivityTestRule(MainActivity.class);
@@ -37,6 +39,7 @@ public class FitbuddyAcceptanceTest {
     public void setUp() throws Exception {
         application = new ApplicationRunner();
         persistence = new PersistenceRunner(activityRule);
+        billing = new BillingRunner(activityRule);
     }
 
     @Test
@@ -419,7 +422,7 @@ public class FitbuddyAcceptanceTest {
     }
 
     @Test
-    public void reclaimPaidStatus_shouldNotShowAds() throws Exception {
+    public void supportFitbuddy_shouldSetSharedPropertyAndNotify() throws Exception {
         BasicSetBuilder set = aSet().withWeight(42).withMaxReps(12);
         BasicExerciseBuilder exercise = anExercise().withName("an exercise").withSet(set);
         BasicWorkoutBuilder workout = aWorkout().withName("a workout").withExercise(exercise);
@@ -427,14 +430,12 @@ public class FitbuddyAcceptanceTest {
         persistence.finishWorkout(persistedWorkout);
 
         activityRule.launchActivity(null);
-        application.doPayment();
+        application.showSupportDiablog();
+        application.hasShownSupportDialog();
 
-        application.showsSuccessfulPaymentMessage();
-        application.notDisplayAdMob();
-        application.navigateToSummary();
-        application.notDisplayAdMob();
-        application.navigateToStart();
-        application.notDisplayAdMob();
+        application.support();
+        application.showsPaymentMessage();
+        billing.hasNotificationSend();
     }
 
     @After
