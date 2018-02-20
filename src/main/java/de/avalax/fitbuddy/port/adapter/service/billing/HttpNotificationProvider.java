@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -31,7 +32,7 @@ public class HttpNotificationProvider implements NotificationProvider {
 
             try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
                 String params = "name=" + appName;
-                wr.write(params.getBytes());
+                wr.write(params.getBytes("UTF-8"));
             }
             return connection.getResponseCode();
         } catch (IOException e) {
@@ -39,8 +40,8 @@ public class HttpNotificationProvider implements NotificationProvider {
         }
     }
 
-    private String getAuth() {
+    private String getAuth() throws UnsupportedEncodingException {
         String userPassword = appName + ":" + appName;
-        return Base64.encodeToString(userPassword.getBytes(), Base64.NO_WRAP);
+        return Base64.encodeToString(userPassword.getBytes("UTF-8"), Base64.NO_WRAP);
     }
 }
