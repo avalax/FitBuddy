@@ -45,7 +45,7 @@ public class FitbuddyModule {
     private final Context context;
     private final WorkoutRepository workoutRepository;
     private final FinishedWorkoutRepository finishedWorkoutRepository;
-    private final NotificationProvider notificationProvider;
+    protected final NotificationProvider notificationProvider;
 
     public FitbuddyModule(Context context) {
         this.context = context;

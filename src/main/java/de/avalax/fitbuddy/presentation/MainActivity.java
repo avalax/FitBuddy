@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +22,7 @@ import javax.inject.Inject;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.ad_mod.AdMobProvider;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
+import de.avalax.fitbuddy.application.billing.NotificationAsyncTask;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.application.summary.FinishedWorkoutService;
 import de.avalax.fitbuddy.application.workout.WorkoutService;
@@ -41,7 +41,8 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_WORKOUT;
 import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener, SupportDialogFragment.DialogListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener,
+        SupportDialogFragment.DialogListener, NotificationAsyncTask.NotificationPostExecute {
 
     private Menu menu;
     private BottomNavigationView bottomNavigation;
@@ -251,11 +252,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDialogPositiveClick(SupportDialogFragment editRepsDialogFragment) {
-        //TODO: use AsyncTask instead
-        StrictMode.ThreadPolicy policy =
-                new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        billingProvider.sendNotification();
+        new NotificationAsyncTask(billingProvider, this).execute();
+    }
+
+    @Override
+    public void onPostExecute(int result) {
         if (billingProvider.hasNotificationSend()) {
             makeText(getApplicationContext(), R.string.message_payment_available_soon, LENGTH_SHORT)
                     .show();
