@@ -11,4 +11,8 @@
         <item name="android:background">@color/primaryColor</item>
         <item name="actionMenuTextColor">@color/primaryTextColor</item>
     </style>
+
+    <style name="AppCompatDialogWithTitle" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

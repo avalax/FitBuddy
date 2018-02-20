@@ -24,6 +24,7 @@ public class EditWeightDialogFragment extends AppCompatDialogFragment {
 
     public static EditWeightDialogFragment newInstance(double weight) {
         EditWeightDialogFragment fragment = new EditWeightDialogFragment();
+        fragment.setStyle(AppCompatDialogFragment.STYLE_NORMAL, R.style.AppCompatDialogWithTitle);
         Bundle args = new Bundle();
         args.putDouble(ARGS_WEIGHT, weight);
         fragment.setArguments(args);
@@ -45,10 +46,10 @@ public class EditWeightDialogFragment extends AppCompatDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        getDialog().setTitle(R.string.dialog_change_weight);
         View view = inflater.inflate(R.layout.fragment_edit_weight, container, false);
         Button button = view.findViewById(R.id.done_button);
         Double weight = getArguments().getDouble(ARGS_WEIGHT);
-        getDialog().setTitle(R.string.dialog_change_weight);
 
         numberPicker = view.findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0);

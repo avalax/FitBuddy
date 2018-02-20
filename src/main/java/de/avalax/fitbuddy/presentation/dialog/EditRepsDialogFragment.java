@@ -20,6 +20,7 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
 
     public static EditRepsDialogFragment newInstance(int reps) {
         EditRepsDialogFragment fragment = new EditRepsDialogFragment();
+        fragment.setStyle(AppCompatDialogFragment.STYLE_NORMAL, R.style.AppCompatDialogWithTitle);
         Bundle args = new Bundle();
         args.putInt(ARGS_REPS, reps);
         fragment.setArguments(args);
@@ -41,10 +42,10 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        getDialog().setTitle(R.string.dialog_change_reps);
         View view = inflater.inflate(R.layout.fragment_edit_reps, container, false);
         Button button = view.findViewById(R.id.done_button);
         Integer reps = getArguments().getInt(ARGS_REPS);
-        getDialog().setTitle(R.string.dialog_change_reps);
 
         repsNumberPicker = view.findViewById(R.id.repsNumberPicker);
         repsNumberPicker.setMinValue(0);
