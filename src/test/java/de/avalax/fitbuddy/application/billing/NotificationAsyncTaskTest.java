@@ -31,4 +31,18 @@ public class NotificationAsyncTaskTest {
 
         assertThat(expectedResult).contains(HttpURLConnection.HTTP_CREATED);
     }
+
+    @Test
+    public void notificationAlreadySend_shouldReturnStatusCodeCreatedOnly() throws Exception {
+        final int[] expectedResult = {-1};
+        BillingProvider billingProvider = mock(BillingProvider.class);
+        doReturn(true).when(billingProvider).hasNotificationSend();
+        new NotificationAsyncTask(billingProvider, (result) -> {
+            expectedResult[0] = result;
+        }).execute();
+
+        ShadowApplication.runBackgroundTasks();
+
+        assertThat(expectedResult).contains(HttpURLConnection.HTTP_CREATED);
+    }
 }
