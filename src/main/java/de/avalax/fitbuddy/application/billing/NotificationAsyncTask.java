@@ -9,6 +9,7 @@ public class NotificationAsyncTask extends AsyncTask<Void, Void, Integer> {
     private NotificationPostExecute notificationPostExecute;
 
     public NotificationAsyncTask(BillingProvider billingProvider, NotificationPostExecute notificationPostExecute) {
+        super();
         this.billingProvider = billingProvider;
         this.notificationPostExecute = notificationPostExecute;
     }

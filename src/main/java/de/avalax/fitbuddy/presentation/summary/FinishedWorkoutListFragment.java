@@ -34,7 +34,6 @@ public class FinishedWorkoutListFragment extends Fragment {
     @Inject
     protected AdMobProvider adMobProvider;
 
-    private List<FinishedWorkout> finishedWorkouts;
     private WorkoutRecyclerView recyclerView;
     private FinishedWorkoutAdapter adapter;
 
@@ -47,7 +46,7 @@ public class FinishedWorkoutListFragment extends Fragment {
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
-        finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
+        List<FinishedWorkout> finishedWorkouts = finishedWorkoutService.loadAllFinishedWorkouts();
         adapter = new FinishedWorkoutAdapter((MainActivity) getActivity(),
                 finishedWorkoutViewHelper, finishedWorkouts, finishedWorkoutService);
         recyclerView.setAdapter(adapter);
