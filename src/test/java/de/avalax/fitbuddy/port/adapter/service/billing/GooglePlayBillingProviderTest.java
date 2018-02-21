@@ -10,10 +10,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.net.HttpURLConnection;
+
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.application.billing.BillingProvider;
 import de.avalax.fitbuddy.application.billing.NotificationProvider;
 
+import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -67,11 +70,21 @@ public class GooglePlayBillingProviderTest {
 
     @Test
     public void sendNotification_shouldReturnCreatedStatusCode() throws Exception {
-        doReturn(201).when(notificationProvider).sendNotification();
+        doReturn(HTTP_CREATED).when(notificationProvider).sendNotification();
 
         int statusCode = billingProvider.sendNotification();
 
-        assertThat(statusCode).isEqualTo(201);
+        assertThat(statusCode).isEqualTo(HTTP_CREATED);
         assertThat(billingProvider.hasNotificationSend()).isTrue();
+    }
+
+    @Test
+    public void failedSendNotification_shouldReturnCreatedStatusCode() throws Exception {
+        doReturn(HTTP_UNAVAILABLE).when(notificationProvider).sendNotification();
+
+        int statusCode = billingProvider.sendNotification();
+
+        assertThat(statusCode).isEqualTo(HTTP_UNAVAILABLE);
+        assertThat(billingProvider.hasNotificationSend()).isFalse();
     }
 }
