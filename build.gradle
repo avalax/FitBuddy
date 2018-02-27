@@ -174,7 +174,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = "8.5"
+    toolVersion = "8.8"
 }
 
 task checkstyle(type: Checkstyle) {
@@ -200,7 +200,7 @@ task wrapper(type: Wrapper) {
 apply plugin: 'pmd'
 
 pmd{
-    toolVersion="6.0.0"
+    toolVersion="6.1.0"
 }
 
 task pmd(type: Pmd) {
