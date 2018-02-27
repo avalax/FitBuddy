@@ -174,7 +174,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = "8.3"
+    toolVersion = "8.5"
 }
 
 task checkstyle(type: Checkstyle) {
