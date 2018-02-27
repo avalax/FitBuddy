@@ -8,10 +8,6 @@
     <color name="secondaryLightColor">#ff5f52</color>
     <color name="secondaryDarkColor">#8e0000</color>
     <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
-
-    <color name="statusBarColor">#E0E0E0</color>
     <color name="appBarColor">#F5F5F5</color>
-    <color name="backgroundColor">#FAFAFA</color>
     <color name="cardsColor">#FFFFFF</color>
 </resources>
