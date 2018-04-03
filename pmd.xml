@@ -21,6 +21,7 @@
         <exclude name="LawOfDemeter" />
         <exclude name="LoosePackageCoupling" />
         <exclude name="ImmutableField" />
+        <exclude name="DataClass" />
     </rule>
     <rule ref="category/java/errorprone.xml">
         <exclude name="BeanMembersShouldSerialize" />
