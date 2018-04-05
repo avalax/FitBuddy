@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         Fragment workoutListFragment = new WorkoutListFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_content, workoutListFragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
                 .commit();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity
                 Fragment exerciseFragment = new ExerciseFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_content, exerciseFragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .setTransition(FragmentTransaction.TRANSIT_NONE)
                         .commit();
             } else {
                 Context context = getApplicationContext();
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity
             Fragment workoutListFragment = new WorkoutListFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_content, workoutListFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .setTransition(FragmentTransaction.TRANSIT_NONE)
                     .commit();
             return true;
         }
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity
             Fragment finishedWorkoutListFragment = new FinishedWorkoutListFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_content, finishedWorkoutListFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .setTransition(FragmentTransaction.TRANSIT_NONE)
                     .commit();
             return true;
         }
