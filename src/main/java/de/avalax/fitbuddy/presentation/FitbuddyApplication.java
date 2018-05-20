@@ -23,6 +23,8 @@ public class FitbuddyApplication extends Application {
     public static final int ADD_SET = 5;
     public static final int EDIT_SET = 6;
     public static final int FINISHED_WORKOUT_DETAILS = 7;
+    public static final int EDIT_REPS = 8;
+    public static final int EDIT_WEIGHT = 9;
 
     private ApplicationComponent component;
 

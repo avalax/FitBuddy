@@ -31,7 +31,7 @@ public class EditRepsDialogFragment extends AppCompatDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (DialogListener) context;
+            listener = (DialogListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new DialogListenerException(context.toString()
                     + " must implement EditRepsDialogFragment.DialogListener", e);

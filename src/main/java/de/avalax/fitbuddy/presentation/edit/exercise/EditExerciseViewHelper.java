@@ -34,23 +34,23 @@ public class EditExerciseViewHelper {
         return otherSymbols;
     }
 
-    public String title(Set set) {
-        return titleValue(set) + repsSuffix;
+    public String repsFrom(Set set) {
+        return repsValue(set) + repsSuffix;
     }
 
-    public String titleValue(Set set) {
+    public String repsValue(Set set) {
         return valueOf(set.getMaxReps());
     }
 
-    public String subtitle(Set set) {
-        String weight = subtitleValue(set);
+    public String weightFrom(Set set) {
+        String weight = weightValue(set);
         if ("0".equals(weight)) {
             return defaultWeight;
         }
         return weight + weightSuffix;
     }
 
-    public String subtitleValue(Set set) {
+    public String weightValue(Set set) {
         return decimalFormat.format(set.getWeight());
     }
 }

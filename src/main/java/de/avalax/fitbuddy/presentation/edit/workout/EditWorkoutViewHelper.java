@@ -53,7 +53,7 @@ public class EditWorkoutViewHelper {
             double setWeight = set.getWeight();
             if (setWeight > exerciseWeight) {
                 exerciseWeight = setWeight;
-                weight = editExerciseViewHelper.subtitle(set);
+                weight = editExerciseViewHelper.weightFrom(set);
             }
         }
         return weight;

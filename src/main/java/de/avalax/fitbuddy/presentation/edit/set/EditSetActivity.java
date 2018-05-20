@@ -7,23 +7,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
-import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
-public class EditSetActivity extends AppCompatActivity implements
-        EditWeightDialogFragment.DialogListener,
-        EditRepsDialogFragment.DialogListener {
+import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 
-    private TextView weightTextView;
-    private TextView repsTextView;
+public class EditSetActivity extends AppCompatActivity {
+
     private Set set;
 
     @Inject
@@ -39,8 +34,14 @@ public class EditSetActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         set = (Set) getIntent().getSerializableExtra("set");
-        repsTextView = findViewById(R.id.set_reps_text_view);
-        weightTextView = findViewById(R.id.set_weight_text_view);
+        EditSetFragment fragment = new EditSetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("set", set);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_content, fragment)
+                .setTransition(TRANSIT_NONE)
+                .commit();
     }
 
     @Override
@@ -62,20 +63,6 @@ public class EditSetActivity extends AppCompatActivity implements
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onDialogPositiveClick(EditRepsDialogFragment editRepsDialogFragment) {
-        int reps = editRepsDialogFragment.getReps();
-        set.setMaxReps(reps);
-        repsTextView.setText(editExerciseViewHelper.title(set));
-    }
-
-    @Override
-    public void onDialogPositiveClick(EditWeightDialogFragment editWeightDialogFragment) {
-        double weight = editWeightDialogFragment.getWeight();
-        set.setWeight(weight);
-        weightTextView.setText(editExerciseViewHelper.subtitle(set));
     }
 
     public void onCancelButtonClick(View view) {

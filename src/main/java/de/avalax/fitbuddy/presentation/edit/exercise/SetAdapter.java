@@ -48,8 +48,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     public void onBindViewHolder(SetViewHolder holder, int position) {
         try {
             Set set = sets.get(position);
-            String title = editExerciseViewHelper.title(set);
-            String subtitle = editExerciseViewHelper.subtitle(set);
+            String title = editExerciseViewHelper.repsFrom(set);
+            String subtitle = editExerciseViewHelper.weightFrom(set);
 
             holder.getTitleTextView().setText(title);
             holder.getSubtitleTextView().setText(subtitle);
