@@ -23,7 +23,6 @@
     <string name="workout_executions">Executed %s times</string>
     <string name="workout_execution">Executed %s time</string>
     <string name="default_set_weight">no weight</string>
-    <string name="default_set_reps">0</string>
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
     <string name="message_save_exercise_without_sets">Please add at least one set</string>
