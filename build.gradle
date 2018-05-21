@@ -163,7 +163,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
                         '**/*Holder.class',
                         '**/*Listener*.class',
                         '**/*Binding*.class',
-                        '**/DataBinderMapperImpl*.class']
+                        '**/DataBinderMapperImpl*.class',
+                        '**/BR.class']
                         )
 
     sourceDirectories = files('src/main/java')
