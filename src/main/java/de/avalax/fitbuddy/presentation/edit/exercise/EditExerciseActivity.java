@@ -16,7 +16,6 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
-import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 
 import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 import static android.widget.Toast.LENGTH_SHORT;
