@@ -5,7 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import de.avalax.fitbuddy.presentation.edit.exercise.SetListFragment;
+import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseFragment;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
@@ -60,7 +60,7 @@ public class FitbuddyApplication extends Application {
 
         void inject(ExerciseListFragment exerciseListFragment);
 
-        void inject(SetListFragment setListFragment);
+        void inject(EditExerciseFragment setListFragment);
 
         void inject(EditSetFragment editSetFragment);
 

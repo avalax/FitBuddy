@@ -19,7 +19,7 @@ import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
-public class SetListFragment extends Fragment {
+public class EditExerciseFragment extends Fragment {
 
     private EditExerciseViewModel viewModel;
     private EditExerciseBinding binding;

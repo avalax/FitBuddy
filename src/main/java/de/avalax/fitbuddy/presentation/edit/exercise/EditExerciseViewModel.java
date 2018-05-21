@@ -6,15 +6,19 @@ import android.arch.lifecycle.ViewModel;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 
 public class EditExerciseViewModel extends ViewModel {
-    private EditExerciseViewHelper editExerciseViewHelper;
     private SetAdapter setAdapter;
+    private Exercise exercise;
 
     public void init(Activity activity, EditExerciseViewHelper editExerciseViewHelper, Exercise exercise) {
-        this.editExerciseViewHelper = editExerciseViewHelper;
         setAdapter = new SetAdapter(activity, exercise.getSets(), editExerciseViewHelper);
+        this.exercise = exercise;
     }
 
     public SetAdapter getSetAdapter() {
         return setAdapter;
+    }
+
+    public String getName() {
+        return exercise.getName();
     }
 }

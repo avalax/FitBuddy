@@ -37,7 +37,6 @@ public class EditExerciseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         nameEditText = findViewById(R.id.edit_text_exercise_name);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
-        nameEditText.setText(exercise.getName());
     }
 
     @Override
@@ -61,7 +60,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             Set set = (Set) data.getSerializableExtra("set");
             exercise.getSets().add(set);
 
-            SetListFragment setListFragment = (SetListFragment)
+            EditExerciseFragment setListFragment = (EditExerciseFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.notifyItemInserted();
         }
@@ -70,7 +69,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             Set set = (Set) data.getSerializableExtra("set");
             exercise.getSets().set(position, set);
 
-            SetListFragment setListFragment = (SetListFragment)
+            EditExerciseFragment setListFragment = (EditExerciseFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.notifyItemChanged(position);
         }
@@ -95,7 +94,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.toolbar_delete_sets) {
-            SetListFragment setListFragment = (SetListFragment)
+            EditExerciseFragment setListFragment = (EditExerciseFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.removeSelections();
             return true;
