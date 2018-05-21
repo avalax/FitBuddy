@@ -1,6 +1,5 @@
 package de.avalax.fitbuddy.port.adapter.service.billing;
 
-import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.DataOutputStream;
