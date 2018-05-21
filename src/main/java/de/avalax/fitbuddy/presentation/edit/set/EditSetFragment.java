@@ -41,13 +41,6 @@ public class EditSetFragment extends Fragment implements
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Set set = (Set) getArguments().getSerializable(KEY_SET);
-        viewModel.init(editExerciseViewHelper, set);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EditSetBinding binding = DataBindingUtil.inflate(inflater, R.layout.edit_set, container, false);
@@ -59,6 +52,13 @@ public class EditSetFragment extends Fragment implements
         binding.getRoot().findViewById(R.id.set_weight).setOnClickListener(onClickListener -> changeWeight());
         binding.getRoot().findViewById(R.id.set_reps).setOnClickListener(onClickListener -> changeMaxReps());
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Set set = (Set) getArguments().getSerializable(KEY_SET);
+        viewModel.init(editExerciseViewHelper, set);
     }
 
     private void changeWeight() {
