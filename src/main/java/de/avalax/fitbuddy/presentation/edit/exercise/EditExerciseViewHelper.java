@@ -22,7 +22,7 @@ public class EditExerciseViewHelper {
         String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
         String groupingSeparator = context.getResources().getString(R.string.grouping_separator);
         DecimalFormatSymbols otherSymbols = formatSymbols(decimalSeparator, groupingSeparator);
-        decimalFormat = new DecimalFormat("0.#", otherSymbols);
+        decimalFormat = new DecimalFormat("0.###", otherSymbols);
         repsSuffix = " " + context.getResources().getString(R.string.reps_suffix);
         weightSuffix = " " + context.getResources().getString(R.string.weight_suffix);
     }
