@@ -16,7 +16,9 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
+import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 
+import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_SET;
@@ -24,7 +26,6 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
 import static java.lang.String.valueOf;
 
 public class EditExerciseActivity extends AppCompatActivity {
-    private EditText nameEditText;
     private Exercise exercise;
     private Menu menu;
 
@@ -35,8 +36,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_exercise_edit);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        nameEditText = findViewById(R.id.edit_text_exercise_name);
         exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        show(exercise);
     }
 
     @Override
@@ -84,6 +85,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                         .show();
             } else {
                 Intent intent = new Intent();
+                EditText nameEditText = findViewById(R.id.edit_text_exercise_name);
                 exercise.setName(nameEditText.getText().toString());
                 intent.putExtra("exercise", exercise);
                 int position = getIntent().getIntExtra("position", -1);
@@ -117,5 +119,16 @@ public class EditExerciseActivity extends AppCompatActivity {
     public void onCancelButtonClick(View view) {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    public void show(Exercise exercise) {
+        EditExerciseFragment fragment = EditExerciseFragment.forExercise(exercise);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("exercise")
+                .replace(R.id.fragment_content, fragment, null)
+                .setTransition(TRANSIT_NONE)
+                .commit();
     }
 }

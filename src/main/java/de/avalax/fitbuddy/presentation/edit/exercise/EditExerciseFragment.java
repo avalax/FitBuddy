@@ -21,11 +21,20 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public class EditExerciseFragment extends Fragment {
 
+    private static final String KEY_EXERCISE = "exercise";
     private EditExerciseViewModel viewModel;
     private EditExerciseBinding binding;
 
     @Inject
     protected EditExerciseViewHelper editExerciseViewHelper;
+
+    public static EditExerciseFragment forExercise(Exercise exercise) {
+        EditExerciseFragment fragment = new EditExerciseFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_EXERCISE, exercise);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +54,7 @@ public class EditExerciseFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Exercise exercise = (Exercise) getActivity().getIntent().getSerializableExtra("exercise");
+        Exercise exercise = (Exercise) getArguments().getSerializable(KEY_EXERCISE);
         viewModel.init(getActivity(), editExerciseViewHelper, exercise);
         binding.list.setAdapter(viewModel.getSetAdapter());
     }
