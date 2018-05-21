@@ -99,7 +99,10 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation 'com.android.support:customtabs:27.1.1'
+
     implementation 'com.google.dagger:dagger:2.15'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
