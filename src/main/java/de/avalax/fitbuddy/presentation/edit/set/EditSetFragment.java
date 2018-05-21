@@ -26,15 +26,24 @@ public class EditSetFragment extends Fragment implements
         EditWeightDialogFragment.DialogListener,
         EditRepsDialogFragment.DialogListener {
 
+    private static final String KEY_SET = "set";
     private EditSetViewModel viewModel;
 
     @Inject
     protected EditExerciseViewHelper editExerciseViewHelper;
+    
+    public static EditSetFragment forSet(Set set) {
+        EditSetFragment fragment = new EditSetFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_SET, set);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Set set = (Set) getArguments().getSerializable("set");
+        Set set = (Set) getArguments().getSerializable(KEY_SET);
         viewModel.init(editExerciseViewHelper, set);
     }
 

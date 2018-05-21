@@ -34,14 +34,7 @@ public class EditSetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         set = (Set) getIntent().getSerializableExtra("set");
-        EditSetFragment fragment = new EditSetFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("set", set);
-        fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_content, fragment)
-                .setTransition(TRANSIT_NONE)
-                .commit();
+        show(set);
     }
 
     @Override
@@ -68,5 +61,16 @@ public class EditSetActivity extends AppCompatActivity {
     public void onCancelButtonClick(View view) {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    public void show(Set set) {
+        EditSetFragment fragment = EditSetFragment.forSet(set);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("set")
+                .replace(R.id.fragment_content, fragment, null)
+                .setTransition(TRANSIT_NONE)
+                .commit();
     }
 }
