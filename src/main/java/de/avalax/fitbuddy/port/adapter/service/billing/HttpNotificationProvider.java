@@ -1,11 +1,13 @@
 package de.avalax.fitbuddy.port.adapter.service.billing;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import de.avalax.fitbuddy.application.billing.NotificationProvider;
@@ -20,7 +22,7 @@ public class HttpNotificationProvider implements NotificationProvider {
     @Override
     public int sendNotification() {
         try {
-            URL url = new URL("http://silex.avalax.de/insights");
+            URL url = getUrl();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setReadTimeout(15000);
@@ -43,5 +45,9 @@ public class HttpNotificationProvider implements NotificationProvider {
     private String getAuth() throws UnsupportedEncodingException {
         String userPassword = appName + ":" + appName;
         return Base64.encodeToString(userPassword.getBytes("UTF-8"), Base64.NO_WRAP);
+    }
+
+    protected URL getUrl() throws MalformedURLException {
+        return new URL("http://silex.avalax.de/insights");
     }
 }
