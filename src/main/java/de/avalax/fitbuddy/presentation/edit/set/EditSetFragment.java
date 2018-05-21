@@ -31,7 +31,7 @@ public class EditSetFragment extends Fragment implements
 
     @Inject
     protected EditExerciseViewHelper editExerciseViewHelper;
-    
+
     public static EditSetFragment forSet(Set set) {
         EditSetFragment fragment = new EditSetFragment();
         Bundle bundle = new Bundle();
