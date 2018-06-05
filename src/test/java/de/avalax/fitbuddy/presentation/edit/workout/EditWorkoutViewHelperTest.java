@@ -10,7 +10,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import de.avalax.fitbuddy.BuildConfig;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 import static de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder.anExercise;
 import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
@@ -25,7 +24,7 @@ public class EditWorkoutViewHelperTest {
     @Before
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
-        viewHelper = new EditWorkoutViewHelper(context, new EditExerciseViewHelper(context));
+        viewHelper = new EditWorkoutViewHelper(context);
     }
 
     @Test

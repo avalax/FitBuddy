@@ -2,6 +2,7 @@ package de.avalax.fitbuddy.presentation.edit.exercise;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,20 +20,19 @@ import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
+import static de.avalax.fitbuddy.presentation.edit.set.SetBindingAdapter.setRepsFromSet;
+import static de.avalax.fitbuddy.presentation.edit.set.SetBindingAdapter.setWeightFromSet;
 
 public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     private Sets sets;
-    private EditExerciseViewHelper editExerciseViewHelper;
     private Activity activity;
     private java.util.Set<Set> selections;
 
     public SetAdapter(Activity activity,
-                      Sets sets,
-                      EditExerciseViewHelper editExerciseViewHelper) {
+                      Sets sets) {
         super();
         this.activity = activity;
         this.sets = sets;
-        this.editExerciseViewHelper = editExerciseViewHelper;
         this.selections = new ArraySet<>();
     }
 
@@ -45,14 +45,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(SetViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         try {
             Set set = sets.get(position);
-            String title = editExerciseViewHelper.repsFrom(set);
-            String subtitle = editExerciseViewHelper.weightFrom(set);
 
-            holder.getTitleTextView().setText(title);
-            holder.getSubtitleTextView().setText(subtitle);
+            setRepsFromSet(holder.getTitleTextView(), set);
+            setWeightFromSet(holder.getSubtitleTextView(), set);
+
             holder.setSelected(selections.contains(set));
 
             holder.getView().setOnClickListener(view -> {

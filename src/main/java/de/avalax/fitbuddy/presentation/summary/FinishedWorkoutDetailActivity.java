@@ -6,17 +6,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.finished_workout.FinishedWorkout;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 import static de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment.ARGS_FINISHED_WORKOUT;
 
 public class FinishedWorkoutDetailActivity extends AppCompatActivity {
-    @Inject
-    protected EditExerciseViewHelper editExerciseViewHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

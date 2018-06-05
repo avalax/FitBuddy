@@ -10,12 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.databinding.EditExerciseBinding;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
@@ -24,9 +21,6 @@ public class EditExerciseFragment extends Fragment {
     private static final String KEY_EXERCISE = "exercise";
     private EditExerciseViewModel viewModel;
     private EditExerciseBinding binding;
-
-    @Inject
-    protected EditExerciseViewHelper editExerciseViewHelper;
 
     public static EditExerciseFragment forExercise(Exercise exercise) {
         EditExerciseFragment fragment = new EditExerciseFragment();
@@ -40,8 +34,7 @@ public class EditExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_exercise, container, false);
-        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
-        viewModel = ViewModelProviders.of(this).get(EditExerciseViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(EditExerciseViewModel.class);
         binding.setEditExerciseViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -55,7 +48,7 @@ public class EditExerciseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Exercise exercise = (Exercise) getArguments().getSerializable(KEY_EXERCISE);
-        viewModel.init(getActivity(), editExerciseViewHelper, exercise);
+        viewModel.init(getActivity(), exercise);
         binding.list.setAdapter(viewModel.getSetAdapter());
     }
 

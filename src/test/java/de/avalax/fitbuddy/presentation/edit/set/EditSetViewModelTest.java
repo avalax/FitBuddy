@@ -29,17 +29,11 @@ public class EditSetViewModelTest {
     @Mock
     private Set set;
 
-    @Mock
-    private TextView textView;
-
     private EditSetViewModel editSetViewModel;
 
     @Before
     public void setUp() throws Exception {
-        Locale.setDefault(Locale.ENGLISH);
         MockitoAnnotations.initMocks(this);
-        Context context = RuntimeEnvironment.application.getApplicationContext();
-        doReturn(context).when(textView).getContext();
         editSetViewModel = new EditSetViewModel();
     }
 
@@ -66,50 +60,5 @@ public class EditSetViewModelTest {
         editSetViewModel.setReps(15);
 
         verify(set).setMaxReps(15);
-    }
-
-    @Test
-    public void shouldReturnMaxRepsAsTitle() throws Exception {
-        Set set = aSet().withMaxReps(12).build();
-
-        EditSetViewModel.repsFromSet(textView, set);
-
-        verify(textView).setText("12 reps");
-    }
-
-    @Test
-    public void noWeight_shouldReturnDashAsSubtitle() throws Exception {
-        Set set = aSet().build();
-
-        EditSetViewModel.setWeightFromSet(textView, set);
-
-        verify(textView).setText("no weight");
-    }
-
-    @Test
-    public void doubleWithOneDigitAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
-        Set set = aSet().withWeight(42.5).build();
-
-        EditSetViewModel.setWeightFromSet(textView, set);
-
-        verify(textView).setText("42.5 kg");
-    }
-
-    @Test
-    public void doubleAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
-        Set set = aSet().withWeight(42.625).build();
-
-        EditSetViewModel.setWeightFromSet(textView, set);
-
-        verify(textView).setText("42.625 kg");
-    }
-
-    @Test
-    public void integerAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
-        Set set = aSet().withWeight(42).build();
-
-        EditSetViewModel.setWeightFromSet(textView, set);
-
-        verify(textView).setText("42 kg");
     }
 }

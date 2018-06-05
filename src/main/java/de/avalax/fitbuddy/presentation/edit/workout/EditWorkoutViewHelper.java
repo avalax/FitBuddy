@@ -2,23 +2,37 @@ package de.avalax.fitbuddy.presentation.edit.workout;
 
 import android.content.Context;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.LinkedHashSet;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 import static android.text.TextUtils.join;
 
+@Deprecated
 public class EditWorkoutViewHelper {
 
     private final String defaultWeight;
-    private EditExerciseViewHelper editExerciseViewHelper;
+    private final String weightSuffix;
+    private final DecimalFormat decimalFormat;
 
-    public EditWorkoutViewHelper(Context context, EditExerciseViewHelper editExerciseViewHelper) {
-        this.editExerciseViewHelper = editExerciseViewHelper;
+    public EditWorkoutViewHelper(Context context) {
         defaultWeight = context.getResources().getString(R.string.default_set_weight);
+        weightSuffix = " " + context.getResources().getString(R.string.weight_suffix);
+        String decimalSeparator = context.getResources().getString(R.string.decimal_separator);
+        String groupingSeparator = context.getResources().getString(R.string.grouping_separator);
+        DecimalFormatSymbols otherSymbols = formatSymbols(decimalSeparator, groupingSeparator);
+        decimalFormat = new DecimalFormat("0.###", otherSymbols);
+    }
+
+    private DecimalFormatSymbols formatSymbols(String decimalSeparator, String groupingSeparator) {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+        otherSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
+        otherSymbols.setGroupingSeparator(groupingSeparator.charAt(0));
+        return otherSymbols;
     }
 
     public String title(Exercise exercise) {
@@ -53,9 +67,21 @@ public class EditWorkoutViewHelper {
             double setWeight = set.getWeight();
             if (setWeight > exerciseWeight) {
                 exerciseWeight = setWeight;
-                weight = editExerciseViewHelper.weightFrom(set);
+                weight = weightFrom(set);
             }
         }
         return weight;
+    }
+
+    private String weightFrom(Set set) {
+        String weight = weightValue(set);
+        if ("0".equals(weight)) {
+            return defaultWeight;
+        }
+        return weight + weightSuffix;
+    }
+
+    private String weightValue(Set set) {
+        return decimalFormat.format(set.getWeight());
     }
 }

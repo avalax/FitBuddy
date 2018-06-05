@@ -20,8 +20,6 @@ public class EditExerciseViewModelTest {
     @Mock
     private Exercise exercise;
 
-    @Mock
-    private EditExerciseViewHelper editExerciseViewHelper;
     private EditExerciseViewModel editExerciseViewModel;
 
     @Before
@@ -33,7 +31,7 @@ public class EditExerciseViewModelTest {
 
     @Test
     public void onInit_shouldSetWeightAndReps() {
-        editExerciseViewModel.init(null, editExerciseViewHelper, exercise);
+        editExerciseViewModel.init(null, exercise);
 
         assertThat(editExerciseViewModel.getName()).isEqualTo("exercise name");
         assertThat(editExerciseViewModel.getSetAdapter()).isInstanceOf(SetAdapter.class);

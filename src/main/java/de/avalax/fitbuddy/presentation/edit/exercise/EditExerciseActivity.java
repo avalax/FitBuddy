@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.edit.exercise;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class EditExerciseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
+        ViewModelProviders.of(this).get(EditExerciseViewModel.class);
+
         Toolbar toolbar = findViewById(R.id.toolbar_exercise_edit);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
