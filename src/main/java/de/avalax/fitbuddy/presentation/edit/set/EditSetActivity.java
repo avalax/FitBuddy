@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.edit.set;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import javax.inject.Inject;
-
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 
@@ -21,14 +18,11 @@ public class EditSetActivity extends AppCompatActivity {
 
     private Set set;
 
-    @Inject
-    protected EditExerciseViewHelper editExerciseViewHelper;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_set);
-        ((FitbuddyApplication) getApplication()).getComponent().inject(this);
+        ViewModelProviders.of(this).get(EditSetViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar_set_edit);
         setSupportActionBar(toolbar);

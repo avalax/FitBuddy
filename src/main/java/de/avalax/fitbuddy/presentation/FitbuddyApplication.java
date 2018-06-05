@@ -62,10 +62,6 @@ public class FitbuddyApplication extends Application {
 
         void inject(EditExerciseFragment setListFragment);
 
-        void inject(EditSetFragment editSetFragment);
-
         void inject(FinishedWorkoutDetailFragment finishedWorkoutDetailFragment);
-
-        void inject(EditSetActivity editSetActivity);
     }
 }

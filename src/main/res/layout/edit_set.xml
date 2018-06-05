@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -38,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/set_reps_label_text_view"
-                android:text="@{editSetViewModel.reps}"
+                app:reps="@{editSetViewModel.set}"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/set_weight_label_text_view"
-                android:text="@{editSetViewModel.weight}"
+                app:weight="@{editSetViewModel.set}"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp" />
         </RelativeLayout>

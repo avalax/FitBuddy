@@ -3,21 +3,18 @@ package de.avalax.fitbuddy.presentation.edit.set;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.databinding.EditSetBinding;
 import de.avalax.fitbuddy.domain.model.set.Set;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.dialog.EditRepsDialogFragment;
 import de.avalax.fitbuddy.presentation.dialog.EditWeightDialogFragment;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseViewHelper;
 
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_REPS;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_WEIGHT;
@@ -29,9 +26,6 @@ public class EditSetFragment extends Fragment implements
     private static final String KEY_SET = "set";
     private EditSetViewModel viewModel;
 
-    @Inject
-    protected EditExerciseViewHelper editExerciseViewHelper;
-
     public static EditSetFragment forSet(Set set) {
         EditSetFragment fragment = new EditSetFragment();
         Bundle bundle = new Bundle();
@@ -41,11 +35,10 @@ public class EditSetFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EditSetBinding binding = DataBindingUtil.inflate(inflater, R.layout.edit_set, container, false);
-        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
-        viewModel = ViewModelProviders.of(this).get(EditSetViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(EditSetViewModel.class);
         binding.setEditSetViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -58,18 +51,18 @@ public class EditSetFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Set set = (Set) getArguments().getSerializable(KEY_SET);
-        viewModel.init(editExerciseViewHelper, set);
+        viewModel.init(set);
     }
 
     private void changeWeight() {
-        double weight = viewModel.getSet().getWeight();
+        double weight = viewModel.getSet().getValue().getWeight();
         EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(weight);
         editWeightDialogFragment.setTargetFragment(this, EDIT_WEIGHT);
         editWeightDialogFragment.show(getFragmentManager(), "fragment_edit_weight");
     }
 
     private void changeMaxReps() {
-        int reps = viewModel.getSet().getMaxReps();
+        int reps = viewModel.getSet().getValue().getMaxReps();
         EditRepsDialogFragment editRepsDialogFragment = EditRepsDialogFragment.newInstance(reps);
         editRepsDialogFragment.setTargetFragment(this, EDIT_REPS);
         editRepsDialogFragment.show(getFragmentManager(), "fragment_edit_max_reps");

@@ -22,7 +22,6 @@
     <string name="workout_never_executed">Never</string>
     <string name="workout_executions">Executed %s times</string>
     <string name="workout_execution">Executed %s time</string>
-    <string name="default_set_weight">no weight</string>
     <string name="decimal_separator">.</string>
     <string name="grouping_separator">,</string>
     <string name="message_save_exercise_without_sets">Please add at least one set</string>
@@ -41,6 +40,15 @@
     <string name="edit_text_workout_name_hint">Name</string>
     <string name="reps_suffix">reps</string>
     <string name="weight_suffix">kg</string>
+    <string name="default_set_weight">no weight</string>
+    <plurals name="weight_label">
+        <item quantity="zero">@string/default_set_weight</item>
+        <item quantity="other">%s kg</item>
+    </plurals>
+    <plurals name="reps_label">
+        <item quantity="one">%d rep</item>
+        <item quantity="other">%d reps</item>
+    </plurals>
     <string name="edit_set_toolbar_title">Edit set</string>
     <string name="summary_tendency_normal">normal</string>
     <string name="message_select_workout_first">Select a workout first</string>

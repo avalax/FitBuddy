@@ -41,7 +41,7 @@ public class EditExerciseViewHelperTest {
     }
 
     @Test
-    public void doubleWithOnedigitAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
+    public void doubleWithOneDigitAsWeight_shouldReturnWeightAsSubtitle() throws Exception {
         Set set = aSet().withWeight(42.5).build();
         assertThat(service.weightFrom(set)).isEqualTo("42.5 kg");
         assertThat(service.weightValue(set)).isEqualTo("42.5");

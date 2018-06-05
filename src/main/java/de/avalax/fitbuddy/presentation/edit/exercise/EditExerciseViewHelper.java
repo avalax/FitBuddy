@@ -10,6 +10,7 @@ import de.avalax.fitbuddy.domain.model.set.Set;
 
 import static java.lang.String.valueOf;
 
+@Deprecated
 public class EditExerciseViewHelper {
 
     private final String defaultWeight;
