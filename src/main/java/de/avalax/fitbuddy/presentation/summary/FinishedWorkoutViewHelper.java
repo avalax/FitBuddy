@@ -12,6 +12,7 @@ import de.avalax.fitbuddy.domain.model.workout.WorkoutId;
 import static android.text.format.DateUtils.DAY_IN_MILLIS;
 import static android.text.format.DateUtils.getRelativeTimeSpanString;
 
+@Deprecated
 public class FinishedWorkoutViewHelper {
     private final String noExecutionDate;
     private final String executionsPlural;
