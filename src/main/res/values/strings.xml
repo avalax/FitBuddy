@@ -5,7 +5,7 @@
     <string name="vertical_bar_default_text">0</string>
     <string name="dialog_change_weight">change weight of set</string>
     <string name="ok">OK</string>
-    <string name="decimal_point">,</string>
+    <string name="decimal_point">.</string>
     <string name="dialog_change_reps">change reps</string>
     <string name="label_exercise_weight">Weight</string>
     <string name="label_exercise_repetitions">Repetitions</string>
@@ -22,8 +22,6 @@
     <string name="workout_never_executed">Never</string>
     <string name="workout_executions">Executed %s times</string>
     <string name="workout_execution">Executed %s time</string>
-    <string name="decimal_separator">.</string>
-    <string name="grouping_separator">,</string>
     <string name="message_save_exercise_without_sets">Please add at least one set</string>
     <string name="message_save_workout_without_exercices">Please add at least one exercise</string>
     <string name="workout_active">ACTIVE</string>
@@ -38,8 +36,6 @@
     <string name="edit_exercise_toolbar_cancel">@android:string/cancel</string>
     <string name="edit_text_exercise_name_hint">Name</string>
     <string name="edit_text_workout_name_hint">Name</string>
-    <string name="reps_suffix">reps</string>
-    <string name="weight_suffix">kg</string>
     <string name="default_set_weight">no weight</string>
     <plurals name="weight_label">
         <item quantity="zero">@string/default_set_weight</item>

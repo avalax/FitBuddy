@@ -33,7 +33,6 @@ import de.avalax.fitbuddy.port.adapter.persistence.SQLiteWorkoutRepository;
 import de.avalax.fitbuddy.port.adapter.service.ad_mob.GmsAdMobProvider;
 import de.avalax.fitbuddy.port.adapter.service.billing.GooglePlayBillingProvider;
 import de.avalax.fitbuddy.port.adapter.service.billing.HttpNotificationProvider;
-import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutViewHelper;
 import de.avalax.fitbuddy.presentation.helper.ExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedExerciseViewHelper;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
@@ -89,12 +88,6 @@ public class FitbuddyModule {
     public EditWorkoutService provideManageWorkout() {
         return new EditWorkoutService(
                 workoutRepository);
-    }
-
-    @Provides
-    @Singleton
-    public EditWorkoutViewHelper provideEditWorkoutViewHelper() {
-        return new EditWorkoutViewHelper(context);
     }
 
     @Provides

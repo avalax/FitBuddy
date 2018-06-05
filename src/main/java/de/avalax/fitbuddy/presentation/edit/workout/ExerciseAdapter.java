@@ -21,20 +21,18 @@ import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
+import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter.setTitleFromExercise;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
     private Exercises exercises;
-    private EditWorkoutViewHelper editWorkoutViewHelper;
     private Activity activity;
     private Set<Exercise> selections;
 
     ExerciseAdapter(Activity activity,
-                    Exercises exercises,
-                    EditWorkoutViewHelper editWorkoutViewHelper) {
+                    Exercises exercises) {
         super();
         this.activity = activity;
         this.exercises = exercises;
-        this.editWorkoutViewHelper = editWorkoutViewHelper;
         this.selections = new ArraySet<>();
     }
 
@@ -50,13 +48,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public void onBindViewHolder(ExerciseViewHolder holder, int position) {
         try {
             Exercise exercise = exercises.get(position);
-            String title = editWorkoutViewHelper.title(exercise);
-            String subtitle = editWorkoutViewHelper.subtitle(exercise);
-            String weight = editWorkoutViewHelper.weight(exercise);
 
-            holder.getTitleTextView().setText(title);
-            holder.getSubtitleTextView().setText(subtitle);
-            holder.getWeightTextView().setText(weight);
+            setTitleFromExercise(holder.getTitleTextView(), exercise);
+            ExerciseBindingAdapter.setRepsFromExercise(holder.getSubtitleTextView(), exercise);
+            ExerciseBindingAdapter.setWeightFromExercise(holder.getWeightTextView(), exercise);
+
             holder.setSelected(selections.contains(exercise));
 
             holder.getView().setOnClickListener(view -> {

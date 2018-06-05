@@ -7,12 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
-import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.welcome_screen.WorkoutRecyclerView;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
@@ -23,20 +20,16 @@ public class ExerciseListFragment extends Fragment {
     private Exercises exercises;
     private WorkoutRecyclerView recyclerView;
 
-    @Inject
-    protected EditWorkoutViewHelper editWorkoutViewHelper;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_workout, container, false);
-        ((FitbuddyApplication) getActivity().getApplication()).getComponent().inject(this);
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         Workout workout = (Workout) getActivity().getIntent().getSerializableExtra("workout");
         exercises = workout.getExercises();
-        adapter = new ExerciseAdapter(getActivity(), exercises, editWorkoutViewHelper);
+        adapter = new ExerciseAdapter(getActivity(), exercises);
         recyclerView.setAdapter(adapter);
         return view;
     }
