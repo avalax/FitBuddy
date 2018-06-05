@@ -6,8 +6,6 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseFragment;
-import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
-import de.avalax.fitbuddy.presentation.edit.set.EditSetFragment;
 import de.avalax.fitbuddy.presentation.edit.workout.EditWorkoutActivity;
 import de.avalax.fitbuddy.presentation.edit.workout.ExerciseListFragment;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutDetailFragment;
