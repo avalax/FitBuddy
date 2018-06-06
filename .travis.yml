@@ -14,4 +14,3 @@ script:
   - ./gradlew build
 after_success:
   - ./gradlew jacocoTestReport coveralls
-  - ./gradlew versioneye-update
