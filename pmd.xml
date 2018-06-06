@@ -22,6 +22,7 @@
         <exclude name="LoosePackageCoupling" />
         <exclude name="ImmutableField" />
         <exclude name="DataClass" />
+		<exclude name="UseUtilityClass" />
     </rule>
     <rule ref="category/java/errorprone.xml">
         <exclude name="BeanMembersShouldSerialize" />
