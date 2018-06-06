@@ -12,7 +12,7 @@ import de.avalax.fitbuddy.domain.model.set.Sets;
 
 import static android.text.TextUtils.join;
 
-public class ExerciseBindingAdapter {
+public abstract class ExerciseBindingAdapter {
     private static DecimalFormat decimalFormat;
 
     static {

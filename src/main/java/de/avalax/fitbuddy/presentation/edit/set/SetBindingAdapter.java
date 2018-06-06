@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.set.Set;
 
-public class SetBindingAdapter {
+public abstract class SetBindingAdapter {
     private static DecimalFormat decimalFormat;
 
     static {
