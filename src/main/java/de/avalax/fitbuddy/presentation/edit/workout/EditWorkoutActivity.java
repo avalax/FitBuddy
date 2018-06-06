@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
+import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
@@ -32,7 +34,6 @@ import static java.lang.String.valueOf;
 public class EditWorkoutActivity extends AppCompatActivity {
     @Inject
     EditWorkoutService editWorkoutService;
-    private EditText nameEditText;
     private Workout workout;
     private Menu menu;
 
@@ -40,13 +41,13 @@ public class EditWorkoutActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_workout);
+        ViewModelProviders.of(this).get(EditWorkoutViewModel.class);
         ((FitbuddyApplication) getApplication()).getComponent().inject(this);
         Toolbar toolbar = findViewById(R.id.toolbar_workout_edit);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        nameEditText = findViewById(R.id.edit_text_workout_name);
         workout = (Workout) getIntent().getSerializableExtra("workout");
-        nameEditText.setText(workout.getName());
+        show(workout);
     }
 
     @Override
@@ -69,17 +70,17 @@ public class EditWorkoutActivity extends AppCompatActivity {
         if (requestCode == ADD_EXERCISE && resultCode == Activity.RESULT_OK) {
             Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
             workout.getExercises().add(exercise);
-            ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
+            EditWorkoutFragment editWorkoutFragment = (EditWorkoutFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            exerciseListFragment.notifyItemInserted();
+            editWorkoutFragment.notifyItemInserted();
         }
         if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
             Integer position = data.getIntExtra("position", -1);
             Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
             workout.getExercises().set(position, exercise);
-            ExerciseListFragment exerciseListFragment = (ExerciseListFragment)
+            EditWorkoutFragment editWorkoutFragment = (EditWorkoutFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            exerciseListFragment.notifyItemChanged(position);
+            editWorkoutFragment.notifyItemChanged(position);
         }
 
     }
@@ -92,6 +93,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
                 makeText(context, R.string.message_save_workout_without_exercices, LENGTH_SHORT)
                         .show();
             } else {
+                EditText nameEditText = findViewById(R.id.edit_text_workout_name);
                 workout.setName(nameEditText.getText().toString());
                 try {
                     editWorkoutService.saveWorkout(workout);
@@ -108,7 +110,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             }
         }
         if (item.getItemId() == R.id.toolbar_delete_exercices) {
-            ExerciseListFragment setListFragment = (ExerciseListFragment)
+            EditWorkoutFragment setListFragment = (EditWorkoutFragment)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_content);
             setListFragment.removeSelections();
             return true;
@@ -131,5 +133,16 @@ public class EditWorkoutActivity extends AppCompatActivity {
     public void onCancelButtonClick(View view) {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    public void show(Workout workout) {
+        EditWorkoutFragment fragment = EditWorkoutFragment.forWorkout(workout);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("workout")
+                .replace(R.id.fragment_content, fragment, null)
+                .setTransition(TRANSIT_NONE)
+                .commit();
     }
 }
