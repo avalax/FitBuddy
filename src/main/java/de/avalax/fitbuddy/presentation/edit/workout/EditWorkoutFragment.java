@@ -49,7 +49,7 @@ public class EditWorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Workout workout = (Workout) getArguments().getSerializable(KEY_WORKOUT);
-        viewModel.init(getActivity(), workout);
+        viewModel.init(getActivity(), (EditWorkoutActivity) getActivity(), workout);
         binding.list.setAdapter(viewModel.getExerciseAdapter());
     }
 

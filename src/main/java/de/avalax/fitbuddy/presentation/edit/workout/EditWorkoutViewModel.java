@@ -9,8 +9,9 @@ public class EditWorkoutViewModel extends ViewModel {
     private ExerciseAdapter exerciseAdapter;
     private Workout workout;
 
-    public void init(Activity activity, Workout workout) {
-        exerciseAdapter = new ExerciseAdapter(activity, workout.getExercises());
+    public void init(Activity activity,
+                     ExerciseAdapter.ItemClickListener clickListener, Workout workout) {
+        exerciseAdapter = new ExerciseAdapter(activity, workout.getExercises(), clickListener);
         this.workout = workout;
     }
 

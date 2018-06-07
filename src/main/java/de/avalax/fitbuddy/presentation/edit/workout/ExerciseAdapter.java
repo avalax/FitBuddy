@@ -1,7 +1,7 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,27 +17,28 @@ import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
-import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
 
 import static android.graphics.Color.TRANSPARENT;
-import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter.setTitleFromExercise;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
+    private ItemClickListener clickListener;
     private Exercises exercises;
     private Activity activity;
-    private Set<Exercise> selections;
+    private Set<SelectableViewHolder> selections;
 
     ExerciseAdapter(Activity activity,
-                    Exercises exercises) {
+                    Exercises exercises,
+                    ItemClickListener clickListener) {
         super();
         this.activity = activity;
         this.exercises = exercises;
+        this.clickListener = clickListener;
         this.selections = new ArraySet<>();
     }
 
     @Override
-    public ExerciseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_exercise, parent, false);
         int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
@@ -45,7 +46,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     @Override
-    public void onBindViewHolder(ExerciseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         try {
             Exercise exercise = exercises.get(position);
 
@@ -54,44 +55,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             ExerciseBindingAdapter.setWeightFromExercise(holder.getWeightTextView(), exercise);
 
             holder.setSelected(selections.contains(exercise));
-
-            holder.getView().setOnClickListener(view -> {
-                if (selections.isEmpty()) {
-                    Intent intent = new Intent(activity, EditExerciseActivity.class);
-                    intent.putExtra("exercise", exercise);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                    activity.startActivityForResult(intent, EDIT_EXERCISE);
-                } else {
-                    if (isSelected(exercise)) {
-                        deselect(holder.getAdapterPosition(), exercise);
-                    } else {
-                        select(holder.getAdapterPosition(), exercise);
-                    }
-                }
-            });
-            holder.getView().setOnLongClickListener(view -> {
-                select(holder.getAdapterPosition(), exercise);
-                return true;
-            });
         } catch (ExerciseException e) {
             Log.e("ExerciseException", e.getMessage(), e);
         }
-    }
-
-    private boolean isSelected(Exercise exercise) {
-        return selections.contains(exercise);
-    }
-
-    private void deselect(int position, Exercise exercise) {
-        selections.remove(exercise);
-        notifyItemChanged(position);
-        ((EditWorkoutActivity) activity).updateToolbar(selections.size());
-    }
-
-    private void select(int position, Exercise exercise) {
-        selections.add(exercise);
-        notifyItemChanged(position);
-        ((EditWorkoutActivity) activity).updateToolbar(selections.size());
     }
 
     @Override
@@ -105,14 +71,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     void removeSelections() {
-        for (Exercise exercise : selections) {
-            exercises.remove(exercise);
+        for (SelectableViewHolder selection : selections) {
+            try {
+                exercises.remove(exercises.get(selection.getAdapterPosition()));
+            } catch (ExerciseException e) {
+                Log.e("ExerciseException", e.getMessage(), e);
+            }
         }
         selections.clear();
         notifyDataSetChanged();
     }
 
-    static class ExerciseViewHolder extends SelectableViewHolder {
+    public class ExerciseViewHolder extends SelectableViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView weightTextView;
         private final TextView titleTextView;
         private final TextView subtitleTextView;
@@ -122,6 +92,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             weightTextView = view.findViewById(R.id.item_weight);
             titleTextView = view.findViewById(R.id.item_title);
             subtitleTextView = view.findViewById(R.id.item_subtitle);
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         TextView getWeightTextView() {
@@ -135,5 +107,36 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         TextView getSubtitleTextView() {
             return subtitleTextView;
         }
+
+        @Override
+        public void onClick(View view) {
+            if (selections.isEmpty()) {
+                clickListener.onItemClick(view, getAdapterPosition());
+            } else {
+                setSelected(!isSelected());
+                ((EditWorkoutActivity) activity).updateToolbar(selections.size());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            setSelected(true);
+            ((EditWorkoutActivity) activity).updateToolbar(selections.size());
+            return true;
+        }
+
+        @Override
+        public void setSelected(boolean selected) {
+            if (selected) {
+                selections.add(this);
+            } else {
+                selections.remove(this);
+            }
+            super.setSelected(selected);
+        }
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 }

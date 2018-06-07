@@ -20,6 +20,7 @@ import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
+import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
@@ -31,7 +32,7 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static java.lang.String.valueOf;
 
-public class EditWorkoutActivity extends AppCompatActivity {
+public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAdapter.ItemClickListener {
     @Inject
     EditWorkoutService editWorkoutService;
     private Workout workout;
@@ -144,5 +145,18 @@ public class EditWorkoutActivity extends AppCompatActivity {
                 .replace(R.id.fragment_content, fragment, null)
                 .setTransition(TRANSIT_NONE)
                 .commit();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        try {
+            Exercise exercise = workout.getExercises().get(position);
+            Intent intent = new Intent(this, EditExerciseActivity.class);
+            intent.putExtra("exercise", exercise);
+            intent.putExtra("position", position);
+            startActivityForResult(intent, EDIT_EXERCISE);
+        } catch (ExerciseException e) {
+            Log.e("ExerciseException", e.getMessage(), e);
+        }
     }
 }
