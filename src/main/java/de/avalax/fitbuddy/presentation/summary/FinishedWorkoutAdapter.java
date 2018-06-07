@@ -1,6 +1,7 @@
 package de.avalax.fitbuddy.presentation.summary;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class FinishedWorkoutAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_finished_workout, parent, false);
         int backgroundColor = view.getResources().getColor(R.color.cardsColor);
@@ -50,7 +51,7 @@ public class FinishedWorkoutAdapter
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FinishedWorkout workout = finishedWorkouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.creationDate(workout));
@@ -121,6 +122,17 @@ public class FinishedWorkoutAdapter
 
         TextView getSubtitleTextView() {
             return subtitleTextView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            //TODO: onClick
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            //TODO: onLongClick
+            return false;
         }
     }
 }

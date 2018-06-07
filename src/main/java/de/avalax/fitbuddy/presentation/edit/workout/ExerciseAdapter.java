@@ -21,11 +21,11 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter.setTitleFromExercise;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
+public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> implements SelectableViewHolder.SelectionListener {
     private ItemClickListener clickListener;
     private Exercises exercises;
     private Activity activity;
-    private Set<SelectableViewHolder> selections;
+    private Set<Exercise> selections;
 
     ExerciseAdapter(Activity activity,
                     Exercises exercises,
@@ -42,7 +42,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_exercise, parent, false);
         int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
-        return new ExerciseViewHolder(view, TRANSPARENT, highlightColor);
+        ExerciseViewHolder exerciseViewHolder = new ExerciseViewHolder(view, TRANSPARENT, highlightColor);
+        exerciseViewHolder.setSelectionListener(this);
+        return exerciseViewHolder;
     }
 
     @Override
@@ -71,18 +73,28 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     void removeSelections() {
-        for (SelectableViewHolder selection : selections) {
-            try {
-                exercises.remove(exercises.get(selection.getAdapterPosition()));
-            } catch (ExerciseException e) {
-                Log.e("ExerciseException", e.getMessage(), e);
-            }
+        for (Exercise selection : selections) {
+            exercises.remove(selection);
         }
         selections.clear();
         notifyDataSetChanged();
     }
 
-    public class ExerciseViewHolder extends SelectableViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    @Override
+    public void onSelect(SelectableViewHolder selectableViewHolder, boolean selected) {
+        try {
+            Exercise exercise = exercises.get(selectableViewHolder.getAdapterPosition());
+            if (selected) {
+                selections.add(exercise);
+            } else {
+                selections.remove(exercise);
+            }
+        } catch (ExerciseException e) {
+            Log.e("ExerciseException", e.getMessage(), e);
+        }
+    }
+
+    public class ExerciseViewHolder extends SelectableViewHolder {
         private final TextView weightTextView;
         private final TextView titleTextView;
         private final TextView subtitleTextView;
@@ -123,16 +135,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             setSelected(true);
             ((EditWorkoutActivity) activity).updateToolbar(selections.size());
             return true;
-        }
-
-        @Override
-        public void setSelected(boolean selected) {
-            if (selected) {
-                selections.add(this);
-            } else {
-                selections.remove(this);
-            }
-            super.setSelected(selected);
         }
     }
 

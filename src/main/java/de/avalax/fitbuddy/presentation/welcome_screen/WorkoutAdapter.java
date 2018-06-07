@@ -128,5 +128,16 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         public View getView() {
             return cardView;
         }
+
+        @Override
+        public void onClick(View view) {
+            //TODO: onClick
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            //TODO: onLongClick
+            return false;
+        }
     }
 }

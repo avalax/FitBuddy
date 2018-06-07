@@ -128,5 +128,16 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
         TextView getSubtitleTextView() {
             return subtitleTextView;
         }
+
+        @Override
+        public void onClick(View view) {
+            //TODO: onClick
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            //TODO: onLongClick
+            return false;
+        }
     }
 }
