@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.welcome_screen;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
+    private ItemClickListener itemClickListener;
     private WorkoutService workoutService;
     private List<Workout> workouts;
     private MainActivity activity;
@@ -24,18 +26,20 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     private int selectedPosition = RecyclerView.NO_POSITION;
 
     WorkoutAdapter(MainActivity activity,
+                   ItemClickListener itemClickListener,
                    WorkoutService workoutService,
                    FinishedWorkoutViewHelper finishedWorkoutViewHelper,
                    List<Workout> workouts) {
         super();
         this.activity = activity;
+        this.itemClickListener = itemClickListener;
         this.workoutService = workoutService;
         this.finishedWorkoutViewHelper = finishedWorkoutViewHelper;
         this.workouts = workouts;
     }
 
     @Override
-    public WorkoutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WorkoutAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.card_workout, parent, false);
         int backgroundColor = view.getResources().getColor(R.color.cardsColor);
@@ -44,7 +48,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(WorkoutAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WorkoutAdapter.ViewHolder holder, int position) {
         Workout workout = workouts.get(position);
         holder.getTitleTextView().setText(workout.getName());
         holder.getSubtitleTextView().setText(finishedWorkoutViewHelper.executions(workout.getWorkoutId()));
@@ -55,26 +59,6 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         } else {
             holder.getStatusTextView().setText(R.string.workout_not_active);
         }
-        holder.getView().setOnClickListener(view -> {
-            if (holder.isSelected()) {
-                selectedPosition = RecyclerView.NO_POSITION;
-                notifyItemChanged(holder.getAdapterPosition());
-                activity.mainToolbar();
-            } else {
-                activity.selectWorkout(workout);
-            }
-        });
-        holder.getView().setOnLongClickListener(view -> {
-            int oldSelectedPosition = selectedPosition;
-            selectedPosition = holder.getAdapterPosition();
-            if (oldSelectedPosition != RecyclerView.NO_POSITION) {
-                notifyItemChanged(oldSelectedPosition);
-            }
-            notifyItemChanged(holder.getAdapterPosition());
-
-            activity.updateEditToolbar(holder.getAdapterPosition(), workout);
-            return true;
-        });
     }
 
     @Override
@@ -93,7 +77,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
         notifyItemChanged(oldSelectedPosition);
     }
 
-    static class ViewHolder extends SelectableViewHolder {
+    class ViewHolder extends SelectableViewHolder {
         private final TextView dateTextView;
         private final TextView statusTextView;
         private final CardView cardView;
@@ -107,6 +91,8 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
             subtitleTextView = view.findViewById(R.id.item_subtitle);
             dateTextView = view.findViewById(R.id.card_date);
             statusTextView = view.findViewById(R.id.card_status);
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         TextView getDateTextView() {
@@ -131,13 +117,30 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            //TODO: onClick
+            if (isSelected()) {
+                selectedPosition = RecyclerView.NO_POSITION;
+                notifyItemChanged(getAdapterPosition());
+                activity.mainToolbar();
+            } else {
+                itemClickListener.onItemClick(view, getAdapterPosition());
+            }
         }
 
         @Override
         public boolean onLongClick(View view) {
-            //TODO: onLongClick
-            return false;
+            int oldSelectedPosition = selectedPosition;
+            selectedPosition = getAdapterPosition();
+            if (oldSelectedPosition != RecyclerView.NO_POSITION) {
+                notifyItemChanged(oldSelectedPosition);
+            }
+            notifyItemChanged(getAdapterPosition());
+            Workout workout = workouts.get(selectedPosition);
+            activity.updateEditToolbar(getAdapterPosition(), workout);
+            return true;
         }
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 }

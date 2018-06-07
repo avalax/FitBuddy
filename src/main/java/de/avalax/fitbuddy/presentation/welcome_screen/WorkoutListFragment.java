@@ -29,7 +29,7 @@ import de.avalax.fitbuddy.presentation.summary.FinishedWorkoutViewHelper;
 
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_WORKOUT;
 
-public class WorkoutListFragment extends Fragment implements View.OnClickListener {
+public class WorkoutListFragment extends Fragment implements View.OnClickListener, WorkoutAdapter.ItemClickListener {
     @Inject
     EditWorkoutService editWorkoutService;
 
@@ -55,7 +55,7 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         workouts = editWorkoutService.loadAllWorkouts();
-        workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(),
+        workoutAdapter = new WorkoutAdapter((MainActivity) getActivity(), this,
                 workoutService, finishedWorkoutViewHelper, workouts);
         recyclerView.setAdapter(workoutAdapter);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_add_workout);
@@ -96,6 +96,11 @@ public class WorkoutListFragment extends Fragment implements View.OnClickListene
         Intent intent = new Intent(getActivity(), EditWorkoutActivity.class);
         intent.putExtra("workout", new BasicWorkout());
         getActivity().startActivityForResult(intent, ADD_WORKOUT);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        ((MainActivity) getActivity()).selectWorkout(workouts.get(position));
     }
 }
 
