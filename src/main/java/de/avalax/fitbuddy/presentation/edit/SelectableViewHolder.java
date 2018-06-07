@@ -3,7 +3,8 @@ package de.avalax.fitbuddy.presentation.edit;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public abstract class SelectableViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public abstract class SelectableViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener, View.OnLongClickListener {
     private final int backgroundColor;
     private final int highlightColor;
     private boolean selected;

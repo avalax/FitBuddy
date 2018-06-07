@@ -21,7 +21,8 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 import static android.graphics.Color.TRANSPARENT;
 import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter.setTitleFromExercise;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> implements SelectableViewHolder.SelectionListener {
+public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
+        implements SelectableViewHolder.SelectionListener {
     private ItemClickListener clickListener;
     private Exercises exercises;
     private Activity activity;
