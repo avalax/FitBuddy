@@ -64,7 +64,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:onClick="onAddExerciseButtonClick"
+                android:onClick="onFABButtonClick"
                 android:text="@string/empty_exercise_list" />
         </android.support.v7.widget.CardView>
 

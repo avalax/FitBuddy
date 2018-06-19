@@ -1,24 +1,29 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 
 public class EditWorkoutViewModel extends ViewModel {
-    private ExerciseAdapter exerciseAdapter;
-    private Workout workout;
+    private MediatorLiveData<Exercises> exercises;
+    private MutableLiveData<String> name;
 
-    public void init(ExerciseAdapter.ExerciseViewHolderCallback clickListener, Workout workout) {
-        exerciseAdapter = new ExerciseAdapter(clickListener);
-        exerciseAdapter.setExercises(workout.getExercises());
-        this.workout = workout;
+    public void init(Workout workout) {
+        exercises = new MediatorLiveData<>();
+        exercises.setValue(workout.getExercises());
+        name = new MutableLiveData<>();
+        name.setValue(workout.getName());
     }
 
-    public ExerciseAdapter getExerciseAdapter() {
-        return exerciseAdapter;
+    public LiveData<String> getName() {
+        return name;
     }
 
-    public String getName() {
-        return workout.getName();
+    public MediatorLiveData<Exercises> getExercises() {
+        return exercises;
     }
 }

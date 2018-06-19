@@ -52,7 +52,7 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
-        android:onClick="onAddExerciseButtonClick"
+        android:onClick="onFABButtonClick"
         android:src="@drawable/ic_fab_add"
         android:tint="?android:textColorPrimaryInverse"
         app:backgroundTint="@color/secondaryColor" />

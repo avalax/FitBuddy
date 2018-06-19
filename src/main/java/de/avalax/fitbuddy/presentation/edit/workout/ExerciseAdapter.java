@@ -3,14 +3,12 @@ package de.avalax.fitbuddy.presentation.edit.workout;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Objects;
 import java.util.Set;
 
 import de.avalax.fitbuddy.R;
@@ -35,50 +33,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     public void setExercises(Exercises exercises) {
-        if (this.exercises == null) {
-            this.exercises = exercises;
-            notifyItemRangeInserted(0, exercises.size());
-        } else {
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return ExerciseAdapter.this.exercises.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return exercises.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    try {
-                        Exercise old = ExerciseAdapter.this.exercises.get(oldItemPosition);
-                        Exercise exercise = exercises.get(newItemPosition);
-                        return old.getExerciseId() == exercise.getExerciseId();
-                    } catch (ExerciseException e) {
-                        Log.e("ExerciseException", e.getMessage(), e);
-                        return false;
-                    }
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    try {
-                        Exercise old = ExerciseAdapter.this.exercises.get(oldItemPosition);
-                        Exercise exercise = exercises.get(newItemPosition);
-                        return old.getExerciseId() == exercise.getExerciseId()
-                                && Objects.equals(old.getName(), exercise.getName())
-                                && Objects.equals(old.getSets(), exercise.getSets());
-                    } catch (ExerciseException e) {
-                        Log.e("ExerciseException", e.getMessage(), e);
-                        return false;
-                    }
-                }
-            });
-
-            diffResult.dispatchUpdatesTo(this);
-        }
+        notifyItemRangeRemoved(0, exercises == null ? 0 : exercises.size());
+        this.exercises = exercises;
+        notifyItemRangeInserted(0, exercises.size());
     }
 
     @NonNull
@@ -116,12 +73,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return exercises == null ? 0 : exercises.size();
     }
 
-    void removeSelections() {
-        for (Exercise selection : selections) {
-            exercises.remove(selection);
-        }
+    public void clearSelections() {
         selections.clear();
-        notifyDataSetChanged();
     }
 
     @Override
@@ -136,6 +89,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         } catch (ExerciseException e) {
             Log.e("ExerciseException", e.getMessage(), e);
         }
+    }
+
+    public Set<Exercise> getSelections() {
+        return selections;
     }
 
     public class ExerciseViewHolder extends SelectableViewHolder {

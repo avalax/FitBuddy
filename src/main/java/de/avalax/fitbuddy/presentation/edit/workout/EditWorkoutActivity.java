@@ -1,10 +1,10 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,8 +19,6 @@ import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.application.edit.workout.EditWorkoutService;
 import de.avalax.fitbuddy.domain.model.ResourceException;
 import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
-import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;
 import de.avalax.fitbuddy.presentation.FitbuddyApplication;
 import de.avalax.fitbuddy.presentation.edit.exercise.EditExerciseActivity;
@@ -29,10 +27,9 @@ import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
-import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static java.lang.String.valueOf;
 
-public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAdapter.ExerciseViewHolderCallback {
+public class EditWorkoutActivity extends AppCompatActivity {
     @Inject
     EditWorkoutService editWorkoutService;
     private Workout workout;
@@ -59,31 +56,10 @@ public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAd
         return true;
     }
 
-    public void onAddExerciseButtonClick(View view) {
+    public void onFABButtonClick(View view) {
         Intent intent = new Intent(this, EditExerciseActivity.class);
         intent.putExtra("exercise", new BasicExercise());
         startActivityForResult(intent, ADD_EXERCISE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_EXERCISE && resultCode == Activity.RESULT_OK) {
-            Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
-            workout.getExercises().add(exercise);
-            EditWorkoutFragment editWorkoutFragment = (EditWorkoutFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            editWorkoutFragment.notifyItemInserted();
-        }
-        if (requestCode == EDIT_EXERCISE && resultCode == Activity.RESULT_OK) {
-            Integer position = data.getIntExtra("position", -1);
-            Exercise exercise = (Exercise) data.getSerializableExtra("exercise");
-            workout.getExercises().set(position, exercise);
-            EditWorkoutFragment editWorkoutFragment = (EditWorkoutFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            editWorkoutFragment.notifyItemChanged(position);
-        }
-
     }
 
     @Override
@@ -110,16 +86,11 @@ public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAd
                 return true;
             }
         }
-        if (item.getItemId() == R.id.toolbar_delete_exercices) {
-            EditWorkoutFragment setListFragment = (EditWorkoutFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            setListFragment.removeSelections();
-            return true;
-        }
-        return false;
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        return fragment.onOptionsItemSelected(item);
     }
 
-    @Override
     public void onSelectionChange(int selectionCount) {
         if (selectionCount > 0) {
             menu.clear();
@@ -149,15 +120,8 @@ public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAd
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        try {
-            Exercise exercise = workout.getExercises().get(position);
-            Intent intent = new Intent(this, EditExerciseActivity.class);
-            intent.putExtra("exercise", exercise);
-            intent.putExtra("position", position);
-            startActivityForResult(intent, EDIT_EXERCISE);
-        } catch (ExerciseException e) {
-            Log.e("ExerciseException", e.getMessage(), e);
-        }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 }
