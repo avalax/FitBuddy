@@ -1,49 +1,95 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
-import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import java.util.Objects;
 import java.util.Set;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.databinding.ExerciseItemBinding;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.exercise.Exercises;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 
 import static android.graphics.Color.TRANSPARENT;
-import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter.setTitleFromExercise;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
         implements SelectableViewHolder.SelectionListener {
-    private ItemClickListener clickListener;
-    private Exercises exercises;
-    private Activity activity;
+    private ExerciseViewHolderCallback callback;
     private Set<Exercise> selections;
 
-    ExerciseAdapter(Activity activity,
-                    Exercises exercises,
-                    ItemClickListener clickListener) {
-        super();
-        this.activity = activity;
-        this.exercises = exercises;
-        this.clickListener = clickListener;
+    private Exercises exercises;
+
+    ExerciseAdapter(ExerciseViewHolderCallback callback) {
+        this.callback = callback;
         this.selections = new ArraySet<>();
     }
 
+    public void setExercises(Exercises exercises) {
+        if (this.exercises == null) {
+            this.exercises = exercises;
+            notifyItemRangeInserted(0, exercises.size());
+        } else {
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return ExerciseAdapter.this.exercises.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return exercises.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    try {
+                        Exercise old = ExerciseAdapter.this.exercises.get(oldItemPosition);
+                        Exercise exercise = exercises.get(newItemPosition);
+                        return old.getExerciseId() == exercise.getExerciseId();
+                    } catch (ExerciseException e) {
+                        Log.e("ExerciseException", e.getMessage(), e);
+                        return false;
+                    }
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    try {
+                        Exercise old = ExerciseAdapter.this.exercises.get(oldItemPosition);
+                        Exercise exercise = exercises.get(newItemPosition);
+                        return old.getExerciseId() == exercise.getExerciseId()
+                                && Objects.equals(old.getName(), exercise.getName())
+                                && Objects.equals(old.getSets(), exercise.getSets());
+                    } catch (ExerciseException e) {
+                        Log.e("ExerciseException", e.getMessage(), e);
+                        return false;
+                    }
+                }
+            });
+
+            diffResult.dispatchUpdatesTo(this);
+        }
+    }
+
+    @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.item_exercise, parent, false);
-        int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
-        ExerciseViewHolder exerciseViewHolder = new ExerciseViewHolder(view, TRANSPARENT, highlightColor);
+        ExerciseItemBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.exercise_item,
+                        parent, false);
+        binding.setCallback(callback);
+        int highlightColor = parent.getResources().getColor(R.color.primaryLightColor);
+        ExerciseViewHolder exerciseViewHolder = new ExerciseViewHolder(binding, TRANSPARENT, highlightColor);
         exerciseViewHolder.setSelectionListener(this);
         return exerciseViewHolder;
     }
@@ -52,11 +98,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         try {
             Exercise exercise = exercises.get(position);
-
-            setTitleFromExercise(holder.getTitleTextView(), exercise);
-            ExerciseBindingAdapter.setRepsFromExercise(holder.getSubtitleTextView(), exercise);
-            ExerciseBindingAdapter.setWeightFromExercise(holder.getWeightTextView(), exercise);
-
+            holder.binding.setExercise(exercise);
+            holder.binding.executePendingBindings();
             holder.setSelected(selections.contains(exercise));
         } catch (ExerciseException e) {
             Log.e("ExerciseException", e.getMessage(), e);
@@ -96,50 +139,36 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     public class ExerciseViewHolder extends SelectableViewHolder {
-        private final TextView weightTextView;
-        private final TextView titleTextView;
-        private final TextView subtitleTextView;
+        private final ExerciseItemBinding binding;
 
-        ExerciseViewHolder(View view, int backgroundColor, int highlightColor) {
-            super(view, backgroundColor, highlightColor);
-            weightTextView = view.findViewById(R.id.item_weight);
-            titleTextView = view.findViewById(R.id.item_title);
-            subtitleTextView = view.findViewById(R.id.item_subtitle);
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
-        }
-
-        TextView getWeightTextView() {
-            return weightTextView;
-        }
-
-        TextView getTitleTextView() {
-            return titleTextView;
-        }
-
-        TextView getSubtitleTextView() {
-            return subtitleTextView;
+        public ExerciseViewHolder(ExerciseItemBinding binding, int backgroundColor, int highlightColor) {
+            super(binding.getRoot(), backgroundColor, highlightColor);
+            binding.getRoot().setOnClickListener(this);
+            binding.getRoot().setOnLongClickListener(this);
+            this.binding = binding;
         }
 
         @Override
         public void onClick(View view) {
             if (selections.isEmpty()) {
-                clickListener.onItemClick(view, getAdapterPosition());
+                callback.onItemClick(view, getAdapterPosition());
             } else {
                 setSelected(!isSelected());
-                ((EditWorkoutActivity) activity).updateToolbar(selections.size());
+                callback.onSelectionChange(selections.size());
             }
         }
 
         @Override
         public boolean onLongClick(View view) {
             setSelected(true);
-            ((EditWorkoutActivity) activity).updateToolbar(selections.size());
+            callback.onSelectionChange(selections.size());
             return true;
         }
     }
 
-    public interface ItemClickListener {
+    public interface ExerciseViewHolderCallback {
         void onItemClick(View view, int position);
+
+        void onSelectionChange(int size);
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="exercise"
+            type="de.avalax.fitbuddy.domain.model.exercise.Exercise" />
+
+        <variable
+            name="callback"
+            type="de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter.ExerciseViewHolderCallback" />
+    </data>
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/placeholder_title"
+            android:text="@{exercise.name}"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/item_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_title"
+            android:hint="@string/placeholder_subtitle"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="14sp"
+            app:reps="@{exercise}" />
+
+        <TextView
+            android:id="@+id/item_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="@string/default_set_weight"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            app:weight="@{exercise}"
+            tools:ignore="RelativeOverlap" />
+    </RelativeLayout>
+</layout>

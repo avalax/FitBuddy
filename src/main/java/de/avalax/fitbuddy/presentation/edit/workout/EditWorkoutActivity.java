@@ -32,7 +32,7 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static java.lang.String.valueOf;
 
-public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAdapter.ItemClickListener {
+public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAdapter.ExerciseViewHolderCallback {
     @Inject
     EditWorkoutService editWorkoutService;
     private Workout workout;
@@ -119,7 +119,8 @@ public class EditWorkoutActivity extends AppCompatActivity implements ExerciseAd
         return false;
     }
 
-    public void updateToolbar(int selectionCount) {
+    @Override
+    public void onSelectionChange(int selectionCount) {
         if (selectionCount > 0) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_edit_workout_delete_exercices, menu);

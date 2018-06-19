@@ -49,7 +49,7 @@ public class EditWorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Workout workout = (Workout) getArguments().getSerializable(KEY_WORKOUT);
-        viewModel.init(getActivity(), (EditWorkoutActivity) getActivity(), workout);
+        viewModel.init((EditWorkoutActivity) getActivity(), workout);
         binding.list.setAdapter(viewModel.getExerciseAdapter());
     }
 
@@ -66,6 +66,6 @@ public class EditWorkoutFragment extends Fragment {
     public void removeSelections() {
         viewModel.getExerciseAdapter().removeSelections();
         binding.list.updateEmptyView();
-        ((EditWorkoutActivity) getActivity()).updateToolbar(0);
+        ((EditWorkoutActivity) getActivity()).onSelectionChange(0);
     }
 }

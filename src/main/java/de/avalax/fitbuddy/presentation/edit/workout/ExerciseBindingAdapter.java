@@ -1,5 +1,6 @@
 package de.avalax.fitbuddy.presentation.edit.workout;
 
+import android.databinding.BindingAdapter;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -19,10 +20,7 @@ public class ExerciseBindingAdapter {
         decimalFormat = new DecimalFormat("0.###");
     }
 
-    public static void setTitleFromExercise(TextView textView, Exercise exercise) {
-        textView.setText(exercise.getName());
-    }
-
+    @BindingAdapter("reps")
     public static void setRepsFromExercise(TextView textView, Exercise exercise) {
         textView.setText(repsFromExercise(exercise));
     }
@@ -46,6 +44,7 @@ public class ExerciseBindingAdapter {
         return reps;
     }
 
+    @BindingAdapter("weight")
     public static void setWeightFromExercise(TextView textView, Exercise exercise) {
         double weight = weightFromExercise(exercise);
         int quantity = weight == 0 ? 0 : 1;

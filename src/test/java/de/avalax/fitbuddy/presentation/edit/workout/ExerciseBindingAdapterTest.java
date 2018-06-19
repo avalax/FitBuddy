@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import de.avalax.fitbuddy.BuildConfig;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
-import de.avalax.fitbuddy.presentation.edit.workout.ExerciseBindingAdapter;
 
 import static de.avalax.fitbuddy.domain.model.exercise.BasicExerciseBuilder.anExercise;
 import static de.avalax.fitbuddy.domain.model.set.BasicSetBuilder.aSet;
@@ -36,15 +35,6 @@ public class ExerciseBindingAdapterTest {
         MockitoAnnotations.initMocks(this);
         Context context = RuntimeEnvironment.application.getApplicationContext();
         doReturn(context).when(textView).getContext();
-    }
-
-    @Test
-    public void exerciseName_shouldBeSet() throws Exception {
-        Exercise exercise = anExercise().withName("exercise name").build();
-
-        ExerciseBindingAdapter.setTitleFromExercise(textView, exercise);
-
-        verify(textView).setText("exercise name");
     }
 
     @Test
