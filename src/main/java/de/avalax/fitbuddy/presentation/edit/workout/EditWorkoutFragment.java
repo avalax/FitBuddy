@@ -19,7 +19,6 @@ import java.util.Set;
 
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.databinding.EditWorkoutBinding;
-import de.avalax.fitbuddy.domain.model.exercise.BasicExercise;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.exercise.ExerciseException;
 import de.avalax.fitbuddy.domain.model.workout.Workout;

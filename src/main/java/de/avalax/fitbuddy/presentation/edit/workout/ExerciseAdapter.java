@@ -28,12 +28,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     private Exercises exercises;
 
     ExerciseAdapter(ExerciseViewHolderCallback callback) {
+        super();
         this.callback = callback;
         this.selections = new ArraySet<>();
     }
 
     public void setExercises(Exercises exercises) {
-        notifyItemRangeRemoved(0, exercises == null ? 0 : exercises.size());
+        notifyItemRangeRemoved(0, this.exercises == null ? 0 : this.exercises.size());
         this.exercises = exercises;
         notifyItemRangeInserted(0, exercises.size());
     }
@@ -46,7 +47,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                         parent, false);
         binding.setCallback(callback);
         int highlightColor = parent.getResources().getColor(R.color.primaryLightColor);
-        ExerciseViewHolder exerciseViewHolder = new ExerciseViewHolder(binding, TRANSPARENT, highlightColor);
+        ExerciseViewHolder exerciseViewHolder =
+                new ExerciseViewHolder(binding, callback, selections, TRANSPARENT, highlightColor);
         exerciseViewHolder.setSelectionListener(this);
         return exerciseViewHolder;
     }
@@ -55,8 +57,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         try {
             Exercise exercise = exercises.get(position);
-            holder.binding.setExercise(exercise);
-            holder.binding.executePendingBindings();
+            holder.getBinding().setExercise(exercise);
+            holder.getBinding().executePendingBindings();
             holder.setSelected(selections.contains(exercise));
         } catch (ExerciseException e) {
             Log.e("ExerciseException", e.getMessage(), e);
@@ -95,14 +97,26 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return selections;
     }
 
-    public class ExerciseViewHolder extends SelectableViewHolder {
+    public static class ExerciseViewHolder extends SelectableViewHolder {
         private final ExerciseItemBinding binding;
+        private final ExerciseViewHolderCallback callback;
+        private final Set<Exercise> selections;
 
-        public ExerciseViewHolder(ExerciseItemBinding binding, int backgroundColor, int highlightColor) {
+        ExerciseViewHolder(ExerciseItemBinding binding,
+                           ExerciseViewHolderCallback callback,
+                           Set<Exercise> selections,
+                           int backgroundColor,
+                           int highlightColor) {
             super(binding.getRoot(), backgroundColor, highlightColor);
+            this.selections = selections;
+            this.binding = binding;
+            this.callback = callback;
             binding.getRoot().setOnClickListener(this);
             binding.getRoot().setOnLongClickListener(this);
-            this.binding = binding;
+        }
+
+        ExerciseItemBinding getBinding() {
+            return binding;
         }
 
         @Override
