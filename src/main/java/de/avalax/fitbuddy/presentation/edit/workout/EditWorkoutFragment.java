@@ -49,7 +49,25 @@ public class EditWorkoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(EditWorkoutViewModel.class);
-        exerciseAdapter = new ExerciseAdapter(callback);
+        exerciseAdapter = new ExerciseAdapter(new ExerciseViewHolderCallback() {
+            @Override
+            public void onItemClick(View view, int position) {
+                try {
+                    Exercise exercise = workout.getExercises().get(position);
+                    Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+                    intent.putExtra("exercise", exercise);
+                    intent.putExtra("position", position);
+                    getActivity().startActivityForResult(intent, EDIT_EXERCISE);
+                } catch (ExerciseException e) {
+                    Log.e("ExerciseException", e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onSelectionChange(int size) {
+                ((EditWorkoutActivity) getActivity()).onSelectionChange(size);
+            }
+        });
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_workout, container, false);
         binding.setEditWorkoutViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -105,23 +123,4 @@ public class EditWorkoutFragment extends Fragment {
         ((EditWorkoutActivity) getActivity()).onSelectionChange(0);
     }
 
-    private final ExerciseViewHolderCallback callback = new ExerciseViewHolderCallback() {
-        @Override
-        public void onItemClick(View view, int position) {
-            try {
-                Exercise exercise = workout.getExercises().get(position);
-                Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
-                intent.putExtra("exercise", exercise);
-                intent.putExtra("position", position);
-                getActivity().startActivityForResult(intent, EDIT_EXERCISE);
-            } catch (ExerciseException e) {
-                Log.e("ExerciseException", e.getMessage(), e);
-            }
-        }
-
-        @Override
-        public void onSelectionChange(int size) {
-            ((EditWorkoutActivity) getActivity()).onSelectionChange(size);
-        }
-    };
 }

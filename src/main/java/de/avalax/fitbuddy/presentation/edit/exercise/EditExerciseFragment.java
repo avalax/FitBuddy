@@ -47,7 +47,26 @@ public class EditExerciseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(EditExerciseViewModel.class);
-        setAdapter = new SetAdapter(callback);
+        setAdapter = new SetAdapter(new SetViewHolderCallback() {
+            @Override
+            public void onItemClick(View view, int position) {
+                try {
+                    Set set = exercise.getSets().get(position);
+                    Intent intent = new Intent(getActivity(), EditSetActivity.class);
+                    intent.putExtra("set", set);
+                    intent.putExtra("position", position);
+                    getActivity().startActivityForResult(intent, EDIT_SET);
+
+                } catch (SetException e) {
+                    Log.e("SetException", e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onSelectionChange(int size) {
+                ((EditExerciseActivity) getActivity()).onSelectionChange(size);
+            }
+        });
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_exercise, container, false);
         binding.setEditExerciseViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -104,24 +123,4 @@ public class EditExerciseFragment extends Fragment {
         ((EditExerciseActivity) getActivity()).onSelectionChange(0);
     }
 
-    private final SetViewHolderCallback callback = new SetViewHolderCallback() {
-        @Override
-        public void onItemClick(View view, int position) {
-            try {
-                Set set = exercise.getSets().get(position);
-                Intent intent = new Intent(getActivity(), EditSetActivity.class);
-                intent.putExtra("set", set);
-                intent.putExtra("position", position);
-                getActivity().startActivityForResult(intent, EDIT_SET);
-
-            } catch (SetException e) {
-                Log.e("SetException", e.getMessage(), e);
-            }
-        }
-
-        @Override
-        public void onSelectionChange(int size) {
-            ((EditExerciseActivity) getActivity()).onSelectionChange(size);
-        }
-    };
 }

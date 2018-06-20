@@ -18,7 +18,8 @@ import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
 
 import static android.graphics.Color.TRANSPARENT;
 
-public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> implements SelectableViewHolder.SelectionListener {
+public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder>
+        implements SelectableViewHolder.SelectionListener {
     private Sets sets;
 
     private java.util.Set<Set> selections;
