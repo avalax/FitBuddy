@@ -29,7 +29,7 @@ import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_EXERCISE;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_EXERCISE;
 import static de.avalax.fitbuddy.presentation.edit.workout.ExerciseAdapter.ExerciseViewHolderCallback;
 
-public class EditWorkoutFragment extends Fragment {
+public class EditWorkoutFragment extends Fragment implements ExerciseViewHolderCallback {
 
     private static final String KEY_WORKOUT = "workout";
     private EditWorkoutViewModel viewModel;
@@ -49,25 +49,7 @@ public class EditWorkoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(EditWorkoutViewModel.class);
-        exerciseAdapter = new ExerciseAdapter(new ExerciseViewHolderCallback() {
-            @Override
-            public void onItemClick(View view, int position) {
-                try {
-                    Exercise exercise = workout.getExercises().get(position);
-                    Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
-                    intent.putExtra("exercise", exercise);
-                    intent.putExtra("position", position);
-                    getActivity().startActivityForResult(intent, EDIT_EXERCISE);
-                } catch (ExerciseException e) {
-                    Log.e("ExerciseException", e.getMessage(), e);
-                }
-            }
-
-            @Override
-            public void onSelectionChange(int size) {
-                ((EditWorkoutActivity) getActivity()).onSelectionChange(size);
-            }
-        });
+        exerciseAdapter = new ExerciseAdapter(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_workout, container, false);
         binding.setEditWorkoutViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -123,4 +105,21 @@ public class EditWorkoutFragment extends Fragment {
         ((EditWorkoutActivity) getActivity()).onSelectionChange(0);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        try {
+            Exercise exercise = workout.getExercises().get(position);
+            Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+            intent.putExtra("exercise", exercise);
+            intent.putExtra("position", position);
+            getActivity().startActivityForResult(intent, EDIT_EXERCISE);
+        } catch (ExerciseException e) {
+            Log.e("ExerciseException", e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void onSelectionChange(int size) {
+        ((EditWorkoutActivity) getActivity()).onSelectionChange(size);
+    }
 }

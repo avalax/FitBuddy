@@ -27,7 +27,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_SET;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
 
-public class EditExerciseFragment extends Fragment {
+public class EditExerciseFragment extends Fragment implements SetViewHolderCallback {
 
     private static final String KEY_EXERCISE = "exercise";
     private EditExerciseViewModel viewModel;
@@ -47,26 +47,7 @@ public class EditExerciseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(EditExerciseViewModel.class);
-        setAdapter = new SetAdapter(new SetViewHolderCallback() {
-            @Override
-            public void onItemClick(View view, int position) {
-                try {
-                    Set set = exercise.getSets().get(position);
-                    Intent intent = new Intent(getActivity(), EditSetActivity.class);
-                    intent.putExtra("set", set);
-                    intent.putExtra("position", position);
-                    getActivity().startActivityForResult(intent, EDIT_SET);
-
-                } catch (SetException e) {
-                    Log.e("SetException", e.getMessage(), e);
-                }
-            }
-
-            @Override
-            public void onSelectionChange(int size) {
-                ((EditExerciseActivity) getActivity()).onSelectionChange(size);
-            }
-        });
+        setAdapter = new SetAdapter(this);
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_exercise, container, false);
         binding.setEditExerciseViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -123,4 +104,22 @@ public class EditExerciseFragment extends Fragment {
         ((EditExerciseActivity) getActivity()).onSelectionChange(0);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        try {
+            Set set = exercise.getSets().get(position);
+            Intent intent = new Intent(getActivity(), EditSetActivity.class);
+            intent.putExtra("set", set);
+            intent.putExtra("position", position);
+            getActivity().startActivityForResult(intent, EDIT_SET);
+
+        } catch (SetException e) {
+            Log.e("SetException", e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void onSelectionChange(int size) {
+        ((EditExerciseActivity) getActivity()).onSelectionChange(size);
+    }
 }
