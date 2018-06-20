@@ -49,13 +49,14 @@ public class EditWorkoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(EditWorkoutViewModel.class);
-        exerciseAdapter = new ExerciseAdapter(editWorkoutCallback);
+        exerciseAdapter = new ExerciseAdapter(callback);
         binding = DataBindingUtil.inflate(inflater, R.layout.edit_workout, container, false);
         binding.setEditWorkoutViewModel(viewModel);
         binding.setLifecycleOwner(this);
         binding.list.setEmptyView(binding.getRoot().findViewById(android.R.id.empty));
         binding.list.addItemDecoration(new DividerItemDecoration(getActivity(), VERTICAL));
         binding.list.setAdapter(exerciseAdapter);
+
         return binding.getRoot();
     }
 
@@ -104,7 +105,7 @@ public class EditWorkoutFragment extends Fragment {
         ((EditWorkoutActivity) getActivity()).onSelectionChange(0);
     }
 
-    private final ExerciseViewHolderCallback editWorkoutCallback = new ExerciseViewHolderCallback() {
+    private final ExerciseViewHolderCallback callback = new ExerciseViewHolderCallback() {
         @Override
         public void onItemClick(View view, int position) {
             try {

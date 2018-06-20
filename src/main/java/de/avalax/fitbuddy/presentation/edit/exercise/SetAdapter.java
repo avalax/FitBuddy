@@ -1,7 +1,6 @@
 package de.avalax.fitbuddy.presentation.edit.exercise;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
 import android.support.v7.widget.RecyclerView;
@@ -9,88 +8,62 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import de.avalax.fitbuddy.R;
+import de.avalax.fitbuddy.databinding.SetItemBinding;
 import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.domain.model.set.SetException;
 import de.avalax.fitbuddy.domain.model.set.Sets;
 import de.avalax.fitbuddy.presentation.edit.SelectableViewHolder;
-import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.graphics.Color.TRANSPARENT;
-import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
-import static de.avalax.fitbuddy.presentation.edit.set.SetBindingAdapter.setRepsFromSet;
-import static de.avalax.fitbuddy.presentation.edit.set.SetBindingAdapter.setWeightFromSet;
 
-public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
+public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> implements SelectableViewHolder.SelectionListener {
     private Sets sets;
-    private Activity activity;
+
     private java.util.Set<Set> selections;
 
-    public SetAdapter(Activity activity,
-                      Sets sets) {
+    private SetViewHolderCallback callback;
+
+    SetAdapter(SetViewHolderCallback callback) {
         super();
-        this.activity = activity;
-        this.sets = sets;
+        this.callback = callback;
         this.selections = new ArraySet<>();
     }
 
+    public void setSets(Sets sets) {
+        notifyItemRangeRemoved(0, this.sets == null ? 0 : this.sets.size());
+        this.sets = sets;
+        notifyItemRangeInserted(0, sets.size());
+    }
+
+    public java.util.Set<Set> getSelections() {
+        return selections;
+    }
+
+    @NonNull
     @Override
-    public SetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.item_set, parent, false);
-        int highlightColor = view.getResources().getColor(R.color.primaryLightColor);
-        return new SetViewHolder(view, TRANSPARENT, highlightColor);
+    public SetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        SetItemBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.set_item,
+                        parent, false);
+        int highlightColor = parent.getResources().getColor(R.color.primaryLightColor);
+        SetViewHolder setViewHolder =
+                new SetViewHolder(binding, callback, selections, TRANSPARENT, highlightColor);
+        setViewHolder.setSelectionListener(this);
+        return setViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
         try {
             Set set = sets.get(position);
-
-            setRepsFromSet(holder.getTitleTextView(), set);
-            setWeightFromSet(holder.getSubtitleTextView(), set);
-
+            holder.getBinding().setSet(set);
+            holder.getBinding().executePendingBindings();
             holder.setSelected(selections.contains(set));
-
-            holder.getView().setOnClickListener(view -> {
-                if (selections.isEmpty()) {
-                    Intent intent = new Intent(activity, EditSetActivity.class);
-                    intent.putExtra("set", set);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                    activity.startActivityForResult(intent, EDIT_SET);
-                } else {
-                    if (isSelected(set)) {
-                        deselect(holder.getAdapterPosition(), set);
-                    } else {
-                        select(holder.getAdapterPosition(), set);
-                    }
-                }
-            });
-            holder.getView().setOnLongClickListener(view -> {
-                select(holder.getAdapterPosition(), set);
-                return true;
-            });
         } catch (SetException e) {
             Log.e("SetException", e.getMessage(), e);
         }
-    }
-
-    private boolean isSelected(Set set) {
-        return selections.contains(set);
-    }
-
-    private void deselect(int position, Set set) {
-        selections.remove(set);
-        notifyItemChanged(position);
-        ((EditExerciseActivity) activity).updateToolbar(selections.size());
-    }
-
-    private void select(int position, Set set) {
-        selections.add(set);
-        notifyItemChanged(position);
-        ((EditExerciseActivity) activity).updateToolbar(selections.size());
     }
 
     @Override
@@ -103,41 +76,67 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
         return sets == null ? 0 : sets.size();
     }
 
-    void removeSelections() {
-        for (Set set : selections) {
-            sets.remove(set);
-        }
+    void clearSelections() {
         selections.clear();
-        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSelect(SelectableViewHolder selectableViewHolder, boolean selected) {
+        try {
+            Set set = sets.get(selectableViewHolder.getAdapterPosition());
+            if (selected) {
+                selections.add(set);
+            } else {
+                selections.remove(set);
+            }
+        } catch (SetException e) {
+            Log.e("SetException", e.getMessage(), e);
+        }
     }
 
     public static class SetViewHolder extends SelectableViewHolder {
-        private final TextView titleTextView;
-        private final TextView subtitleTextView;
+        private SetItemBinding binding;
+        private final SetViewHolderCallback callback;
+        private final java.util.Set<Set> selections;
 
-        public SetViewHolder(View view, int backgroundColor, int highlightColor) {
-            super(view, backgroundColor, highlightColor);
-            titleTextView = view.findViewById(R.id.item_title);
-            subtitleTextView = view.findViewById(R.id.item_subtitle);
-        }
-
-        TextView getTitleTextView() {
-            return titleTextView;
-        }
-
-        TextView getSubtitleTextView() {
-            return subtitleTextView;
+        public SetViewHolder(SetItemBinding binding,
+                             SetViewHolderCallback callback,
+                             java.util.Set<Set> selections,
+                             int backgroundColor,
+                             int highlightColor) {
+            super(binding.getRoot(), backgroundColor, highlightColor);
+            this.binding = binding;
+            this.callback = callback;
+            this.selections = selections;
+            binding.getRoot().setOnClickListener(this);
+            binding.getRoot().setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //TODO: onClick
+            if (selections.isEmpty()) {
+                callback.onItemClick(view, getAdapterPosition());
+            } else {
+                setSelected(!isSelected());
+                callback.onSelectionChange(selections.size());
+            }
         }
 
         @Override
         public boolean onLongClick(View view) {
-            //TODO: onLongClick
-            return false;
+            setSelected(true);
+            callback.onSelectionChange(selections.size());
+            return true;
         }
+
+        public SetItemBinding getBinding() {
+            return binding;
+        }
+    }
+
+    public interface SetViewHolderCallback {
+        void onItemClick(View view, int position);
+
+        void onSelectionChange(int size);
     }
 }

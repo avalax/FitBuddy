@@ -45,7 +45,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         ExerciseItemBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.exercise_item,
                         parent, false);
-        binding.setCallback(callback);
         int highlightColor = parent.getResources().getColor(R.color.primaryLightColor);
         ExerciseViewHolder exerciseViewHolder =
                 new ExerciseViewHolder(binding, callback, selections, TRANSPARENT, highlightColor);

@@ -1,10 +1,10 @@
 package de.avalax.fitbuddy.presentation.edit.exercise;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,14 +15,12 @@ import android.widget.EditText;
 import de.avalax.fitbuddy.R;
 import de.avalax.fitbuddy.domain.model.exercise.Exercise;
 import de.avalax.fitbuddy.domain.model.set.BasicSet;
-import de.avalax.fitbuddy.domain.model.set.Set;
 import de.avalax.fitbuddy.presentation.edit.set.EditSetActivity;
 
 import static android.support.v4.app.FragmentTransaction.TRANSIT_NONE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static de.avalax.fitbuddy.presentation.FitbuddyApplication.ADD_SET;
-import static de.avalax.fitbuddy.presentation.FitbuddyApplication.EDIT_SET;
 import static java.lang.String.valueOf;
 
 public class EditExerciseActivity extends AppCompatActivity {
@@ -56,26 +54,11 @@ public class EditExerciseActivity extends AppCompatActivity {
         startActivityForResult(intent, ADD_SET);
     }
 
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_SET && resultCode == Activity.RESULT_OK) {
-            Set set = (Set) data.getSerializableExtra("set");
-            exercise.getSets().add(set);
-
-            EditExerciseFragment setListFragment = (EditExerciseFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            setListFragment.notifyItemInserted();
-        }
-        if (requestCode == EDIT_SET && resultCode == Activity.RESULT_OK) {
-            Integer position = data.getIntExtra("position", -1);
-            Set set = (Set) data.getSerializableExtra("set");
-            exercise.getSets().set(position, set);
-
-            EditExerciseFragment setListFragment = (EditExerciseFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            setListFragment.notifyItemChanged(position);
-        }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -97,16 +80,12 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
             return true;
         }
-        if (item.getItemId() == R.id.toolbar_delete_sets) {
-            EditExerciseFragment setListFragment = (EditExerciseFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_content);
-            setListFragment.removeSelections();
-            return true;
-        }
-        return false;
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        return fragment.onOptionsItemSelected(item);
     }
 
-    public void updateToolbar(int selectionCount) {
+    public void onSelectionChange(int selectionCount) {
         if (selectionCount > 0) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_edit_exercise_delete_sets, menu);
